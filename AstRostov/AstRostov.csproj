@@ -47,6 +47,8 @@
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.1.13153\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+      <HintPath>..\Authentication\bin\Debug\DotNetOpenAuth.AspNet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DotNetOpenAuth.Core">
       <HintPath>..\packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
