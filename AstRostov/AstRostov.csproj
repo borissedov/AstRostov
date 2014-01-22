@@ -236,7 +236,9 @@
     <Content Include="Scripts\WebForms\GridView.js" />
     <Content Include="Scripts\WebForms\Menu.js" />
     <Content Include="Scripts\WebForms\MenuStandards.js" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

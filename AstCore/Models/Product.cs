@@ -20,6 +20,12 @@ namespace AstCore.Models
         [Column("Id")]
         public int ProductId { get; set; }
 
+        public virtual ICollection<Attribute> Attributes
+        {
+            get;
+            set;
+        }
+
         [Required]
         public string Name { get; set; }
 
@@ -32,8 +38,6 @@ namespace AstCore.Models
 
         [Required]
         public string Description { get; set; }
-
-        public int Inventory { get; set; }
 
         public virtual ICollection<ProductImage> Images { get; set; }
 
@@ -67,6 +71,8 @@ namespace AstCore.Models
             get;
             set;
         }
+
+        public virtual ICollection<Sku> SkuCollection { get; set; }
 
         [NotMapped]
         public Decimal FinalPrice
@@ -136,7 +142,30 @@ namespace AstCore.Models
             }
         }
 
+        [NotMapped]
+        public int Inventory
+        {
+            get
+            {
+                if (SkuCollection != null)
+                {
+                    return SkuCollection.Sum(s => s.Inventory);
+                }
 
-        
+                return 0;
+            }
+        }
+
+        [NotMapped]
+        public Sku SelectedSku { get; set; }
+
+        [NotMapped]
+        public Sku DefaultSku
+        {
+            get
+            {
+                return SkuCollection.SingleOrDefault(s => s.IsDefault);
+            }
+        }
     }
 }

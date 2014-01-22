@@ -9,7 +9,6 @@ namespace AstCore.Models
 {
     public class Blog
     {
-
         [Key]
         public int BlogId { get; set; }
         [Required]

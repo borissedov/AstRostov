@@ -36,6 +36,9 @@ namespace AstCore.DataAccess
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLineItem> OrderLineItems { get; set; }
+        public DbSet<Sku> Skus { get; set; }
+        public DbSet<Attribute> Attributes { get; set; }
+        public DbSet<AttributeValue> AttributeValues { get; set; }
 
         public DbSet<PaymentTariff> PaymentTariffs { get; set; }
         public DbSet<ShippingTariff> ShippingTariffs { get; set; }
