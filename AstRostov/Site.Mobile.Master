@@ -1,0 +1,144 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="AstRostov.Site_Mobile" %>
+
+<%@ Register Src="~/Controls/Navigation/Search.ascx" TagPrefix="uc" TagName="Search" %>
+
+<%@ Register Src="~/Controls/Navigation/ShoppingCartPanel.ascx" TagPrefix="uc" TagName="ShoppingCartPanel" %>
+<!DOCTYPE html>
+<html>
+<head id="Head1" runat="server">
+    <meta charset="utf-8" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content />
+    <meta name="author" content />
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-responsive.css" />
+    <link rel="stylesheet" href="~/css/jquery.onebyone.css" />
+    <link rel="stylesheet" href="~/css/animate.min.css" />
+    <link rel="stylesheet" href="~/css/responsive-slider.css" />
+    <link rel="stylesheet" href="~/css/Site.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-wysihtml5.css" />
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?105"></script>
+    <script type="text/javascript">
+        VK.init({ apiId: 3815761, onlyWidgets: true });
+    </script>
+</head>
+<body>
+    <%--<div class="leftBG hidden-phone"></div>
+    <div class="rightBG hidden-phone"></div>--%>
+    <%--<script src="http://code.jquery.com/jquery.js"></script>--%>
+    <%--<script src="/Scripts/bootstrap.js"></script>--%>
+    <%-- <script type="text/javascript">
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () { alert('here2'); });
+        
+        function endRequestHandler(sender, args) {
+            Page_Load();
+        }
+    </script>--%>
+    <br />
+    <%--<a href="#content" class="sr-only">К содержимому</a>--%>
+    <div id="content">
+        <form id="Form1" runat="server" style="margin: 0;" autocomplete="off">
+            <asp:ScriptManager runat="server" ID="ScriptManager1">
+                <Scripts>
+                    <asp:ScriptReference Path="~/Scripts/jquery-2.0.3.min.js" />
+                    <%--<asp:ScriptReference Path="~/Scripts/jquery-ui-1.10.3.min.js" />--%>
+                    <asp:ScriptReference Path="~/Scripts/browser-fix.js" />
+                    <asp:ScriptReference Path="~/Scripts/jquery.responsivethumbnailgallery.min.js" />
+                    <asp:ScriptReference Path="~/Scripts/bootstrap.js" />
+                    <asp:ScriptReference Path="~/Scripts/jquery.onebyone.min.js" />
+                    <asp:ScriptReference Path="~/Scripts/jquery.equal-heights.min.js" />
+                    <asp:ScriptReference Path="~/Scripts/cufon-yui.js" />
+                    <asp:ScriptReference Path="~/Scripts/Arial_400.font.js" />
+                    <asp:ScriptReference Path="~/Scripts/menu-active.js" />
+                    <asp:ScriptReference Path="~/Scripts/config.js" />
+                    <asp:ScriptReference Path="~/Scripts/wysihtml/wysihtml5-0.3.0.js" />
+                    <asp:ScriptReference Path="~/Scripts/bootstrap-wysihtml5.js" />
+                </Scripts>
+            </asp:ScriptManager>
+
+            <header>
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <a id="A1" runat="server" href="~/">
+                                <img alt="АСТ-Ростов" src='<%=ResolveUrl("~/img/logo_blue1.png") %>' style="max-width: 200%; margin-top: -50px; margin-bottom: -50px;" /></a>
+                            <%--  <a id="A1" runat="server" href="~/">
+                                <img alt="АСТ-Ростов" src='<%=ResolveUrl("~/img/logo_orange.png") %>' style="max-width: 140%; margin-top: -30px; margin-bottom: -30px;" /></a>--%>
+                        </div>
+                        <div class="offset5 span3">
+
+                            <div class="pull-right">
+                                <uc:ShoppingCartPanel runat="server" ID="ucShoppingCartPanel"></uc:ShoppingCartPanel>
+                                <div id="search" class="clearfix" style="margin: 10px 0;">
+                                    <uc:Search runat="server" ID="ucSearch"></uc:Search>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="navbar navbar-inverse">
+                                <div class="navbar-inner">
+                                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </a>
+                                    <div id="main-menu" class="nav-collapse collapse">
+                                        <ucn:BootStrapMenu runat="server" ID="Menu1" />
+                                        <asp:LoginView ID="LoginView1" runat="server" ViewStateMode="Disabled">
+                                            <AnonymousTemplate>
+                                                <ul class="nav pull-right">
+                                                    <li><a id="registerLink" runat="server" href="~/Account/Register.aspx">Регистрация</a></li>
+                                                    <li><a id="loginLink" runat="server" href="~/Account/Login.aspx">Вход</a></li>
+                                                </ul>
+                                            </AnonymousTemplate>
+                                            <LoggedInTemplate>
+                                                <ul class="unstyled" style="margin: 0">
+                                                    <li class="navbar-text pull-right dropdown">Здравствуйте, 
+                                                        <a id="A2" runat="server" class="navbar-link" href="~/Account/Manage.aspx" title="Управление аккаунтом" data-toggle="dropdown">
+                                                            <i class="icon-white icon-user"></i>
+                                                            <asp:LoginName ID="LoginName1" runat="server" CssClass="username" />
+                                                        </a>!
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href='<%=ResolveUrl("~/Account/Manage.aspx") %>'>Управление аккаунтом</a></li>
+                                                            <li><a href='<%=ResolveUrl("~/Account/OrderList.aspx") %>'>Список заказов</a></li>
+                                                        </ul>
+                                                        <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutAction="Redirect" LogoutText="Выйти" LogoutPageUrl="~/" CssClass="navbar-link" />
+                                                    </li>
+                                                </ul>
+                                            </LoggedInTemplate>
+                                        </asp:LoginView>
+                                    </div>
+                                    <%-- <p class="navbar-text pull-right">Signed in as <a href="#" class="navbar-link">Mark Otto</a></p>--%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="container" style="min-height: 770px">
+                <div class="row-fluid">
+                    <%-- <ul class="breadcrumb">
+                            <li><a href="http://bootsnipp.com/">Home</a><span class="divider">/</span></li>
+                            <li><a href="http://bootsnipp.com/snipps">Snipps</a><span class="divider">/</span></li>
+                            <li class="active">Simple Blog layout example</li>
+                        </ul>--%>
+                    <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+                </div>
+            </div>
+            <footer class="main-footer">
+                <div>
+                    <p>&copy; <%: DateTime.Now.Year %> - АСТ-Ростов</p>
+                </div>
+            </footer>
+        </form>
+    </div>
+</body>
+</html>
+

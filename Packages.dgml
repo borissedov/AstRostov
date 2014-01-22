@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="AstCore" Label="AstCore" Category="Project" />
+    <Node Id="EntityFramework 5.0.0" Label="EntityFramework 5.0.0" Category="Package" />
+    <Node Id="Authentication" Label="Authentication" Category="Project" />
+    <Node Id="DotNetOpenAuth.AspNet 4.3.1.13153" Label="DotNetOpenAuth.AspNet 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.Core 4.3.1.13153" Label="DotNetOpenAuth.Core 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Label="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Label="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Label="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Label="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Category="Package" />
+    <Node Id="Microsoft.Bcl 1.1.3" Label="Microsoft.Bcl 1.1.3" Category="Package" />
+    <Node Id="Microsoft.Bcl.Build 1.0.8" Label="Microsoft.Bcl.Build 1.0.8" Category="Package" />
+    <Node Id="Microsoft.Net.Http 2.2.13" Label="Microsoft.Net.Http 2.2.13" Category="Package" />
+    <Node Id="AstRostov" Label="AstRostov" Category="Project" />
+    <Node Id="AspNet.ScriptManager.jQuery 2.0.3" Label="AspNet.ScriptManager.jQuery 2.0.3" Category="Package" />
+    <Node Id="DotNetOpenAuth.AspNet 4.3.1.13153" Label="DotNetOpenAuth.AspNet 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.Core 4.3.1.13153" Label="DotNetOpenAuth.Core 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Label="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Label="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Label="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Category="Package" />
+    <Node Id="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Label="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Category="Package" />
+    <Node Id="EntityFramework 5.0.0" Label="EntityFramework 5.0.0" Category="Package" />
+    <Node Id="jQuery 2.0.3" Label="jQuery 2.0.3" Category="Package" />
+    <Node Id="Microsoft.AspNet.FriendlyUrls 1.0.0" Label="Microsoft.AspNet.FriendlyUrls 1.0.0" Category="Package" />
+    <Node Id="Microsoft.AspNet.FriendlyUrls.Core 1.0.0" Label="Microsoft.AspNet.FriendlyUrls.Core 1.0.0" Category="Package" />
+    <Node Id="Microsoft.AspNet.Membership.OpenAuth 1.0.1" Label="Microsoft.AspNet.Membership.OpenAuth 1.0.1" Category="Package" />
+    <Node Id="Microsoft.AspNet.Providers.Core 1.2" Label="Microsoft.AspNet.Providers.Core 1.2" Category="Package" />
+    <Node Id="Microsoft.AspNet.Providers.LocalDB 1.1" Label="Microsoft.AspNet.Providers.LocalDB 1.1" Category="Package" />
+    <Node Id="Microsoft.AspNet.ScriptManager.MSAjax 4.5.6" Label="Microsoft.AspNet.ScriptManager.MSAjax 4.5.6" Category="Package" />
+    <Node Id="Microsoft.AspNet.ScriptManager.WebForms 4.5.6" Label="Microsoft.AspNet.ScriptManager.WebForms 4.5.6" Category="Package" />
+    <Node Id="Microsoft.AspNet.Web.Optimization 1.0.0" Label="Microsoft.AspNet.Web.Optimization 1.0.0" Category="Package" />
+    <Node Id="Microsoft.AspNet.Web.Optimization.WebForms 1.0.0" Label="Microsoft.AspNet.Web.Optimization.WebForms 1.0.0" Category="Package" />
+    <Node Id="Microsoft.Bcl 1.1.3" Label="Microsoft.Bcl 1.1.3" Category="Package" />
+    <Node Id="Microsoft.Bcl.Build 1.0.8" Label="Microsoft.Bcl.Build 1.0.8" Category="Package" />
+    <Node Id="Microsoft.Net.Http 2.2.13" Label="Microsoft.Net.Http 2.2.13" Category="Package" />
+    <Node Id="Microsoft.Web.Infrastructure 1.0.0.0" Label="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package" />
+    <Node Id="WebGrease 1.1.0" Label="WebGrease 1.1.0" Category="Package" />
+  </Nodes>
+  <Links>
+    <Link Source="AstCore" Target="EntityFramework 5.0.0" Category="Installed Package" />
+    <Link Source="DotNetOpenAuth.AspNet 4.3.1.13153" Target="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.AspNet 4.3.1.13153" Target="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.Core 4.3.1.13153" Target="Microsoft.Net.Http 2.2.13" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Target="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Target="DotNetOpenAuth.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Target="DotNetOpenAuth.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Target="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="Microsoft.Bcl 1.1.3" Target="Microsoft.Bcl.Build 1.0.8" Category="Package Dependency" />
+    <Link Source="Microsoft.Net.Http 2.2.13" Target="Microsoft.Bcl 1.1.3" Category="Package Dependency" />
+    <Link Source="Microsoft.Net.Http 2.2.13" Target="Microsoft.Bcl.Build 1.0.8" Category="Package Dependency" />
+    <Link Source="Authentication" Target="DotNetOpenAuth.AspNet 4.3.1.13153" Category="Installed Package" />
+    <Link Source="AspNet.ScriptManager.jQuery 2.0.3" Target="jQuery 2.0.3" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.AspNet 4.3.1.13153" Target="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.AspNet 4.3.1.13153" Target="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.Core 4.3.1.13153" Target="Microsoft.Net.Http 2.2.13" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OAuth.Consumer 4.3.1.13153" Target="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OAuth.Core 4.3.1.13153" Target="DotNetOpenAuth.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Target="DotNetOpenAuth.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="DotNetOpenAuth.OpenId.RelyingParty 4.3.1.13153" Target="DotNetOpenAuth.OpenId.Core 4.3.1.13153" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.FriendlyUrls 1.0.0" Target="Microsoft.AspNet.FriendlyUrls.Core 1.0.0" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.FriendlyUrls.Core 1.0.0" Target="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.Membership.OpenAuth 1.0.1" Target="EntityFramework 5.0.0" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.Providers.LocalDB 1.1" Target="Microsoft.AspNet.Providers.Core 1.2" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.Web.Optimization 1.0.0" Target="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.Web.Optimization 1.0.0" Target="WebGrease 1.1.0" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.Web.Optimization.WebForms 1.0.0" Target="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package Dependency" />
+    <Link Source="Microsoft.AspNet.Web.Optimization.WebForms 1.0.0" Target="Microsoft.AspNet.Web.Optimization 1.0.0" Category="Package Dependency" />
+    <Link Source="Microsoft.Bcl 1.1.3" Target="Microsoft.Bcl.Build 1.0.8" Category="Package Dependency" />
+    <Link Source="Microsoft.Net.Http 2.2.13" Target="Microsoft.Bcl 1.1.3" Category="Package Dependency" />
+    <Link Source="Microsoft.Net.Http 2.2.13" Target="Microsoft.Bcl.Build 1.0.8" Category="Package Dependency" />
+    <Link Source="AstRostov" Target="AspNet.ScriptManager.jQuery 2.0.3" Category="Installed Package" />
+    <Link Source="AstRostov" Target="DotNetOpenAuth.AspNet 4.3.1.13153" Category="Installed Package" />
+    <Link Source="AstRostov" Target="Microsoft.AspNet.FriendlyUrls 1.0.0" Category="Installed Package" />
+    <Link Source="AstRostov" Target="Microsoft.AspNet.Membership.OpenAuth 1.0.1" Category="Installed Package" />
+    <Link Source="AstRostov" Target="Microsoft.AspNet.Providers.LocalDB 1.1" Category="Installed Package" />
+    <Link Source="AstRostov" Target="Microsoft.AspNet.ScriptManager.MSAjax 4.5.6" Category="Installed Package" />
+    <Link Source="AstRostov" Target="Microsoft.AspNet.ScriptManager.WebForms 4.5.6" Category="Installed Package" />
+    <Link Source="AstRostov" Target="Microsoft.AspNet.Web.Optimization.WebForms 1.0.0" Category="Installed Package" />
+  </Links>
+  <Categories>
+    <Category Id="Project" />
+    <Category Id="Package" />
+  </Categories>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Project" ValueLabel="True">
+      <Condition Expression="HasCategory('Project')" />
+      <Setter Property="Background" Value="Blue" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Package Dependency" ValueLabel="True">
+      <Condition Expression="HasCategory('Package Dependency')" />
+      <Setter Property="Background" Value="Yellow" />
+    </Style>
+  </Styles>
+</DirectedGraph>

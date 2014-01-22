@@ -1,0 +1,4 @@
+
+Add-Migration -ProjectName AstCore
+
+Update-Database -ProjectName AstCore

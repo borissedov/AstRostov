@@ -1,0 +1,498 @@
+2013-12-06 00:03:01.5334|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Exception of type 'System.Web.HttpUnhandledException' was thrown. ---> System.DivideByZeroException: Attempted to divide by zero.
+   at AstRostov._Default.Page_Load(Object sender, EventArgs e) in c:\Users\Boris\Documents\Visual Studio 2012\Projects\AstRostov\AstRostov\Default.aspx.cs:line 16
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.default_aspx.ProcessRequest(HttpContext context) in c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\beda3cff\ce88999b\App_Web_sfmccf1b.9.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-06 00:03:01.5754|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-06 17:47:50.4900|FATAL|AstRostov.Global|System.Web.HttpParseException (0x80004005): Невозможно создать объект типа 'System.Int32' из его строкового представления 'product-qty' для свойства 'Columns'. ---> System.Web.HttpParseException (0x80004005): Невозможно создать объект типа 'System.Int32' из его строкового представления 'product-qty' для свойства 'Columns'. ---> System.Web.HttpException (0x80004005): Невозможно создать объект типа 'System.Int32' из его строкового представления 'product-qty' для свойства 'Columns'.
+   в System.Web.UI.PropertyConverter.ObjectFromString(Type objType, MemberInfo propertyInfo, String value)
+   в System.Web.UI.ControlBuilder.AddProperty(String filter, String name, String value, Boolean mainDirectiveMode)
+   в System.Web.UI.ControlBuilder.PreprocessAttribute(String filter, String attribname, String attribvalue, Boolean mainDirectiveMode, Int32 line, Int32 column)
+   в System.Web.UI.ControlBuilder.PreprocessAttributes(ParsedAttributeCollection attribs)
+   в System.Web.UI.ControlBuilder.Init(TemplateParser parser, ControlBuilder parentBuilder, Type type, String tagName, String id, IDictionary attribs)
+   в System.Web.UI.ControlBuilder.CreateBuilderFromType(TemplateParser parser, ControlBuilder parentBuilder, Type type, String tagName, String id, IDictionary attribs, Int32 line, String sourceFileName)
+   в System.Web.UI.ControlBuilder.CreateChildBuilder(String filter, String tagName, IDictionary attribs, TemplateParser parser, ControlBuilder parentBuilder, String id, Int32 line, VirtualPath virtualPath, Type& childType, Boolean defaultProperty)
+   в System.Web.UI.TemplateParser.ProcessBeginTag(Match match, String inputText)
+   в System.Web.UI.TemplateParser.ParseStringInternal(String text, Encoding fileEncoding)
+   в System.Web.UI.TemplateParser.ProcessException(Exception ex)
+   в System.Web.UI.TemplateParser.ParseStringInternal(String text, Encoding fileEncoding)
+   в System.Web.UI.TemplateParser.ParseString(String text, VirtualPath virtualPath, Encoding fileEncoding)
+   в System.Web.UI.TemplateParser.ParseString(String text, VirtualPath virtualPath, Encoding fileEncoding)
+   в System.Web.UI.TemplateParser.ParseFile(String physicalPath, VirtualPath virtualPath)
+   в System.Web.UI.TemplateParser.ParseInternal()
+   в System.Web.UI.TemplateParser.Parse()
+   в System.Web.Compilation.BaseTemplateBuildProvider.get_CodeCompilerType()
+   в System.Web.Compilation.BuildProvider.GetCompilerTypeFromBuildProvider(BuildProvider buildProvider)
+   в System.Web.Compilation.BuildProvidersCompiler.ProcessBuildProviders()
+   в System.Web.Compilation.BuildProvidersCompiler.PerformBuild()
+   в System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)
+   в System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(VirtualPath virtualPath, Type requiredBaseType, HttpContext context, Boolean allowCrossApp)
+   в System.Web.UI.PageHandlerFactory.GetHandlerHelper(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   в System.Web.UI.PageHandlerFactory.GetHandler(HttpContext context, String requestType, String virtualPath, String path)
+   в System.Web.HttpApplication.MaterializeHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-06 17:47:50.5080|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-06 17:48:15.6200|FATAL|AstRostov.Global|System.Web.HttpCompileException (0x80004005): c:\AstRostov\AstRostov\ShoppingCart.aspx(23): error CS1729: AstCore.CommonControls.Alert не содержит конструктор, который принимает 1 аргументов
+   в System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)
+   в System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(VirtualPath virtualPath, Type requiredBaseType, HttpContext context, Boolean allowCrossApp)
+   в System.Web.UI.PageHandlerFactory.GetHandlerHelper(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   в System.Web.UI.PageHandlerFactory.GetHandler(HttpContext context, String requestType, String virtualPath, String path)
+   в System.Web.HttpApplication.MaterializeHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-06 17:48:15.6200|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-06 17:52:12.4535|FATAL|AstRostov.Global|System.Web.HttpCompileException (0x80004005): c:\AstRostov\AstRostov\ShoppingCart.aspx(23): error CS1729: AstCore.CommonControls.Alert не содержит конструктор, который принимает 1 аргументов
+   в System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)
+   в System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(VirtualPath virtualPath, Type requiredBaseType, HttpContext context, Boolean allowCrossApp)
+   в System.Web.UI.PageHandlerFactory.GetHandlerHelper(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   в System.Web.UI.PageHandlerFactory.GetHandler(HttpContext context, String requestType, String virtualPath, String path)
+   в System.Web.HttpApplication.MaterializeHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-06 17:52:12.4535|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-06 17:53:31.9815|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.Data.Entity.ModelConfiguration.ModelValidationException: One or more validation errors were detected during model generation:
+
+\tSystem.Data.Entity.Edm.EdmEntityType: : EntityType 'ShoppingCartEntity' has no key defined. Define the key for this EntityType.
+\tSystem.Data.Entity.Edm.EdmEntitySet: EntityType: EntitySet 'ShoppingCartEntities' is based on type 'ShoppingCartEntity' that has no keys defined.
+
+   в System.Data.Entity.ModelConfiguration.Edm.EdmModelExtensions.ValidateAndSerializeCsdl(EdmModel model, XmlWriter writer)
+   в System.Data.Entity.ModelConfiguration.Edm.EdmModelExtensions.ValidateCsdl(EdmModel model)
+   в System.Data.Entity.DbModelBuilder.Build(DbProviderManifest providerManifest, DbProviderInfo providerInfo)
+   в System.Data.Entity.DbModelBuilder.Build(DbConnection providerConnection)
+   в System.Data.Entity.Internal.LazyInternalContext.CreateModel(LazyInternalContext internalContext)
+   в System.Data.Entity.Internal.RetryLazy`2.GetValue(TInput input)
+   в System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   в System.Data.Entity.Internal.InternalContext.Initialize()
+   в System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   в System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   в System.Data.Entity.Internal.Linq.InternalSet`1.GetEnumerator()
+   в System.Data.Entity.Infrastructure.DbQuery`1.System.Collections.Generic.IEnumerable<TResult>.GetEnumerator()
+   в System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   в System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   в AstRostov.Controls.Navigation.CategoryTree.OnLoad(EventArgs e) в c:\AstRostov\AstRostov\Controls\Navigation\CategoryTree.cs:строка 27
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_default.aspx.cdcab7d2.rggc7y8b.0.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-06 17:53:32.0235|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-12 08:32:22.2255|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.Net.Mail.SmtpException: Сбой при отправке сообщения электронной почты. ---> System.Net.WebException: Невозможно соединиться с удаленным сервером ---> System.Net.Sockets.SocketException: Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение 81.176.226.34:25
+   в System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   в System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- Конец трассировки внутреннего стека исключений ---
+   в System.Net.ServicePoint.GetConnection(PooledStream PooledStream, Object owner, Boolean async, IPAddress& address, Socket& abortSocket, Socket& abortSocket6)
+   в System.Net.PooledStream.Activate(Object owningObject, Boolean async, GeneralAsyncDelegate asyncCallback)
+   в System.Net.PooledStream.Activate(Object owningObject, GeneralAsyncDelegate asyncCallback)
+   в System.Net.ConnectionPool.GetConnection(Object owningObject, GeneralAsyncDelegate asyncCallback, Int32 creationTimeout)
+   в System.Net.Mail.SmtpConnection.GetConnection(ServicePoint servicePoint)
+   в System.Net.Mail.SmtpTransport.GetConnection(ServicePoint servicePoint)
+   в System.Net.Mail.SmtpClient.GetConnection()
+   в System.Net.Mail.SmtpClient.Send(MailMessage message)
+   --- Конец трассировки внутреннего стека исключений ---
+   в System.Net.Mail.SmtpClient.Send(MailMessage message)
+   в AstCore.Helpers.AstMail.SendEmail(String toAddress, String body, Boolean isBodyHtml, String subject) в c:\AstRostov\AstCore\Helpers\AstMail.cs:строка 31
+   в AstRostov.Admin.MailTest.SendMail(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Admin\MailTest.aspx.cs:строка 15
+   в System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   в System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.admin_mailtest_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_el5gamje.7.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-12 08:32:22.2785|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-12 08:33:54.3785|FATAL|AstRostov.Global|System.InvalidOperationException: Не удалось удалить объект, поскольку он не найден в ObjectStateManager.
+   в System.Data.Objects.ObjectContext.DeleteObject(Object entity, EntitySet expectedEntitySet)
+   в System.Data.Objects.ObjectContext.DeleteObject(Object entity)
+   в System.Data.Entity.Internal.Linq.InternalSet`1.Remove(Object entity)
+   в System.Data.Entity.DbSet`1.Remove(TEntity entity)
+   в AstECommerce.ShoppingCartRepository.DisposeState() в c:\AstRostov\AstECommerce\ShoppingCartRepository.cs:строка 91
+   в AstRostov.Global.Session_End(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Global.asax.cs:строка 50
+2013-12-12 08:33:54.4775|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-12 08:34:26.2995|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.Net.Mail.SmtpException: Сбой при отправке сообщения электронной почты. ---> System.Net.WebException: Невозможно соединиться с удаленным сервером ---> System.Net.Sockets.SocketException: Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение 81.176.226.34:25
+   в System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   в System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- Конец трассировки внутреннего стека исключений ---
+   в System.Net.ServicePoint.GetConnection(PooledStream PooledStream, Object owner, Boolean async, IPAddress& address, Socket& abortSocket, Socket& abortSocket6)
+   в System.Net.PooledStream.Activate(Object owningObject, Boolean async, GeneralAsyncDelegate asyncCallback)
+   в System.Net.PooledStream.Activate(Object owningObject, GeneralAsyncDelegate asyncCallback)
+   в System.Net.ConnectionPool.GetConnection(Object owningObject, GeneralAsyncDelegate asyncCallback, Int32 creationTimeout)
+   в System.Net.Mail.SmtpConnection.GetConnection(ServicePoint servicePoint)
+   в System.Net.Mail.SmtpTransport.GetConnection(ServicePoint servicePoint)
+   в System.Net.Mail.SmtpClient.GetConnection()
+   в System.Net.Mail.SmtpClient.Send(MailMessage message)
+   --- Конец трассировки внутреннего стека исключений ---
+   в System.Net.Mail.SmtpClient.Send(MailMessage message)
+   в AstCore.Helpers.AstMail.SendEmail(String toAddress, String body, Boolean isBodyHtml, String subject) в c:\AstRostov\AstCore\Helpers\AstMail.cs:строка 32
+   в AstRostov.Admin.MailTest.SendMail(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Admin\MailTest.aspx.cs:строка 15
+   в System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   в System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.admin_mailtest_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_if3py3yh.8.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-12 08:34:26.3145|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-12 08:37:41.7335|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.Net.Mail.SmtpException: Сбой при отправке сообщения электронной почты. ---> System.Net.WebException: Невозможно соединиться с удаленным сервером ---> System.Net.Sockets.SocketException: Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение 81.176.226.34:25
+   в System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   в System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- Конец трассировки внутреннего стека исключений ---
+   в System.Net.ServicePoint.GetConnection(PooledStream PooledStream, Object owner, Boolean async, IPAddress& address, Socket& abortSocket, Socket& abortSocket6)
+   в System.Net.PooledStream.Activate(Object owningObject, Boolean async, GeneralAsyncDelegate asyncCallback)
+   в System.Net.PooledStream.Activate(Object owningObject, GeneralAsyncDelegate asyncCallback)
+   в System.Net.ConnectionPool.GetConnection(Object owningObject, GeneralAsyncDelegate asyncCallback, Int32 creationTimeout)
+   в System.Net.Mail.SmtpConnection.GetConnection(ServicePoint servicePoint)
+   в System.Net.Mail.SmtpTransport.GetConnection(ServicePoint servicePoint)
+   в System.Net.Mail.SmtpClient.GetConnection()
+   в System.Net.Mail.SmtpClient.Send(MailMessage message)
+   --- Конец трассировки внутреннего стека исключений ---
+   в System.Net.Mail.SmtpClient.Send(MailMessage message)
+   в AstCore.Helpers.AstMail.SendEmail(String toAddress, String body, Boolean isBodyHtml, String subject) в c:\AstRostov\AstCore\Helpers\AstMail.cs:строка 32
+   в AstRostov.Admin.MailTest.SendMail(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Admin\MailTest.aspx.cs:строка 15
+   в System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   в System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.admin_mailtest_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_0e5ay33b.7.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-12 08:37:41.7485|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-16 14:13:58.6085|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   в System.Data.Entity.Internal.InternalContext.SaveChanges()
+   в System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   в System.Data.Entity.DbContext.SaveChanges()
+   в AstRostov.Admin.EditCategory.SaveCategory(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Admin\EditCategory.aspx.cs:строка 158
+   в System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   в System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.admin_editcategory_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_lpic43wj.12.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-16 14:13:58.7185|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-16 14:14:25.9515|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   в System.Data.Entity.Internal.InternalContext.SaveChanges()
+   в System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   в System.Data.Entity.DbContext.SaveChanges()
+   в AstRostov.Admin.EditCategory.SaveCategory(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Admin\EditCategory.aspx.cs:строка 158
+   в System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   в System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   в System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.admin_editcategory_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_lpic43wj.12.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-16 14:14:25.9515|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-18 16:43:25.2758|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.DivideByZeroException: Попытка деления на нуль.
+   в AstRostov.DefaultPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Default.aspx.cs:строка 11
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_dcpwuxg2.7.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-18 16:43:25.4558|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-18 16:43:51.2018|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.DivideByZeroException: Попытка деления на нуль.
+   в AstRostov.DefaultPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Default.aspx.cs:строка 11
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_dcpwuxg2.7.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-18 16:43:51.2108|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-18 16:43:58.4448|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.DivideByZeroException: Попытка деления на нуль.
+   в AstRostov.DefaultPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Default.aspx.cs:строка 11
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_dcpwuxg2.7.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-18 16:43:58.4688|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-18 16:44:53.2218|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.DivideByZeroException: Попытка деления на нуль.
+   в AstRostov.DefaultPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Default.aspx.cs:строка 11
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_wfwqe31c.2.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-18 16:44:53.2218|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-18 16:45:14.5508|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.DivideByZeroException: Попытка деления на нуль.
+   в AstRostov.DefaultPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Default.aspx.cs:строка 11
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_wfwqe31c.2.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-18 16:45:14.5508|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-18 16:45:17.8688|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.DivideByZeroException: Попытка деления на нуль.
+   в AstRostov.DefaultPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Default.aspx.cs:строка 11
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_wfwqe31c.2.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-18 16:45:17.8688|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-18 16:45:21.0138|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.DivideByZeroException: Попытка деления на нуль.
+   в AstRostov.DefaultPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Default.aspx.cs:строка 11
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.default_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_wfwqe31c.2.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-18 16:45:21.0138|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-25 12:35:42.7141|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.NotSupportedException: Выражению LINQ to Entities не удается распознать метод "System.Linq.IQueryable`1[AstCore.Models.Brand] Distinct[Brand](System.Linq.IQueryable`1[AstCore.Models.Brand], System.Collections.Generic.IEqualityComparer`1[AstCore.Models.Brand])", поэтому его нельзя преобразовать в выражение хранилища.
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.DefaultTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SelectTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.Convert()
+   в System.Data.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   в System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   в System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+   в System.Data.Entity.Internal.Linq.InternalQuery`1.GetEnumerator()
+   в System.Data.Entity.Infrastructure.DbQuery`1.System.Collections.Generic.IEnumerable<TResult>.GetEnumerator()
+   в System.Linq.Enumerable.<ConcatIterator>d__71`1.MoveNext()
+   в System.Web.UI.WebControls.ListControl.PerformDataBinding(IEnumerable dataSource)
+   в System.Web.UI.WebControls.ListControl.OnDataBinding(EventArgs e)
+   в System.Web.UI.WebControls.ListControl.PerformSelect()
+   в System.Web.UI.WebControls.BaseDataBoundControl.DataBind()
+   в AstRostov.CategoryPage.BindBrands() в c:\AstRostov\AstRostov\Category.aspx.cs:строка 122
+   в AstRostov.CategoryPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Category.aspx.cs:строка 54
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.category_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_ev4l3nm4.3.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-25 12:35:42.8452|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-25 12:38:12.0341|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.NotSupportedException: Выражению LINQ to Entities не удается распознать метод "System.Linq.IQueryable`1[AstCore.Models.Brand] Distinct[Brand](System.Linq.IQueryable`1[AstCore.Models.Brand], System.Collections.Generic.IEqualityComparer`1[AstCore.Models.Brand])", поэтому его нельзя преобразовать в выражение хранилища.
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.DefaultTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SelectTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   в System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   в System.Data.Objects.ELinq.ExpressionConverter.Convert()
+   в System.Data.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   в System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   в System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+   в System.Data.Entity.Internal.Linq.InternalQuery`1.GetEnumerator()
+   в System.Data.Entity.Infrastructure.DbQuery`1.System.Collections.Generic.IEnumerable<TResult>.GetEnumerator()
+   в System.Linq.Enumerable.<ConcatIterator>d__71`1.MoveNext()
+   в System.Web.UI.WebControls.ListControl.PerformDataBinding(IEnumerable dataSource)
+   в System.Web.UI.WebControls.ListControl.OnDataBinding(EventArgs e)
+   в System.Web.UI.WebControls.ListControl.PerformSelect()
+   в System.Web.UI.WebControls.BaseDataBoundControl.DataBind()
+   в AstRostov.CategoryPage.BindBrands() в c:\AstRostov\AstRostov\Category.aspx.cs:строка 122
+   в AstRostov.CategoryPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Category.aspx.cs:строка 54
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.category_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_ev4l3nm4.3.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-25 12:38:12.0761|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-25 12:57:50.5315|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.InvalidOperationException: Последовательность не содержит элементов
+   в System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   в System.Data.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__3[TResult](IEnumerable`1 sequence)
+   в System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   в System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   в System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   в System.Linq.Queryable.Single[TSource](IQueryable`1 source, Expression`1 predicate)
+   в AstRostov.CategoryPage.BindBrands() в c:\AstRostov\AstRostov\Category.aspx.cs:строка 110
+   в AstRostov.CategoryPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Category.aspx.cs:строка 54
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.category_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_lnz5ecop.0.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-25 12:57:50.5745|ERROR|AstRostov.Global|This is an error with an Exception
+2013-12-25 13:00:38.4155|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.InvalidOperationException: Последовательность не содержит элементов
+   в System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   в System.Data.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__3[TResult](IEnumerable`1 sequence)
+   в System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   в System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   в System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   в System.Linq.Queryable.Single[TSource](IQueryable`1 source, Expression`1 predicate)
+   в AstRostov.CategoryPage.BindBrands() в c:\AstRostov\AstRostov\Category.aspx.cs:строка 110
+   в AstRostov.CategoryPage.Page_Load(Object sender, EventArgs e) в c:\AstRostov\AstRostov\Category.aspx.cs:строка 54
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.category_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\2977f254\3dee703\App_Web_lnz5ecop.0.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2013-12-25 13:00:38.4275|ERROR|AstRostov.Global|This is an error with an Exception

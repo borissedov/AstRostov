@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstRostov", "AstRostov\AstRostov.csproj", "{339527BC-E1CA-48FE-BE70-13AA8AFD4143}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentication\Authentication.csproj", "{6030D5F1-314D-4B1C-90F9-C741B41C727A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F50E254F-B13B-408C-83E9-458E6E07DB23}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstCore", "AstCore\AstCore.csproj", "{2AA632C4-631D-4DDE-B035-4F5BC6F46F18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstECommerce", "AstECommerce\AstECommerce.csproj", "{AD7BB898-575A-4A08-A551-86EAC6486F91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Robokassa", "Robokassa\Robokassa.csproj", "{84428A93-9DA8-4F24-838C-FB7A48FED067}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{339527BC-E1CA-48FE-BE70-13AA8AFD4143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{339527BC-E1CA-48FE-BE70-13AA8AFD4143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{339527BC-E1CA-48FE-BE70-13AA8AFD4143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{339527BC-E1CA-48FE-BE70-13AA8AFD4143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6030D5F1-314D-4B1C-90F9-C741B41C727A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6030D5F1-314D-4B1C-90F9-C741B41C727A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6030D5F1-314D-4B1C-90F9-C741B41C727A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6030D5F1-314D-4B1C-90F9-C741B41C727A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AA632C4-631D-4DDE-B035-4F5BC6F46F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AA632C4-631D-4DDE-B035-4F5BC6F46F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AA632C4-631D-4DDE-B035-4F5BC6F46F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AA632C4-631D-4DDE-B035-4F5BC6F46F18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD7BB898-575A-4A08-A551-86EAC6486F91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD7BB898-575A-4A08-A551-86EAC6486F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD7BB898-575A-4A08-A551-86EAC6486F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD7BB898-575A-4A08-A551-86EAC6486F91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84428A93-9DA8-4F24-838C-FB7A48FED067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84428A93-9DA8-4F24-838C-FB7A48FED067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84428A93-9DA8-4F24-838C-FB7A48FED067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84428A93-9DA8-4F24-838C-FB7A48FED067}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

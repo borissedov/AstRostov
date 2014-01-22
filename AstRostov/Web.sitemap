@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="." title="ast-rostov"  description="">
+    <siteMapNode url="~/Default.aspx" title="Главная"  description="" />
+    <siteMapNode url="~/MyBlog.aspx#main" title="Бортжурналы"  description="">
+      <siteMapNode url="~/PostArchive.aspx" title="Все записи"  description=""></siteMapNode>
+      <siteMapNode url="~/MyBlog.aspx" title="Мой бортжурнал"  description=""></siteMapNode>
+    </siteMapNode>
+    <!--<siteMapNode url="~/About.aspx" title="О нас"  description="" />-->
+    <siteMapNode url="~/Contact.aspx" title="Контакты"  description="" />
+    <siteMapNode title="Администрирование" url="~/Admin/"  description="" roles="Administrator" >
+      <siteMapNode url="~/Admin/NewsList.aspx" title="Новости"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/NewsCommentList" title="Комментарии к новостям"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/MainSliderItemList.aspx" title="Главный слайдер"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/CategoryList.aspx" title="Категории"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/ProductList.aspx" title="Продукты"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/BrandList.aspx" title="Производители"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/OrderList.aspx" title="Заказы"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/PreorderList.aspx" title="Предзаказы"  description="" roles="Administrator" />
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

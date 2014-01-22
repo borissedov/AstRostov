@@ -1,0 +1,26 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Catalog.master.cs" Inherits="AstRostov.Catalog" %>
+<%--<%@Register  Src="~/Controls/Navigation/Search.ascx" TagPrefix="uc" TagName="Search" %>--%>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <div class="span3">
+        <div class="category-dropdown clearfix">
+            <ucn:BootstrapCategoryTree runat="server" ID="ucCategoryTree" ></ucn:BootstrapCategoryTree>
+        </div>
+    </div>
+    <div class="span9">
+        <%--<div class="row-fluid">
+            <div class="span12">
+                <uc:Search runat="server" ID="uxSearch" />
+            </div>
+        </div>--%>
+        <%-- <ul class="breadcrumb">
+                            <li><a href="http://bootsnipp.com/">Home</a><span class="divider">/</span></li>
+                            <li><a href="http://bootsnipp.com/snipps">Snipps</a><span class="divider">/</span></li>
+                            <li class="active">Simple Blog layout example</li>
+                        </ul>--%>
+        <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+    </div>
+</asp:Content>
