@@ -143,7 +143,7 @@ namespace AstCore.Models
         }
 
         [NotMapped]
-        public int Inventory
+        public int TotalInventory
         {
             get
             {
