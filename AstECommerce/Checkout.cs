@@ -64,11 +64,14 @@ namespace AstECommerce
                 {
                     Order.OrderLineItems.Add(new OrderLineItem
                     {
-                        ProductId = shoppingCartItem.ProductId,
-                        RetailPrice = shoppingCartItem.Product.RetailPrice,
-                        SalePrice = shoppingCartItem.Product.FinalPrice,
-                        ProductName = shoppingCartItem.Product.Name,
-                        Count = shoppingCartItem.Count
+                        ProductId = shoppingCartItem.Sku.ProductId,
+                        SkuId = shoppingCartItem.Sku.SkuId,
+                        RetailPrice = shoppingCartItem.Sku.RetailPrice ?? shoppingCartItem.Sku.Product.RetailPrice,
+                        SalePrice = shoppingCartItem.Sku.FinalPrice,
+                        ProductName = shoppingCartItem.Sku.Product.Name,
+                        Count = shoppingCartItem.Count,
+                        AttributeConfig = shoppingCartItem.Sku.AttributeConfig,
+                        ProductNum = shoppingCartItem.Sku.Product.ProductNum
                     });
                 }
                 Order.Account = AstMembership.CurrentUser;
@@ -135,8 +138,8 @@ namespace AstECommerce
             bool checkInventory = true;
             foreach (var item in Order.OrderLineItems)
             {
-                var product = CoreData.Context.Products.Single(p => p.ProductId == item.ProductId);
-                checkInventory &= product.Inventory >= item.Count;
+                var sku = CoreData.Context.Skus.Single(p => p.SkuId == item.SkuId);
+                checkInventory &= sku.Inventory >= item.Count;
             }
 
             if (!checkInventory)
@@ -148,8 +151,8 @@ namespace AstECommerce
 
             foreach (var item in Order.OrderLineItems)
             {
-                var product = CoreData.Context.Products.Single(p => p.ProductId == item.ProductId);
-                product.SelectedSku.Inventory -= item.Count;
+                var sku = CoreData.Context.Skus.Single(p => p.SkuId == item.SkuId);
+                sku.Inventory -= item.Count;
             }
 
             Order.OrderState = OrderState.Pending;

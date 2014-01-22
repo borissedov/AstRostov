@@ -12,28 +12,28 @@ namespace AstECommerce
             get { return ShoppingCartInstance.ShoppingCartItems; }
         }
 
-        public static bool AddToCart(int productId, int count = 1)
+        public static bool AddToCart(int skuId, int count = 1)
         {
             if (CoreData.Context != null)
             {
-                Product product = CoreData.Context.Products.SingleOrDefault(p => p.ProductId == productId);
-                return AddToCart(product, count);
+                Sku sku = CoreData.Context.Skus.SingleOrDefault(s => s.SkuId == skuId);
+                return AddToCart(sku, count);
             }
             else
             {
                 using (var context = new AstEntities())
                 {
-                    Product product = context.Products.SingleOrDefault(p => p.ProductId == productId);
-                    bool res = AddToCart(product, count);
+                    Sku sku = context.Skus.SingleOrDefault(s => s.SkuId == skuId);
+                    bool res = AddToCart(sku, count);
                     context.SaveChanges();
                     return res;
                 }
             }
         }
 
-        public static bool AddToCart(Product product, int count = 1)
+        public static bool AddToCart(Sku sku, int count = 1)
         {
-            var cartItem = ShoppingCartItems.SingleOrDefault(ci => ci.ProductId == product.ProductId);
+            var cartItem = ShoppingCartItems.SingleOrDefault(ci => ci.SkuId == sku.SkuId);
             //Product exists in ShoppingCart
             if (cartItem != null)
             {
@@ -49,7 +49,7 @@ namespace AstECommerce
             //Creating new ShoppingCartItem
             cartItem = new ShoppingCartItem
                 {
-                    Product = product,
+                    Sku = sku,
                     Count = count
                 };
 
@@ -143,15 +143,15 @@ namespace AstECommerce
             }
             AvailabilityCheck = res;
 
-            Total = ShoppingCartItems.Sum(i => i.Count * i.Product.FinalPrice);
-            TotalWithoutDiscount = ShoppingCartItems.Sum(i => i.Count * i.Product.RetailPrice);
-            Discount = ShoppingCartItems.Sum(i => i.Count * (i.Product.RetailPrice - i.Product.FinalPrice));
+            Total = ShoppingCartItems.Sum(i => i.Count * i.Sku.FinalPrice);
+            TotalWithoutDiscount = ShoppingCartItems.Sum(i => i.Count * i.Sku.RetailPrice ?? i.Sku.Product.RetailPrice);
+            Discount = ShoppingCartItems.Sum(i => i.Count * (i.Sku.RetailPrice ?? i.Sku.Product.RetailPrice - i.Sku.FinalPrice));
             SaveState();
         }
 
-        public static void UpdateQuantity(int productId, int count)
+        public static void UpdateQuantity(int skuId, int count)
         {
-            var item = ShoppingCartItems.SingleOrDefault(i => i.ProductId == productId);
+            var item = ShoppingCartItems.SingleOrDefault(i => i.SkuId == skuId);
             if (item != null)
             {
                 item.Count = count;
@@ -159,9 +159,9 @@ namespace AstECommerce
             SaveState();
         }
 
-        public static void RemoveItem(int productId)
+        public static void RemoveItem(int skuId)
         {
-            var item = ShoppingCartItems.SingleOrDefault(i => i.ProductId == productId);
+            var item = ShoppingCartItems.SingleOrDefault(i => i.SkuId == skuId);
             if (item != null)
             {
                 ShoppingCartItems.Remove(item);

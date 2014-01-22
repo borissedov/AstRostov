@@ -13,5 +13,10 @@ namespace AstRostov
         {
 
         }
+
+        protected void ClearSession(object sender, EventArgs e)
+        {
+            Session.Abandon();
+        }
     }
 }

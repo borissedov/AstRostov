@@ -109,7 +109,7 @@
                                                             <li><a href='<%=ResolveUrl("~/Account/Manage.aspx") %>'>Управление аккаунтом</a></li>
                                                             <li><a href='<%=ResolveUrl("~/Account/OrderList.aspx") %>'>Список заказов</a></li>
                                                         </ul>
-                                                        <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutAction="Redirect" LogoutText="Выйти" LogoutPageUrl="~/" CssClass="navbar-link" />
+                                                        <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutAction="Redirect" LogoutText="Выйти" LogoutPageUrl="~/" CssClass="navbar-link" OnLoggedOut="ClearSession" />
                                                     </li>
                                                 </ul>
                                             </LoggedInTemplate>
