@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using AstECommerce;
 
@@ -27,12 +24,12 @@ namespace AstRostov
             {
                 btnChechout.Visible = false;
 
-                var item = ShoppingCart.ShoppingCartItems.FirstOrDefault(i => i.Count > i.Product.Inventory);
+                var item = ShoppingCart.ShoppingCartItems.FirstOrDefault(i => i.Count > i.Sku.Inventory);
                 if (item != null)
                 {
                     litProductNotAvailableName.Text = item.Product.Name;
                     hlPreorder.NavigateUrl =
-                        ResolveUrl(String.Format("~/Preorder.aspx?id={0}&count={1}", item.Product.ProductId, item.Count));
+                        ResolveUrl(String.Format("~/Preorder.aspx?id={0}&count={1}", item.SkuId, item.Count));
 
                     spanNotAvailable.Visible = true;
                 }
@@ -66,10 +63,10 @@ namespace AstRostov
         protected void RemoveItem(object sender, EventArgs e)
         {
             var linkbutton = sender as LinkButton;
-            int productId;
-            if (linkbutton != null && int.TryParse(linkbutton.Attributes["ItemId"], out productId) && productId > 0)
+            int skuId;
+            if (linkbutton != null && int.TryParse(linkbutton.Attributes["ItemId"], out skuId) && skuId > 0)
             {
-                ShoppingCart.RemoveItem(productId);
+                ShoppingCart.RemoveItem(skuId);
                 BindCartItemsGrid();
                 BindTotals();
             }
@@ -80,11 +77,11 @@ namespace AstRostov
             var textbox = sender as TextBox;
             if (textbox != null)
             {
-                int productId;
+                int skuId;
                 int count;
-                if (int.TryParse(textbox.Attributes["ItemId"], out productId) && productId > 0 && int.TryParse(textbox.Text, out count) && count > 0)
+                if (int.TryParse(textbox.Attributes["ItemId"], out skuId) && skuId > 0 && int.TryParse(textbox.Text, out count) && count > 0)
                 {
-                    ShoppingCart.UpdateQuantity(productId, count);
+                    ShoppingCart.UpdateQuantity(skuId, count);
                     BindCartItemsGrid();
                     BindTotals();
                 }

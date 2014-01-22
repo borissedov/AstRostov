@@ -48,8 +48,14 @@
         <div class="control-group">
             <span class="control-label">Название Продукта</span>
             <div class="controls">
-                <asp:HiddenField runat="server" ID="hdnProductId" />
+                <asp:HiddenField runat="server" ID="hdnSkuId" />
                 <asp:TextBox runat="server" ID="tbProductName" Enabled="False"></asp:TextBox>
+            </div>
+        </div>
+        <div class="control-group">
+            <span class="control-label">Конфигурация Атрибутов</span>
+            <div class="controls">
+                <asp:TextBox runat="server" ID="tbAttributesConfig" Enabled="False"></asp:TextBox>
             </div>
         </div>
         <div class="control-group">

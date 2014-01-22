@@ -21,9 +21,14 @@
             <asp:BoundField HeaderText="Телефон" DataField="Phone" />
             <asp:TemplateField HeaderText="Продукт">
                 <ItemTemplate>
-                    <a href='<%#ResolveUrl(String.Format("~/Product.aspx?id={0}", Eval("ProductId"))) %>'>
-                        <%# Eval("ProductName") %>
+                    <a href='<%#ResolveUrl(String.Format("~/Product.aspx?id={0}", GetProductIdBySkuId((int)Eval("SkuId")))) %>'>
+                        <%# GetProductNameBySkuId((int)Eval("SkuId")) %>
                     </a>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Конфигурация">
+                <ItemTemplate>
+                    <%# GetAttributeConfigBySkuId((int)Eval("SkuId")) %>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:BoundField HeaderText="Количество" DataField="Count" />

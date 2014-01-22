@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AstCore.DataAccess;
+using AstCore.Exceptions;
 using AstCore.Models;
 using AstCore.SearchEngine;
 using AstECommerce;
@@ -140,14 +141,20 @@ namespace AstRostov
             int productId;
             if (int.TryParse(e.CommandArgument.ToString(), out productId) && productId > 0 && !String.IsNullOrEmpty(e.CommandName))
             {
+                var product = CoreData.Context.Products.SingleOrDefault(p => p.ProductId == productId);
+                if (product == null)
+                {
+                    throw new CatalogException("Product not found");
+                }
+
                 if (e.CommandName == "AddToCart")
                 {
-                    ShoppingCart.AddToCart(productId);
+                    ShoppingCart.AddToCart(product.DefaultSku);
                     Response.Redirect("~/ShoppingCart.aspx");
                 }
                 else if (e.CommandName == "Reserve")
                 {
-                    Response.Redirect(String.Format("~/Preorder.aspx?id={0}", productId));
+                    Response.Redirect(String.Format("~/Preorder.aspx?id={0}", product.DefaultSku.SkuId));
                 }
             }
         }

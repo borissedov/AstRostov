@@ -49,13 +49,13 @@ namespace AstRostov {
         protected global::System.Web.UI.WebControls.TextBox tbPhone;
         
         /// <summary>
-        /// hdnProductId control.
+        /// hdnSkuId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnProductId;
+        protected global::System.Web.UI.WebControls.HiddenField hdnSkuId;
         
         /// <summary>
         /// tbProductName control.
@@ -65,6 +65,15 @@ namespace AstRostov {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbProductName;
+        
+        /// <summary>
+        /// tbAttributesConfig control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbAttributesConfig;
         
         /// <summary>
         /// tbCount control.

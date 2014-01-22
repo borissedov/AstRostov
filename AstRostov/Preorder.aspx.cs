@@ -11,20 +11,20 @@ namespace AstRostov
 {
     public partial class PreorderPage : System.Web.UI.Page
     {
-        private Product _product;
+        private Sku _sku;
 
-        private int ProductId
+        private int SkuId
         {
             get
             {
                 int id;
-                if (hdnProductId.Value != null && int.TryParse(hdnProductId.Value, out id))
+                if (hdnSkuId.Value != null && int.TryParse(hdnSkuId.Value, out id))
                 {
                     return id;
                 }
                 return 0;
             }
-            set { hdnProductId.Value = value.ToString(CultureInfo.InvariantCulture); }
+            set { hdnSkuId.Value = value.ToString(CultureInfo.InvariantCulture); }
         }
 
         protected void Page_Init(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace AstRostov
             int id;
             if (int.TryParse(Request.Params["id"], out id))
             {
-                ProductId = id;
+                SkuId = id;
             }
 
             int count;
@@ -52,8 +52,8 @@ namespace AstRostov
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            _product = CoreData.Context.Products.SingleOrDefault(p => p.ProductId == ProductId);
-            if (_product == null)
+            _sku = CoreData.Context.Skus.SingleOrDefault(p => p.SkuId == SkuId);
+            if (_sku == null)
             {
                 Response.Redirect("Default.aspx");
                 return;
@@ -61,7 +61,8 @@ namespace AstRostov
 
             if (!Page.IsPostBack)
             {
-                tbProductName.Text = _product.Name;
+                tbProductName.Text = _sku.Product.Name;
+                tbAttributesConfig.Text = _sku.AttributeConfig;
             }
         }
 
@@ -77,14 +78,16 @@ namespace AstRostov
             {
                 var preorder = new Preorder
                 {
-                    ProductId = _product.ProductId,
-                    ProductName = _product.Name,
-                    EstimatedPrice = _product.FinalPrice,
+                    SkuId = _sku.ProductId,
+                    ProductName = _sku.Product.Name,
+                    EstimatedPrice = _sku.FinalPrice,
+                    AttributeConfig = _sku.AttributeConfig,
                     Count = count,
                     CustomerName = tbCustomer.Text,
                     Phone = tbPhone.Text,
                     CustomerEmail = tbEmail.Text,
                     Comment = tbComment.Text,
+                    ProductNum = _sku.Product.ProductNum,
                     Date = DateTime.Now,
                     State = PreorderState.Pending
                 };

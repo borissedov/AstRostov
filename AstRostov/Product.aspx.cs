@@ -77,7 +77,7 @@ namespace AstRostov
 
         private void BindAvailability()
         {
-            if (Product.Inventory > 0)
+            if (Product.TotalInventory > 0)
             {
                 pnlAddToCart.Visible = true;
                 btnReserveProduct.Visible = false;
@@ -100,14 +100,14 @@ namespace AstRostov
             int count;
             if (int.TryParse(tbProductAddCount.Text, out count) && count > 0 && ItemId > 0)
             {
-                ShoppingCart.AddToCart(ItemId, count);
+                ShoppingCart.AddToCart(Product.DefaultSku, count);//TODO
                 Response.Redirect("~/ShoppingCart.aspx");
             }
         }
 
         protected void ReserveProduct(object sender, EventArgs e)
         {
-            Response.Redirect(String.Format("~/Preorder.aspx?id={0}&count={1}", ItemId, tbProductAddCount.Text));
+            Response.Redirect(String.Format("~/Preorder.aspx?id={0}&count={1}", Product.DefaultSku.SkuId, tbProductAddCount.Text));
         }
 
         protected void CheckInventory(object sender, EventArgs e)
@@ -115,9 +115,9 @@ namespace AstRostov
             int count;
             if (int.TryParse(tbProductAddCount.Text, out count))
             {
-                var cartItem = ShoppingCart.ShoppingCartItems.SingleOrDefault(i => i.ProductId == ItemId);
+                var cartItem = ShoppingCart.ShoppingCartItems.SingleOrDefault(i => i.SkuId == Product.DefaultSku.SkuId);//TODO
                 var countsInCart = cartItem != null ? cartItem.Count : 0;
-                if (count > Product.Inventory + countsInCart)
+                if (count > Product.DefaultSku.Inventory + countsInCart)//TODO
                 {
                     btnAddToCart.Visible = false;
                     btnReserveProduct.Visible = true;

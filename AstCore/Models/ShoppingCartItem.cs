@@ -43,5 +43,20 @@ namespace AstCore.Models
                 return Sku.FinalPrice * Count;
             }
         }
+
+        [NotMapped]
+        public Product Product
+        {
+            get
+            {
+                return Sku.Product;
+            }
+        }
+
+        [NotMapped]
+        public int ProductId
+        {
+            get { return Product.ProductId; }
+        }
     }
 }

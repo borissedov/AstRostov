@@ -48,5 +48,23 @@ namespace AstRostov.Admin
                     break;
             }
         }
+
+        protected int GetProductIdBySkuId(int skuId)
+        {
+            var sku = CoreData.Context.Skus.SingleOrDefault(s => s.SkuId == skuId);
+            return sku == null ? 0 : sku.ProductId;
+        }
+
+        protected string GetProductNameBySkuId(int skuId)
+        {
+            var sku = CoreData.Context.Skus.SingleOrDefault(s => s.SkuId == skuId);
+            return sku == null ? "Продукт был удален" : sku.Product.Name;
+        }
+
+        protected string GetAttributeConfigBySkuId(int skuId)
+        {
+            var sku = CoreData.Context.Skus.SingleOrDefault(s => s.SkuId == skuId);
+            return sku == null ? "Продукт был удален" : sku.AttributeConfig;
+        }
     }
 }

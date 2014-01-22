@@ -43,7 +43,7 @@
                         <Columns>
                             <asp:TemplateField HeaderText="">
                                 <ItemTemplate>
-                                    <asp:LinkButton runat="server" OnClick="RemoveItem" ItemId='<%#Eval("ProductId") %>'><i class="icon-white icon-remove"></i></asp:LinkButton>
+                                    <asp:LinkButton runat="server" OnClick="RemoveItem" ItemId='<%#Eval("SkuId") %>'><i class="icon-white icon-remove"></i></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Изображение">
@@ -62,12 +62,12 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Цена">
                                 <ItemTemplate>
-                                    <%# (((Product)Eval("Product")).FinalPrice).ToString("c") %>
+                                    <%# (((Sku)Eval("Sku")).FinalPrice).ToString("c") %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Количество">
                                 <ItemTemplate>
-                                    <asp:TextBox runat="server" ID="tbQuantity" TextMode="Number" CssClass="product-qty" Width="37" Text='<%#Eval("Count") %>' OnTextChanged="ItemQuantityChange" ItemId='<%#Eval("ProductId") %>' AutoPostBack="True"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbQuantity" TextMode="Number" CssClass="product-qty" Width="37" Text='<%#Eval("Count") %>' OnTextChanged="ItemQuantityChange" ItemId='<%#Eval("SkuId") %>' AutoPostBack="True"></asp:TextBox>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Подитог">
