@@ -15,10 +15,10 @@ namespace AstCore.Models
 
         public int Count { get; set; }
 
-        public int ProductId { get; set; }
+        public int SkuId { get; set; }
 
-        [ForeignKey("ProductId")]
-        public virtual Product Product { get; set; }
+        [ForeignKey("SkuId")]
+        public virtual Sku Sku { get; set; }
 
         [ForeignKey("ShoppingCartEntity")]
         public Guid ShoppingCartEntityId;
@@ -32,7 +32,7 @@ namespace AstCore.Models
 
         public bool CheckInventory(int count)
         {
-            return Product.Inventory >= count && count <= 10;
+            return Sku.Inventory >= count && count <= 10;
         }
 
         [NotMapped]
@@ -40,7 +40,7 @@ namespace AstCore.Models
         {
             get
             {
-                return Product.FinalPrice * Count;
+                return Sku.FinalPrice * Count;
             }
         }
     }

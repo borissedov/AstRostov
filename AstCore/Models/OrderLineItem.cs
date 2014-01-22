@@ -19,10 +19,18 @@ namespace AstCore.Models
         public string ProductName { get; set; }
 
         [Required]
+        public int SkuId { get; set; }
+        
+        public string ProductNum { get; set; }
+
+        [Required]
         public Decimal RetailPrice { get; set; }
 
         [Required]
         public Decimal SalePrice { get; set; }
+
+        [Required]
+        public string AttributeConfig { get; set; }
 
         public virtual Order Order { get; set; }
 

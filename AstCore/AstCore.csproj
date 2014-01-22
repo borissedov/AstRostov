@@ -56,6 +56,7 @@
     <Compile Include="CommonControls\RichTextBox.cs" />
     <Compile Include="DataAccess\CoreData.cs" />
     <Compile Include="DataAccess\AstEntities.cs" />
+    <Compile Include="Exceptions\CatalogException.cs" />
     <Compile Include="Helpers\AstImage.cs" />
     <Compile Include="Helpers\AstMail.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
@@ -107,6 +108,14 @@
     <Compile Include="Migrations\201401221217094_SkuInventoryImplement.cs" />
     <Compile Include="Migrations\201401221217094_SkuInventoryImplement.Designer.cs">
       <DependentUpon>201401221217094_SkuInventoryImplement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401221843126_SkuImplement.cs" />
+    <Compile Include="Migrations\201401221843126_SkuImplement.Designer.cs">
+      <DependentUpon>201401221843126_SkuImplement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401221847028_PreOrderSkuFix.cs" />
+    <Compile Include="Migrations\201401221847028_PreOrderSkuFix.Designer.cs">
+      <DependentUpon>201401221847028_PreOrderSkuFix.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
@@ -191,6 +200,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401221217094_SkuInventoryImplement.resx">
       <DependentUpon>201401221217094_SkuInventoryImplement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401221843126_SkuImplement.resx">
+      <DependentUpon>201401221843126_SkuImplement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401221847028_PreOrderSkuFix.resx">
+      <DependentUpon>201401221847028_PreOrderSkuFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

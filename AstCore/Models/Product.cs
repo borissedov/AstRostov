@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using AstCore.Exceptions;
 using HtmlAgilityPack;
 
 namespace AstCore.Models
@@ -44,8 +45,6 @@ namespace AstCore.Models
         [Required]
         public bool IsFeatured { get; set; }
 
-        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
-
         [NotMapped]
         public ProductImage MainImage
         {
@@ -73,16 +72,7 @@ namespace AstCore.Models
         }
 
         public virtual ICollection<Sku> SkuCollection { get; set; }
-
-        [NotMapped]
-        public Decimal FinalPrice
-        {
-            get
-            {
-                return SalePrice.HasValue ? SalePrice.Value : RetailPrice;
-            }
-        }
-
+        
         [NotMapped]
         public string ShortDescription
         {
@@ -131,13 +121,35 @@ namespace AstCore.Models
         {
             get
             {
-                if (FinalPrice < RetailPrice)
+                decimal minPrice;
+                decimal minSkuPrice = SkuCollection.Min(s => s.FinalPrice);
+                if (SalePrice.HasValue && SalePrice < minSkuPrice)
+                {
+                    minPrice = SalePrice.Value;
+                }
+                else
+                {
+                    minPrice = minSkuPrice;
+                }
+
+                decimal maxPrice;
+                if (SkuCollection.Any(s => s.RetailPrice.HasValue))
+                {
+                    decimal maxSkuPrice = SkuCollection.Where(s => s.RetailPrice.HasValue).Max(s => s.RetailPrice.Value);
+                    maxPrice = maxSkuPrice > RetailPrice ? maxSkuPrice : RetailPrice;
+                }
+                else
+                {
+                    maxPrice = RetailPrice;
+                }
+
+                if (minPrice < maxPrice)
                 {
                     return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", RetailPrice, SalePrice.Value);
                 }
                 else
                 {
-                    return String.Format(@"<span class=""price-new"">{0:c}</span>", RetailPrice);
+                    return String.Format(@"<span class=""price-new"">{0:c}</span>", maxPrice);
                 }
             }
         }
@@ -157,14 +169,36 @@ namespace AstCore.Models
         }
 
         [NotMapped]
-        public Sku SelectedSku { get; set; }
+        private Sku _selectedSku;
+
+        [NotMapped]
+        public Sku SelectedSku
+        {
+            get
+            {
+                if (_selectedSku == null)
+                {
+                    _selectedSku = DefaultSku;
+                }
+                return _selectedSku;
+            }
+            set
+            {
+                _selectedSku = value;
+            }
+        }
 
         [NotMapped]
         public Sku DefaultSku
         {
             get
             {
-                return SkuCollection.SingleOrDefault(s => s.IsDefault);
+                var defSku = SkuCollection.SingleOrDefault(s => s.IsDefault);
+                if (defSku == null)
+                {
+                    throw new CatalogException("Cannot define default sku for product");
+                }
+                return defSku;
             }
         }
     }

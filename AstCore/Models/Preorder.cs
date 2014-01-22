@@ -9,12 +9,17 @@ namespace AstCore.Models
     {
         [Key]
         public long PreorderId { get; set; }
-
-        [Required]
-        public int ProductId { get; set; }
-
+        
         [Required]
         public string ProductName { get; set; }
+
+        [Required]
+        public int SkuId { get; set; }
+
+        public string ProductNum { get; set; }
+        
+        [Required]
+        public string AttributeConfig { get; set; }
         
         [Required]
         public Decimal EstimatedPrice { get; set; }

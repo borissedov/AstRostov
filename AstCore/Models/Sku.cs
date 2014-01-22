@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AstCore.Models
 {
@@ -27,5 +25,30 @@ namespace AstCore.Models
         public Decimal? SalePrice { get; set; }
 
         public int Inventory { get; set; }
+
+        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+
+        [NotMapped]
+        public string AttributeConfig
+        {
+            get
+            {
+                if(AttributeValues.Any())
+                {
+                    return String.Join(", ",
+                                   AttributeValues.Select(v => String.Format("{0}: {1}", v.Attribute.Name, v.Value)));
+                }
+                return String.Empty;
+            }
+        }
+
+        [NotMapped]
+        public Decimal FinalPrice
+        {
+            get
+            {
+                return SalePrice ?? RetailPrice ?? Product.SalePrice ?? Product.RetailPrice;
+            }
+        }
     }
 }
