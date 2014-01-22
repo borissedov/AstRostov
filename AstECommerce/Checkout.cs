@@ -149,7 +149,7 @@ namespace AstECommerce
             foreach (var item in Order.OrderLineItems)
             {
                 var product = CoreData.Context.Products.Single(p => p.ProductId == item.ProductId);
-                product.Inventory -= item.Count;
+                product.SelectedSku.Inventory -= item.Count;
             }
 
             Order.OrderState = OrderState.Pending;
