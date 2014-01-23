@@ -103,15 +103,6 @@ namespace AstRostov.Admin {
         protected global::System.Web.UI.WebControls.TextBox tbSalePrice;
         
         /// <summary>
-        /// tbInventory control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbInventory;
-        
-        /// <summary>
         /// ddlCategories control.
         /// </summary>
         /// <remarks>

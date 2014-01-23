@@ -137,10 +137,10 @@ namespace AstRostov.Admin
 
             foreach (var lineItem in Order.OrderLineItems)
             {
-                var product = CoreData.Context.Products.SingleOrDefault(p => p.ProductId == lineItem.ProductId);
-                if (product != null)
+                var sku = CoreData.Context.Skus.SingleOrDefault(s => s.SkuId == lineItem.SkuId);
+                if (sku != null)
                 {
-                    product.Inventory += lineItem.Count;
+                    sku.Inventory += lineItem.Count;
                 }
             }
 

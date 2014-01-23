@@ -14,6 +14,7 @@
             <table class="table table-bordered">
                 <thead>
                     <td>Наименование</td>
+                    <td>Конфигурация</td>
                     <td>Цена за единицу</td>
                     <td>Количество</td>
                     <td>Итог по позиции</td>
@@ -23,6 +24,7 @@
         <ItemTemplate>
             <tr>
                 <td><%#Eval("ProductName") %></td>
+                <td><%#Eval("AttributeConfig") %></td>
                 <td><%#Eval("SalePrice", "{0:c}") %></td>
                 <td><%#Eval("Count") %></td>
                 <td><%#Eval("Subtotal", "{0:c}") %></td>
@@ -30,23 +32,23 @@
         </ItemTemplate>
         <FooterTemplate>
             <tr>
-                <td colspan="3">Итог по позициям</td>
+                <td colspan="4">Итог по позициям</td>
                 <td>
                     <asp:Literal runat="server" ID="litSubtotal"></asp:Literal></td>
             </tr>
             <tr>
-                <td colspan="3">Доставка (<asp:Literal runat="server" ID="litShippingName"></asp:Literal>)</td>
+                <td colspan="4">Доставка (<asp:Literal runat="server" ID="litShippingName"></asp:Literal>)</td>
                 <td>
                     <asp:Literal runat="server" ID="litShippingPrice"></asp:Literal></td>
             </tr>
             <tr>
-                <td colspan="3">Комиссия</td>
+                <td colspan="4">Комиссия</td>
                 <td>
                     <asp:Literal runat="server" ID="litCommission"></asp:Literal></td>
             </tr>
             </tbody>
                         <footer>
-                            <td colspan="3"><strong>Итого</strong></td>
+                            <td colspan="4"><strong>Итого</strong></td>
                             <td><strong>
                                 <asp:Literal runat="server" ID="litTotal"></asp:Literal></strong></td>
                         </footer>

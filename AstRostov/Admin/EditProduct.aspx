@@ -49,12 +49,12 @@
                 <asp:TextBox runat="server" ID="tbSalePrice"></asp:TextBox>
             </div>
         </div>
-        <div class="control-group">
+        <%--<div class="control-group">
             <span class="control-label">Количество на складе</span>
             <div class="controls">
                 <asp:TextBox runat="server" ID="tbInventory" TextMode="Number"></asp:TextBox>
             </div>
-        </div>
+        </div>--%>
         <div class="control-group">
             <span class="control-label">Категория</span>
             <div class="controls">

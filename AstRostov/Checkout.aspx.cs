@@ -139,8 +139,19 @@ namespace AstRostov
 
         protected void ProcessChechout(object sender, EventArgs e)
         {
-            int orderId;
-            if (Checkout.ProccessCheckout(out orderId))
+            int orderId = 0;
+            bool checkoutResult = false;
+
+            try
+            {
+                checkoutResult = Checkout.ProccessCheckout(out orderId);
+            }
+            catch 
+            {
+                Response.Redirect("Error.aspx");
+            }
+
+            if (checkoutResult)
             {
                 switch (SelectedPaymentMethod)
                 {

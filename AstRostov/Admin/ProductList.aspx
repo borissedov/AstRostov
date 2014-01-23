@@ -21,7 +21,7 @@
             <asp:BoundField HeaderText="Производитель" DataField="Brand" />
             <asp:BoundField HeaderText="Цена" DataField="RetailPrice" />
             <asp:BoundField HeaderText="Цена со скидкой" DataField="SalePrice" />
-            <asp:BoundField HeaderText="В наличии" DataField="Inventory" />
+            <%--<asp:BoundField HeaderText="В наличии" DataField="Inventory" />--%>
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:LinkButton ID="LinkButton1" runat="server" CommandName="Edit" CommandArgument='<%#Eval("ProductId") %>' ToolTip="Редактировать">

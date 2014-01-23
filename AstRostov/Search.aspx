@@ -52,8 +52,8 @@
                                         </div>
                                         <!-- Add to cart -->
                                         <div class="pull-right">
-                                            <asp:LinkButton runat="server" ID="lbAddToCart" CssClass="btn btn-primary btn-small" CommandName="AddToCart" CommandArgument='<%#Eval("ProductId") %>' Visible='<%#(int)Eval("Inventory") > 0 %>'><i class="icon-white icon-shopping-cart"></i>&nbsp;В корзину</asp:LinkButton>
-                                            <asp:LinkButton runat="server" ID="lbReserve" CssClass="btn btn-warning btn-small" CommandName="Reserve" CommandArgument='<%#Eval("ProductId") %>' Visible='<%#(int)Eval("Inventory") == 0 %>'><i class="icon-white icon-time"></i>&nbsp;Предзаказ</asp:LinkButton>
+                                            <asp:LinkButton runat="server" ID="lbAddToCart" CssClass="btn btn-primary btn-small" CommandName="AddToCart" CommandArgument='<%#Eval("ProductId") %>' Visible='<%#(int)Eval("TotalInventory") > 0 %>'><i class="icon-white icon-shopping-cart"></i>&nbsp;В корзину</asp:LinkButton>
+                                            <asp:LinkButton runat="server" ID="lbReserve" CssClass="btn btn-warning btn-small" CommandName="Reserve" CommandArgument='<%#Eval("ProductId") %>' Visible='<%#(int)Eval("TotalInventory") == 0 %>'><i class="icon-white icon-time"></i>&nbsp;Предзаказ</asp:LinkButton>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>

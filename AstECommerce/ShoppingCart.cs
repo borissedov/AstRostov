@@ -144,8 +144,8 @@ namespace AstECommerce
             AvailabilityCheck = res;
 
             Total = ShoppingCartItems.Sum(i => i.Count * i.Sku.FinalPrice);
-            TotalWithoutDiscount = ShoppingCartItems.Sum(i => i.Count * i.Sku.RetailPrice ?? i.Sku.Product.RetailPrice);
-            Discount = ShoppingCartItems.Sum(i => i.Count * (i.Sku.RetailPrice ?? i.Sku.Product.RetailPrice - i.Sku.FinalPrice));
+            TotalWithoutDiscount = ShoppingCartItems.Sum(i => i.Count * (i.Sku.RetailPrice ?? i.Sku.Product.RetailPrice));
+            Discount = ShoppingCartItems.Sum(i => i.Count * ((i.Sku.RetailPrice ?? i.Sku.Product.RetailPrice) - i.Sku.FinalPrice));
             SaveState();
         }
 

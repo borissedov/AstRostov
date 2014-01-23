@@ -18,7 +18,7 @@ namespace AstCore.Models
 
         public string ProductNum { get; set; }
         
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string AttributeConfig { get; set; }
         
         [Required]

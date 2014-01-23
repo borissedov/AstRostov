@@ -85,7 +85,7 @@
             <h4><%=Product.Name %></h4>
             <p><strong>Артикул:</strong> <%=Product.ProductNum %></p>
             <p><strong>Производитель:</strong> <%=Product.Brand %></p>
-            <p><strong>Остаток на складе:</strong> <%=Product.Inventory == 0 ? "нет на складе" : Product.Inventory > 10 ? "более 10" : "менее 10"  %></p>
+            <p><strong>Остаток на складе:</strong> <%=Product.DefaultSku.Inventory == 0 ? "нет на складе" : Product.DefaultSku.Inventory > 10 ? "более 10" : "менее 10"  %></p>
             <br>
             <h4><strong>Цена: <%=Product.FormattedPrice %></strong></h4>
             <asp:UpdateProgress runat="server" ID="UpdateProgress1" AssociatedUpdatePanelID="pnlAddToCart">

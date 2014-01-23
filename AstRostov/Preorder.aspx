@@ -55,7 +55,7 @@
         <div class="control-group">
             <span class="control-label">Конфигурация Атрибутов</span>
             <div class="controls">
-                <asp:TextBox runat="server" ID="tbAttributesConfig" Enabled="False"></asp:TextBox>
+                <asp:TextBox runat="server" ID="tbAttributesConfig" Enabled="False" TextMode="MultiLine"></asp:TextBox>
             </div>
         </div>
         <div class="control-group">

@@ -103,7 +103,7 @@ namespace AstRostov.Admin
             tbDescription.Text = product.Description;
             tbRetailPrice.Text = product.RetailPrice.ToString("F");
             tbSalePrice.Text = product.SalePrice.HasValue ? product.SalePrice.Value.ToString("F") : String.Empty;
-            tbInventory.Text = product.Inventory.ToString(CultureInfo.InvariantCulture);
+            //tbInventory.Text = product.Inventory.ToString(CultureInfo.InvariantCulture);
             ddlCategories.SelectedValue = product.CategoryId.ToString(CultureInfo.InvariantCulture);
             chbIsFeatured.Checked = product.IsFeatured;
             if (product.Brand != null)
@@ -143,9 +143,9 @@ namespace AstRostov.Admin
             product.ProductNum = tbProductNum.Text.Trim();
             product.Description = tbDescription.Text.Trim();
 
-            int inventory;
-            int.TryParse(tbInventory.Text, out inventory);
-            product.Inventory = inventory;
+            //int inventory;
+            //int.TryParse(tbInventory.Text, out inventory);
+            //product.Inventory = inventory;
 
             Decimal retailPrice;
             if (Decimal.TryParse(tbRetailPrice.Text, out retailPrice) && retailPrice > 0)

@@ -29,7 +29,7 @@ namespace AstCore.Models
         [Required]
         public Decimal SalePrice { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string AttributeConfig { get; set; }
 
         public virtual Order Order { get; set; }

@@ -135,6 +135,11 @@ namespace AstECommerce
         /// <returns></returns>
         public static bool ProccessCheckout(out int orderId)
         {
+            if (Order.Account == null)
+            {
+                Order.Account = AstMembership.CurrentUser;
+            }
+
             bool checkInventory = true;
             foreach (var item in Order.OrderLineItems)
             {
