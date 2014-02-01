@@ -77,13 +77,14 @@
         <div class="control-group">
             <span class="control-label"></span>
             <div class="controls">
-                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Admin/ProductList.aspx" CssClass="btn" Text="Назад к списку" ></asp:HyperLink>
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Admin/ProductList.aspx" CssClass="btn" Text="Назад к списку"></asp:HyperLink>
                 <asp:Button runat="server" ID="btnSaveProduct" Text="Сохранить" CssClass="btn" OnClick="SaveProduct" CausesValidation="True" />
             </div>
         </div>
     </div>
 
     <asp:PlaceHolder runat="server" ID="phImages">
+        <hr />
         <h3>Изображения</h3>
         <asp:GridView runat="server" ID="gridImages" OnRowCommand="ImageGridRowCommand" AutoGenerateColumns="False" CssClass="table table-bordered">
             <Columns>
@@ -115,6 +116,28 @@
         <asp:Button runat="server" ID="btnUploadImage" Text="Сохранить" CssClass="btn" OnClick="UploadImage" CausesValidation="False" />
 
     </asp:PlaceHolder>
-
-
+    <asp:PlaceHolder runat="server" ID="phSkuList">
+        <hr />
+        <h3>Конфигурации</h3>
+        <asp:GridView runat="server" ID="gridSkus" OnRowCommand="OnAttributeRowCommand" AutoGenerateColumns="False" CssClass="table table-bordered">
+            <Columns>
+                <asp:BoundField HeaderText="ID" DataField="SkuId" />
+                <asp:BoundField HeaderText="Конфигурация атрибутов" DataField="AttributeConfig" />
+                <asp:BoundField HeaderText="Количество на складе" DataField="Inventory" />
+                <asp:BoundField HeaderText="Цена*" DataField="RetailPrice" />
+                <asp:BoundField HeaderText="Цена со скидкой*" DataField="SalePrice" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton ID="LinkButton1" runat="server" CommandName="Edit" CommandArgument='<%#Eval("SkuId") %>' ToolTip="Редактировать">
+                                <i class="icon-white icon-edit"></i>
+                        </asp:LinkButton>
+                        <asp:LinkButton ID="LinkButton2" runat="server" CommandName="Delete" CommandArgument='<%#Eval("SkuId") %>' ToolTip="Удалить">
+                                <i class="icon-white icon-trash"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+        <asp:HyperLink runat="server" Text="Добавить новую конфигурацию" CssClass="btn btn-success" ID="hlAddSku"></asp:HyperLink>
+    </asp:PlaceHolder>
 </asp:Content>

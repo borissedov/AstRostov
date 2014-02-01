@@ -122,6 +122,7 @@
     <Content Include="Admin\CategoryList.aspx" />
     <Content Include="Admin\Controls\ImageUploader.ascx" />
     <Content Include="Admin\EditOrder.aspx" />
+    <Content Include="Admin\EditSku.aspx" />
     <Content Include="Admin\OrderList.aspx" />
     <Content Include="Admin\PreorderList.aspx" />
     <Content Include="Admin\EditBrand.aspx" />
@@ -135,6 +136,7 @@
     <Content Include="Admin\NewsCommentList.aspx" />
     <Content Include="Admin\NewsList.aspx" />
     <Content Include="Admin\ProductList.aspx" />
+    <Content Include="Admin\AddSku.aspx" />
     <Content Include="Blog.aspx" />
     <Content Include="Category.aspx" />
     <Content Include="Check.aspx" />
@@ -306,6 +308,13 @@
     <Compile Include="Admin\EditOrder.aspx.designer.cs">
       <DependentUpon>EditOrder.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\EditSku.aspx.cs">
+      <DependentUpon>EditSku.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\EditSku.aspx.designer.cs">
+      <DependentUpon>EditSku.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\OrderList.aspx.cs">
       <DependentUpon>OrderList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -333,6 +342,13 @@
     </Compile>
     <Compile Include="Admin\MailTest.aspx.designer.cs">
       <DependentUpon>MailTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AddSku.aspx.cs">
+      <DependentUpon>AddSku.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AddSku.aspx.designer.cs">
+      <DependentUpon>AddSku.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalog.master.cs">
       <DependentUpon>Catalog.master</DependentUpon>

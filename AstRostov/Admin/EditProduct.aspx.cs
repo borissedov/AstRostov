@@ -116,6 +116,7 @@ namespace AstRostov.Admin
             {
                 litEditTitle.Text = @"Создание нового продукта";
                 phImages.Visible = false;
+                phSkuList.Visible = false;
             }
             else
             {
@@ -123,6 +124,12 @@ namespace AstRostov.Admin
                 phImages.Visible = true;
                 gridImages.DataSource = product.Images.ToArray();
                 gridImages.DataBind();
+
+                phSkuList.Visible = true;
+                gridSkus.DataSource = product.SkuCollection.ToArray();
+                gridSkus.DataBind();
+
+                hlAddSku.NavigateUrl = ResolveUrl(String.Format("~/Admin/AddSku.aspx?pid={0}", ItemId));
             }
 
         }
@@ -359,6 +366,47 @@ namespace AstRostov.Admin
             }
 
             ErrorLabel.Visible = !String.IsNullOrEmpty(ErrorLabel.Text);
+        }
+
+        protected void OnAttributeRowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            switch (e.CommandName)
+            {
+                case "Edit":
+                    Response.Redirect(String.Format("~/Admin/EditSku.aspx?sid={0}", Convert.ToInt32(e.CommandArgument)));
+                    break;
+                case "Delete":
+                    DeleteSku(Convert.ToInt32(e.CommandArgument));
+                    break;
+            }
+        }
+
+        private void DeleteSku(int skuId)
+        {
+            Product product = CoreData.Context.Products.SingleOrDefault(p => p.ProductId == ItemId);
+            if (product == null)
+            {
+                ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                return;
+            }
+            if (product.SkuCollection.Count == 1)
+            {
+                ErrorLabel.Text = "У продукта должна быть хотя бы одна конфигурация.";
+                return;
+            }
+
+            var skuToDelete = product.SkuCollection.SingleOrDefault(s => s.SkuId == skuId);
+            if (skuToDelete == null)
+            {
+                ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                return;
+            }
+
+            product.SkuCollection.Remove(skuToDelete);
+            CoreData.Context.Skus.Remove(skuToDelete);
+
+            CoreData.Context.SaveChanges();
+            Response.Redirect(String.Format("~/Admin/EditProduct.aspx?id={0}", ItemId));
         }
     }
 }

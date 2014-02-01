@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AstMembership.cs" />
     <Compile Include="CommonControls\Alert.cs" />
+    <Compile Include="CommonControls\AutocompleteTextbox.cs" />
     <Compile Include="CommonControls\RichTextBox.cs" />
     <Compile Include="DataAccess\CoreData.cs" />
     <Compile Include="DataAccess\AstEntities.cs" />
@@ -134,7 +135,7 @@
     <Compile Include="Models\OrderLineItem.cs" />
     <Compile Include="Models\PaymentTariff.cs" />
     <Compile Include="Models\Preorder.cs" />
-    <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\Attribute.cs" />
     <Compile Include="Models\ShippingTariff.cs" />
     <Compile Include="Models\ShoppingCartEntity.cs" />
     <Compile Include="Models\Mapping\UserMap.cs" />
