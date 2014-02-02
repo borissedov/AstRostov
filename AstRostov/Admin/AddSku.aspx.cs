@@ -73,8 +73,8 @@ namespace AstRostov.Admin
             var availableAttributes = CoreData.Context.Attributes.Except(_product.Attributes).ToArray();
             hdnAttributeDictionary.Value = String.Format("{{{0}}}",
                 String.Join(",", availableAttributes.Select(
-                a => String.Format("{0}: [\"{1}\"]",
-                    a.Name, String.Join("\",\"", a.AttributeValues))
+                a => String.Format("\"{0}\": [\"{1}\"]",
+                    a.Name, String.Join("\",\"", a.AttributeValues.Select(v => v.Value)))
                 )));
         }
 
@@ -103,19 +103,98 @@ namespace AstRostov.Admin
                 return;
             }
 
-            var oldAttrs = attrDictionary.Where(kvp => _product.Attributes.Any(a => a.Name == kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            var newAttrs = attrDictionary.Where(kvp => _product.Attributes.All(a => a.Name != kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            if (attrDictionary == null)
+            {
+                lblError.Text = "Ошибка десериализации атрибутов.";
+                return;
+            }
 
-            if (oldAttrs.Count() + newAttrs.Count() != attrDictionary.Count)
+            var attrNamesFromDB = CoreData.Context.Attributes.Select(a => a.Name).ToArray();
+
+            var oldAttrsForProduct =
+                attrDictionary.Where(kvp => _product.Attributes.Any(a => a.Name == kvp.Key))
+                              .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var newAttrsForProduct =
+                attrDictionary.Where(kvp => _product.Attributes.All(a => a.Name != kvp.Key))
+                              .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var newAttrEntities =
+                attrDictionary.Where(kvp => attrNamesFromDB.All(n => n != kvp.Key))
+                              .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            if (newAttrsForProduct.Any(a => String.IsNullOrEmpty(a.Value.Default)))
+            {
+                lblError.Text = "Для одного из новых атрибутов не указано значение по умолчанию";
+                return;
+            }
+
+            //Adding new Attribute and AttributeValue entities
+
+            if (newAttrEntities.Any())
+            {
+                foreach (var attributeConfig in newAttrEntities)
+                {
+                    var attribute = new Attribute
+                        {
+                            Name = attributeConfig.Key
+                        };
+                    CoreData.Context.Attributes.Add(attribute);
+
+                    var newAttrValue = new AttributeValue
+                        {
+                            Attribute = attribute,
+                            Value = attributeConfig.Value.Value
+                        };
+                    CoreData.Context.AttributeValues.Add(newAttrValue);
+
+                    var defaultAttributeValue = newAttrValue;
+                    if (attributeConfig.Value.Default != attributeConfig.Value.Value)
+                    {
+                        defaultAttributeValue = new AttributeValue
+                            {
+                                Attribute = attribute,
+                                Value = attributeConfig.Value.Default
+                            };
+                        CoreData.Context.AttributeValues.Add(defaultAttributeValue);
+                    }
+
+                    //foreach (var sku in _product.SkuCollection)
+                    //{
+                    //    sku.AttributeValues.Add(defaultAttributeValue);
+                    //}
+                }
+                CoreData.Context.SaveChanges();
+            }
+        
+
+
+    if (oldAttrsForProduct.Count() + newAttrsForProduct.Count() != attrDictionary.Count)
             {
                 lblError.Text = "Ошибка конфигурации атрибутов.";
                 return;
             }
 
             //Check for sku exist
-            if (_product.SkuCollection.Any(s => s.AttributeValues.All(sv => oldAttrs[sv.Attribute.Name].Value == sv.Value)))
+            if (_product.SkuCollection.Count > 1)
             {
-                lblError.Text = "Такая конфигурация уже существует для данного продукта";
+                if (
+                    _product.SkuCollection.Any(
+                        s => s.AttributeValues.All(sv => oldAttrs[sv.Attribute.Name].Value == sv.Value)))
+                {
+                    lblError.Text = "Такая конфигурация уже существует для данного продукта";
+                    return;
+                }
+            }
+            else if (_product.SkuCollection.Count == 1)
+            {
+                if (newAttrs.Values.Any(v => v.Default == v.Value))
+                {
+                    lblError.Text = "Значения по умолчанию для новых атрибутов не могут быть приняты, так как приведут к дублированию конфигураций.";
+                    return;
+                }
+            }
+            else
+            {
+                lblError.Text = "Фатальная ошибка конфигураций продукта. У продукта всегда должна быть хотя бы одна конфигурация!";
                 return;
             }
 
@@ -158,6 +237,7 @@ namespace AstRostov.Admin
                         sku.AttributeValues.Add(defaultAttributeValue);
                     }
                 }
+                CoreData.Context.SaveChanges();
             }
 
             var newSku = new Sku

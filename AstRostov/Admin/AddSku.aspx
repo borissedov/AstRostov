@@ -6,6 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:HiddenField runat="server" ID="hdnProductId" />
     <asp:HiddenField runat="server" ID="hdnAttributeDictionary" ClientIDMode="Static" />
+    <%--    <input type="hidden" id="hdnAttributeDictionary" value="<%=ViewState["hdnAttributeDictionary"] %>"/>--%>
     <asp:HiddenField runat="server" ID="hdnAttributeDictionaryToSave" ClientIDMode="Static" />
     <h2>Добавление конфигурации продукта</h2>
     <br />
@@ -79,8 +80,8 @@
             });
 
             var lastAttrNameInput = $('.form-horizontal').find('.attr-name:last');
-            lastAttrNameInput.attr('data-source', availableNames);
-            lastAttrNameInput.typeahead();
+            //lastAttrNameInput.attr('data-source', JSON.stringify(availableNames));
+            lastAttrNameInput.typeahead({ source: availableNames });
 
             // setTimeout($('#btnAddAttribute').click(AddAttribute()), 400);
 
@@ -98,7 +99,7 @@
                     var attrVal = $(this).find('.attr-value').val().trim();
                     var attrDefVal = $(this).find('.attr-default-value').val().trim();
                     if (attrName == '' || attrVal == '') {
-                        throw('');
+                        throw ('');
                     }
                     if (Object.keys(dictionary).indexOf(attrName) == -1) {
                         dictionary[attrName] =
@@ -120,8 +121,7 @@
                     return false;
                 }
             }
-            catch(e)
-            {
+            catch (e) {
                 $('#lblError').html('Проверьте правильность заполнения атрибутов и значений');
                 return false;
             }
@@ -129,32 +129,26 @@
         }
 
         function toggleDefaultValue(sender) {
-            var attrName = $(sender).val();
-            var senderSrc = $(sender).attr('data-source');
-            var defaultValInput = $(sender).parent('div').find('.attr-default-value');
-            var valInput = $(sender).parent('div').find('.attr-value');
+            setTimeout(function() {
+                var attrName = $(sender).val();
+                //var defaultValInput = $(sender).parent('div').find('.attr-default-value');
+                var valInput = $(sender).parent('div').find('.attr-value');
 
-            if (senderSrc != '') {
-                var attrAvailNames = JSON.parse(senderSrc);
+                var attrAvailNames = Object.keys(JSON.parse($('#hdnAttributeDictionary').val()));
 
-                if (attrAvailNames.contains(attrName)) {
-                    defaultValInput.hide();
-                    defaultValInput.val('');
+                if (attrAvailNames.indexOf(attrName) != -1) {
+                    //defaultValInput.hide();
+                    //defaultValInput.val('');
 
-                    valInput.attr('data-source', JSON.parse($('#hdnAttributeDictionary').val())[attrName]);
-                    valInput.typeahead();
+                    //valInput.attr('data-source', JSON.stringify(JSON.parse($('#hdnAttributeDictionary').val())[attrName]));
+                    valInput.typeahead({ source: JSON.parse($('#hdnAttributeDictionary').val())[attrName] });
                 } else {
-                    $(sender).parent('div').find('.attr-default-value').show();
+                    //$(sender).parent('div').find('.attr-default-value').show();
 
                     valInput.attr('data-source', '');
                     valInput.typeahead();
                 }
-            } else {
-                $(sender).parent('div').find('.attr-default-value').show();
-
-                valInput.attr('data-source', '');
-                valInput.typeahead();
-            }
+            }, 500);
         }
 
         $(document).ready(function () {
