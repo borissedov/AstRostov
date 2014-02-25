@@ -129,6 +129,7 @@ namespace AstRostov.Admin
                 gridSkus.DataSource = product.SkuCollection.ToArray();
                 gridSkus.DataBind();
 
+                hlEditAttrConfig.NavigateUrl = ResolveUrl(String.Format("~/Admin/EditProductConfiguration.aspx?pid={0}", ItemId));
                 hlAddSku.NavigateUrl = ResolveUrl(String.Format("~/Admin/AddSku.aspx?pid={0}", ItemId));
             }
 

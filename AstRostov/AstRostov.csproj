@@ -118,10 +118,12 @@
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Address.aspx" />
+    <Content Include="Admin\AddSku.aspx" />
     <Content Include="Admin\BrandList.aspx" />
     <Content Include="Admin\CategoryList.aspx" />
     <Content Include="Admin\Controls\ImageUploader.ascx" />
     <Content Include="Admin\EditOrder.aspx" />
+    <Content Include="Admin\EditProductConfiguration.aspx" />
     <Content Include="Admin\EditSku.aspx" />
     <Content Include="Admin\OrderList.aspx" />
     <Content Include="Admin\PreorderList.aspx" />
@@ -136,7 +138,6 @@
     <Content Include="Admin\NewsCommentList.aspx" />
     <Content Include="Admin\NewsList.aspx" />
     <Content Include="Admin\ProductList.aspx" />
-    <Content Include="Admin\AddSku.aspx" />
     <Content Include="Blog.aspx" />
     <Content Include="Category.aspx" />
     <Content Include="Check.aspx" />
@@ -294,6 +295,13 @@
     <Compile Include="Address.aspx.designer.cs">
       <DependentUpon>Address.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\AddSku.aspx.cs">
+      <DependentUpon>AddSku.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AddSku.aspx.designer.cs">
+      <DependentUpon>AddSku.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\BrandList.aspx.cs">
       <DependentUpon>BrandList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -307,6 +315,13 @@
     </Compile>
     <Compile Include="Admin\EditOrder.aspx.designer.cs">
       <DependentUpon>EditOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\EditProductConfiguration.aspx.cs">
+      <DependentUpon>EditProductConfiguration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\EditProductConfiguration.aspx.designer.cs">
+      <DependentUpon>EditProductConfiguration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\EditSku.aspx.cs">
       <DependentUpon>EditSku.aspx</DependentUpon>
@@ -342,13 +357,6 @@
     </Compile>
     <Compile Include="Admin\MailTest.aspx.designer.cs">
       <DependentUpon>MailTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\AddSku.aspx.cs">
-      <DependentUpon>AddSku.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\AddSku.aspx.designer.cs">
-      <DependentUpon>AddSku.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalog.master.cs">
       <DependentUpon>Catalog.master</DependentUpon>

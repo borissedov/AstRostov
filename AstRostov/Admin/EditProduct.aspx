@@ -138,6 +138,7 @@
                 </asp:TemplateField>
             </Columns>
         </asp:GridView>
+        <asp:HyperLink runat="server" Text="Редактировать схему конфигураций" CssClass="btn btn-inverse" ID="hlEditAttrConfig"></asp:HyperLink>
         <asp:HyperLink runat="server" Text="Добавить новую конфигурацию" CssClass="btn btn-success" ID="hlAddSku"></asp:HyperLink>
     </asp:PlaceHolder>
 </asp:Content>

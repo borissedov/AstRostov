@@ -211,6 +211,15 @@ namespace AstRostov.Admin {
         protected global::System.Web.UI.WebControls.GridView gridSkus;
         
         /// <summary>
+        /// hlEditAttrConfig control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlEditAttrConfig;
+        
+        /// <summary>
         /// hlAddSku control.
         /// </summary>
         /// <remarks>
