@@ -11,7 +11,7 @@
     <h2>
         <asp:Literal runat="server" ID="litEditTitle"></asp:Literal></h2>
 
-    <asp:Label runat="server" ID="ErrorLabel" Visible="False" />
+    <asp:Label runat="server" ID="ErrorLabel" Visible="False"  CssClass="text-warning"/>
 
     <div class="form-horizontal">
         <div class="control-group">
@@ -131,14 +131,14 @@
                         <asp:LinkButton ID="LinkButton1" runat="server" CommandName="Edit" CommandArgument='<%#Eval("SkuId") %>' ToolTip="Редактировать">
                                 <i class="icon-white icon-edit"></i>
                         </asp:LinkButton>
-                        <asp:LinkButton ID="LinkButton2" runat="server" CommandName="Delete" CommandArgument='<%#Eval("SkuId") %>' ToolTip="Удалить">
+                        <asp:LinkButton ID="LinkButton2" runat="server" CommandName="DeleteSku" CommandArgument='<%#Eval("SkuId") %>' ToolTip="Удалить">
                                 <i class="icon-white icon-trash"></i>
                         </asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
         </asp:GridView>
-        <asp:HyperLink runat="server" Text="Редактировать схему конфигураций" CssClass="btn btn-inverse" ID="hlEditAttrConfig"></asp:HyperLink>
+        <asp:HyperLink runat="server" Text="Редактировать схему конфигураций" CssClass="btn btn-success" ID="hlEditAttrConfig"></asp:HyperLink>
         <asp:HyperLink runat="server" Text="Добавить новую конфигурацию" CssClass="btn btn-success" ID="hlAddSku"></asp:HyperLink>
     </asp:PlaceHolder>
 </asp:Content>

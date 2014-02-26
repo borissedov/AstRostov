@@ -118,6 +118,10 @@
     <Compile Include="Migrations\201401221847028_PreOrderSkuFix.Designer.cs">
       <DependentUpon>201401221847028_PreOrderSkuFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402261238420_AttrKeyFix.cs" />
+    <Compile Include="Migrations\201402261238420_AttrKeyFix.Designer.cs">
+      <DependentUpon>201402261238420_AttrKeyFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -207,6 +211,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401221847028_PreOrderSkuFix.resx">
       <DependentUpon>201401221847028_PreOrderSkuFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402261238420_AttrKeyFix.resx">
+      <DependentUpon>201402261238420_AttrKeyFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

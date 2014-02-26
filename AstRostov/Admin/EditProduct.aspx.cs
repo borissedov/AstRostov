@@ -379,7 +379,7 @@ namespace AstRostov.Admin
                 case "Edit":
                     Response.Redirect(String.Format("~/Admin/EditSku.aspx?sid={0}", Convert.ToInt32(e.CommandArgument)));
                     break;
-                case "Delete":
+                case "DeleteSku":
                     DeleteSku(Convert.ToInt32(e.CommandArgument));
                     break;
             }

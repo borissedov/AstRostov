@@ -11,8 +11,11 @@ namespace AstCore.CommonControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            Attributes["data-provide"] = "typeahead";
-            Attributes["data-source"] = String.Format("[\"{0}\"]", String.Join("\",\"", DataSource));
+            if(DataSource != null)
+            {
+                Attributes["data-provide"] = "typeahead";
+                Attributes["data-source"] = String.Format("[\"{0}\"]", String.Join("\",\"", DataSource));
+            }
             base.Render(writer);
         }
     }

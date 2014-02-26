@@ -15,7 +15,7 @@
         <asp:Repeater runat="server" ID="rptAttributes" OnItemDataBound="OnAttributeItemDataBound">
             <ItemTemplate>
                 <div class="control-group">
-                    <asp:Label runat="server" ID="lblAttributeTitle" CssClass="control-label"></asp:Label>
+                    <asp:Label runat="server" ID="lblAttributeTitle" CssClass="control-label" Text='<%#Eval("Name") %>'></asp:Label>
                     <div class="controls">
                         <ucc:AutocompleteTextbox runat="server" ID="tbAttributeValue"></ucc:AutocompleteTextbox>
                     </div>

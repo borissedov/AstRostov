@@ -71,7 +71,7 @@ namespace AstRostov.Admin
         private void BindAutocomplete()
         {
             //Here I want to put json serialized dectionary of attrs that not contains in current product
-            var availableAttributes = CoreData.Context.Attributes.Except(_product.Attributes).ToArray();
+            var availableAttributes = CoreData.Context.Attributes.ToArray();
             hdnAttributeDictionary.Value = String.Format("{{{0}}}",
                 String.Join(",", availableAttributes.Select(
                 a => String.Format("\"{0}\": [\"{1}\"]",
@@ -135,7 +135,12 @@ namespace AstRostov.Admin
 
             //So validation passed. Let's save
 
-            _product.SkuCollection.Clear();
+            foreach (int skuId in _product.SkuCollection.Select(s=>s.SkuId).ToArray())
+            {
+                var sku = CoreData.Context.Skus.Single(s => s.SkuId == skuId);
+                sku.AttributeValues.Clear();
+                CoreData.Context.Skus.Remove(sku);
+            }
             CoreData.Context.SaveChanges();
 
             _product.Attributes.Clear();
@@ -163,14 +168,20 @@ namespace AstRostov.Admin
             var attrValues = new List<AttributeValue>();
             for (int i = 0; i < attrList.Count; i++)
             {
-                var attrVal = attrList[i].AttributeValues.SingleOrDefault(v => v.Value == attrVals[i]);
+                //var attrVal = CoreData.Context.Attributes.Attach(attrList[i]).AttributeValues.SingleOrDefault(v => v.Value == attrVals[i]);
+                int attrId = attrList[i].AttributeId;
+                string attrValStr = attrVals[i];
+                var attrVal =
+                    CoreData.Context.AttributeValues.SingleOrDefault(
+                        v => v.Value == attrValStr && v.AttributeId == attrId);
                 if (attrVal == null)
                 {
                     attrVal = new AttributeValue
                         {
-                            Value = attrVals[i]
+                            Value = attrVals[i],
+                            Attribute = CoreData.Context.Attributes.Single(a => a.AttributeId == attrId)
                         };
-                    attrList[i].AttributeValues.Add(attrVal);
+                    //attrList[i].AttributeValues.Add(attrVal);
                 }
                 attrValues.Add(attrVal);
             }
@@ -184,6 +195,8 @@ namespace AstRostov.Admin
                 };
             _product.SkuCollection.Add(newSku);
             CoreData.Context.SaveChanges();
+
+            Response.Redirect(hlBack.NavigateUrl);
         }
     }
 }

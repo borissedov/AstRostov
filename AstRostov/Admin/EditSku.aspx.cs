@@ -56,6 +56,9 @@ namespace AstRostov.Admin
                 return;
             }
 
+            gridAttributes.DataSource = sku.AttributeValues.ToArray();
+            gridAttributes.DataBind();
+
             tbInventory.Text = sku.Inventory.ToString(CultureInfo.InvariantCulture);
             if (sku.RetailPrice.HasValue)
             {

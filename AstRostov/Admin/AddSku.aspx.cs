@@ -107,7 +107,7 @@ namespace AstRostov.Admin
             }
 
             //Check for sku exist
-            if (_product.SkuCollection.Count > 1)
+            if (_product.SkuCollection.Count > 0)
             {
                 if (
                     _product.SkuCollection.Any(
@@ -171,6 +171,7 @@ namespace AstRostov.Admin
                 }
             }
 
+            var attrVals = new List<AttributeValue>();
             foreach (var attributeConfig in attrDictionary)
             {
                 AttributeValue attrValue =
@@ -191,14 +192,17 @@ namespace AstRostov.Admin
 
                     attribute.AttributeValues.Add(attrValue);
                     CoreData.Context.SaveChanges();
-                    
                 }
-
-                newSku.AttributeValues.Add(attrValue);
+                attrVals.Add(attrValue);
+                //newSku.AttributeValues.Add(attrValue);
             }
+            newSku.AttributeValues = attrVals;
+
 
             CoreData.Context.Skus.Add(newSku);
             CoreData.Context.SaveChanges();
+
+            Response.Redirect(hlBack.NavigateUrl);
         }
 
     }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AstCore.Models
 {
@@ -15,14 +12,20 @@ namespace AstCore.Models
         //    get; set;
         //}
 
-        [Key]
-        [Required]
+        [Key, Column(Order = 1)]
+        [ForeignKey("Attribute")]
+        public virtual int AttributeId
+        {
+            get;
+            set;
+        }
+
         public virtual Attribute Attribute
         {
             get; set;
         }
 
-        [Key]
+        [Key, Column(Order = 0)]
         [Required]
         public string Value { get; set; }
     
