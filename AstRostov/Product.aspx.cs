@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Web.UI.WebControls;
 using AstCore;
 using AstCore.DataAccess;
 using AstCore.Models;
@@ -61,6 +63,7 @@ namespace AstRostov
 
             if (!Page.IsPostBack)
             {
+                BindAttributes();
                 BindImages();
                 CheckInventory(null, null);
             }
@@ -86,6 +89,15 @@ namespace AstRostov
             {
                 pnlAddToCart.Visible = false;
                 btnReserveProduct.Visible = true;
+            }
+        }
+
+        private void BindAttributes()
+        {
+            if (Product.Attributes.Count > 0)
+            {
+                rptAttrs.DataSource = Product.Attributes.ToArray();
+                rptAttrs.DataBind();
             }
         }
 
@@ -127,6 +139,28 @@ namespace AstRostov
                     btnAddToCart.Visible = true;
                     btnReserveProduct.Visible = false;
                 }
+            }
+        }
+
+        protected void BindAttrValuesForRptItem(object sender, RepeaterItemEventArgs e)
+        {
+            var attribute = e.Item.DataItem as AstCore.Models.Attribute;
+            var ddlAttrValues = e.Item.FindControl("ddlAttrValues") as DropDownList;
+            if (attribute != null && ddlAttrValues != null)
+            {
+                var attrDefaultValue = new AttributeValue
+                    {
+                        AttributeId = -1,
+                        Value = String.Format("Выберите {0}", attribute.Name)
+                    };
+
+                var attrValListToView = new List<AttributeValue>();
+                attrValListToView.Add(attrDefaultValue);
+                attrValListToView.AddRange(attribute.AttributeValues.ToArray());
+                ddlAttrValues.DataSource = attrValListToView;
+                ddlAttrValues.DataTextField = "Value";
+                ddlAttrValues.DataValueField = "AttributeId";
+                ddlAttrValues.DataBind();
             }
         }
     }

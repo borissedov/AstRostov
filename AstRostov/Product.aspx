@@ -83,10 +83,21 @@
         <div class="span5">
             <!-- Title -->
             <h4><%=Product.Name %></h4>
-            <p><strong>Артикул:</strong> <%=Product.ProductNum %></p>
-            <p><strong>Производитель:</strong> <%=Product.Brand %></p>
-            <p><strong>Остаток на складе:</strong> <%=Product.DefaultSku.Inventory == 0 ? "нет на складе" : Product.DefaultSku.Inventory > 10 ? "более 10" : "менее 10"  %></p>
-            <br>
+            <dl class="dl-horizontal">
+                <dt>Артикул:</dt>
+                <dd><%=Product.ProductNum %>&nbsp;</dd>
+                <dt>Производитель:</dt>
+                <dd><%=Product.Brand %>&nbsp;</dd>
+                <dt>Остаток на складе:</dt>
+                <dd><%=Product.DefaultSku.Inventory == 0 ? "нет на складе" : Product.DefaultSku.Inventory > 10 ? "более 10" : "менее 10"  %></dd>
+                <asp:Repeater runat="server" ID="rptAttrs" OnItemDataBound="BindAttrValuesForRptItem">
+                    <ItemTemplate>
+                        <dt><%#Eval("Name") %></dt>
+                        <dd>
+                            <asp:DropDownList runat="server" ID="ddlAttrValues" /></dd>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </dl>
             <h4><strong>Цена: <%=Product.FormattedPrice %></strong></h4>
             <asp:UpdateProgress runat="server" ID="UpdateProgress1" AssociatedUpdatePanelID="pnlAddToCart">
                 <ProgressTemplate>
@@ -97,6 +108,7 @@
             </asp:UpdateProgress>
             <asp:UpdatePanel runat="server" ID="pnlAddToCart" class="input-append" UpdateMode="Always">
                 <ContentTemplate>
+
                     <asp:TextBox runat="server" TextMode="Number" Text="1" Width="37" ID="tbProductAddCount" ClientIDMode="Static" OnTextChanged="CheckInventory" AutoPostBack="True"></asp:TextBox>
                     <asp:LinkButton CssClass="btn btn-primary" runat="server" ID="btnAddToCart" OnClick="AddToCart">
                     <i class="icon-white icon-shopping-cart"></i>&nbsp;Добавить в корзину

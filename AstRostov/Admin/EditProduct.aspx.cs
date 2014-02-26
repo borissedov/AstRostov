@@ -234,9 +234,9 @@ namespace AstRostov.Admin
 
             if (ItemId == 0)
             {
-                var sku = new Sku {Inventory = 0, IsDefault = true};
-                //CoreData.Context.Skus.Add(sku);
-                product.SkuCollection.Add(sku);
+                var sku = new Sku {Inventory = 0, IsDefault = true, Product = product};
+                CoreData.Context.Skus.Add(sku);
+                //product.SkuCollection.Add(sku);
                 CoreData.Context.Products.Add(product);
             }
 
