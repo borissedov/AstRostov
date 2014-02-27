@@ -126,6 +126,10 @@
     <Compile Include="Migrations\201402270954337_AttrValFix2.Designer.cs">
       <DependentUpon>201402270954337_AttrValFix2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402271749168_SkuImagesImplement.cs" />
+    <Compile Include="Migrations\201402271749168_SkuImagesImplement.Designer.cs">
+      <DependentUpon>201402271749168_SkuImagesImplement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -133,6 +137,7 @@
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\SkuImage.cs" />
     <Compile Include="Models\MainSliderItem.cs" />
     <Compile Include="Models\Mapping\ApplicationMap.cs" />
     <Compile Include="Models\Mapping\CategoryMap.cs" />
@@ -223,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402270954337_AttrValFix2.resx">
       <DependentUpon>201402270954337_AttrValFix2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402271749168_SkuImagesImplement.resx">
+      <DependentUpon>201402271749168_SkuImagesImplement.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

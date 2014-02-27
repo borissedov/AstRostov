@@ -13,8 +13,6 @@ namespace AstCore.Models
 
         public int ProductId { get; set; }
 
-        public bool IsDefault { get; set; }//TODO: Remove unused
-
         [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
 
@@ -27,6 +25,8 @@ namespace AstCore.Models
         public int Inventory { get; set; }
 
         public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+
+        public virtual ICollection<SkuImage> Images { get; set; }
 
         [NotMapped]
         public string AttributeConfig
