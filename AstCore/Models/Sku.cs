@@ -33,7 +33,7 @@ namespace AstCore.Models
         {
             get
             {
-                if(AttributeValues.Any())
+                if (AttributeValues.Any())
                 {
                     return String.Join(", ",
                                    AttributeValues.Select(v => String.Format("{0}: {1}", v.Attribute.Name, v.Value)));
@@ -51,19 +51,26 @@ namespace AstCore.Models
             }
         }
 
+
+        public string FormattedPrice(int count = 1)
+        {
+
+            if (RetailPrice.HasValue && FinalPrice < RetailPrice)
+            {
+                return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", RetailPrice * count, FinalPrice * count);
+            }
+            else
+            {
+                return String.Format(@"<span class=""price-new"">{0:c}</span>", FinalPrice * count);
+            }
+        }
+
         [NotMapped]
-        public string FormattedPrice
+        public SkuImage MainImage
         {
             get
             {
-                if (RetailPrice.HasValue && FinalPrice < RetailPrice)
-                {
-                    return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", RetailPrice, FinalPrice);
-                }
-                else
-                {
-                    return String.Format(@"<span class=""price-new"">{0:c}</span>", FinalPrice);
-                }
+                return Images.SingleOrDefault(i => i.IsMain) ?? Images.OrderByDescending(pi => pi.Id).FirstOrDefault() ?? new SkuImage { FileName = "noimage.gif" };
             }
         }
     }

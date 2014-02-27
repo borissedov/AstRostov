@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Web.UI.WebControls;
 using AstCore.DataAccess;
 using AstCore.Models;
 
@@ -49,7 +50,7 @@ namespace AstRostov.Admin
         private void BindSkuForm()
         {
             Sku sku = CoreData.Context.Skus.SingleOrDefault(i => i.SkuId == SkuId);
-            
+
             if (sku == null)
             {
                 lblError.Text = "Редактируемая сущность не найдена.";
@@ -70,6 +71,10 @@ namespace AstRostov.Admin
             }
 
             hlBack.NavigateUrl = ResolveUrl(String.Format("~/Admin/EditProduct.aspx?id={0}", sku.ProductId));
+
+
+            gridImages.DataSource = sku.Images.ToArray();
+            gridImages.DataBind();
         }
 
 
@@ -134,6 +139,111 @@ namespace AstRostov.Admin
 
             CoreData.Context.SaveChanges();
             Response.Redirect(String.Format("~/Admin/EditProduct.aspx?id={0}", sku.ProductId));
+        }
+
+        protected void ImageGridRowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            switch (e.CommandName)
+            {
+                case "MakeMain":
+                    MakeImageMain(Convert.ToInt32(e.CommandArgument));
+
+                    break;
+                case "Delete":
+                    DeleteImage(Convert.ToInt32(e.CommandArgument));
+                    break;
+            }
+        }
+
+        private void DeleteImage(int imageId)
+        {
+            Sku sku = CoreData.Context.Skus.SingleOrDefault(p => p.SkuId == SkuId);
+            if (sku == null)
+            {
+                ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                return;
+            }
+
+            SkuImage image = sku.Images.SingleOrDefault(i => i.Id == imageId);
+            if (image != null)
+            {
+                if (image.IsMain)
+                {
+                    var nextMainImage = sku.Images.Where(i => i.Id != imageId).OrderByDescending(i => i.Id).FirstOrDefault();
+                    if (nextMainImage != null)
+                    {
+                        nextMainImage.IsMain = true;
+                    }
+                }
+                CoreData.Context.SkuImages.Remove(image);
+            }
+            else
+            {
+                ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                return;
+            }
+
+            CoreData.Context.SaveChanges();
+            Response.Redirect(String.Format("~/Admin/EditSku.aspx?sid={0}", SkuId));
+        }
+
+        private void MakeImageMain(int imageId)
+        {
+            Sku sku = CoreData.Context.Skus.SingleOrDefault(p => p.SkuId == SkuId);
+            if (sku == null)
+            {
+                ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                return;
+            }
+
+            var image = sku.Images.SingleOrDefault(i => i.Id == imageId);
+            if (image != null)
+            {
+                image.IsMain = true;
+
+                foreach (var imageToNotMain in sku.Images.Where(i => i.Id != imageId))
+                {
+                    imageToNotMain.IsMain = false;
+                }
+            }
+            else
+            {
+                ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                return;
+            }
+
+            CoreData.Context.SaveChanges();
+            Response.Redirect(String.Format("~/Admin/EditSku.aspx?sid={0}", SkuId));
+        }
+
+        protected void UploadImage(object sender, EventArgs e)
+        {
+            if (imageUploader.PostedFile != null && !string.IsNullOrEmpty(imageUploader.PostedFile.FileName))
+            {
+                imageUploader.AppendToFileName = String.Format("-sku-{0}", SkuId);
+                imageUploader.SaveImage();
+
+                Sku sku = CoreData.Context.Skus.SingleOrDefault(p => p.SkuId == SkuId);
+                if (sku == null)
+                {
+                    ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                    return;
+                }
+
+                foreach (SkuImage image in sku.Images)
+                {
+                    image.IsMain = false;
+                }
+
+                sku.Images.Add(new SkuImage
+                {
+                    FileName = imageUploader.FileInformation.Name,
+                    IsMain = true
+                });
+
+                CoreData.Context.SaveChanges();
+                Response.Redirect(String.Format("~/Admin/EditSku.aspx?sid={0}", SkuId));
+            }
         }
     }
 }

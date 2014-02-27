@@ -8,7 +8,6 @@ using AstCore.DataAccess;
 using AstCore.Models;
 using AstCore.SearchEngine;
 using AstECommerce;
-using Microsoft.Ajax.Utilities;
 
 namespace AstRostov
 {
@@ -80,6 +79,17 @@ namespace AstRostov
             }
         }
 
+        protected int Count
+        {
+            get
+            {
+                int count;
+                int.TryParse(tbProductAddCount.Text, out count);
+                return count;
+            }
+        }
+
+
         protected void Page_Init(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -149,7 +159,7 @@ namespace AstRostov
 
         private void BindImages()
         {
-            rptThumbnails.DataSource = Product.Images;
+            rptThumbnails.DataSource = SelectedSku == null || !SelectedSku.Images.Any() ? Product.Images.Select(i => new { i.FileName, i.IsMain }) : SelectedSku.Images.Select(i => new { i.FileName, i.IsMain });
             rptThumbnails.DataBind();
         }
 
@@ -233,8 +243,8 @@ namespace AstRostov
 
         protected void BindAttributeSku(object sender, EventArgs e)
         {
-            var attrValIds = SelectedAttributeValueIds; 
-                //new List<int>();
+            var attrValIds = SelectedAttributeValueIds;
+            //new List<int>();
             //foreach (RepeaterItem rptItem in rptAttrs.Items)
             //{
             //    var ddlAttrValues = rptItem.FindControl("ddlAttrValues") as DropDownList;
@@ -280,20 +290,22 @@ namespace AstRostov
                 phProductActions.Visible = true;
                 CheckInventory(null, null);
             }
+            BindImages();
         }
 
         protected void DeleteProduct(object sender, EventArgs e)
         {
+            int categoryId = Product.CategoryId;
             Product.Attributes.Clear();
-            
+
             foreach (var sku in Product.SkuCollection)
             {
                 sku.AttributeValues.Clear();
             }
-            
+
             CoreData.Context.Products.Remove(Product);
             CoreData.Context.SaveChanges();
-            Response.Redirect("~/Admin/ProductList.aspx");
+            Response.Redirect(String.Format("~/Category.aspx?id={0}", categoryId));
         }
     }
 }

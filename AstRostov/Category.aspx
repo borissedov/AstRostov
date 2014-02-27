@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Catalog.master" AutoEventWireup="true" CodeBehind="Category.aspx.cs" Inherits="AstRostov.CategoryPage" %>
 
 <%@ Import Namespace="AstCore.Helpers" %>
+<%@ Import Namespace="AstCore.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <title>АСТ-Ростов. Категория
@@ -52,7 +53,7 @@
                                         <hr>
                                         <!-- Price -->
                                         <div class="price pull-left">
-                                            <%#Eval("FormattedPrice") %>
+                                            <%# ((Product)Container.DataItem).FormattedPrice() %>
                                         </div>
                                         <!-- Add to cart -->
                                         <div class="pull-right">

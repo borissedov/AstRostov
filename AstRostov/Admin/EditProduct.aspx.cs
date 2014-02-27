@@ -406,6 +406,8 @@ namespace AstRostov.Admin
                 return;
             }
 
+            skuToDelete.AttributeValues.Clear();
+
             product.SkuCollection.Remove(skuToDelete);
             CoreData.Context.Skus.Remove(skuToDelete);
 

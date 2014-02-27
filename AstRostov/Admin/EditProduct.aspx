@@ -31,8 +31,6 @@
             <span class="control-label">Описание</span>
             <div class="controls">
                 <ucc:RichTextBox runat="server" ID="tbDescription"></ucc:RichTextBox>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbDescription" Display="Dynamic" ErrorMessage="*" CssClass="text-error"></asp:RequiredFieldValidator>
-
             </div>
         </div>
         <div class="control-group">

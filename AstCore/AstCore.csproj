@@ -130,6 +130,10 @@
     <Compile Include="Migrations\201402271749168_SkuImagesImplement.Designer.cs">
       <DependentUpon>201402271749168_SkuImagesImplement.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402271848395_ProductDescriptionUrequired.cs" />
+    <Compile Include="Migrations\201402271848395_ProductDescriptionUrequired.Designer.cs">
+      <DependentUpon>201402271848395_ProductDescriptionUrequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -231,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402271749168_SkuImagesImplement.resx">
       <DependentUpon>201402271749168_SkuImagesImplement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402271848395_ProductDescriptionUrequired.resx">
+      <DependentUpon>201402271848395_ProductDescriptionUrequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
