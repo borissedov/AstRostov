@@ -270,7 +270,7 @@ namespace AstRostov
                 else
                 {
                     phProductActions.Visible = false;
-                    litInventory.Text = "Заполните значения аттрибутов";
+                    litInventory.Text = "Заполните значения атрибутов";
                 }
             }
             else
