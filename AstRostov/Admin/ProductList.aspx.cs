@@ -27,8 +27,15 @@ namespace AstRostov.Admin
 
         protected void DeleteProduct(int productId)
         {
+            Product productToDelete = CoreData.Context.Products.Single(c => c.ProductId == productId);
 
-            Product productToDelete = CoreData.Context.Products.SingleOrDefault(c => c.ProductId == productId);
+            productToDelete.Attributes.Clear();
+
+            foreach (var sku in productToDelete.SkuCollection)
+            {
+                sku.AttributeValues.Clear();
+            }
+
             CoreData.Context.Products.Remove(productToDelete);
             CoreData.Context.SaveChanges();
             Response.Redirect("~/Admin/ProductList.aspx");

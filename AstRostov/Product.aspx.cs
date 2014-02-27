@@ -120,6 +120,7 @@ namespace AstRostov
             {
                 hlEdit.Visible = true;
                 hlEdit.NavigateUrl = ResolveUrl(String.Format("~/Admin/EditProduct.aspx?id={0}", ItemId));
+                btnDelete.Visible = true;
             }
         }
 
@@ -279,6 +280,20 @@ namespace AstRostov
                 phProductActions.Visible = true;
                 CheckInventory(null, null);
             }
+        }
+
+        protected void DeleteProduct(object sender, EventArgs e)
+        {
+            Product.Attributes.Clear();
+            
+            foreach (var sku in Product.SkuCollection)
+            {
+                sku.AttributeValues.Clear();
+            }
+            
+            CoreData.Context.Products.Remove(Product);
+            CoreData.Context.SaveChanges();
+            Response.Redirect("~/Admin/ProductList.aspx");
         }
     }
 }

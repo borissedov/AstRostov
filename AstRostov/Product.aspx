@@ -127,6 +127,7 @@
             <%--</ContentTemplate>
             </asp:UpdatePanel>--%>
             <asp:HyperLink runat="server" ID="hlEdit" Visible="False" Text="Редактировать" CssClass="btn btn-success"></asp:HyperLink>
+            <asp:Button runat="server" ID="btnDelete" Visible="False" Text="Удалить" CssClass="btn btn-danger" OnClick="DeleteProduct"></asp:Button>
             <div class="social-row">
                 <div id="vk_like"></div>
                 <script type="text/javascript">
