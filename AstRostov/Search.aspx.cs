@@ -149,12 +149,26 @@ namespace AstRostov
 
                 if (e.CommandName == "AddToCart")
                 {
-                    ShoppingCart.AddToCart(product.DefaultSku);
-                    Response.Redirect("~/ShoppingCart.aspx");
+                    if (product.SkuCollection.Count > 1)
+                    {
+                        Response.Redirect(String.Format("~/Product.aspx?id={0}", product.ProductId));
+                    }
+                    else
+                    {
+                        ShoppingCart.AddToCart(product.DefaultSku);
+                        Response.Redirect("~/ShoppingCart.aspx");
+                    }
                 }
                 else if (e.CommandName == "Reserve")
                 {
-                    Response.Redirect(String.Format("~/Preorder.aspx?id={0}", product.DefaultSku.SkuId));
+                    if (product.SkuCollection.Count > 1)
+                    {
+                        Response.Redirect(String.Format("~/Product.aspx?id={0}", product.ProductId));
+                    }
+                    else
+                    {
+                        Response.Redirect(String.Format("~/Preorder.aspx?id={0}", product.DefaultSku.SkuId));
+                    }
                 }
             }
         }

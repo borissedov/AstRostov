@@ -22,6 +22,15 @@ namespace AstRostov {
         protected global::System.Web.UI.WebControls.HiddenField hdnItemId;
         
         /// <summary>
+        /// hdnSkuId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnSkuId;
+        
+        /// <summary>
         /// ucProductBreadCrumbs control.
         /// </summary>
         /// <remarks>
@@ -49,22 +58,31 @@ namespace AstRostov {
         protected global::System.Web.UI.WebControls.Repeater rptAttrs;
         
         /// <summary>
-        /// UpdateProgress1 control.
+        /// phInventory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdateProgress UpdateProgress1;
+        protected global::System.Web.UI.WebControls.PlaceHolder phInventory;
         
         /// <summary>
-        /// pnlAddToCart control.
+        /// litInventory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlAddToCart;
+        protected global::System.Web.UI.WebControls.Literal litInventory;
+        
+        /// <summary>
+        /// phProductActions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phProductActions;
         
         /// <summary>
         /// tbProductAddCount control.
@@ -91,7 +109,7 @@ namespace AstRostov {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnReserveProduct;
+        protected global::System.Web.UI.WebControls.LinkButton btnReserveProduct;
         
         /// <summary>
         /// hlEdit control.

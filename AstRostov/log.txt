@@ -1763,3 +1763,370 @@ Parameter name: source
    at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
    at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
 2014-02-26 17:20:09.5364|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 09:46:54.1789|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.Reflection.TargetInvocationException: ??????????? ? ???????? ????? ??????? 'FormattedPrice' ??? ??????? 'System.Data.Entity.DynamicProxies.Product_06B130B38835BF9B29C9083F569F02023145E387FED4143FB7E2B8EB7E9F005E' ????? ??????????:'??????? ?????? ?????? ????? ????????.' ---> System.InvalidOperationException: ??????? ?????? ?????? ????? ????????.
+   ? System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   ? System.Nullable`1.get_Value()
+   ? AstCore.Models.Product.get_FormattedPrice() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstCore\Models\Product.cs:?????? 148
+   --- ????? ??????????? ??????????? ????? ?????????? ---
+   ? System.ComponentModel.ReflectPropertyDescriptor.GetValue(Object component)
+   ? System.Web.UI.DataBinder.GetPropertyValue(Object container, String propName)
+   ? System.Web.UI.DataBinder.Eval(Object container, String[] expressionParts)
+   ? System.Web.UI.DataBinder.Eval(Object container, String expression)
+   ? System.Web.UI.TemplateControl.Eval(String expression)
+   ? ASP.controls_home_features_ascx.__DataBind__control10(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx:?????? 47
+   ? System.Web.UI.Control.OnDataBinding(EventArgs e)
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.Control.DataBindChildren()
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.ProductRowDataBound(Object sender, RepeaterItemEventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 43
+   ? System.Web.UI.WebControls.Repeater.OnItemDataBound(RepeaterItemEventArgs e)
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.BindFeaturedList() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 32
+   ? AstRostov.Controls.Home.Features.Page_Load(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 19
+   ? System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   ? System.Web.UI.Control.OnLoad(EventArgs e)
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.default_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_kuih5yvv.8.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 09:46:54.1919|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 09:47:17.8579|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.Reflection.TargetInvocationException: ??????????? ? ???????? ????? ??????? 'FormattedPrice' ??? ??????? 'System.Data.Entity.DynamicProxies.Product_06B130B38835BF9B29C9083F569F02023145E387FED4143FB7E2B8EB7E9F005E' ????? ??????????:'??????? ?????? ?????? ????? ????????.' ---> System.InvalidOperationException: ??????? ?????? ?????? ????? ????????.
+   ? System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   ? System.Nullable`1.get_Value()
+   ? AstCore.Models.Product.get_FormattedPrice() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstCore\Models\Product.cs:?????? 148
+   --- ????? ??????????? ??????????? ????? ?????????? ---
+   ? System.ComponentModel.ReflectPropertyDescriptor.GetValue(Object component)
+   ? System.Web.UI.DataBinder.GetPropertyValue(Object container, String propName)
+   ? System.Web.UI.DataBinder.Eval(Object container, String[] expressionParts)
+   ? System.Web.UI.DataBinder.Eval(Object container, String expression)
+   ? System.Web.UI.TemplateControl.Eval(String expression)
+   ? ASP.controls_home_features_ascx.__DataBind__control10(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx:?????? 47
+   ? System.Web.UI.Control.OnDataBinding(EventArgs e)
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.Control.DataBindChildren()
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.ProductRowDataBound(Object sender, RepeaterItemEventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 43
+   ? System.Web.UI.WebControls.Repeater.OnItemDataBound(RepeaterItemEventArgs e)
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.BindFeaturedList() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 32
+   ? AstRostov.Controls.Home.Features.Page_Load(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 19
+   ? System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   ? System.Web.UI.Control.OnLoad(EventArgs e)
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.default_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_kuih5yvv.8.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 09:47:17.8579|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 09:50:20.2479|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.Reflection.TargetInvocationException: ??????????? ? ???????? ????? ??????? 'FormattedPrice' ??? ??????? 'System.Data.Entity.DynamicProxies.Product_06B130B38835BF9B29C9083F569F02023145E387FED4143FB7E2B8EB7E9F005E' ????? ??????????:'??????? ?????? ?????? ????? ????????.' ---> System.InvalidOperationException: ??????? ?????? ?????? ????? ????????.
+   ? System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   ? System.Nullable`1.get_Value()
+   ? AstCore.Models.Product.get_FormattedPrice() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstCore\Models\Product.cs:?????? 148
+   --- ????? ??????????? ??????????? ????? ?????????? ---
+   ? System.ComponentModel.ReflectPropertyDescriptor.GetValue(Object component)
+   ? System.Web.UI.DataBinder.GetPropertyValue(Object container, String propName)
+   ? System.Web.UI.DataBinder.Eval(Object container, String[] expressionParts)
+   ? System.Web.UI.DataBinder.Eval(Object container, String expression)
+   ? System.Web.UI.TemplateControl.Eval(String expression)
+   ? ASP.controls_home_features_ascx.__DataBind__control10(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx:?????? 47
+   ? System.Web.UI.Control.OnDataBinding(EventArgs e)
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.Control.DataBindChildren()
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.ProductRowDataBound(Object sender, RepeaterItemEventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 43
+   ? System.Web.UI.WebControls.Repeater.OnItemDataBound(RepeaterItemEventArgs e)
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.BindFeaturedList() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 32
+   ? AstRostov.Controls.Home.Features.Page_Load(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 19
+   ? System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   ? System.Web.UI.Control.OnLoad(EventArgs e)
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.default_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_kuih5yvv.8.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 09:50:20.2479|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 09:52:51.2059|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.Reflection.TargetInvocationException: ??????????? ? ???????? ????? ??????? 'FormattedPrice' ??? ??????? 'System.Data.Entity.DynamicProxies.Product_06B130B38835BF9B29C9083F569F02023145E387FED4143FB7E2B8EB7E9F005E' ????? ??????????:'??????? ?????? ?????? ????? ????????.' ---> System.InvalidOperationException: ??????? ?????? ?????? ????? ????????.
+   ? System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   ? System.Nullable`1.get_Value()
+   --- ????? ??????????? ??????????? ????? ?????????? ---
+   ? System.ComponentModel.ReflectPropertyDescriptor.GetValue(Object component)
+   ? System.Web.UI.DataBinder.GetPropertyValue(Object container, String propName)
+   ? System.Web.UI.DataBinder.Eval(Object container, String[] expressionParts)
+   ? System.Web.UI.DataBinder.Eval(Object container, String expression)
+   ? System.Web.UI.TemplateControl.Eval(String expression)
+   ? ASP.controls_home_features_ascx.__DataBind__control10(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx:?????? 47
+   ? System.Web.UI.Control.OnDataBinding(EventArgs e)
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.Control.DataBindChildren()
+   ? System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   ? System.Web.UI.Control.DataBind()
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.ProductRowDataBound(Object sender, RepeaterItemEventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 43
+   ? System.Web.UI.WebControls.Repeater.OnItemDataBound(RepeaterItemEventArgs e)
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.Controls.Home.Features.BindFeaturedList() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 32
+   ? AstRostov.Controls.Home.Features.Page_Load(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Controls\Home\Features.ascx.cs:?????? 19
+   ? System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   ? System.Web.UI.Control.OnLoad(EventArgs e)
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.default_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_kuih5yvv.8.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 09:52:51.2059|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 10:28:58.9149|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.NullReferenceException: ?????? ?? ?????? ?? ????????? ?? ????????? ???????.
+   ? AstRostov.ProductPage.CheckInventory(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 187
+   ? AstRostov.ProductPage.Page_Load(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 112
+   ? System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   ? System.Web.UI.Control.OnLoad(EventArgs e)
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.product_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_bgukulks.14.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 10:28:58.9259|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 13:30:56.2979|FATAL|AstRostov.Global|System.Web.HttpParseException (0x80004005): ??????? ????? ???????? ???? 'btnReserveProduct', ?? ??? ??? (System.Web.UI.WebControls.Button) ??????????? ? ????? ???????? ?????????? (System.Web.UI.WebControls.LinkButton). ---> System.Web.HttpParseException (0x80004005): ??????? ????? ???????? ???? 'btnReserveProduct', ?? ??? ??? (System.Web.UI.WebControls.Button) ??????????? ? ????? ???????? ?????????? (System.Web.UI.WebControls.LinkButton).
+   ? System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildFieldDeclaration(ControlBuilder builder)
+   ? System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   ? System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   ? System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   ? System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   ? System.Web.Compilation.TemplateControlCodeDomTreeGenerator.BuildMiscClassMembers()
+   ? System.Web.Compilation.PageCodeDomTreeGenerator.BuildMiscClassMembers()
+   ? System.Web.Compilation.BaseCodeDomTreeGenerator.BuildSourceDataTree()
+   ? System.Web.Compilation.BaseCodeDomTreeGenerator.GetCodeDomTree(CodeDomProvider codeDomProvider, StringResourceBuilder stringResourceBuilder, VirtualPath virtualPath)
+   ? System.Web.Compilation.BaseTemplateBuildProvider.GenerateCode(AssemblyBuilder assemblyBuilder)
+   ? System.Web.Compilation.AssemblyBuilder.AddBuildProvider(BuildProvider buildProvider)
+   ? System.Web.Compilation.AssemblyBuilder.AddBuildProvider(BuildProvider buildProvider)
+   ? System.Web.Compilation.BuildProvidersCompiler.ProcessBuildProviders()
+   ? System.Web.Compilation.BuildProvidersCompiler.PerformBuild()
+   ? System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)
+   ? System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   ? System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   ? System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)
+   ? Microsoft.AspNet.FriendlyUrls.Abstractions.BuildManagerWrapper.GetObjectFactory(String virtualPath, Boolean throwIfNotFound)
+   ? Microsoft.AspNet.FriendlyUrls.FriendlyUrlRoute.GetWebObjectFactory(HttpContextBase httpContext, String modifiedVirtualPath)
+   ? Microsoft.AspNet.FriendlyUrls.FriendlyUrlRoute.Resolve(HttpContextBase httpContext, IList`1 extensions, String virtualPathOverride, IFriendlyUrlRouteSupportFunctions supportFunctions)
+   ? Microsoft.AspNet.FriendlyUrls.FriendlyUrlRoute.Microsoft.AspNet.FriendlyUrls.Abstractions.IFriendlyUrlRouteSupportFunctions.Resolve(HttpContextBase httpContext, IList`1 extensions, String virtualPathOverride)
+   ? Microsoft.AspNet.FriendlyUrls.FriendlyUrlRoute.GetRouteData(HttpContextBase httpContext, String pathOverride, IFriendlyUrlRouteSupportFunctions supportFunctions)
+   ? Microsoft.AspNet.FriendlyUrls.FriendlyUrlRoute.GetRouteData(HttpContextBase httpContext)
+   ? System.Web.Routing.RouteCollection.GetRouteData(HttpContextBase httpContext)
+   ? System.Web.Routing.UrlRoutingModule.PostResolveRequestCache(HttpContextBase context)
+   ? System.Web.Routing.UrlRoutingModule.OnApplicationPostResolveRequestCache(Object sender, EventArgs e)
+   ? System.Web.HttpApplication.SyncEventExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 13:30:57.2129|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 13:40:27.2589|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.Web.HttpException (0x80004005): DataBinding: 'AstCore.Models.AttributeValue' ?? ???????? ???????? ? ?????? AttributeValueId. 
+   ? System.Web.UI.DataBinder.GetPropertyValue(Object container, String propName)
+   ? System.Web.UI.DataBinder.GetPropertyValue(Object container, String propName, String format)
+   ? System.Web.UI.WebControls.ListControl.PerformDataBinding(IEnumerable dataSource)
+   ? System.Web.UI.WebControls.ListControl.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.ListControl.PerformSelect()
+   ? System.Web.UI.WebControls.BaseDataBoundControl.DataBind()
+   ? AstRostov.ProductPage.BindAttrValuesForRptItem(Object sender, RepeaterItemEventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 213
+   ? System.Web.UI.WebControls.Repeater.OnItemDataBound(RepeaterItemEventArgs e)
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.ProductPage.BindAttributes() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 144
+   ? AstRostov.ProductPage.Page_Load(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 110
+   ? System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   ? System.Web.UI.Control.OnLoad(EventArgs e)
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.product_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_f4gsktct.15.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 13:40:27.3299|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 13:57:14.8289|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.FormatException: ??????? ?????? ????? ???????? ??????.
+   ? System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   ? System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   ? System.Int32.Parse(String s)
+   ? AstRostov.ProductPage.<get_SelectedAttributeValueIds>b__6(DropDownList ddl) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 224
+   ? System.Linq.Enumerable.<>c__DisplayClass12`3.<CombineSelectors>b__11(TSource x)
+   ? System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   ? System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   ? System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   ? AstRostov.ProductPage.get_SelectedAttributeValueIds() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 222
+   ? AstRostov.ProductPage.BindAttributeSku(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Product.aspx.cs:?????? 230
+   ? System.Web.UI.WebControls.ListControl.OnSelectedIndexChanged(EventArgs e)
+   ? System.Web.UI.WebControls.DropDownList.RaisePostDataChangedEvent()
+   ? System.Web.UI.WebControls.DropDownList.System.Web.UI.IPostBackDataHandler.RaisePostDataChangedEvent()
+   ? System.Web.UI.Page.RaiseChangedEvents()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.product_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_ce1n3mbw.18.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 13:57:14.9549|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 14:37:52.8479|FATAL|AstRostov.CheckoutPage|System.Net.Mail.SmtpException: ???? ??? ???????? ????????? ??????????? ?????. ---> System.Net.WebException: ?????????? ??????????? ? ????????? ???????? ---> System.Net.Sockets.SocketException: ??????????? ?? ???????????, ?.?. ???????? ????????? ?????? ?????? ?? ??????????? 81.176.226.19:25
+   ? System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   ? System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- ????? ??????????? ??????????? ????? ?????????? ---
+   ? System.Net.ServicePoint.GetConnection(PooledStream PooledStream, Object owner, Boolean async, IPAddress& address, Socket& abortSocket, Socket& abortSocket6)
+   ? System.Net.PooledStream.Activate(Object owningObject, Boolean async, GeneralAsyncDelegate asyncCallback)
+   ? System.Net.PooledStream.Activate(Object owningObject, GeneralAsyncDelegate asyncCallback)
+   ? System.Net.ConnectionPool.GetConnection(Object owningObject, GeneralAsyncDelegate asyncCallback, Int32 creationTimeout)
+   ? System.Net.Mail.SmtpConnection.GetConnection(ServicePoint servicePoint)
+   ? System.Net.Mail.SmtpTransport.GetConnection(ServicePoint servicePoint)
+   ? System.Net.Mail.SmtpClient.GetConnection()
+   ? System.Net.Mail.SmtpClient.Send(MailMessage message)
+   --- ????? ??????????? ??????????? ????? ?????????? ---
+   ? System.Net.Mail.SmtpClient.Send(MailMessage message)
+   ? AstCore.Helpers.AstMail.SendEmail(String toAddress, String body, Boolean isBodyHtml, String subject) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstCore\Helpers\AstMail.cs:?????? 28
+   ? AstRostov.CheckoutPage.SendOrderRecieptBankTransfer(Int32 orderId) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Checkout.aspx.cs:?????? 188
+2014-02-27 14:37:52.9419|ERROR|AstRostov.CheckoutPage|?????? ??? ???????? ?????
+2014-02-27 15:50:54.0339|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.InvalidOperationException: ?????????????????? ?? ???????? ??????????????? ???????
+   ? System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   ? AstRostov.CategoryPage.<>c__DisplayClass30.<BindAttrValuesToRepeaterItem>b__2a(Sku s) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Category.aspx.cs:?????? 265
+   ? System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   ? System.Linq.Enumerable.<DistinctIterator>d__81`1.MoveNext()
+   ? System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   ? System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   ? AstRostov.CategoryPage.BindAttrValuesToRepeaterItem(Object sender, RepeaterItemEventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Category.aspx.cs:?????? 260
+   ? System.Web.UI.WebControls.Repeater.OnItemDataBound(RepeaterItemEventArgs e)
+   ? System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   ? System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   ? System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   ? System.Web.UI.WebControls.Repeater.DataBind()
+   ? AstRostov.CategoryPage.BindFilters() ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Category.aspx.cs:?????? 182
+   ? AstRostov.CategoryPage.Page_Load(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Category.aspx.cs:?????? 83
+   ? System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   ? System.Web.UI.Control.OnLoad(EventArgs e)
+   ? System.Web.UI.Control.LoadRecursive()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.category_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_nmftetoe.4.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 15:50:54.1129|ERROR|AstRostov.Global|This is an error with an Exception
+2014-02-27 15:52:10.0949|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): ?????? ?????????? ???? "System.Web.HttpUnhandledException". ---> System.NullReferenceException: ?????? ?? ?????? ?? ????????? ?? ????????? ???????.
+   ? AstRostov.CategoryPage.<Filter>b__22(DropDownList ddl) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Category.aspx.cs:?????? 238
+   ? System.Linq.Enumerable.<>c__DisplayClass12`3.<CombineSelectors>b__11(TSource x)
+   ? System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   ? System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
+   ? System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   ? System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   ? AstRostov.CategoryPage.Filter(Object sender, EventArgs e) ? c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Category.aspx.cs:?????? 235
+   ? System.Web.UI.WebControls.ListControl.OnSelectedIndexChanged(EventArgs e)
+   ? System.Web.UI.WebControls.DropDownList.RaisePostDataChangedEvent()
+   ? System.Web.UI.WebControls.DropDownList.System.Web.UI.IPostBackDataHandler.RaisePostDataChangedEvent()
+   ? System.Web.UI.Page.RaiseChangedEvents()
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.HandleError(Exception e)
+   ? System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   ? System.Web.UI.Page.ProcessRequest()
+   ? System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   ? System.Web.UI.Page.ProcessRequest(HttpContext context)
+   ? ASP.category_aspx.ProcessRequest(HttpContext context) ? c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\b9991b60\703b216d\App_Web_lvydiluy.1.cs:?????? 0
+   ? System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   ? System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-02-27 15:52:10.1669|ERROR|AstRostov.Global|This is an error with an Exception

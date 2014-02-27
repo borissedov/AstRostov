@@ -9,6 +9,7 @@
         <div class="category-dropdown clearfix">
             <ucn:BootstrapCategoryTree runat="server" ID="ucCategoryTree" ></ucn:BootstrapCategoryTree>
         </div>
+         <asp:ContentPlaceHolder runat="server" ID="LeftContent" />
     </div>
     <div class="span9">
         <%--<div class="row-fluid">

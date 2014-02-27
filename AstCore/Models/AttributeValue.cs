@@ -11,8 +11,10 @@ namespace AstCore.Models
         //{
         //    get; set;
         //}
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Column(Order = 0)]
+        public int AttributeValueId { get; set; }
 
-        [Key, Column(Order = 1)]
+        [Key, Column(Order = 2)]
         [ForeignKey("Attribute")]
         public virtual int AttributeId
         {
@@ -25,7 +27,7 @@ namespace AstCore.Models
             get; set;
         }
 
-        [Key, Column(Order = 0)]
+        [Key, Column(Order = 1)]
         [Required]
         public string Value { get; set; }
     

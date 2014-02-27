@@ -18,9 +18,6 @@
                     </h2>
                 </a>
             </div>
-            <div class="pull-right" style="margin-top: 20px;">
-                <asp:DropDownList runat="server" ID="ddlBrands" OnSelectedIndexChanged="FilterBrand" AutoPostBack="True" />
-            </div>
         </div>
     </div>
     <div class="shop-items">
@@ -96,4 +93,21 @@
             </li>
         </ul>
     </div>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="LeftContent" ID="Content3" runat="server">
+    <h4>Фильтр</h4>
+    <dl>
+        <dt>Производитель</dt>
+        <dd>
+            <asp:DropDownList runat="server" ID="ddlBrands" OnSelectedIndexChanged="Filter" AutoPostBack="True" />
+        </dd>
+        <asp:Repeater runat="server" ID="rptAttributes" OnItemDataBound="BindAttrValuesToRepeaterItem">
+            <ItemTemplate>
+                <dt><%#Eval("Name") %></dt>
+                <dd>
+                    <asp:DropDownList runat="server" ID="ddlAttributeValues" OnSelectedIndexChanged="Filter" AutoPostBack="True" />
+                </dd>
+            </ItemTemplate>
+        </asp:Repeater>
+    </dl>
 </asp:Content>

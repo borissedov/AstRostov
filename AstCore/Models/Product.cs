@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using AstCore.Exceptions;
 using HtmlAgilityPack;
 
 namespace AstCore.Models
@@ -145,7 +144,7 @@ namespace AstCore.Models
 
                 if (minPrice < maxPrice)
                 {
-                    return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", RetailPrice, SalePrice.Value);
+                    return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", maxPrice, minPrice);
                 }
                 else
                 {
@@ -168,37 +167,38 @@ namespace AstCore.Models
             }
         }
 
-        [NotMapped]
-        private Sku _selectedSku;
+        //[NotMapped]
+        //private Sku _selectedSku;
 
-        [NotMapped]
-        public Sku SelectedSku
-        {
-            get
-            {
-                if (_selectedSku == null)
-                {
-                    _selectedSku = DefaultSku;
-                }
-                return _selectedSku;
-            }
-            set
-            {
-                _selectedSku = value;
-            }
-        }
+        //[NotMapped]
+        //public Sku SelectedSku
+        //{
+        //    get
+        //    {
+        //        if (_selectedSku == null)
+        //        {
+        //            _selectedSku = DefaultSku;
+        //        }
+        //        return _selectedSku;
+        //    }
+        //    set
+        //    {
+        //        _selectedSku = value;
+        //    }
+        //}
 
         [NotMapped]
         public Sku DefaultSku
         {
             get
             {
-                var defSku = SkuCollection.SingleOrDefault(s => s.IsDefault);
-                if (defSku == null)
-                {
-                    throw new CatalogException("Cannot define default sku for product");
-                }
-                return defSku;
+                //var defSku = SkuCollection.SingleOrDefault(s => s.IsDefault);
+                //if (defSku == null)
+                //{
+                //    throw new CatalogException("Cannot define default sku for product");
+                //}
+                //return defSku;
+                return SkuCollection.First();
             }
         }
     }

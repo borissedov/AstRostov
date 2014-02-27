@@ -122,6 +122,10 @@
     <Compile Include="Migrations\201402261238420_AttrKeyFix.Designer.cs">
       <DependentUpon>201402261238420_AttrKeyFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402270954337_AttrValFix2.cs" />
+    <Compile Include="Migrations\201402270954337_AttrValFix2.Designer.cs">
+      <DependentUpon>201402270954337_AttrValFix2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -156,7 +160,9 @@
     <Compile Include="Models\Sku.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchEngine\AttributeValueComparer.cs" />
     <Compile Include="SearchEngine\BrandComparer.cs" />
+    <Compile Include="SearchEngine\AttributeComparer.cs" />
     <Compile Include="SearchEngine\ProductComparer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +220,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402261238420_AttrKeyFix.resx">
       <DependentUpon>201402261238420_AttrKeyFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402270954337_AttrValFix2.resx">
+      <DependentUpon>201402270954337_AttrValFix2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

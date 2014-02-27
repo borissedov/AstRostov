@@ -31,6 +31,15 @@ namespace AstRostov {
         protected global::AstRostov.Controls.Navigation.BootstrapCategoryTree ucCategoryTree;
         
         /// <summary>
+        /// LeftContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder LeftContent;
+        
+        /// <summary>
         /// MainContent control.
         /// </summary>
         /// <remarks>

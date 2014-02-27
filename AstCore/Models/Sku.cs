@@ -13,7 +13,7 @@ namespace AstCore.Models
 
         public int ProductId { get; set; }
 
-        public bool IsDefault { get; set; }
+        public bool IsDefault { get; set; }//TODO: Remove unused
 
         [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
@@ -48,6 +48,22 @@ namespace AstCore.Models
             get
             {
                 return SalePrice ?? RetailPrice ?? Product.SalePrice ?? Product.RetailPrice;
+            }
+        }
+
+        [NotMapped]
+        public string FormattedPrice
+        {
+            get
+            {
+                if (RetailPrice.HasValue && FinalPrice < RetailPrice)
+                {
+                    return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", RetailPrice, FinalPrice);
+                }
+                else
+                {
+                    return String.Format(@"<span class=""price-new"">{0:c}</span>", FinalPrice);
+                }
             }
         }
     }

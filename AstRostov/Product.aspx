@@ -47,7 +47,8 @@
         }
     </script>
 
-    <asp:HiddenField runat="server" ID="hdnItemId" />
+    <asp:HiddenField runat="server" ID="hdnItemId"></asp:HiddenField>
+    <asp:HiddenField runat="server" ID="hdnSkuId"></asp:HiddenField>
     <ucn:ProductBreadCrumbs runat="server" ID="ucProductBreadCrumbs"></ucn:ProductBreadCrumbs>
     <a href='<%=ResolveUrl(String.Format("~/Product.aspx?id={0}", Product.ProductId)) %>'>
         <h2>
@@ -83,23 +84,7 @@
         <div class="span5">
             <!-- Title -->
             <h4><%=Product.Name %></h4>
-            <dl class="dl-horizontal">
-                <dt>Артикул:</dt>
-                <dd><%=Product.ProductNum %>&nbsp;</dd>
-                <dt>Производитель:</dt>
-                <dd><%=Product.Brand %>&nbsp;</dd>
-                <dt>Остаток на складе:</dt>
-                <dd><%=Product.DefaultSku.Inventory == 0 ? "нет на складе" : Product.DefaultSku.Inventory > 10 ? "более 10" : "менее 10"  %></dd>
-                <asp:Repeater runat="server" ID="rptAttrs" OnItemDataBound="BindAttrValuesForRptItem">
-                    <ItemTemplate>
-                        <dt><%#Eval("Name") %></dt>
-                        <dd>
-                            <asp:DropDownList runat="server" ID="ddlAttrValues" /></dd>
-                    </ItemTemplate>
-                </asp:Repeater>
-            </dl>
-            <h4><strong>Цена: <%=Product.FormattedPrice %></strong></h4>
-            <asp:UpdateProgress runat="server" ID="UpdateProgress1" AssociatedUpdatePanelID="pnlAddToCart">
+            <%--<asp:UpdateProgress runat="server" ID="UpdateProgress1" AssociatedUpdatePanelID="pnlAddToCart">
                 <ProgressTemplate>
                     <div class="wait-progress">
                         <img alt="Пожалуйста, ждите" title="Пожалуйста, ждите" src='<%=ResolveUrl("~/img/loading.gif") %>' />
@@ -107,16 +92,40 @@
                 </ProgressTemplate>
             </asp:UpdateProgress>
             <asp:UpdatePanel runat="server" ID="pnlAddToCart" class="input-append" UpdateMode="Always">
-                <ContentTemplate>
+                <ContentTemplate>--%>
+            <dl class="dl-horizontal">
+                <dt>Артикул:</dt>
+                <dd><%=Product.ProductNum %>&nbsp;</dd>
+                <dt>Производитель:</dt>
+                <dd><%=Product.Brand %>&nbsp;</dd>
 
+                <asp:Repeater runat="server" ID="rptAttrs" OnItemDataBound="BindAttrValuesForRptItem">
+                    <ItemTemplate>
+                        <dt><%#Eval("Name") %></dt>
+                        <dd>
+                            <asp:DropDownList runat="server" ID="ddlAttrValues" OnSelectedIndexChanged="BindAttributeSku" AutoPostBack="True" /></dd>
+                        <asp:HiddenField runat="server" ID="hdnAttrId" Value='<%#Eval("AttributeId") %>' />
+                    </ItemTemplate>
+                </asp:Repeater>
+                <asp:PlaceHolder runat="server" ID="phInventory">
+                    <dt>Остаток на складе:</dt>
+                    <dd>
+                        <asp:Literal runat="server" ID="litInventory"></asp:Literal></dd>
+                </asp:PlaceHolder>
+            </dl>
+            <h4><strong>Цена: <%=SelectedSku != null ? SelectedSku.FormattedPrice : Product.FormattedPrice %></strong></h4>
+
+            <asp:PlaceHolder runat="server" ID="phProductActions">
+                <div class="input-append">
                     <asp:TextBox runat="server" TextMode="Number" Text="1" Width="37" ID="tbProductAddCount" ClientIDMode="Static" OnTextChanged="CheckInventory" AutoPostBack="True"></asp:TextBox>
                     <asp:LinkButton CssClass="btn btn-primary" runat="server" ID="btnAddToCart" OnClick="AddToCart">
                     <i class="icon-white icon-shopping-cart"></i>&nbsp;Добавить в корзину
                     </asp:LinkButton>
-
-                    <asp:Button runat="server" ID="btnReserveProduct" OnClick="ReserveProduct" CssClass="btn btn-warning" Text="Оформить предзаказ" />
-                </ContentTemplate>
-            </asp:UpdatePanel>
+                    <asp:LinkButton runat="server" ID="btnReserveProduct" OnClick="ReserveProduct" CssClass="btn btn-warning" Text="Оформить предзаказ"></asp:LinkButton>
+                </div>
+            </asp:PlaceHolder>
+            <%--</ContentTemplate>
+            </asp:UpdatePanel>--%>
             <asp:HyperLink runat="server" ID="hlEdit" Visible="False" Text="Редактировать" CssClass="btn btn-success"></asp:HyperLink>
             <div class="social-row">
                 <div id="vk_like"></div>

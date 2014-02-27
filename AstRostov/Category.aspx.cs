@@ -14,6 +14,8 @@ namespace AstRostov
 {
     public partial class CategoryPage : System.Web.UI.Page
     {
+        private Category _category;
+
         protected int ItemId
         {
             get
@@ -48,17 +50,37 @@ namespace AstRostov
             }
         }
 
+        private int[] SelectedAttributeValueIds
+        {
+            get
+            {
+                var attrStr = Request.Params["attrs"];
+                if (!String.IsNullOrEmpty(attrStr))
+                {
+                    return attrStr
+                        .Split(new[] { '|' })
+                        .Select(int.Parse)
+                        .ToArray();
+                }
+                else
+                {
+                    return new int[0];
+                }
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
-                var category = CoreData.Context.Categories.SingleOrDefault(c => c.CategoryId == ItemId);
-                if (category == null)
+                _category = CoreData.Context.Categories.SingleOrDefault(c => c.CategoryId == ItemId);
+                if (_category == null)
                 {
                     Response.Redirect("~/Default.aspx");
                 }
 
                 BindBrands();
+                BindFilters();
                 BindProductList();
                 BindPaging();
             }
@@ -75,23 +97,44 @@ namespace AstRostov
 
         private void BindProductList()
         {
-            var category = CoreData.Context.Categories.Single(c => c.CategoryId == ItemId);
+            litCategoryName.Text = _category.Name;
+            litCategoryNameHead.Text = _category.Name;
 
-            litCategoryName.Text = category.Name;
-            litCategoryNameHead.Text = category.Name;
-
+            IEnumerable<Product> filteredList;
             Product[] paginatedProductList;
             int count;
+
+            filteredList = _category.ProductList;
+
             if (ddlBrands.SelectedValue != "-1")
             {
-                paginatedProductList = category.ProductList.Where(p => p.Brand != null && p.BrandId.ToString() == ddlBrands.SelectedValue).Skip((CurrentPageNo - 1) * ItemsPerPage).Take(ItemsPerPage).ToArray();
-                count = category.ProductList.Count(p => p.Brand != null && p.BrandId.ToString() == ddlBrands.SelectedValue);
+                filteredList =
+                    filteredList.Where(p => p.Brand != null && p.BrandId.ToString() == ddlBrands.SelectedValue);
             }
-            else
+
+            if (SelectedAttributeValueIds.Any())
             {
-                paginatedProductList = category.ProductList.Skip((CurrentPageNo - 1) * ItemsPerPage).Take(ItemsPerPage).ToArray();
-                count = category.ProductList.Count();
+                filteredList =
+                    filteredList.Where(
+                        p =>
+                            p.SkuCollection
+                                .Any(
+                                s => s.AttributeValues
+                                    .Select(v => v.AttributeValueId)
+                                    .Intersect(SelectedAttributeValueIds)
+                                    .Count() == SelectedAttributeValueIds.Length
+                                    )
+
+                            );
             }
+
+            var resultList = filteredList.ToArray();
+
+            paginatedProductList = resultList
+                .Skip((CurrentPageNo - 1) * ItemsPerPage)
+                .Take(ItemsPerPage)
+                .ToArray();
+            count = resultList.Count();
 
             PageCount = count / ItemsPerPage + (count % ItemsPerPage == 0 ? 0 : 1);
             if (PageCount == 0)
@@ -135,6 +178,13 @@ namespace AstRostov
             }
         }
 
+        private void BindFilters()
+        {
+            var attributes = _category.ProductList.SelectMany(p => p.Attributes).Distinct(AttributeComparer.Instance).ToArray();
+            rptAttributes.DataSource = attributes;
+            rptAttributes.DataBind();
+        }
+
         protected void ProductRowDataBound(object sender, RepeaterItemEventArgs e)
         {
             var rptProductListItems = e.Item.FindControl("rptProductListItems") as Repeater;
@@ -159,19 +209,79 @@ namespace AstRostov
 
                 if (e.CommandName == "AddToCart")
                 {
-                    ShoppingCart.AddToCart(product.DefaultSku);
-                    Response.Redirect("~/ShoppingCart.aspx");
+                    if (product.SkuCollection.Count > 1)
+                    {
+                        Response.Redirect(String.Format("~/Product.aspx?id={0}", product.ProductId));
+                    }
+                    else
+                    {
+                        ShoppingCart.AddToCart(product.DefaultSku);
+                        Response.Redirect("~/ShoppingCart.aspx");
+                    }
                 }
                 else if (e.CommandName == "Reserve")
                 {
-                    Response.Redirect(String.Format("~/Preorder.aspx?id={0}", product.DefaultSku.SkuId));
+                    if (product.SkuCollection.Count > 1)
+                    {
+                        Response.Redirect(String.Format("~/Product.aspx?id={0}", product.ProductId));
+                    }
+                    else
+                    {
+                        Response.Redirect(String.Format("~/Preorder.aspx?id={0}", product.DefaultSku.SkuId));
+                    }
                 }
             }
         }
 
-        protected void FilterBrand(object sender, EventArgs e)
+        protected void Filter(object sender, EventArgs e)
         {
-            Response.Redirect(String.Format("~/Category.aspx?id={0}&brand={1}", ItemId, ddlBrands.SelectedValue));
+            var selectedAttrValIds = rptAttributes.Items.OfType<RepeaterItem>()
+                    .Where(i => i.ItemType == ListItemType.Item || i.ItemType == ListItemType.AlternatingItem)
+                    .Select(i => i.FindControl("ddlAttributeValues") as DropDownList)
+                    .Select(ddl => int.Parse(ddl.SelectedValue))
+                    .Where(i => i != -1).ToArray();
+
+            var attrsString = String.Join("|", selectedAttrValIds);
+            Response.Redirect(String.Format("~/Category.aspx?id={0}&brand={1}&attrs={2}", ItemId, ddlBrands.SelectedValue, attrsString));
+        }
+
+        protected void BindAttrValuesToRepeaterItem(object sender, RepeaterItemEventArgs e)
+        {
+            var attribute = e.Item.DataItem as AstCore.Models.Attribute;
+            var ddlAttrValues = e.Item.FindControl("ddlAttributeValues") as DropDownList;
+            if (attribute != null && ddlAttrValues != null)
+            {
+                var attrDefaultValue = new AttributeValue
+                {
+                    AttributeValueId = -1,
+                    Value = String.Format("Выберите {0}", attribute.Name)
+                };
+
+                var attrValListToView = new List<AttributeValue>();
+                attrValListToView.Add(attrDefaultValue);
+
+                var attrValsForCategory =
+                    _category
+                        .ProductList
+                        .SelectMany(p => p.SkuCollection)
+                        .Select(s =>
+                            s.AttributeValues.SingleOrDefault(v => v.AttributeId == attribute.AttributeId))
+                        .Where(v => v != null)
+                            .Distinct(AttributeValueComparer.Instance).ToArray();
+                attrValListToView.AddRange(attrValsForCategory);
+                ddlAttrValues.DataSource = attrValListToView;
+                ddlAttrValues.DataTextField = "Value";
+                ddlAttrValues.DataValueField = "AttributeValueId";
+                ddlAttrValues.DataBind();
+
+                var selectedVals = SelectedAttributeValueIds;
+                int selectedVal =
+                    attrValListToView.Select(v => v.AttributeValueId).Intersect(selectedVals).SingleOrDefault();
+                if (selectedVal != 0)
+                {
+                    ddlAttrValues.SelectedValue = selectedVal.ToString(CultureInfo.InvariantCulture);
+                }
+            }
         }
 
         #region Pagination
@@ -226,5 +336,7 @@ namespace AstRostov
         }
 
         #endregion
+
+
     }
 }
