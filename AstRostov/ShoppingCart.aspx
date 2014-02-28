@@ -58,6 +58,9 @@
                                     <a href='<%#ResolveUrl(String.Format("~/Product.aspx?id={0}", Eval("ProductId"))) %>'>
                                         <%#((Product)Eval("Product")).Name %>
                                     </a>
+                                    <br/>
+                                    <%# String.IsNullOrEmpty(((Sku)Eval("Sku")).SkuNumber) ? String.Empty : String.Format("{0} <br>",((Sku)Eval("Sku")).SkuNumber) %>
+                                    <%#((Sku)Eval("Sku")).AttributeConfig %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Цена">

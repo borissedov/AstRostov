@@ -114,6 +114,7 @@
         <asp:GridView runat="server" ID="gridSkus" OnRowCommand="OnAttributeRowCommand" AutoGenerateColumns="False" CssClass="table table-bordered">
             <Columns>
                 <asp:BoundField HeaderText="ID" DataField="SkuId" />
+                <asp:BoundField HeaderText="Артикул" DataField="SkuNumber" />
                 <asp:BoundField HeaderText="Конфигурация атрибутов" DataField="AttributeConfig" />
                 <asp:BoundField HeaderText="Количество на складе" DataField="Inventory" />
                 <asp:BoundField HeaderText="Цена*" DataField="RetailPrice" />
