@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Features.ascx.cs" Inherits="AstRostov.Controls.Home.Features" %>
 <%@ Import Namespace="AstCore.Helpers" %>
+<%@ Import Namespace="AstCore.Models" %>
 
 
 <div id="features-horisontal" class="carousel slide">
@@ -44,7 +45,7 @@
                                     <hr>
                                     <!-- Price -->
                                     <div class="price">
-                                        <%#Eval("FormattedPrice") %>
+                                        <%# ((Product)Container.DataItem).FormattedPrice() %>
                                     </div>
                                     
                                     <div class="clearfix"></div>

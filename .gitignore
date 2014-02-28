@@ -16,6 +16,7 @@ local.properties
 .settings/
 .loadpath
 packages/
+AstRostov/img/uploaded/
 log.txt
 
 # External tool builders

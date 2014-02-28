@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using AstCore.Models;
 using AstCore.Models.Mapping;
@@ -37,6 +36,7 @@ namespace AstCore.DataAccess
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLineItem> OrderLineItems { get; set; }
         public DbSet<Sku> Skus { get; set; }
+        public DbSet<SkuImage> SkuImages { get; set; }
         public DbSet<Attribute> Attributes { get; set; }
         public DbSet<AttributeValue> AttributeValues { get; set; }
 

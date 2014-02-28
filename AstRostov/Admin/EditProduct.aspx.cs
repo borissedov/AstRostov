@@ -234,7 +234,7 @@ namespace AstRostov.Admin
 
             if (ItemId == 0)
             {
-                var sku = new Sku {Inventory = 0, IsDefault = true, Product = product};
+                var sku = new Sku {Inventory = 0, Product = product};
                 CoreData.Context.Skus.Add(sku);
                 //product.SkuCollection.Add(sku);
                 CoreData.Context.Products.Add(product);
@@ -405,6 +405,8 @@ namespace AstRostov.Admin
                 ErrorLabel.Text = "Редактируемая сущность не найдена.";
                 return;
             }
+
+            skuToDelete.AttributeValues.Clear();
 
             product.SkuCollection.Remove(skuToDelete);
             CoreData.Context.Skus.Remove(skuToDelete);

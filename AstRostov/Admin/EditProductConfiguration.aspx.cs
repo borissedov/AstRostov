@@ -191,8 +191,7 @@ namespace AstRostov.Admin
             var newSku = new Sku
                 {
                     AttributeValues = attrValues,
-                    Inventory = 0,
-                    IsDefault = true
+                    Inventory = 0
                 };
             _product.SkuCollection.Add(newSku);
             CoreData.Context.SaveChanges();

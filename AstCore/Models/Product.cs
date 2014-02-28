@@ -36,7 +36,6 @@ namespace AstCore.Models
 
         public Decimal? SalePrice { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
         public virtual ICollection<ProductImage> Images { get; set; }
@@ -71,7 +70,7 @@ namespace AstCore.Models
         }
 
         public virtual ICollection<Sku> SkuCollection { get; set; }
-        
+
         [NotMapped]
         public string ShortDescription
         {
@@ -115,42 +114,39 @@ namespace AstCore.Models
             }
         }
 
-        [NotMapped]
-        public string FormattedPrice
+        public string FormattedPrice(int count = 1)
         {
-            get
+            decimal minPrice;
+            decimal minSkuPrice = SkuCollection.Min(s => s.FinalPrice);
+            if (SalePrice.HasValue && SalePrice < minSkuPrice)
             {
-                decimal minPrice;
-                decimal minSkuPrice = SkuCollection.Min(s => s.FinalPrice);
-                if (SalePrice.HasValue && SalePrice < minSkuPrice)
-                {
-                    minPrice = SalePrice.Value;
-                }
-                else
-                {
-                    minPrice = minSkuPrice;
-                }
-
-                decimal maxPrice;
-                if (SkuCollection.Any(s => s.RetailPrice.HasValue))
-                {
-                    decimal maxSkuPrice = SkuCollection.Where(s => s.RetailPrice.HasValue).Max(s => s.RetailPrice.Value);
-                    maxPrice = maxSkuPrice > RetailPrice ? maxSkuPrice : RetailPrice;
-                }
-                else
-                {
-                    maxPrice = RetailPrice;
-                }
-
-                if (minPrice < maxPrice)
-                {
-                    return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", maxPrice, minPrice);
-                }
-                else
-                {
-                    return String.Format(@"<span class=""price-new"">{0:c}</span>", maxPrice);
-                }
+                minPrice = SalePrice.Value;
             }
+            else
+            {
+                minPrice = minSkuPrice;
+            }
+
+            decimal maxPrice;
+            if (SkuCollection.Any(s => s.RetailPrice.HasValue))
+            {
+                decimal maxSkuPrice = SkuCollection.Where(s => s.RetailPrice.HasValue).Max(s => s.RetailPrice.Value);
+                maxPrice = maxSkuPrice > RetailPrice ? maxSkuPrice : RetailPrice;
+            }
+            else
+            {
+                maxPrice = RetailPrice;
+            }
+
+            if (minPrice < maxPrice)
+            {
+                return String.Format(@"<span class=""price-old"">{0:c}</span><span class=""price-new"">{1:c}</span>", maxPrice * count, minPrice * count);
+            }
+            else
+            {
+                return String.Format(@"<span class=""price-new"">{0:c}</span>", maxPrice * count);
+            }
+
         }
 
         [NotMapped]

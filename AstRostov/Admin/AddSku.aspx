@@ -139,8 +139,8 @@
 
         $(document).ready(function () {
             $('.product-qty').change(function () {
-                if ($(this).val() > 10) {
-                    $(this).val(10);
+                if ($(this).val() > 100) {
+                    $(this).val(100);
                 }
                 if ($(this).val() < 0) {
                     $(this).val(0);

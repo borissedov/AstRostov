@@ -11,8 +11,8 @@
     <script>
         $(document).ready(function () {
             $('.product-qty').change(function () {
-                if ($(this).val() > 10) {
-                    $(this).val(10);
+                if ($(this).val() > 99) {
+                    $(this).val(99);
                 }
                 if ($(this).val() < 1) {
                     $(this).val(1);
@@ -127,8 +127,8 @@
 
         function onEndRequest(sender, args) {
             $('.product-qty').change(function () {
-                if ($(this).val() > 10) {
-                    $(this).val(10);
+                if ($(this).val() > 99) {
+                    $(this).val(99);
                 }
                 if ($(this).val() < 1) {
                     $(this).val(1);

@@ -28,6 +28,13 @@ namespace AstRostov.Admin
             {
                 foreach (var product in categoryToDelete.Products.ToArray())
                 {
+                    product.Attributes.Clear();
+
+                    foreach (var sku in product.SkuCollection)
+                    {
+                        sku.AttributeValues.Clear();
+                    }
+
                     CoreData.Context.Products.Remove(product);
                 }
 
