@@ -126,6 +126,18 @@
     <Compile Include="Migrations\201402270954337_AttrValFix2.Designer.cs">
       <DependentUpon>201402270954337_AttrValFix2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402271749168_SkuImagesImplement.cs" />
+    <Compile Include="Migrations\201402271749168_SkuImagesImplement.Designer.cs">
+      <DependentUpon>201402271749168_SkuImagesImplement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402271848395_ProductDescriptionUrequired.cs" />
+    <Compile Include="Migrations\201402271848395_ProductDescriptionUrequired.Designer.cs">
+      <DependentUpon>201402271848395_ProductDescriptionUrequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402280647185_RemoveProductNumBySkuNumber.cs" />
+    <Compile Include="Migrations\201402280647185_RemoveProductNumBySkuNumber.Designer.cs">
+      <DependentUpon>201402280647185_RemoveProductNumBySkuNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -158,6 +170,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\Sku.cs" />
+    <Compile Include="Models\SkuImage.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchEngine\AttributeValueComparer.cs" />
@@ -223,6 +236,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402270954337_AttrValFix2.resx">
       <DependentUpon>201402270954337_AttrValFix2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402271749168_SkuImagesImplement.resx">
+      <DependentUpon>201402271749168_SkuImagesImplement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402271848395_ProductDescriptionUrequired.resx">
+      <DependentUpon>201402271848395_ProductDescriptionUrequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402280647185_RemoveProductNumBySkuNumber.resx">
+      <DependentUpon>201402280647185_RemoveProductNumBySkuNumber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
