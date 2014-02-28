@@ -8,6 +8,7 @@
     </siteMapNode>
     <!--<siteMapNode url="~/About.aspx" title="О нас"  description="" />-->
     <siteMapNode url="~/Contact.aspx" title="Контакты"  description="" />
+    <siteMapNode url="~/PaymentMethods.aspx" title="Способы оплаты"  description="" />
     <siteMapNode title="Администрирование" url="~/Admin/"  description="" roles="Administrator" >
       <siteMapNode url="~/Admin/NewsList.aspx" title="Новости"  description="" roles="Administrator" />
       <siteMapNode url="~/Admin/NewsCommentList" title="Комментарии к новостям"  description="" roles="Administrator" />
