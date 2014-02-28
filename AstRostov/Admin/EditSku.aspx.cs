@@ -59,6 +59,8 @@ namespace AstRostov.Admin
             gridAttributes.DataSource = sku.AttributeValues.ToArray();
             gridAttributes.DataBind();
 
+            tbSkuNumber.Text = sku.SkuNumber;
+
             tbInventory.Text = sku.Inventory.ToString(CultureInfo.InvariantCulture);
             if (sku.RetailPrice.HasValue)
             {
@@ -82,6 +84,8 @@ namespace AstRostov.Admin
                 lblError.Text = "Редактируемая сущность не найдена.";
                 return;
             }
+
+            sku.SkuNumber = tbSkuNumber.Text.Trim();
 
             int inventory;
             if (int.TryParse(tbInventory.Text, out inventory))

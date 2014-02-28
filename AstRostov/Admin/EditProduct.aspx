@@ -22,12 +22,6 @@
             </div>
         </div>
         <div class="control-group">
-            <span class="control-label">Артикул Продукта</span>
-            <div class="controls">
-                <asp:TextBox runat="server" ID="tbProductNum"></asp:TextBox>
-            </div>
-        </div>
-        <div class="control-group">
             <span class="control-label">Описание</span>
             <div class="controls">
                 <ucc:RichTextBox runat="server" ID="tbDescription"></ucc:RichTextBox>

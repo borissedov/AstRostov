@@ -95,7 +95,7 @@
                 <ContentTemplate>--%>
             <dl class="dl-horizontal">
                 <dt>Артикул:</dt>
-                <dd><%=Product.ProductNum %>&nbsp;</dd>
+                <dd><%=SelectedSku != null ? SelectedSku.SkuNumber : String.Empty %>&nbsp;</dd>
                 <dt>Производитель:</dt>
                 <dd><%=Product.Brand %>&nbsp;</dd>
 

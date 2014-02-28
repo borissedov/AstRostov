@@ -22,22 +22,24 @@
     </div>
     <hr />
     <div class="form-horizontal">
+        <div class="control-group">
+            <span class="control-label">Артикул Конфигурации</span>
+            <div class="controls">
+                <asp:TextBox runat="server" ID="tbSkuNumber"></asp:TextBox>
+            </div>
+        </div>
         <div class="control-group attr-config">
             <span class="control-label">Количество на складе</span>
             <div class="controls">
                 <asp:TextBox runat="server" ID="tbInventory" TextMode="Number" CssClass="product-qty"></asp:TextBox>
             </div>
         </div>
-    </div>
-    <div class="form-horizontal">
         <div class="control-group attr-config">
             <span class="control-label">Переопределенная цена</span>
             <div class="controls">
                 <asp:TextBox runat="server" ID="tbRetailPrice"></asp:TextBox>
             </div>
         </div>
-    </div>
-    <div class="form-horizontal">
         <div class="control-group attr-config">
             <span class="control-label">Переопределенная цена со скидкой</span>
             <div class="controls">

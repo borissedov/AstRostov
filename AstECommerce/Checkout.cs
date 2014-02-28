@@ -71,7 +71,7 @@ namespace AstECommerce
                         ProductName = shoppingCartItem.Sku.Product.Name,
                         Count = shoppingCartItem.Count,
                         AttributeConfig = shoppingCartItem.Sku.AttributeConfig,
-                        ProductNum = shoppingCartItem.Sku.Product.ProductNum
+                        SkuNumber = shoppingCartItem.Sku.SkuNumber
                     });
                 }
                 Order.Account = AstMembership.CurrentUser;

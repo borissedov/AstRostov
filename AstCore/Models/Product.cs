@@ -29,7 +29,7 @@ namespace AstCore.Models
         [Required]
         public string Name { get; set; }
 
-        public string ProductNum { get; set; }
+        //public string ProductNum { get; set; }
 
         [Required]
         public Decimal RetailPrice { get; set; }

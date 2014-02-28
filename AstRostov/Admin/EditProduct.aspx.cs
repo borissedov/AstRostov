@@ -99,7 +99,7 @@ namespace AstRostov.Admin
             }
 
             tbProductName.Text = product.Name;
-            tbProductNum.Text = product.ProductNum;
+            //tbProductNum.Text = product.ProductNum;
             tbDescription.Text = product.Description;
             tbRetailPrice.Text = product.RetailPrice.ToString("F");
             tbSalePrice.Text = product.SalePrice.HasValue ? product.SalePrice.Value.ToString("F") : String.Empty;
@@ -148,7 +148,7 @@ namespace AstRostov.Admin
             }
 
             product.Name = tbProductName.Text.Trim();
-            product.ProductNum = tbProductNum.Text.Trim();
+            //product.ProductNum = tbProductNum.Text.Trim();
             product.Description = tbDescription.Text.Trim();
 
             //int inventory;

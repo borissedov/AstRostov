@@ -11,6 +11,8 @@ namespace AstCore.Models
         [Key]
         public int SkuId { get; set; }
 
+        public string SkuNumber { get; set; }
+
         public int ProductId { get; set; }
 
         public bool IsDefault { get; set; }//TODO: Remove unused

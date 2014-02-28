@@ -12,6 +12,7 @@ namespace AstRostov.Admin
     public partial class EditProductConfiguration : System.Web.UI.Page
     {
         private Product _product;
+        private const int MaxAttributesCount = 10;
 
         private int ProductId
         {
@@ -84,7 +85,7 @@ namespace AstRostov.Admin
             List<Attribute> attrs = _product.Attributes.ToList();
 
             // Here is the stub of UI - max 5 attrs for product
-            int addCount = 5 - attrs.Count;
+            int addCount = MaxAttributesCount - attrs.Count;
             for (int i = 0; i < addCount; i++)
             {
                 attrs.Add(new Attribute());

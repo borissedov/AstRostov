@@ -20,8 +20,8 @@ namespace AstCore.Models
 
         [Required]
         public int SkuId { get; set; }
-        
-        public string ProductNum { get; set; }
+
+        public string SkuNumber { get; set; }
 
         [Required]
         public Decimal RetailPrice { get; set; }

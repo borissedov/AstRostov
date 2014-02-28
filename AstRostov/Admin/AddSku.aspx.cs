@@ -130,6 +130,8 @@ namespace AstRostov.Admin
                     SalePrice = null
                 };
 
+            newSku.SkuNumber = tbSkuNumber.Text.Trim();
+
             int inventory;
             if (int.TryParse(tbInventory.Text, out inventory))
             {

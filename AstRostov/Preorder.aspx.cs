@@ -91,7 +91,7 @@ namespace AstRostov
                     Phone = tbPhone.Text,
                     CustomerEmail = tbEmail.Text,
                     Comment = tbComment.Text,
-                    ProductNum = _sku.Product.ProductNum,
+                    SkuNumber = _sku.SkuNumber,
                     Date = DateTime.Now,
                     State = PreorderState.Pending
                 };
