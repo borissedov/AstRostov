@@ -94,6 +94,8 @@
                         </span>
                         
                         <asp:Button runat="server" ID="btnClearCart" CssClass="btn btn-inverse" Text="Очистить корзину" OnClick="ClearCart" />
+                        <br/>
+                        <asp:HyperLink runat="server" NavigateUrl="~/PaymentMethods.aspx" Text="Способы оплаты" ToolTip="Ознакомиться со способами оплаты заказов"></asp:HyperLink>
                     </div>
                 </div>
                 <div class="span4">
