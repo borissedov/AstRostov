@@ -29,7 +29,7 @@
             </a>
         </div>
     </div>
-    <div class="row-fluid">
+    <%--<div class="row-fluid">
         <div class="span12">
             <p>Также вы можете провести оплату переводом на одну из наших карт:</p>
             <dl>
@@ -39,7 +39,7 @@
                 <dd>4111-1111-1111-1111</dd>
             </dl>
         </div>
-    </div>
+    </div>--%>
     <div class="row-fluid">
         <div class="span12">
             <h4>После оплаты обязательно свяжитесь с нами!</h4>
