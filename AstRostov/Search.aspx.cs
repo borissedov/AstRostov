@@ -71,10 +71,17 @@ namespace AstRostov
                 filteredProductListByDescriptions.AddRange(CoreData.Context.Products.Where(p => p.Description.Contains(keyword)));
             }
 
+            var filteredProductListBySku = new List<Product>();
+            foreach (var keyword in KeyWords)
+            {
+                filteredProductListBySku.AddRange(CoreData.Context.Products.Where(p => p.SkuCollection.Any(s=>s.SkuNumber.Contains(keyword))));
+            }
+
             Product[] productList =
-                filteredProductListByNames.OrderBy(p => p.Name)
-                    .Concat(filteredProductListByDescriptions.OrderBy(p => p.Name))
-                    .Distinct(ProductComparer.GetInstance()).ToArray();
+                filteredProductListByNames
+                    .Concat(filteredProductListByDescriptions)
+                    .Concat(filteredProductListBySku)
+                    .Distinct(ProductComparer.GetInstance()).OrderBy(p => p.Name).ToArray();
 
             #region BindBrands
             var brands =
