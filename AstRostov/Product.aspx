@@ -149,6 +149,8 @@
                         <div class="tab-pane fade active in" id="tab1">
                             <h5><strong><%=Product.Name %></strong></h5>
                             <%=Product.Description %>
+                            <br />
+                            <%=SelectedSku != null ? SelectedSku.AdditionalDescription : ""  %>
                         </div>
 
                         <%-- <div class="tab-pane fade" id="tab2">
