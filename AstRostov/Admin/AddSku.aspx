@@ -34,7 +34,7 @@
         <div class="control-group">
             <span class="control-label">Дополнительное описание</span>
             <div class="controls">
-                <asp:TextBox runat="server" ID="tbAdditionalDescription"></asp:TextBox>
+                <asp:TextBox runat="server" ID="tbAdditionalDescription" TextMode="MultiLine"></asp:TextBox>
             </div>
         </div>
         <div class="control-group">
