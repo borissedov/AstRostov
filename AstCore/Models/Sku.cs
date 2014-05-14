@@ -13,6 +13,8 @@ namespace AstCore.Models
 
         public string SkuNumber { get; set; }
 
+        public string AdditionalDescription { get; set; }
+
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]

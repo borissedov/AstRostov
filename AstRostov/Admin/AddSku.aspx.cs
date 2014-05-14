@@ -131,6 +131,7 @@ namespace AstRostov.Admin
                 };
 
             newSku.SkuNumber = tbSkuNumber.Text.Trim();
+            newSku.AdditionalDescription = tbAdditionalDescription.Text.Trim();
 
             int inventory;
             if (int.TryParse(tbInventory.Text, out inventory))

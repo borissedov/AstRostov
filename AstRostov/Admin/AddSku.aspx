@@ -32,6 +32,12 @@
             </div>
         </div>
         <div class="control-group">
+            <span class="control-label">Дополнительное описание</span>
+            <div class="controls">
+                <asp:TextBox runat="server" ID="tbAdditionalDescription"></asp:TextBox>
+            </div>
+        </div>
+        <div class="control-group">
             <span class="control-label">Количество на складе</span>
             <div class="controls">
                 <asp:TextBox runat="server" ID="tbInventory" TextMode="Number" CssClass="product-qty"></asp:TextBox>

@@ -61,6 +61,7 @@ namespace AstRostov.Admin
             gridAttributes.DataBind();
 
             tbSkuNumber.Text = sku.SkuNumber;
+            tbAdditionalDescription.Text = sku.AdditionalDescription;
 
             tbInventory.Text = sku.Inventory.ToString(CultureInfo.InvariantCulture);
             if (sku.RetailPrice.HasValue)
@@ -91,6 +92,7 @@ namespace AstRostov.Admin
             }
 
             sku.SkuNumber = tbSkuNumber.Text.Trim();
+            sku.AdditionalDescription = tbAdditionalDescription.Text.Trim();
 
             int inventory;
             if (int.TryParse(tbInventory.Text, out inventory))
