@@ -241,7 +241,7 @@ namespace AstRostov.Admin
             }
 
             CoreData.Context.SaveChanges();
-            Response.Redirect("~/Admin/ProductList.aspx");
+            Response.Redirect(String.Format("~/Admin/ProductList.aspx?cid={0}", categoryId));
         }
 
         protected void ValidateUniqueName(object source, ServerValidateEventArgs args)

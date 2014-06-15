@@ -30,6 +30,8 @@ namespace AstRostov
                            order.OrderId);
 
                         AstMail.SendEmail(order.Email, message, true, String.Format("АСТ-Ростов: Заказ №{0}", order.OrderId));
+
+                        AstMail.SendEmail("sasha2507@aaanet.ru", String.Format("Заказ №{0} оплачен в {1:G}", order.OrderId, DateTime.Now), false, String.Format("АСТ-Ростов: Заказ №{0} оплачен", order.OrderId));
                     }
                     catch (Exception ex)
                     {

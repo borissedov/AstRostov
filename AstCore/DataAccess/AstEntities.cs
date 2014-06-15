@@ -34,6 +34,7 @@ namespace AstCore.DataAccess
         public DbSet<Preorder> Preorders { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<OrderLineItem> OrderLineItems { get; set; }
         public DbSet<Sku> Skus { get; set; }
         public DbSet<SkuImage> SkuImages { get; set; }
@@ -52,6 +53,7 @@ namespace AstCore.DataAccess
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new CategoryMap());
             modelBuilder.Configurations.Add(new PreorderOrderMap());
+            modelBuilder.Configurations.Add(new ProductProductGroupMap());
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Entity<ShoppingCartEntity>().HasMany(t => t.ShoppingCartItems).WithOptional(s=>s.ShoppingCartEntity).WillCascadeOnDelete();
         }

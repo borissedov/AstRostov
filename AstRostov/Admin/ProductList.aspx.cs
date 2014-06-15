@@ -21,7 +21,15 @@ namespace AstRostov.Admin
 
         private void BindProductList()
         {
-            gridProducts.DataSource = CoreData.Context.Products.ToArray();
+            IEnumerable<Product> productList = CoreData.Context.Products;
+
+            int cid;
+            if (int.TryParse(Request.Params["cid"], out cid))
+            {
+                productList = productList.Where(p=>p.CategoryId == cid);
+            }
+
+            gridProducts.DataSource = productList.ToArray();
             gridProducts.DataBind();
         }
 

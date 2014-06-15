@@ -61,6 +61,10 @@ namespace AstCore.Models
             set;
         }
 
+        public int? ProductGroupId { get; set; }
+
+        public virtual ProductGroup ProductGroup { get; set; }
+
         public int? BrandId { get; set; }
 
         public virtual Brand Brand
