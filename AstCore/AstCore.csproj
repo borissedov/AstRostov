@@ -149,6 +149,7 @@
     <Compile Include="Models\Mapping\ApplicationMap.cs" />
     <Compile Include="Models\Mapping\CategoryMap.cs" />
     <Compile Include="Models\Mapping\MembershipMap.cs" />
+    <Compile Include="Models\Mapping\PreorderOrderMap.cs" />
     <Compile Include="Models\Mapping\ProfileMap.cs" />
     <Compile Include="Models\Mapping\RoleMap.cs" />
     <Compile Include="Models\Order.cs" />

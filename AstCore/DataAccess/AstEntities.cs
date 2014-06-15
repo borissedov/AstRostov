@@ -51,6 +51,7 @@ namespace AstCore.DataAccess
             modelBuilder.Configurations.Add(new RoleMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new CategoryMap());
+            modelBuilder.Configurations.Add(new PreorderOrderMap());
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Entity<ShoppingCartEntity>().HasMany(t => t.ShoppingCartItems).WithOptional(s=>s.ShoppingCartEntity).WillCascadeOnDelete();
         }

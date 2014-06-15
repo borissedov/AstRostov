@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AstCore.Models
 {
@@ -92,6 +93,9 @@ namespace AstCore.Models
         public string CustomerComment { get; set; }
 
         public string AdminComment { get; set; }
+
+        public virtual Preorder Preorder { get; set; }
+
     }
 
     public enum PaymentMethod
