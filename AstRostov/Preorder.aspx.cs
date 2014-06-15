@@ -108,6 +108,9 @@ namespace AstRostov
                 try
                 {
                     AstMail.SendEmail(tbEmail.Text, message, false, "АСТ-Ростов: Предзаказ");
+
+                    AstMail.SendEmail("sasha2507@aaanet.ru", String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), true, String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId));
+
                     lblSuccess.Visible = true;
                     lblError.Text = "";
                 }
