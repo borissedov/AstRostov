@@ -2,6 +2,7 @@
 using System.Data.Entity.Validation;
 using System.Text;
 using System.Web;
+using System.Web.Optimization;
 using System.Web.Routing;
 using AstCore.DataAccess;
 using AstECommerce;
@@ -16,7 +17,7 @@ namespace AstRostov
         {
             ShoppingCartRepository.ClearRepository();
             // Code that runs on application startup
-            //BundleConfig.RegisterBundles(BundleTable.Bundles);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterOpenAuth();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

@@ -65,6 +65,8 @@ function Page_Load() {
     $(window).resize(function () {
         $("#features").equalHeights();
     });
+
+    $('#imgMainImageHref').fancybox({ type: 'image' });
 }
 
 $(document).ready(function () {

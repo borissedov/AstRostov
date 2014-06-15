@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/css/responsive-slider.css" />
     <link rel="stylesheet" href="~/css/Site.css" />
     <link rel="stylesheet" href="~/css/bootstrap-wysihtml5.css" />
+    <link rel="stylesheet" href="~/Content/jquery.fancybox.css" />
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
     <script type="text/javascript" src="//vk.com/js/api/openapi.js?105"></script>
     <script type="text/javascript">
@@ -40,23 +41,8 @@
     <div id="content">
         <form id="Form1" runat="server" style="margin: 0;" autocomplete="off">
             <asp:ScriptManager runat="server" ID="ScriptManager1">
-                <Scripts>
-                    <asp:ScriptReference Path="~/Scripts/jquery-2.0.3.min.js" />
-                    <%--<asp:ScriptReference Path="~/Scripts/jquery-ui-1.10.3.min.js" />--%>
-                    <asp:ScriptReference Path="~/Scripts/browser-fix.js" />
-                    <asp:ScriptReference Path="~/Scripts/jquery.responsivethumbnailgallery.min.js" />
-                    <asp:ScriptReference Path="~/Scripts/bootstrap.js" />
-                    <asp:ScriptReference Path="~/Scripts/jquery.onebyone.min.js" />
-                    <asp:ScriptReference Path="~/Scripts/jquery.equal-heights.min.js" />
-                    <asp:ScriptReference Path="~/Scripts/cufon-yui.js" />
-                    <asp:ScriptReference Path="~/Scripts/Arial_400.font.js" />
-                    <asp:ScriptReference Path="~/Scripts/menu-active.js" />
-                    <asp:ScriptReference Path="~/Scripts/config.js" />
-                    <asp:ScriptReference Path="~/Scripts/wysihtml/wysihtml5-0.3.0.js" />
-                    <asp:ScriptReference Path="~/Scripts/bootstrap-wysihtml5.js" />
-                </Scripts>
             </asp:ScriptManager>
-
+            <%:Scripts.Render("~/bundles/scripts") %>
             <header>
                 <div class="container">
                     <div class="row-fluid">

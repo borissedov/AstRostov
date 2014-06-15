@@ -20,6 +20,7 @@
                     $('.thumbnails .thumbnail').click(function () {
                         if (!$(this).parent().hasClass('active')) {
                             $('#imgMainImage').attr('src', $(this).children('input[type="hidden"]').val());
+                            $('#imgMainImageHref').attr('href', $(this).children('input[type="hidden"]').val());
                             $(this).addClass('active');
                             $(this).siblings().removeClass('active');
                         }
@@ -73,7 +74,9 @@
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="item-image thumbnail">
-                                <img id="imgMainImage" src='<%=ResolveUrl(AstImage.GetImageHttpPathLarge(SelectedSku == null || !SelectedSku.Images.Any() ? Product.MainImage.ToString() : SelectedSku.MainImage.ToString())) %>' alt="">
+                                <a id="imgMainImageHref" href='<%=ResolveUrl(AstImage.GetImageHttpPathLarge(SelectedSku == null || !SelectedSku.Images.Any() ? Product.MainImage.ToString() : SelectedSku.MainImage.ToString())) %>'>
+                                    <img id="imgMainImage" src='<%=ResolveUrl(AstImage.GetImageHttpPathLarge(SelectedSku == null || !SelectedSku.Images.Any() ? Product.MainImage.ToString() : SelectedSku.MainImage.ToString())) %>' alt="" />
+                                </a>
                             </div>
                         </div>
                     </div>

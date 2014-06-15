@@ -141,6 +141,16 @@
     <Content Include="Blog.aspx" />
     <Content Include="Category.aspx" />
     <Content Include="Check.aspx" />
+    <Content Include="Content\fancybox\blank.gif" />
+    <Content Include="Content\fancybox\fancybox_buttons.png" />
+    <Content Include="Content\fancybox\fancybox_loading%402x.gif" />
+    <Content Include="Content\fancybox\fancybox_loading.gif" />
+    <Content Include="Content\fancybox\fancybox_overlay.png" />
+    <Content Include="Content\fancybox\fancybox_sprite%402x.png" />
+    <Content Include="Content\fancybox\fancybox_sprite.png" />
+    <Content Include="Content\jquery.fancybox-buttons.css" />
+    <Content Include="Content\jquery.fancybox-thumbs.css" />
+    <Content Include="Content\jquery.fancybox.css" />
     <Content Include="Error.aspx" />
     <Content Include="HowToPay.aspx" />
     <Content Include="Checkout.aspx" />
@@ -156,16 +166,19 @@
     <Content Include="img\logo.old.png" />
     <Content Include="img\logo_blue1.png" />
     <Content Include="img\logo_orange.png" />
+    <Content Include="img\main-slider\02d25b26-a002-487f-8665-d53f6c485c64..jpg" />
+    <Content Include="img\main-slider\0b1709a5-5bae-4fb6-bf25-33e68b4ab3dc..jpg" />
+    <Content Include="img\main-slider\228ab1b2-7ea3-488c-8c55-4fd5b5950739..jpg" />
+    <Content Include="img\main-slider\26206e73-8cd2-4172-81db-522437edada3..jpg" />
+    <Content Include="img\main-slider\30b171cf-14a8-4d2f-8c51-8fa5b2904c17..jpg" />
+    <Content Include="img\main-slider\3beb0a39-ec19-4117-a92e-7aaa56fe7d83..jpg" />
+    <Content Include="img\main-slider\3bf52234-cf87-46ff-b8bd-c768104d4f8b..jpg" />
+    <Content Include="img\main-slider\b5233bd4-3693-4c16-88a6-61c436945db6..jpg" />
     <Content Include="img\navy_blue.png" />
     <Content Include="img\RightBg.png" />
     <Content Include="img\table-header-bg.png" />
     <Content Include="img\table-row-bg.png" />
     <Content Include="img\table-row-light-bg.png" />
-    <Content Include="img\uploaded\catalog\100\logo.old-4.png" />
-    <Content Include="img\uploaded\catalog\100\noimage.gif" />
-    <Content Include="img\uploaded\catalog\100\slide3-4.jpg" />
-    <Content Include="img\uploaded\catalog\350\noimage.gif" />
-    <Content Include="img\uploaded\catalog\50\noimage.gif" />
     <Content Include="img\uploaded\catalog\original\logo.old-4.png" />
     <Content Include="img\uploaded\catalog\original\noimage.gif" />
     <Content Include="img\uploaded\catalog\original\slide3-4.jpg" />
@@ -194,15 +207,8 @@
     <Content Include="EditPost.aspx" />
     <Content Include="img\circlebutton.png" />
     <Content Include="img\default_user.png" />
-    <Content Include="img\features\1.jpg" />
-    <Content Include="img\features\2.jpg" />
-    <Content Include="img\features\3.jpg" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
-    <Content Include="img\home-page\slide1.jpg" />
-    <Content Include="img\home-page\slide2.jpg" />
-    <Content Include="img\home-page\slide3.jpg" />
-    <Content Include="img\home-page\slide4.jpg" />
     <Content Include="img\logo.png" />
     <Content Include="img\next.png" />
     <Content Include="img\paven1.png" />
@@ -220,6 +226,12 @@
     <Content Include="Scripts\browser-fix.js" />
     <Content Include="Scripts\config.js" />
     <Content Include="Admin\Web.config" />
+    <Content Include="Scripts\jquery.fancybox-buttons.js" />
+    <Content Include="Scripts\jquery.fancybox-media.js" />
+    <Content Include="Scripts\jquery.fancybox-thumbs.js" />
+    <Content Include="Scripts\jquery.fancybox.js" />
+    <Content Include="Scripts\jquery.fancybox.pack.js" />
+    <Content Include="Scripts\jquery.mousewheel-3.0.6.pack.js" />
     <Content Include="Search.aspx" />
     <Content Include="ShoppingCart.aspx" />
     <Content Include="Site.Mobile.Master" />
@@ -229,6 +241,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="RobokassaFeedback.ashx" />
+    <None Include="Properties\PublishProfiles\publish_1gb.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\cufon-yui.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -359,6 +372,7 @@
     <Compile Include="Admin\MailTest.aspx.designer.cs">
       <DependentUpon>MailTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Catalog.master.cs">
       <DependentUpon>Catalog.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -734,7 +748,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="img\main-slider\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />
