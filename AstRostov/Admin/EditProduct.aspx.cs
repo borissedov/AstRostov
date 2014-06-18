@@ -75,7 +75,7 @@ namespace AstRostov.Admin
                     Selected = true
                 });
             ddlCategories.Items.AddRange(
-                CoreData.Context.Categories.ToArray()
+                CoreData.Context.Categories.ToArray().Where(c => !c.HasChildren).ToArray()
                 .Select(c =>
                     new ListItem(c.Name, c.CategoryId.ToString(CultureInfo.InvariantCulture)))
                     .ToArray());
@@ -234,7 +234,7 @@ namespace AstRostov.Admin
 
             if (ItemId == 0)
             {
-                var sku = new Sku {Inventory = 0, Product = product};
+                var sku = new Sku { Inventory = 0, Product = product };
                 CoreData.Context.Skus.Add(sku);
                 //product.SkuCollection.Add(sku);
                 CoreData.Context.Products.Add(product);

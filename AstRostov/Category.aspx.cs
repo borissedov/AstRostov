@@ -79,9 +79,22 @@ namespace AstRostov
                     Response.Redirect("~/Default.aspx");
                 }
 
-                BindBrands();
-                BindFilters();
-                BindProductList();
+                litCategoryName.Text = _category.Name;
+                litCategoryDescription.Text = _category.Description;
+                litCategoryNameHead.Text = _category.Name;
+
+                if (!_category.HasChildren)
+                {
+                    phLeftContent.Visible = true;
+                    BindBrands();
+                    BindFilters();
+                    BindProductList();
+                }
+                else
+                {
+                    BindChildren();
+                }
+                
                 BindPaging();
             }
         }
@@ -95,11 +108,30 @@ namespace AstRostov
             }
         }
 
+        private void BindChildren()
+        {
+            Category[] paginatedSubCategoryList = _category.ChildCategories
+                .Skip((CurrentPageNo - 1) * ItemsPerPage)
+                .Take(ItemsPerPage)
+                .ToArray();
+            int count = _category.ChildCategories.Count();
+
+            PageCount = count / ItemsPerPage + (count % ItemsPerPage == 0 ? 0 : 1);
+            if (PageCount == 0)
+            {
+                PageCount++;
+            }
+
+            var subcategoryIndexRows =
+                paginatedSubCategoryList.Select((p, i) => i).GroupBy(i => i / 3).Cast<IEnumerable<int>>().ToArray();//groups of indexes in array by 3
+            var productRows = subcategoryIndexRows.Select(pir => pir.Select(i => paginatedSubCategoryList[i]).ToArray()).ToArray();//groups of products by 3
+            rptChildCategoriesRows.Visible = true;
+            rptChildCategoriesRows.DataSource = productRows;
+            rptChildCategoriesRows.DataBind();
+        }
+
         private void BindProductList()
         {
-            litCategoryName.Text = _category.Name;
-            litCategoryNameHead.Text = _category.Name;
-
             IEnumerable<Product> filteredList;
             Product[] paginatedProductList;
             int count;
@@ -145,6 +177,7 @@ namespace AstRostov
             var productIndexRows =
                 paginatedProductList.Select((p, i) => i).GroupBy(i => i / 3).Cast<IEnumerable<int>>().ToArray();//groups of indexes in array by 3
             var productRows = productIndexRows.Select(pir => pir.Select(i => paginatedProductList[i]).ToArray()).ToArray();//groups of products by 3
+            rptProductListRows.Visible = true;
             rptProductListRows.DataSource = productRows;
             rptProductListRows.DataBind();
 
@@ -193,6 +226,17 @@ namespace AstRostov
             {
                 rptProductListItems.DataSource = productRowDataSource;
                 rptProductListItems.DataBind();
+            }
+        }
+
+        protected void ChildCategoryRowDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            var rptChildCategoriesItems = e.Item.FindControl("rptChildCategoriesItems") as Repeater;
+            var categoryRowDataSource = e.Item.DataItem as Category[];
+            if (rptChildCategoriesItems != null && categoryRowDataSource != null)
+            {
+                rptChildCategoriesItems.DataSource = categoryRowDataSource;
+                rptChildCategoriesItems.DataBind();
             }
         }
 
@@ -337,6 +381,6 @@ namespace AstRostov
 
         #endregion
 
-
+        
     }
 }

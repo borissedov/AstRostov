@@ -16,6 +16,10 @@ namespace AstCore.Models
         [Required]
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
+        public virtual CategoryImage Image { get; set; }
+
         public virtual ICollection<Category> ParentCategories { get; set; }
 
         [InverseProperty("ParentCategories")]

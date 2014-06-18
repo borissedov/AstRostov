@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Simple.Master" AutoEventWireup="true" CodeBehind="EditCategory.aspx.cs" Inherits="AstRostov.Admin.EditCategory" %>
 
+<%@ Register TagPrefix="ast" TagName="AdminImageUploader" Src="~/Admin/Controls/ImageUploader.ascx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <title>АСТ-Ростов. Администрирование</title>
 </asp:Content>
@@ -16,6 +18,23 @@
             <div class="controls">
                 <asp:TextBox runat="server" ID="tbCategoryName" MaxLength="20"></asp:TextBox>
                 <asp:RequiredFieldValidator runat="server" Display="Dynamic" CssClass="text-error" ErrorMessage="*" ControlToValidate="tbCategoryName"></asp:RequiredFieldValidator>
+            </div>
+        </div>
+        <asp:PlaceHolder runat="server" ID="phImageUploader">
+            <div class="control-group">
+                <span class="control-label">Изображение</span>
+                <div class="controls">
+                    <asp:Image runat="server" ID="imgCategoryImage"></asp:Image>
+                    <ast:AdminImageUploader runat="server" ID="imageUploader"></ast:AdminImageUploader>
+                    <br />
+                    <asp:Button runat="server" ID="btnUploadImage" Text="Загрузить изображение" CssClass="btn" OnClick="UploadImage" CausesValidation="False" />
+                </div>
+            </div>
+        </asp:PlaceHolder>
+        <div class="control-group">
+            <span class="control-label">Описание категории</span>
+            <div class="controls">
+                <asp:TextBox runat="server" ID="tbDescription" TextMode="MultiLine"></asp:TextBox>
             </div>
         </div>
         <div class="control-group">
@@ -60,6 +79,7 @@
             </div>
         </asp:Panel>
         
+        <asp:PlaceHolder runat="server" ID="phChildCategories" Visible="False">
         <h3>Дочерние категории</h3>
         <asp:GridView runat="server" ID="gridChildCategories" OnRowCommand="OnGridRowCommand" AutoGenerateColumns="False" CssClass="table table-bordered">
             <Columns>
@@ -91,6 +111,7 @@
                 </div>
             </div>
         </asp:Panel>
+            </asp:PlaceHolder>
     </asp:PlaceHolder>
 
 

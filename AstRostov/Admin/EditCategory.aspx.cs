@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
 using AstCore.DataAccess;
+using AstCore.Helpers;
 using AstCore.Models;
 
 namespace AstRostov.Admin
@@ -69,16 +70,20 @@ namespace AstRostov.Admin
             }
 
             tbCategoryName.Text = category.Name;
+            tbDescription.Text = category.Description;
 
             if (ItemId == 0)
             {
                 litEditTitle.Text = @"Создание новой категории";
                 phEditBindings.Visible = false;
+                phImageUploader.Visible = false;
             }
             else
             {
                 litEditTitle.Text = String.Format(@"Редактирование категории #{0}", ItemId);
                 phEditBindings.Visible = true;
+                phImageUploader.Visible = true;
+                imgCategoryImage.ImageUrl = ResolveUrl(AstImage.GetImageHttpPathMedium(category.Image != null ? category.Image.FileName : "noimage.gif"));
                 BindBindings(category);
             }
 
@@ -86,13 +91,19 @@ namespace AstRostov.Admin
 
         private void BindBindings(Category category)
         {
-            gridChildCategories.DataSource = category.ChildCategories;
-            gridChildCategories.DataBind();
+            
 
             gridParentCategories.DataSource = category.ParentCategories;
             gridParentCategories.DataBind();
 
-            BindAddChildForm(category);
+            if (!category.Products.Any())
+            {
+                gridChildCategories.DataSource = category.ChildCategories;
+                gridChildCategories.DataBind();
+
+                phChildCategories.Visible = true;
+                BindAddChildForm(category);
+            }
             BindAddParentForm(category);
         }
 
@@ -107,8 +118,9 @@ namespace AstRostov.Admin
 
             ddlSelectParent.Items.AddRange(
                 CoreData.Context.Categories.ToArray().Where(
-                    c => 
+                    c =>
                     c.CategoryId != category.CategoryId && //Not current
+                    !c.Products.Any() && //Has no products
                     category.ParentCategories.All(cc => cc.CategoryId != c.CategoryId) && //Not in existing parents
                     category.AllChildrenIds.All(cid => cid != c.CategoryId)) //Not in children
                         .Select(c => new ListItem(c.Name, c.CategoryId.ToString(CultureInfo.InvariantCulture))).ToArray()//Select list of ListItems
@@ -146,6 +158,7 @@ namespace AstRostov.Admin
             }
 
             category.Name = tbCategoryName.Text.Trim();
+            category.Description = tbDescription.Text.Trim();
 
             if (ItemId == 0)
             {
@@ -233,8 +246,8 @@ namespace AstRostov.Admin
                 {
                     category.ParentCategories.Add(categoryToBind);
                     CoreData.Context.SaveChanges();
-                    Response.Redirect("~/Admin/CategoryList.aspx");
-                    //Response.Redirect(String.Format("~/Admin/EditCategory.aspx?id={0}", ItemId));
+                    //Response.Redirect("~/Admin/CategoryList.aspx");
+                    Response.Redirect(String.Format("~/Admin/EditCategory.aspx?id={0}", ItemId));
                 }
                 else
                 {
@@ -266,8 +279,8 @@ namespace AstRostov.Admin
                 {
                     category.ChildCategories.Add(categoryToBind);
                     CoreData.Context.SaveChanges();
-                    Response.Redirect("~/Admin/CategoryList.aspx");
-                    //Response.Redirect(String.Format("~/Admin/EditCategory.aspx?id={0}", ItemId));
+                    //Response.Redirect("~/Admin/CategoryList.aspx");
+                    Response.Redirect(String.Format("~/Admin/EditCategory.aspx?id={0}", ItemId));
                 }
                 else
                 {
@@ -285,6 +298,35 @@ namespace AstRostov.Admin
         protected void Page_PreRender(object sender, EventArgs e)
         {
             ErrorLabel.Visible = !String.IsNullOrEmpty(ErrorLabel.Text);
+        }
+
+        protected void UploadImage(object sender, EventArgs e)
+        {
+            if (imageUploader.PostedFile != null && !string.IsNullOrEmpty(imageUploader.PostedFile.FileName))
+            {
+                imageUploader.AppendToFileName = String.Format("-{0}", ItemId);
+                imageUploader.SaveImage();
+
+                Category category = CoreData.Context.Categories.SingleOrDefault(c => c.CategoryId == ItemId);
+                if (category == null)
+                {
+                    ErrorLabel.Text = "Редактируемая сущность не найдена.";
+                    return;
+                }
+
+                if (category.Image != null)
+                {
+                    CoreData.Context.CategoryImages.Remove(category.Image);
+                }
+
+                category.Image = new CategoryImage
+                    {
+                        FileName = imageUploader.FileInformation.Name
+                    };
+
+                CoreData.Context.SaveChanges();
+                Response.Redirect(String.Format("~/Admin/EditCategory.aspx?id={0}", ItemId));
+            }
         }
     }
 }

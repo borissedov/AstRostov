@@ -179,9 +179,7 @@
     <Content Include="img\table-header-bg.png" />
     <Content Include="img\table-row-bg.png" />
     <Content Include="img\table-row-light-bg.png" />
-    <Content Include="img\uploaded\catalog\original\logo.old-4.png" />
     <Content Include="img\uploaded\catalog\original\noimage.gif" />
-    <Content Include="img\uploaded\catalog\original\slide3-4.jpg" />
     <Content Include="img\uploaded\noimage.gif" />
     <Content Include="MessageTemplates\OrderRobokassa.txt" />
     <Content Include="MessageTemplates\OrderBankTransfer.txt" />

@@ -26,6 +26,7 @@ namespace AstCore.DataAccess
         //public DbSet<FeaturedItem> FeaturedItems { get; set; }
         public DbSet<MainSliderItem> MainSliderItems { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryImage> CategoryImages { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Brand> Brands { get; set; }
@@ -34,7 +35,6 @@ namespace AstCore.DataAccess
         public DbSet<Preorder> Preorders { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<OrderLineItem> OrderLineItems { get; set; }
         public DbSet<Sku> Skus { get; set; }
         public DbSet<SkuImage> SkuImages { get; set; }
@@ -52,8 +52,8 @@ namespace AstCore.DataAccess
             modelBuilder.Configurations.Add(new RoleMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new CategoryMap());
+            modelBuilder.Configurations.Add(new CategoryImageCategoryMap());
             modelBuilder.Configurations.Add(new PreorderOrderMap());
-            modelBuilder.Configurations.Add(new ProductProductGroupMap());
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Entity<ShoppingCartEntity>().HasMany(t => t.ShoppingCartItems).WithOptional(s=>s.ShoppingCartEntity).WillCascadeOnDelete();
         }

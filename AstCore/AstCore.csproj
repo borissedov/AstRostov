@@ -142,6 +142,10 @@
     <Compile Include="Migrations\201406151548052_Preorder-Order-relation.Designer.cs">
       <DependentUpon>201406151548052_Preorder-Order-relation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406181610036_CategoryImageDescriptionMigration.cs" />
+    <Compile Include="Migrations\201406181610036_CategoryImageDescriptionMigration.Designer.cs">
+      <DependentUpon>201406181610036_CategoryImageDescriptionMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -149,12 +153,13 @@
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CategoryImage.cs" />
     <Compile Include="Models\MainSliderItem.cs" />
     <Compile Include="Models\Mapping\ApplicationMap.cs" />
+    <Compile Include="Models\Mapping\CategoryImageCategoryMap.cs" />
     <Compile Include="Models\Mapping\CategoryMap.cs" />
     <Compile Include="Models\Mapping\MembershipMap.cs" />
     <Compile Include="Models\Mapping\PreorderOrderMap.cs" />
-    <Compile Include="Models\Mapping\ProductProductGroupMap.cs" />
     <Compile Include="Models\Mapping\ProfileMap.cs" />
     <Compile Include="Models\Mapping\RoleMap.cs" />
     <Compile Include="Models\Order.cs" />
@@ -162,7 +167,6 @@
     <Compile Include="Models\PaymentTariff.cs" />
     <Compile Include="Models\Preorder.cs" />
     <Compile Include="Models\Attribute.cs" />
-    <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\ShippingTariff.cs" />
     <Compile Include="Models\ShoppingCartEntity.cs" />
     <Compile Include="Models\Mapping\UserMap.cs" />
@@ -255,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201406151548052_Preorder-Order-relation.resx">
       <DependentUpon>201406151548052_Preorder-Order-relation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406181610036_CategoryImageDescriptionMigration.resx">
+      <DependentUpon>201406181610036_CategoryImageDescriptionMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

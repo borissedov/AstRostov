@@ -21,8 +21,45 @@
             </div>
         </div>
     </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <p>
+                <asp:Literal runat="server" ID="litCategoryDescription"></asp:Literal>
+            </p>
+        </div>
+    </div>
     <div class="shop-items">
-        <asp:Repeater runat="server" ID="rptProductListRows" OnItemDataBound="ProductRowDataBound">
+        <asp:Repeater runat="server" ID="rptChildCategoriesRows" OnItemDataBound="ChildCategoryRowDataBound" Visible="False">
+            <ItemTemplate>
+                <div class="row-fluid">
+                    <asp:Repeater runat="server" ID="rptChildCategoriesItems">
+                        <ItemTemplate>
+                            <div class="span4">
+                                <div class="product-item">
+
+                                    <!-- Item image -->
+                                    <div class="item-image">
+                                        <a href='<%#ResolveUrl(String.Format("~/Category.aspx?id={0}", Eval("CategoryId"))) %>'>
+                                            <img src='<%#ResolveUrl(AstImage.GetImageHttpPathMedium(Eval("Image") as CategoryImage != null ? (Eval("Image") as CategoryImage).ToString() : "noimage.gif")) %>' alt="" class="img-responsive thumbnail">
+                                        </a>
+                                        &nbsp;&nbsp;&nbsp;
+                                    </div>
+                                    <!-- Item details -->
+                                    <div class="item-details">
+                                        <!-- Name -->
+                                        <h5>
+                                            <a href='<%#ResolveUrl(String.Format("~/Category.aspx?id={0}", Eval("CategoryId"))) %>'><%#Eval("Name") %></a>
+                                        </h5>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
+        <asp:Repeater runat="server" ID="rptProductListRows" OnItemDataBound="ProductRowDataBound" Visible="False">
             <ItemTemplate>
                 <div class="row-fluid">
                     <asp:Repeater runat="server" ID="rptProductListItems" OnItemCommand="ProcessProductCommand">
@@ -95,20 +132,22 @@
         </ul>
     </div>
 </asp:Content>
-<asp:Content ContentPlaceHolderID="LeftContent" ID="Content3" runat="server">
-    <h4>Фильтр</h4>
-    <dl>
-        <dt>Производитель</dt>
-        <dd>
-            <asp:DropDownList runat="server" ID="ddlBrands" OnSelectedIndexChanged="Filter" AutoPostBack="True" />
-        </dd>
-        <asp:Repeater runat="server" ID="rptAttributes" OnItemDataBound="BindAttrValuesToRepeaterItem">
-            <ItemTemplate>
-                <dt><%#Eval("Name") %></dt>
-                <dd>
-                    <asp:DropDownList runat="server" ID="ddlAttributeValues" OnSelectedIndexChanged="Filter" AutoPostBack="True" />
-                </dd>
-            </ItemTemplate>
-        </asp:Repeater>
-    </dl>
+<asp:Content ContentPlaceHolderID="LeftContent" runat="server">
+    <asp:PlaceHolder runat="server" ID="phLeftContent" Visible="False">
+        <h4>Фильтр</h4>
+        <dl>
+            <dt>Производитель</dt>
+            <dd>
+                <asp:DropDownList runat="server" ID="ddlBrands" OnSelectedIndexChanged="Filter" AutoPostBack="True" />
+            </dd>
+            <asp:Repeater runat="server" ID="rptAttributes" OnItemDataBound="BindAttrValuesToRepeaterItem">
+                <ItemTemplate>
+                    <dt><%#Eval("Name") %></dt>
+                    <dd>
+                        <asp:DropDownList runat="server" ID="ddlAttributeValues" OnSelectedIndexChanged="Filter" AutoPostBack="True" />
+                    </dd>
+                </ItemTemplate>
+            </asp:Repeater>
+        </dl>
+    </asp:PlaceHolder>
 </asp:Content>

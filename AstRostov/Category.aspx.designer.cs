@@ -49,6 +49,24 @@ namespace AstRostov {
         protected global::System.Web.UI.WebControls.Literal litCategoryName;
         
         /// <summary>
+        /// litCategoryDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litCategoryDescription;
+        
+        /// <summary>
+        /// rptChildCategoriesRows control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptChildCategoriesRows;
+        
+        /// <summary>
         /// rptProductListRows control.
         /// </summary>
         /// <remarks>
@@ -83,6 +101,15 @@ namespace AstRostov {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptPaging;
+        
+        /// <summary>
+        /// phLeftContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phLeftContent;
         
         /// <summary>
         /// ddlBrands control.
