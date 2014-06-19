@@ -399,11 +399,11 @@ h1 {
                 color: #ffffff;
             }
 
-    .category-menu > li > h4 {
+    .category-menu > a > h4 {
         display: block;
         padding: 3px 20px;
         clear: both;
-        color: #ffffff;
+        /*color: #ffffff;*/
         white-space: nowrap;
     }
 

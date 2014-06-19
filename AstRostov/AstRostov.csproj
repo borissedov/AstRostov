@@ -139,6 +139,7 @@
     <Content Include="Admin\NewsList.aspx" />
     <Content Include="Admin\ProductList.aspx" />
     <Content Include="Blog.aspx" />
+    <Content Include="Catalog.aspx" />
     <Content Include="Category.aspx" />
     <Content Include="Check.aspx" />
     <Content Include="Content\fancybox\blank.gif" />
@@ -371,6 +372,13 @@
       <DependentUpon>MailTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Catalog.aspx.cs">
+      <DependentUpon>Catalog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalog.aspx.designer.cs">
+      <DependentUpon>Catalog.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalog.master.cs">
       <DependentUpon>Catalog.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

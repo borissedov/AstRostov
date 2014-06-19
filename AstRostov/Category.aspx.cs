@@ -101,7 +101,7 @@ namespace AstRostov
 
         protected void Page_PreRender(object sender, EventArgs e)
         {
-            if (AstMembership.CurrentUser != null && AstMembership.CurrentUser.IsAdmin)
+            if (AstMembership.CurrentUser != null && AstMembership.CurrentUser.IsAdmin && !_category.HasChildren)
             {
                 hlAddProduct.Visible = true;
                 hlAddProduct.NavigateUrl = ResolveUrl(String.Format("~/Admin/EditProduct.aspx?cid={0}", ItemId));

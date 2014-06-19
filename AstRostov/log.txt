@@ -13970,3 +13970,57 @@ The statement has been terminated.
    в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
    в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
 2014-06-18 21:15:46.0548|ERROR|AstRostov.Global|This is an error with an Exception
+2014-06-18 21:37:10.5882|FATAL|AstRostov.Global|System.Web.HttpCompileException (0x80004005): c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Catalog.aspx(62): error CS0103: Имя "ItemId" отсутствует в текущем контексте
+   в System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   в System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)
+   в System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(VirtualPath virtualPath, Type requiredBaseType, HttpContext context, Boolean allowCrossApp)
+   в System.Web.UI.PageHandlerFactory.GetHandlerHelper(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   в System.Web.UI.PageHandlerFactory.GetHandler(HttpContext context, String requestType, String virtualPath, String path)
+   в System.Web.HttpApplication.MaterializeHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-06-18 21:37:10.5952|ERROR|AstRostov.Global|This is an error with an Exception
+2014-06-18 21:40:21.9784|FATAL|AstRostov.Global|System.Web.HttpUnhandledException (0x80004005): Выдано исключение типа "System.Web.HttpUnhandledException". ---> System.Data.EntityCommandExecutionException: При выполнении определения команды произошла ошибка. Подробные сведения см. во внутреннем исключении. ---> System.InvalidOperationException: Существует назначенный этой команде Command открытый DataReader, который требуется предварительно закрыть.
+   в System.Data.SqlClient.SqlInternalConnectionTds.ValidateConnectionForExecute(SqlCommand command)
+   в System.Data.SqlClient.SqlConnection.ValidateConnectionForExecute(String method, SqlCommand command)
+   в System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   в System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   в System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   --- Конец трассировки внутреннего стека исключений ---
+   в System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   в System.Data.Objects.Internal.ObjectQueryExecutionPlan.Execute[TResultType](ObjectContext context, ObjectParameterCollection parameterValues)
+   в System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   в System.Data.Objects.ObjectQuery`1.Execute(MergeOption mergeOption)
+   в System.Data.Objects.DataClasses.EntityCollection`1.Load(List`1 collection, MergeOption mergeOption)
+   в System.Data.Objects.DataClasses.EntityCollection`1.Load(MergeOption mergeOption)
+   в System.Data.Objects.DataClasses.RelatedEnd.Load()
+   в System.Data.Objects.DataClasses.RelatedEnd.DeferredLoad()
+   в System.Data.Objects.Internal.LazyLoadBehavior.LoadProperty[TItem](TItem propertyValue, String relationshipName, String targetRoleName, Boolean mustBeNull, Object wrapperObject)
+   в System.Data.Objects.Internal.LazyLoadBehavior.<>c__DisplayClass7`2.<GetInterceptorDelegate>b__1(TProxy proxy, TItem item)
+   в System.Data.Entity.DynamicProxies.Category_23EAD0533D2C1CA42E5412268BD9695823FB5048815CF561CD06FB07A41142E8.get_ParentCategories()
+   в AstCore.Models.Category.get_IsRoot() в c:\Users\sedov\Documents\GitHub\AstRostov\AstCore\Models\Category.cs:строка 51
+   в AstRostov.Catalog1.<BindChildren>b__0(Category c) в c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Catalog.aspx.cs:строка 25
+   в System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
+   в System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   в System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   в AstRostov.Catalog1.BindChildren() в c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Catalog.aspx.cs:строка 24
+   в AstRostov.Catalog1.Page_Load(Object sender, EventArgs e) в c:\Users\sedov\Documents\GitHub\AstRostov\AstRostov\Catalog.aspx.cs:строка 17
+   в System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.catalog_aspx.ProcessRequest(HttpContext context) в c:\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\vs\b9991b60\703b216d\App_Web_iaxsorxs.2.cs:строка 0
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2014-06-18 21:40:21.9894|ERROR|AstRostov.Global|This is an error with an Exception

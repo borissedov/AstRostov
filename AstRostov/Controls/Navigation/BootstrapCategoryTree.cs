@@ -1,4 +1,5 @@
-﻿using System.Web.UI.HtmlControls;
+﻿using System;
+using System.Web.UI.HtmlControls;
 using AstCore.Models;
 
 namespace AstRostov.Controls.Navigation
@@ -20,9 +21,9 @@ namespace AstRostov.Controls.Navigation
 
                 if (Depth == 0)
                 {
-                    var header = new HtmlGenericControl
+                    var header = new HtmlAnchor
                         {
-                            TagName = "li"
+                            HRef = ResolveUrl("~/Catalog.aspx")
                         };
                     header.Controls.Add(new HtmlGenericControl
                         {
