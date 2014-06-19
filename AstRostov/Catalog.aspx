@@ -37,7 +37,7 @@
                                     <div class="item-details">
                                         <!-- Name -->
                                         <h5>
-                                            <a href='<%#ResolveUrl(String.Format("~/Catalog.aspx?id={0}", Eval("CategoryId"))) %>'><%#Eval("Name") %></a>
+                                            <a href='<%#ResolveUrl(String.Format("~/Category.aspx?id={0}", Eval("CategoryId"))) %>'><%#Eval("Name") %></a>
                                         </h5>
                                         <div class="clearfix"></div>
                                     </div>
