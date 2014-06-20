@@ -6,7 +6,7 @@
       <siteMapNode url="~/PostArchive.aspx" title="Все записи"  description=""></siteMapNode>
       <siteMapNode url="~/MyBlog.aspx" title="Мой бортжурнал"  description=""></siteMapNode>
     </siteMapNode>
-    <!--<siteMapNode url="~/About.aspx" title="О нас"  description="" />-->
+    <siteMapNode url="~/StaticPage?key=AboutUs" title="О нас"  description="" />
     <siteMapNode url="~/Contact.aspx" title="Контакты"  description="" />
     <siteMapNode url="~/PaymentMethods.aspx" title="Способы оплаты"  description="" />
     <siteMapNode title="Администрирование" url="~/Admin/"  description="" roles="Administrator" >
@@ -18,6 +18,7 @@
       <siteMapNode url="~/Admin/BrandList.aspx" title="Производители"  description="" roles="Administrator" />
       <siteMapNode url="~/Admin/OrderList.aspx" title="Заказы"  description="" roles="Administrator" />
       <siteMapNode url="~/Admin/PreorderList.aspx" title="Предзаказы"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/StaticPageList.aspx" title="Страницы"  description="" roles="Administrator" />
     </siteMapNode>
   </siteMapNode>
 </siteMap>

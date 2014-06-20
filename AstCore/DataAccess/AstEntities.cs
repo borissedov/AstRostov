@@ -44,6 +44,9 @@ namespace AstCore.DataAccess
         public DbSet<PaymentTariff> PaymentTariffs { get; set; }
         public DbSet<ShippingTariff> ShippingTariffs { get; set; }
 
+        public DbSet<StaticPage> StaticPages { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new ApplicationMap());

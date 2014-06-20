@@ -54,6 +54,10 @@ namespace AstRostov
                     ddlDocumentType.SelectedValue = address.DocumentType;
                 }
             }
+            else
+            {
+                tbEmail.Text = account.Membership.Email;
+            }
         }
 
         protected void NextStepCheckout(object sender, EventArgs e)

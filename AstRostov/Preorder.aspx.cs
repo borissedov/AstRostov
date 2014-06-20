@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using AstCore;
 using AstCore.DataAccess;
 using AstCore.Helpers;
 using AstCore.Models;
@@ -67,6 +68,17 @@ namespace AstRostov
             {
                 tbProductName.Text = _sku.Product.Name;
                 tbAttributesConfig.Text = _sku.AttributeConfig;
+                if (AstMembership.CurrentUser != null)
+                {
+                    tbEmail.Text = AstMembership.CurrentUser.Membership.Email;
+
+                    var adress = AstMembership.CurrentUser.Address;
+                    if (adress != null)
+                    {
+                        tbCustomer.Text = adress.FullName;
+                        tbPhone.Text = adress.Phone;
+                    }
+                }
             }
         }
 

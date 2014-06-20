@@ -121,6 +121,11 @@ namespace AstRostov
                 BindAttributes();
                 BindAttributeSku(sender, e);
                 BindImages();
+
+                priceHolder.Visible = !Product.CallForPricing;
+                btnCallForPricing.Visible = Product.CallForPricing;
+                btnAddToCart.Visible = !Product.CallForPricing;
+                btnReserveProduct.Visible = !Product.CallForPricing;
             }
         }
 

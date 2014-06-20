@@ -16,7 +16,7 @@ namespace AstCore
                 {
                     return null;
                 }
-                return DataAccess.CoreData.Context.Users.SingleOrDefault(u => u.UserId == (Guid)aspUser.ProviderUserKey);
+                return DataAccess.CoreData.Context.Users.Include("Membership").Include("Address").SingleOrDefault(u => u.UserId == (Guid)aspUser.ProviderUserKey);
             }
         }
     }

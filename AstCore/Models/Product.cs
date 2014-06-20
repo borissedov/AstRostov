@@ -36,6 +36,8 @@ namespace AstCore.Models
 
         public Decimal? SalePrice { get; set; }
 
+        public bool CallForPricing { get; set; }
+
         public string Description { get; set; }
 
         public virtual ICollection<ProductImage> Images { get; set; }

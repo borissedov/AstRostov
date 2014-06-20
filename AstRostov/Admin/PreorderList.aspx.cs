@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using AstCore.DataAccess;
 using AstCore.Models;
@@ -46,6 +43,9 @@ namespace AstRostov.Admin
                 case "Decline":
                     DeclinePreorder(Convert.ToInt32(e.CommandArgument));
                     break;
+                case "ConvertToOrder":
+                    Response.Redirect(String.Format("~/Admin/PreorderConvert.aspx?id={0}", e.CommandArgument));
+                    break;
             }
         }
 
@@ -65,6 +65,18 @@ namespace AstRostov.Admin
         {
             var sku = CoreData.Context.Skus.SingleOrDefault(s => s.SkuId == skuId);
             return sku == null ? "Продукт был удален" : sku.AttributeConfig;
+        }
+
+        protected void OnGridRowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            var lbtnConvertToOrder = e.Row.FindControl("lbtnConvertToOrder") as LinkButton;
+            var dataItem = e.Row.DataItem as Preorder;
+
+            if (lbtnConvertToOrder != null && dataItem != null)
+            {
+                var skuId = dataItem.SkuId;
+                lbtnConvertToOrder.Visible = CoreData.Context.Skus.Any(s => s.SkuId == skuId) && dataItem.State == PreorderState.Pending;
+            }
         }
     }
 }

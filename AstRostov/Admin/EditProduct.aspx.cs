@@ -99,6 +99,7 @@ namespace AstRostov.Admin
             }
 
             tbProductName.Text = product.Name;
+            chbCallForPricing.Checked = product.CallForPricing;
             //tbProductNum.Text = product.ProductNum;
             tbDescription.Text = product.Description;
             tbRetailPrice.Text = product.RetailPrice.ToString("F");
@@ -154,6 +155,8 @@ namespace AstRostov.Admin
             //int inventory;
             //int.TryParse(tbInventory.Text, out inventory);
             //product.Inventory = inventory;
+
+            product.CallForPricing = chbCallForPricing.Checked;
 
             Decimal retailPrice;
             if (Decimal.TryParse(tbRetailPrice.Text, out retailPrice) && retailPrice > 0)
@@ -241,7 +244,7 @@ namespace AstRostov.Admin
             }
 
             CoreData.Context.SaveChanges();
-            Response.Redirect(String.Format("~/Admin/ProductList.aspx?cid={0}", categoryId));
+            Response.Redirect(String.Format("~/Admin/EditProduct.aspx?id={0}", product.ProductId));
         }
 
         protected void ValidateUniqueName(object source, ServerValidateEventArgs args)
@@ -413,6 +416,11 @@ namespace AstRostov.Admin
 
             CoreData.Context.SaveChanges();
             Response.Redirect(String.Format("~/Admin/EditProduct.aspx?id={0}", ItemId));
+        }
+
+        protected void ToCategory(object sender, EventArgs e)
+        {
+            Response.Redirect(String.Format("~/Category.aspx?id={0}", ddlCategories.SelectedValue));
         }
     }
 }

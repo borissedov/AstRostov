@@ -94,6 +94,15 @@ namespace AstRostov {
         protected global::System.Web.UI.WebControls.Literal litInventory;
         
         /// <summary>
+        /// priceHolder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl priceHolder;
+        
+        /// <summary>
         /// phProductActions control.
         /// </summary>
         /// <remarks>
@@ -128,6 +137,15 @@ namespace AstRostov {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnReserveProduct;
+        
+        /// <summary>
+        /// btnCallForPricing control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnCallForPricing;
         
         /// <summary>
         /// hlEdit control.

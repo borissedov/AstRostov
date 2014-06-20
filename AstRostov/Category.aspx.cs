@@ -76,7 +76,8 @@ namespace AstRostov
                 _category = CoreData.Context.Categories.SingleOrDefault(c => c.CategoryId == ItemId);
                 if (_category == null)
                 {
-                    Response.Redirect("~/Default.aspx");
+                    Response.Redirect("~/Catalog.aspx");
+                    return;
                 }
 
                 litCategoryName.Text = _category.Name;

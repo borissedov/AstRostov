@@ -9,7 +9,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Список предзаказов</h2>
     <asp:Label runat="server" ID="ErrorLabel" Visible="False" />
-    <asp:GridView runat="server" ID="gridPreorders" OnRowCommand="OnGridRowCommand" AutoGenerateColumns="False" CssClass="table table-bordered">
+    <asp:GridView runat="server" ID="gridPreorders" OnRowCommand="OnGridRowCommand" AutoGenerateColumns="False" CssClass="table table-bordered" OnRowDataBound="OnGridRowDataBound">
         <Columns>
             <asp:BoundField HeaderText="ID" DataField="PreorderId" />
             <asp:BoundField HeaderText="Заказчик" DataField="CustomerName" />
@@ -42,6 +42,9 @@
                 <ItemTemplate>
                     <asp:LinkButton runat="server" CommandName="Decline" CommandArgument='<%#Eval("PreorderId") %>' ToolTip="Отменить">
                         <i class="icon-white icon-trash"></i>
+                    </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="lbtnConvertToOrder" CommandName="ConvertToOrder" CommandArgument='<%#Eval("PreorderId") %>' ToolTip="Конвертировать в заказ">
+                        <i class="icon-white icon-shopping-cart"></i>
                     </asp:LinkButton>
                 </ItemTemplate>
             </asp:TemplateField>

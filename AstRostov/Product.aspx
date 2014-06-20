@@ -118,7 +118,7 @@
                                 <asp:Literal runat="server" ID="litInventory"></asp:Literal></dd>
                         </asp:PlaceHolder>
                     </dl>
-                    <h4><strong>Цена: <%=SelectedSku != null ? SelectedSku.FormattedPrice(Count) : Product.FormattedPrice(Count)  %></strong></h4>
+                    <h4 id="priceHolder" runat="server"><strong>Цена: <%=SelectedSku != null ? SelectedSku.FormattedPrice(Count) : Product.FormattedPrice(Count)  %></strong></h4>
 
                     <asp:PlaceHolder runat="server" ID="phProductActions">
                         <div class="input-append">
@@ -127,6 +127,7 @@
                     <i class="icon-white icon-shopping-cart"></i>&nbsp;Добавить в корзину
                             </asp:LinkButton>
                             <asp:LinkButton runat="server" ID="btnReserveProduct" OnClick="ReserveProduct" CssClass="btn btn-warning" Text="Оформить предзаказ"></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="btnCallForPricing" OnClick="ReserveProduct" CssClass="btn btn-warning" Text="Запросить цену" Visible="False"></asp:LinkButton>
                         </div>
                     </asp:PlaceHolder>
                     <asp:HyperLink runat="server" ID="hlEdit" Visible="False" Text="Редактировать" CssClass="btn btn-success"></asp:HyperLink>

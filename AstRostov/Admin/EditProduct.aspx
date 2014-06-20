@@ -41,12 +41,12 @@
                 <asp:TextBox runat="server" ID="tbSalePrice"></asp:TextBox>
             </div>
         </div>
-        <%--<div class="control-group">
-            <span class="control-label">Количество на складе</span>
+        <div class="control-group">
+            <span class="control-label">Цена по запросу</span>
             <div class="controls">
-                <asp:TextBox runat="server" ID="tbInventory" TextMode="Number"></asp:TextBox>
+                <asp:CheckBox runat="server" ID="chbCallForPricing"></asp:CheckBox>
             </div>
-        </div>--%>
+        </div>
         <div class="control-group">
             <span class="control-label">Категория</span>
             <div class="controls">
@@ -134,4 +134,6 @@
         <asp:HyperLink runat="server" Text="Редактировать схему конфигураций" CssClass="btn btn-success" ID="hlEditAttrConfig"></asp:HyperLink>
         <asp:HyperLink runat="server" Text="Добавить новую конфигурацию" CssClass="btn btn-success" ID="hlAddSku"></asp:HyperLink>
     </asp:PlaceHolder>
+    <br/>
+    <asp:LinkButton runat="server" OnClick="ToCategory" CssClass="btn btn-danger" ID="lbtnToCategory" Text="К категории"></asp:LinkButton>
 </asp:Content>

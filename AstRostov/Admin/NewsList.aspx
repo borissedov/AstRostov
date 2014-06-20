@@ -34,5 +34,5 @@
             </asp:TemplateField>
         </Columns>
     </asp:GridView>
-    <asp:HyperLink runat="server" CssClass="btn btn-success" NavigateUrl="~/Admin/EditNewsItem.aspx?mode=NewsItem" Text="Добавить"></asp:HyperLink>
+    <asp:HyperLink runat="server" CssClass="btn btn-success" NavigateUrl="~/Admin/EditNewsItem.aspx" Text="Добавить"></asp:HyperLink>
 </asp:Content>

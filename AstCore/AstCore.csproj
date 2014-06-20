@@ -146,6 +146,18 @@
     <Compile Include="Migrations\201406181610036_CategoryImageDescriptionMigration.Designer.cs">
       <DependentUpon>201406181610036_CategoryImageDescriptionMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406201919371_StaticPagesMigration.cs" />
+    <Compile Include="Migrations\201406201919371_StaticPagesMigration.Designer.cs">
+      <DependentUpon>201406201919371_StaticPagesMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406201950384_StaticPagesIdentityMigration.cs" />
+    <Compile Include="Migrations\201406201950384_StaticPagesIdentityMigration.Designer.cs">
+      <DependentUpon>201406201950384_StaticPagesIdentityMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406202024389_CallForPricingMigration.cs" />
+    <Compile Include="Migrations\201406202024389_CallForPricingMigration.Designer.cs">
+      <DependentUpon>201406202024389_CallForPricingMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -182,6 +194,7 @@
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\Sku.cs" />
     <Compile Include="Models\SkuImage.cs" />
+    <Compile Include="Models\StaticPage.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchEngine\AttributeValueComparer.cs" />
@@ -262,6 +275,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201406181610036_CategoryImageDescriptionMigration.resx">
       <DependentUpon>201406181610036_CategoryImageDescriptionMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406201919371_StaticPagesMigration.resx">
+      <DependentUpon>201406201919371_StaticPagesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406201950384_StaticPagesIdentityMigration.resx">
+      <DependentUpon>201406201950384_StaticPagesIdentityMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406202024389_CallForPricingMigration.resx">
+      <DependentUpon>201406202024389_CallForPricingMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

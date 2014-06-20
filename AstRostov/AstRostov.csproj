@@ -109,7 +109,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
+    <Content Include="StaticPage.aspx" />
     <Content Include="Account\EditOrder.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Manage.aspx" />
@@ -125,7 +125,9 @@
     <Content Include="Admin\EditOrder.aspx" />
     <Content Include="Admin\EditProductConfiguration.aspx" />
     <Content Include="Admin\EditSku.aspx" />
+    <Content Include="Admin\EditStaticPage.aspx" />
     <Content Include="Admin\OrderList.aspx" />
+    <Content Include="Admin\PreorderConvert.aspx" />
     <Content Include="Admin\PreorderList.aspx" />
     <Content Include="Admin\EditBrand.aspx" />
     <Content Include="Admin\EditProduct.aspx" />
@@ -138,6 +140,7 @@
     <Content Include="Admin\NewsCommentList.aspx" />
     <Content Include="Admin\NewsList.aspx" />
     <Content Include="Admin\ProductList.aspx" />
+    <Content Include="Admin\StaticPageList.aspx" />
     <Content Include="Blog.aspx" />
     <Content Include="Catalog.aspx" />
     <Content Include="Category.aspx" />
@@ -343,12 +346,26 @@
     <Compile Include="Admin\EditSku.aspx.designer.cs">
       <DependentUpon>EditSku.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\EditStaticPage.aspx.cs">
+      <DependentUpon>EditStaticPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\EditStaticPage.aspx.designer.cs">
+      <DependentUpon>EditStaticPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\OrderList.aspx.cs">
       <DependentUpon>OrderList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\OrderList.aspx.designer.cs">
       <DependentUpon>OrderList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\PreorderConvert.aspx.cs">
+      <DependentUpon>PreorderConvert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\PreorderConvert.aspx.designer.cs">
+      <DependentUpon>PreorderConvert.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\PreorderList.aspx.cs">
       <DependentUpon>PreorderList.aspx</DependentUpon>
@@ -370,6 +387,13 @@
     </Compile>
     <Compile Include="Admin\MailTest.aspx.designer.cs">
       <DependentUpon>MailTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\StaticPageList.aspx.cs">
+      <DependentUpon>StaticPageList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\StaticPageList.aspx.designer.cs">
+      <DependentUpon>StaticPageList.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Catalog.aspx.cs">
@@ -574,12 +598,12 @@
       <DependentUpon>ProductList.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\AuthConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
+    <Compile Include="StaticPage.aspx.cs">
+      <DependentUpon>StaticPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
+    <Compile Include="StaticPage.aspx.designer.cs">
+      <DependentUpon>StaticPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
