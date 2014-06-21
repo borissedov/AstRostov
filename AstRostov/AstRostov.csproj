@@ -109,6 +109,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\BlogList.aspx" />
+    <Content Include="Admin\EditBlog.aspx" />
     <Content Include="StaticPage.aspx" />
     <Content Include="Account\EditOrder.aspx" />
     <Content Include="Account\Login.aspx" />
@@ -318,12 +320,26 @@
     <Compile Include="Admin\AddSku.aspx.designer.cs">
       <DependentUpon>AddSku.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\BlogList.aspx.cs">
+      <DependentUpon>BlogList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\BlogList.aspx.designer.cs">
+      <DependentUpon>BlogList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\BrandList.aspx.cs">
       <DependentUpon>BrandList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\BrandList.aspx.designer.cs">
       <DependentUpon>BrandList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\EditBlog.aspx.cs">
+      <DependentUpon>EditBlog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\EditBlog.aspx.designer.cs">
+      <DependentUpon>EditBlog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\EditOrder.aspx.cs">
       <DependentUpon>EditOrder.aspx</DependentUpon>

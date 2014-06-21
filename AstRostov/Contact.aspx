@@ -151,7 +151,7 @@
                 </p>
                 <p>
                     <span class="label">Основной:</span>
-                    <span><a href="mailto:sasha2507@aaanet.ru">Sasha2507@aaanet.ru</a></span>
+                    <span><a href="mailto:sasha2507alexin@yandex.ru">sasha2507alexin@yandex.ru</a></span>
                 </p>
             </section>
 

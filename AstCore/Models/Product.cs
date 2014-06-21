@@ -119,6 +119,11 @@ namespace AstCore.Models
 
         public string FormattedPrice(int count = 1)
         {
+            if (CallForPricing)
+            {
+                return String.Empty;
+            }
+
             decimal minPrice;
             decimal minSkuPrice = SkuCollection.Min(s => s.FinalPrice);
             if (SalePrice.HasValue && SalePrice < minSkuPrice)

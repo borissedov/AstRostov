@@ -21,7 +21,7 @@ namespace AstRostov.Admin
 
         private void BindPreorders()
         {
-            gridOrders.DataSource = CoreData.Context.Orders.ToArray();
+            gridOrders.DataSource = CoreData.Context.Orders.Where(o => o.OrderState != OrderState.Declined).ToArray();
             gridOrders.DataBind();
         }
     }

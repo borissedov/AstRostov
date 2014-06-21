@@ -122,6 +122,9 @@ namespace AstRostov
                     AstMail.SendEmail(tbEmail.Text, message, false, "АСТ-Ростов: Предзаказ");
 
                     AstMail.SendEmail("sasha2507@aaanet.ru", String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), false, String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId));
+                    AstMail.SendEmail("Marketing@ast-rostov.ru", String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), false, String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId));
+                    AstMail.SendEmail("sasha2507alexin@yandex.ru", String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), false, String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId));
+
 
                     lblSuccess.Visible = true;
                     lblError.Text = "";

@@ -19,6 +19,7 @@
       <siteMapNode url="~/Admin/OrderList.aspx" title="Заказы"  description="" roles="Administrator" />
       <siteMapNode url="~/Admin/PreorderList.aspx" title="Предзаказы"  description="" roles="Administrator" />
       <siteMapNode url="~/Admin/StaticPageList.aspx" title="Страницы"  description="" roles="Administrator" />
+      <siteMapNode url="~/Admin/BlogList.aspx" title="Бортжурналы"  description="" roles="Administrator" />
     </siteMapNode>
   </siteMapNode>
 </siteMap>

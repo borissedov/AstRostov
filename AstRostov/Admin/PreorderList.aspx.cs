@@ -18,7 +18,7 @@ namespace AstRostov.Admin
 
         private void BindPreorders()
         {
-            gridPreorders.DataSource = CoreData.Context.Preorders.ToArray();
+            gridPreorders.DataSource = CoreData.Context.Preorders.Where(p=>p.State != PreorderState.Declined).ToArray();
             gridPreorders.DataBind();
         }
 

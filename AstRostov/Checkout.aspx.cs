@@ -188,6 +188,9 @@ namespace AstRostov
                     AstMail.SendEmail(order.Email, message, true, String.Format("АСТ-Ростов: Заказ №{0}", order.OrderId));
 
                     AstMail.SendEmail("sasha2507@aaanet.ru", String.Format("Выставлен новый заказ №{0} от {1:G}", order.OrderId, DateTime.Now), false, String.Format("АСТ-Ростов: Новый заказ №{0}", order.OrderId));
+                    AstMail.SendEmail("Marketing@ast-rostov.ru", String.Format("Выставлен новый заказ №{0} от {1:G}", _order.OrderId, DateTime.Now), false, String.Format("АСТ-Ростов: Новый заказ №{0}", _order.OrderId));
+                    AstMail.SendEmail("sasha2507alexin@yandex.ru", String.Format("Выставлен новый заказ №{0} от {1:G}", _order.OrderId, DateTime.Now), false, String.Format("АСТ-Ростов: Новый заказ №{0}", _order.OrderId));
+
                 }
                 catch (Exception ex)
                 {

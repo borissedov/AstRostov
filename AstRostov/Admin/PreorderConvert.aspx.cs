@@ -98,6 +98,7 @@ namespace AstRostov.Admin
             lblProductName.Text = sku.Product.Name;
             lblSkuAttrs.Text = sku.AttributeConfig;
             lblSkuNumber.Text = sku.SkuNumber;
+            tbProductPrice.Text = sku.FinalPrice.ToString("F");
 
             tbCount.Text = _preorder.Count.ToString(CultureInfo.InvariantCulture);
             tbEmail.Text = _preorder.CustomerEmail;
@@ -142,16 +143,22 @@ namespace AstRostov.Admin
                 throw new Exception("Sku not found");
             }
 
-            var user = CoreData.Context.Users.FirstOrDefault(u => u.UserName == txtUserName.Text);
-            if (user == null)
+            decimal finalPrice;
+            if (!Decimal.TryParse(tbProductPrice.Text, out finalPrice) || finalPrice <= 0)
             {
-                throw new Exception("User not found");
+                finalPrice = sku.FinalPrice;
+                tbProductPrice.Text = finalPrice.ToString("F");
+            }
+
+            decimal retailPrice = sku.RetailPrice ?? sku.Product.RetailPrice;
+            if (retailPrice < finalPrice)
+            {
+                retailPrice = finalPrice;
             }
 
             _order = new Order
             {
-                Preorder = this._preorder,
-                Account = user
+                Preorder = this._preorder
             };
 
             _order.FullName = tbFullName.Text;
@@ -170,17 +177,17 @@ namespace AstRostov.Admin
             {
                 ProductId = sku.ProductId,
                 SkuId = sku.SkuId,
-                RetailPrice = sku.RetailPrice ?? sku.Product.RetailPrice,
-                SalePrice = sku.FinalPrice,
+                RetailPrice = retailPrice,
+                SalePrice = finalPrice,
                 ProductName = sku.Product.Name,
                 Count = count,
                 AttributeConfig = sku.AttributeConfig,
                 SkuNumber = sku.SkuNumber,
             });
 
-            _order.ItemsSubtotal = sku.FinalPrice * count;
+            _order.ItemsSubtotal = finalPrice * count;
 
-            _order.DiscountTotal = count * ((sku.RetailPrice ?? sku.Product.RetailPrice) - sku.FinalPrice);
+            _order.DiscountTotal = count * (retailPrice - finalPrice);
 
             _order.ShippingType = SelectedShippingType;
 
@@ -303,6 +310,13 @@ namespace AstRostov.Admin
         {
             if (Page.IsValid)
             {
+                var user = CoreData.Context.Users.FirstOrDefault(u => u.UserName == txtUserName.Text);
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+
+                _order.Account = user;
                 _order.CreateDate = DateTime.Now;
                 _order.OrderState = OrderState.Pending;
                 CoreData.Context.Orders.Add(_order);
@@ -319,6 +333,8 @@ namespace AstRostov.Admin
                     AstMail.SendEmail(_order.Email, message, true, String.Format("АСТ-Ростов: Заказ №{0}", _order.OrderId));
 
                     AstMail.SendEmail("sasha2507@aaanet.ru", String.Format("Выставлен новый заказ №{0} от {1:G}", _order.OrderId, DateTime.Now), false, String.Format("АСТ-Ростов: Новый заказ №{0}", _order.OrderId));
+                    AstMail.SendEmail( "Marketing@ast-rostov.ru", String.Format("Выставлен новый заказ №{0} от {1:G}", _order.OrderId, DateTime.Now), false, String.Format("АСТ-Ростов: Новый заказ №{0}", _order.OrderId));
+                    AstMail.SendEmail("sasha2507alexin@yandex.ru", String.Format("Выставлен новый заказ №{0} от {1:G}", _order.OrderId, DateTime.Now), false, String.Format("АСТ-Ростов: Новый заказ №{0}", _order.OrderId));
                 }
                 catch (Exception ex)
                 {

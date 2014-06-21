@@ -45,6 +45,12 @@
                     </div>
                 </div>
                 <div class="control-group">
+                    <span class="control-label">Цена</span>
+                    <div class="controls">
+                        <asp:TextBox runat="server" ID="tbProductPrice" OnTextChanged="PreorderChanged" AutoPostBack="true" />
+                    </div>
+                </div>
+                <div class="control-group">
                     <span class="control-label">Количество</span>
                     <div class="controls">
                         <asp:TextBox runat="server" ID="tbCount" Text="1" TextMode="Number" CssClass="product-qty" OnTextChanged="PreorderChanged" AutoPostBack="true" />
@@ -197,12 +203,6 @@
                 </FooterTemplate>
             </asp:Repeater>
             <div class="form-horizontal">
-                <div class="control-group">
-                    <span class="control-label">Дополнительное сообщение пользователю</span>
-                    <div class="controls">
-                        <asp:TextBox runat="server" ID="tbAdditionalMessage" TextMode="MultiLine"></asp:TextBox>
-                    </div>
-                </div>
                 <div class="control-group">
                     <span class="control-label"></span>
                     <div class="controls">
