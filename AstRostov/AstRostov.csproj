@@ -110,7 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\BlogList.aspx" />
+    <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Admin\EditBlog.aspx" />
+    <Content Include="Admin\UsersList.aspx" />
     <Content Include="StaticPage.aspx" />
     <Content Include="Account\EditOrder.aspx" />
     <Content Include="Account\Login.aspx" />
@@ -334,6 +336,13 @@
     <Compile Include="Admin\BrandList.aspx.designer.cs">
       <DependentUpon>BrandList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\EditBlog.aspx.cs">
       <DependentUpon>EditBlog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -410,6 +419,13 @@
     </Compile>
     <Compile Include="Admin\StaticPageList.aspx.designer.cs">
       <DependentUpon>StaticPageList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UsersList.aspx.cs">
+      <DependentUpon>UsersList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\UsersList.aspx.designer.cs">
+      <DependentUpon>UsersList.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Catalog.aspx.cs">

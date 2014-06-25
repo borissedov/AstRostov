@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,15 @@ namespace AstCore.Models
         public string DocumentType { get; set; }
 
         public string DocumentNumber { get; set; }
+
+        [NotMapped]
+        public string ShortAddress
+        {
+            get
+            {
+                return String.Format("{0}, {1}, {2}, {3} {4}, {5}", FullName, Country, City, Address1, Address2, ZipCode);
+            }
+        }
 
     }
 }
