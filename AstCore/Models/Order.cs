@@ -127,7 +127,7 @@ namespace AstCore.Models
         [Description("Оплата подтверждена")]
         PaymentConfirmed = 3,
 
-        [Description("Отпарвлен")]
+        [Description("Отправлен")]
         Shipped = 4,
 
         [Description("Получен")]
