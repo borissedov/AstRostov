@@ -48,7 +48,10 @@ namespace AstRostov.Admin
                     parentCategory.ChildCategories.Remove(categoryToDelete);
                 }
 
-                CoreData.Context.CategoryImages.Remove(categoryToDelete.Image);
+                if (categoryToDelete.Image != null)
+                {
+                    CoreData.Context.CategoryImages.Remove(categoryToDelete.Image);
+                }
                 CoreData.Context.Categories.Remove(categoryToDelete);
                 CoreData.Context.SaveChanges();
             }
