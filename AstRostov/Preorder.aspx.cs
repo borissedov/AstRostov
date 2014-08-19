@@ -94,7 +94,7 @@ namespace AstRostov
             {
                 var preorder = new Preorder
                 {
-                    SkuId = _sku.ProductId,
+                    SkuId = _sku.SkuId,
                     ProductName = _sku.Product.Name,
                     EstimatedPrice = _sku.FinalPrice,
                     AttributeConfig = _sku.AttributeConfig,
