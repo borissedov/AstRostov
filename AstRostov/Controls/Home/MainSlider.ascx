@@ -2,12 +2,12 @@
 
 <div id="slide-wrapper">
     <div id="banner">
-        <asp:Repeater runat="server" ID="rptMailSliderItems">
+        <asp:Repeater runat="server" ID="rptMailSliderItems" OnItemDataBound="MainSliderItemDataBound">
             <ItemTemplate>
                 <div class="oneByOne_item" style="height: 341px;">
                     <img src='<%# ResolveUrl(String.Format("~/img/main-slider/{0}",Eval("ImageFile"))) %>' alt="Placeholder" class="bigImage">
                     <span class="slide5Txt1"><%#Eval("Title") %></span>
-                    <span class="slide5Txt2"><%#((decimal)Eval("Price")).ToString("c") %></span>
+                    <asp:Label runat="server" class="slide5Txt2" id="lblPrice"></asp:Label>
                 </div>
             </ItemTemplate>
         </asp:Repeater>

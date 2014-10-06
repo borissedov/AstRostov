@@ -158,6 +158,10 @@
     <Compile Include="Migrations\201406202024389_CallForPricingMigration.Designer.cs">
       <DependentUpon>201406202024389_CallForPricingMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410061327540_Name=PreorderFix.cs" />
+    <Compile Include="Migrations\201410061327540_Name=PreorderFix.Designer.cs">
+      <DependentUpon>201410061327540_Name=PreorderFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Application.cs" />
@@ -284,6 +288,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201406202024389_CallForPricingMigration.resx">
       <DependentUpon>201406202024389_CallForPricingMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410061327540_Name=PreorderFix.resx">
+      <DependentUpon>201410061327540_Name=PreorderFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

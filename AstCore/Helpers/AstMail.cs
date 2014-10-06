@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Net;
 using System.Net.Mail;
 
@@ -6,11 +7,11 @@ namespace AstCore.Helpers
 {
     public class AstMail
     {
-        public static void SendEmail(string toAddress, string body, bool isBodyHtml = false, string subject = "АСТ-Ростов: Оповещение")
+        public static void SendEmail(string toAddress, string body, bool isBodyHtml = false, string subject = "АСТ-Ростов: Оповещение", string adminCopy = null)
         {
             var fromMailAddress = new MailAddress("admin@ast-rostov.ru", "Администрация сайта АСТ-Ростов");
             var toMailAddress = new MailAddress(toAddress, toAddress);
-
+            
             var smtp = new SmtpClient
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -25,6 +26,10 @@ namespace AstCore.Helpers
                 IsBodyHtml = isBodyHtml
             })
             {
+                if (!String.IsNullOrEmpty(adminCopy))
+                {
+                    message.Bcc.Add(adminCopy);
+                }
                 smtp.Send(message);
             }
         }

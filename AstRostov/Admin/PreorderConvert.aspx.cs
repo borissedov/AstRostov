@@ -113,10 +113,17 @@ namespace AstRostov.Admin
             rblShippingType.DataTextField = "Text";
             rblShippingType.DataValueField = "Value";
             rblShippingType.DataBind();
-            rblShippingType.SelectedValue =
-                ((int)CoreData.Context.ShippingTariffs.OrderBy(t => t.ShippingCost).ToArray().Last().ShippingType).ToString(
-                    CultureInfo.InvariantCulture);
-
+            if(!_preorder.ShippingType.HasValue)
+            {
+                rblShippingType.SelectedValue =
+                    ((int)CoreData.Context.ShippingTariffs.OrderBy(t => t.ShippingCost).ToArray().Last().ShippingType).ToString(
+                        CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                rblShippingType.SelectedValue = _preorder.ShippingType.Value.ToString();
+            }
+            
             rblPaymentMethod.DataSource =
                 CoreData.Context.PaymentTariffs.ToArray().Select(
                     t => new ListItem(t.PaymentMethod.GetDescription(), ((int)t.PaymentMethod).ToString(CultureInfo.InvariantCulture)));

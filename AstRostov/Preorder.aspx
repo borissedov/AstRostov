@@ -71,6 +71,17 @@
             </div>
         </div>
         <div class="control-group">
+            <span class="control-label">Способ доставки</span>
+            <div class="controls">
+                <asp:DropDownList runat="server" ID="ddlShippingMethod">
+                    <Items>
+                        <asp:ListItem Text="Самовывоз" Value="1" Selected="True"></asp:ListItem>
+                        <asp:ListItem Text="Транспортная компания" Value="2"></asp:ListItem>
+                    </Items>
+                </asp:DropDownList>
+            </div>
+        </div>
+        <div class="control-group">
             <span class="control-label"></span>
             <div class="controls">
                 <asp:LinkButton runat="server" ID="btnChechout" CssClass="btn btn-warning" OnClick="CreatePreorder">Оформить предзаказ</asp:LinkButton>

@@ -28,6 +28,19 @@ namespace AstRostov
             set { hdnSkuId.Value = value.ToString(CultureInfo.InvariantCulture); }
         }
 
+        private ShippingType SelectedShippingType
+        {
+            get
+            {
+                ShippingType selectedShippingType;
+                if (Enum.TryParse(ddlShippingMethod.SelectedValue, out selectedShippingType))
+                {
+                    return selectedShippingType;
+                }
+                return default(ShippingType);
+            }
+        }
+
         protected void Page_Init(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -105,7 +118,8 @@ namespace AstRostov
                     Comment = tbComment.Text,
                     SkuNumber = _sku.SkuNumber,
                     Date = DateTime.Now,
-                    State = PreorderState.Pending
+                    State = PreorderState.Pending,
+                    ShippingType = SelectedShippingType
                 };
                 CoreData.Context.Preorders.Add(preorder);
                 CoreData.Context.SaveChanges();
@@ -119,11 +133,19 @@ namespace AstRostov
 
                 try
                 {
-                    AstMail.SendEmail(tbEmail.Text, message, false, "АСТ-Ростов: Предзаказ");
+                    AstMail.SendEmail(
+                        tbEmail.Text, 
+                        message, 
+                        false, 
+                        "АСТ-Ростов: Предзаказ", 
+                        "sasha2507@aaanet.ru,Marketing@ast-rostov.ru,sasha2507alexin@yandex.ru");
 
-                    AstMail.SendEmail("sasha2507@aaanet.ru", String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), false, String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId));
-                    AstMail.SendEmail("Marketing@ast-rostov.ru", String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), false, String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId));
-                    AstMail.SendEmail("sasha2507alexin@yandex.ru", String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), false, String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId));
+                    AstMail.SendEmail(
+                        "sasha2507@aaanet.ru",
+                        String.Format("Выставлен новый предзаказ №{0} от {1:G}", preorder.PreorderId, DateTime.Now), 
+                        false,
+                        String.Format("АСТ-Ростов: Предзаказ №{0}", preorder.PreorderId),
+                        "Marketing@ast-rostov.ru,sasha2507alexin@yandex.ru");
 
 
                     lblSuccess.Visible = true;

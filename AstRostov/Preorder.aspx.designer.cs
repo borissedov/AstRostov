@@ -94,6 +94,15 @@ namespace AstRostov {
         protected global::System.Web.UI.WebControls.TextBox tbComment;
         
         /// <summary>
+        /// ddlShippingMethod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlShippingMethod;
+        
+        /// <summary>
         /// btnChechout control.
         /// </summary>
         /// <remarks>

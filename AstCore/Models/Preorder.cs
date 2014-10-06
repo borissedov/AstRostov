@@ -37,6 +37,8 @@ namespace AstCore.Models
         [Required]
         public string CustomerEmail { get; set; }
 
+        public ShippingType? ShippingType { get; set; }
+
         public PreorderState State { get; set; }
 
         public DateTime Date { get; set; }
