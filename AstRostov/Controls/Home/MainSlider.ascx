@@ -6,8 +6,8 @@
             <ItemTemplate>
                 <div class="oneByOne_item" style="height: 341px;">
                     <img src='<%# ResolveUrl(String.Format("~/img/main-slider/{0}",Eval("ImageFile"))) %>' alt="Placeholder" class="bigImage">
-                    <span class="slide5Txt1"><%#Eval("Title") %></span>
-                    <asp:Label runat="server" class="slide5Txt2" id="lblPrice"></asp:Label>
+                    <asp:Label runat="server" CssClass="slide5Txt1" ID="lblTitle"></asp:Label>
+                    <asp:Label runat="server" CssClass="slide5Txt2" ID="lblPrice"></asp:Label>
                 </div>
             </ItemTemplate>
         </asp:Repeater>

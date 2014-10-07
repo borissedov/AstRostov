@@ -24,17 +24,27 @@ namespace AstRostov.Controls.Home
 
         protected void MainSliderItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            var label = e.Item.FindControl("lblPrice") as Label;
+            var lblPrice = e.Item.FindControl("lblPrice") as Label;
+            var lblTitle = e.Item.FindControl("lblTitle") as Label;
             var item = e.Item.DataItem as MainSliderItem;
-            if (label != null && item != null)
+            if (lblPrice != null && item != null && lblTitle != null)
             {
                 if (item.Price != 0M)
                 {
-                    label.Text = item.Price.ToString("C");
+                    lblPrice.Text = item.Price.ToString("C");
                 }
                 else
                 {
-                    label.Visible = false;
+                    lblPrice.Visible = false;
+                }
+
+                if (String.IsNullOrEmpty(item.Title))
+                {
+                    lblTitle.Visible = false;
+                }
+                else
+                {
+                    lblTitle.Text = item.Title;
                 }
             }
         }

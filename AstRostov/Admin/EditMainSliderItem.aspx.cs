@@ -151,7 +151,8 @@ namespace AstRostov.Admin
             }
             else
             {
-                ErrorLabel.Text = "Цена введена некорректно.";
+                mainSliderItem.Price = 0M;
+                //ErrorLabel.Text = "Цена введена некорректно.";
                 return;
             }
 

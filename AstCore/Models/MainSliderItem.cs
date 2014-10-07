@@ -8,7 +8,7 @@ namespace AstCore.Models
         public int MainSliderItemId { get; set; }
         [Required]
         public string ImageFile { get; set; }
-        [Required]
+        //[Required]
         public string Title { get; set; }
         [Required]
         public decimal Price { get; set; }
