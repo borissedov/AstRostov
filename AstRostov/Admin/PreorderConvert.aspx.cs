@@ -121,7 +121,7 @@ namespace AstRostov.Admin
             }
             else
             {
-                rblShippingType.SelectedValue = _preorder.ShippingType.Value.ToString();
+                rblShippingType.SelectedValue = ((int)_preorder.ShippingType.Value).ToString(CultureInfo.InvariantCulture);
             }
             
             rblPaymentMethod.DataSource =
