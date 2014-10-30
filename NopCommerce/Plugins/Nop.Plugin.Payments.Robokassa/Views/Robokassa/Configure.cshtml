@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.Payments.Robokassa.Models.ConfigurationModel
+@using Nop.Web.Framework;
+@using System.Linq;
+@using (Html.BeginForm())
+{
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                Логин:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.login)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Пароль 1:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.password1)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Пароль 2:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.password2)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Описание оплаты (клиент видит это описание на странице оплаты):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.paymentdescription)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+            </td>
+        </tr>
+    </table>
+}
+
+<p>Ваши URL:</p>
+@{
+    string rootpath = "http://" + Model.httpcontext.Request.Url.Host;
+    if (Model.httpcontext.Request.Url.Port != 80)
+    {
+        rootpath += ":" + Model.httpcontext.Request.Url.Port.ToString() + "/";
+    }
+    string success = rootpath + "/Plugins/Robokassa/Success";
+    string fail = rootpath + "/Plugins/Robokassa/Fail";
+    string resulturl = rootpath + "/Plugins/Robokassa/Result";
+}
+
+<p>@resulturl</p>
+<p>@success</p>
+<p>@fail</p>

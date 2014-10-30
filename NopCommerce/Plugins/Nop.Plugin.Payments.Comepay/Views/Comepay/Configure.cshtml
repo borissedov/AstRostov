@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.Payments.Comepay.Models.ConfigurationModel
+@using Nop.Web.Framework;
+@using System.Linq;
+@using (Html.BeginForm())
+{
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                Id кошелька в системе Comepay:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.prv_id)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Название интернет-магазина:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.prv_name)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Пароль в системе Comepay:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.password)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Пароль для оповещений от системы Comepay:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.password2)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Номер кошелька в системе Comepay:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.prv_purse)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Тестовый режим:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.testMode)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Описание оплаты (клиент видит это описание на странице оплаты):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.paymentdescription)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+            </td>
+        </tr>
+    </table>
+}
+
+<p>Ваши URL:</p>
+@{
+    string rootpath = "http://" + Model.httpcontext.Request.Url.Host;
+    if (Model.httpcontext.Request.Url.Port != 80)
+    {
+        rootpath += ":" + Model.httpcontext.Request.Url.Port;
+    }
+    string success = rootpath + "/Plugins/Comepay/Success";
+    string fail = rootpath + "/Plugins/Comepay/Fail";
+    string resulturl = rootpath + "/Plugins/Comepay/Result";
+}
+
+<p>@resulturl</p>
+<p>@success</p>
+<p>@fail</p>

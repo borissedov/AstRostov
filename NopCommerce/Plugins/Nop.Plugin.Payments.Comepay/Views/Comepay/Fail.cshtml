@@ -1,0 +1,10 @@
+﻿@model Nop.Plugin.Payments.Comepay.Models.Fail
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+}
+
+<p>Ваш заказ №@Model.orderid <b>не</b> был оплачен.</p>
+<p>Вы можете оплатить его в любое время, нажав на кнопку <b>Оплатить</b> <a href="~/orderdetails/@Model.orderid">в деталях Вашего заказа</a>.</p>
+
