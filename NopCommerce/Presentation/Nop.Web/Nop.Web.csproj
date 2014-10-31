@@ -1953,6 +1953,7 @@
     <Content Include="Themes\NopRoot\Content\images\ico-rss.gif" />
     <Content Include="Themes\NopRoot\Content\images\loading.gif" />
     <Content Include="Themes\NopRoot\Content\images\logo.gif" />
+    <Content Include="Themes\NopRoot\Content\images\navy_blue.png" />
     <Content Include="Themes\NopRoot\Content\images\nextlabel.gif" />
     <Content Include="Themes\NopRoot\Content\images\paven1.png" />
     <Content Include="Themes\NopRoot\Content\images\prevlabel.gif" />
