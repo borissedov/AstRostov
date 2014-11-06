@@ -1,0 +1,2 @@
+DataProvider: sqlserver
+DataConnectionString: Data Source=ms-sql-8.in-solve.ru;Initial Catalog=1gb_ast-rostov-nop;Integrated Security=False;Persist Security Info=False;User ID=1gb_ast-rostov;Password=4221b6a58jkl

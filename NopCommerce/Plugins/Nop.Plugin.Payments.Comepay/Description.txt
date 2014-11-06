@@ -2,7 +2,7 @@
 FriendlyName: Comepay
 SystemName: Payments.Comepay
 Version: 1.00
-SupportedVersions: 3.20
+SupportedVersions: 3.40
 Author: Boris Sedov
 DisplayOrder: 1
 FileName: Nop.Plugin.Payments.Comepay.dll
