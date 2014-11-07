@@ -560,7 +560,7 @@ Page: Product Details START
 \*------------------------------------*/
 
 
-.product-details-page { border: 1px solid #d3d3d3; margin-top: 10px; }
+.product-details-page { border: 1px solid #515151; margin-top: 10px; }
 
     .product-details-page .panel { margin-bottom: 0px; }
 
@@ -576,16 +576,16 @@ Page: Product Details START
 
         .product-details-page .gallery .picture-thumbs a { margin-right: 3px; }
 
-.product-details-page .overview { padding: 10px; border: 1px solid #eee; }
+.product-details-page .overview { padding: 10px; border: 1px solid #515151; }
 
 .product-details-page .product-name { color: #5C5B5B; font-size: 1.3em; margin-bottom: 0.3em; padding-top: 10px; }
 
-.product-details-page .short-description, .product-details-page .manufacturers, .product-details-page .sku, .product-details-page .manufacturer-part-number, .product-details-page .stock, .product-details-page .gtin, .product-details-page .delivery-date, .product-details-page .product-vendor { color: #555; margin-bottom: .3em; font-size: 1.1em; }
+.product-details-page .short-description, .product-details-page .manufacturers, .product-details-page .sku, .product-details-page .manufacturer-part-number, .product-details-page .stock, .product-details-page .gtin, .product-details-page .delivery-date, .product-details-page .product-vendor { color: #E0E0E0; margin-bottom: .3em; font-size: 1.1em; }
 
 .product-details-page .free-shipping { background: url('images/free-shipping.png') left 0px no-repeat; font-size: 11px; height: 60px; width: 120px; line-height: 12px; padding: 18px 5px 0 4px; text-align: center; color: #fff; font-weight: normal; }
 
 
-.product-details-page .full-description { border: 1px solid #eee; clear: both; color: #555; margin-bottom: .3em; padding: 10px; }
+.product-details-page .full-description { border: 1px solid #515151; clear: both; /*color: #555;*/ margin-bottom: .3em; padding: 10px; }
 
 
     .product-details-page .full-description ul, .product-details-page .full-description ol { margin-left: 25px; }
@@ -983,4 +983,8 @@ margin-left: 10%;
 .panel.panel-default {
     background-color: #1b1b1b;
     color: #E0E0E0;
+}
+
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
+    background-color: #3D3D3D;
 }
