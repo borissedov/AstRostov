@@ -1931,6 +1931,8 @@
     <Content Include="Themes\NopRoot\Content\images\bbeditor-button-bg.gif" />
     <Content Include="Themes\NopRoot\Content\images\black-picker.png" />
     <Content Include="Themes\NopRoot\Content\images\blue-picker.png" />
+    <Content Include="Themes\NopRoot\Content\images\BlueLeftBg.png" />
+    <Content Include="Themes\NopRoot\Content\images\BlueRightBg.png" />
     <Content Include="Themes\NopRoot\Content\images\bullet-left.gif" />
     <Content Include="Themes\NopRoot\Content\images\bullet-right.gif" />
     <Content Include="Themes\NopRoot\Content\images\closelabel.gif" />
