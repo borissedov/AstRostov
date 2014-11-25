@@ -237,9 +237,9 @@ a.logo {
 
 .mid-content-title {
     padding: 8px 12px;
-    background-color: #f0f0f0;
-    color: #000; /*border-bottom: 2px solid #000;*/
     margin: 0;
+    color: #E0E0E0;
+    background-image: url(../Content/images/navy_blue.png);
 }
 
 .mid-content-body {
@@ -888,7 +888,7 @@ Page: Shopping Cart  START
 
     .rec-banner.deactive_position a {
         text-decoration: none;
-        color: #000;
+        color: #5f97ff;
     }
 
         .rec-banner.deactive_position a:hover, .rec-banner.deactive_position a:active {
