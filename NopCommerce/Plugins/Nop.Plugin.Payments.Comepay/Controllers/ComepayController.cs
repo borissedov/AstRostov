@@ -41,7 +41,7 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
             model.prv_purse = settings.prv_purse;
             model.paymentdescription = settings.paymentdescription;
             model.testMode = settings.testMode;
-            return View("Nop.Plugin.Payments.Comepay.Views.Comepay.Configure", model);
+            return View("~/Plugins/Payments.Comepay/Views/Comepay/Configure.cshtml", model);
         }
 
         [HttpPost]
@@ -80,7 +80,7 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
         [ChildActionOnly]
         public ActionResult PaymentInfo()
         {
-            return View("Nop.Plugin.Payments.Comepay.Views.Comepay.PaymentInfo");
+            return View("~/Plugins/Payments.Comepay/Views/Comepay/PaymentInfo.cshtml");
         }
 
         [HttpPost]
@@ -120,7 +120,7 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
         {
             var model = new Fail();
             model.orderid = !String.IsNullOrEmpty(order) ? order : "0";
-            return View("Nop.Plugin.Payments.Comepay.Views.Comepay.Fail", model);
+            return View("~/Plugins/Payments.Comepay/Views/Comepay/Fail.cshtml", model);
         }
 
         [HttpGet]
