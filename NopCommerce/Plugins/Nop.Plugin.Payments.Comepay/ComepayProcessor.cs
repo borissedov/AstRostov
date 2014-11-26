@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using Nop.Core;
-using Nop.Core.Domain.Logging;
 using Nop.Core.Infrastructure;
 using Nop.Core.Plugins;
 using Nop.Services.Logging;
@@ -20,21 +15,26 @@ using System.Web.Routing;
 using Nop.Core.Domain.Orders;
 using Nop.Plugin.Payments.Comepay.Controllers;
 using Nop.Core.Domain.Payments;
-using System.Security.Cryptography;
 
 namespace Nop.Plugin.Payments.Comepay
 {
 
     public class Comepay : BasePlugin, IPaymentMethod
     {
+        private readonly ComepaySettings _comepaySettings;
+
         private readonly ISettingService _settingService;
 
         private readonly HttpContextBase _httpContext;
 
-        public Comepay(ISettingService SettingService, HttpContextBase httpContext)
+        private readonly IOrderTotalCalculationService _orderTotalCalculationService;
+
+        public Comepay(ComepaySettings comepaySettings, ISettingService SettingService, IOrderTotalCalculationService orderTotalCalculationService, HttpContextBase httpContext)
         {
             this._settingService = SettingService;
             this._httpContext = httpContext;
+            this._orderTotalCalculationService = orderTotalCalculationService;
+            this._comepaySettings = comepaySettings;
         }
 
 
@@ -82,7 +82,9 @@ namespace Nop.Plugin.Payments.Comepay
         }
         public decimal GetAdditionalHandlingFee(IList<ShoppingCartItem> cart)
         {
-            return 0; //без дополнительной оплаты
+            var result = this.CalculateAdditionalFee(_orderTotalCalculationService, cart,
+               _comepaySettings.AdditionalFee, _comepaySettings.AdditionalFeePercentage);
+            return result;
         }
         public Type GetControllerType()
         {
@@ -105,10 +107,10 @@ namespace Nop.Plugin.Payments.Comepay
 
         public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
-            const string putUrlLive = "https://money.comepay.ru:439/api/prv/{0}/bills/{1}";
+            const string putUrlLive = "https://shop.comepay.ru/api/prv/{0}/bills/{1}";
             const string putUrlTest = "https://moneytest.comepay.ru:439/api/prv/{0}/bills/{1}";
 
-            const string redirectUrlLive = "https://money.comepay.ru:439/order/external/main.action?shop={0}&transaction={1}&successUrl={2}&failUrl={3}";
+            const string redirectUrlLive = "https://shop.comepay.ru/order/external/main.action?shop={0}&transaction={1}&successUrl={2}&failUrl={3}";
             const string redirectUrlTest = "https://moneytest.comepay.ru:439/order/external/main.action?shop={0}&transaction={1}&successUrl={2}&failUrl={3}";
 
             var settings = _settingService.LoadSetting<ComepaySettings>();
@@ -137,7 +139,7 @@ namespace Nop.Plugin.Payments.Comepay
             string authHeaderValue = String.Format("Basic {0}", basicAuthHash);
 
             var putUri = String.Format(settings.testMode ? putUrlTest : putUrlLive, settings.prv_id, postProcessPaymentRequest.Order.Id);
-            
+
             var webRequest = (HttpWebRequest)WebRequest.Create(putUri);
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             webRequest.Method = "PUT";
@@ -152,11 +154,11 @@ namespace Nop.Plugin.Payments.Comepay
             using (var streamReader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
             {
                 string responseText = streamReader.ReadToEnd();
-                
+
                 var logger = EngineContext.Current.Resolve<ILogger>();
                 logger.Error("Request: " + putBilltData + Environment.NewLine + "Response: " + responseText);
             }
-            
+
             string rootpath = "http://" + HttpContext.Current.Request.Url.Host;
             if (HttpContext.Current.Request.Url.Port != 80)
             {

@@ -17,6 +17,8 @@ namespace Nop.Plugin.Payments.Comepay.Models
         public string password2 { get; set; }
         public string paymentdescription { get; set; }
         public bool testMode { get; set; }
+        public decimal AdditionalFee { get; set; }
+        public bool AdditionalFeePercentage { get; set; }
         public HttpContextBase httpcontext { get; set; }
     }
 }

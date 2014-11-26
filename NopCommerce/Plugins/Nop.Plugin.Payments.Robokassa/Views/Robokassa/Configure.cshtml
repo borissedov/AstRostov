@@ -40,6 +40,22 @@
             </td>
         </tr>
         <tr>
+            <td class="adminTitle">
+                Дополнительный сбор:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.AdditionalFee)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Сбор в процентах:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.AdditionalFeePercentage)
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
             </td>

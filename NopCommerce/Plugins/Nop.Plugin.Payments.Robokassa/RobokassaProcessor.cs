@@ -10,20 +10,27 @@ using Nop.Core.Domain.Orders;
 using Nop.Plugin.Payments.Robokassa.Controllers;
 using Nop.Core.Domain.Payments;
 using System.Security.Cryptography;
+using Nop.Services.Orders;
 
 namespace Nop.Plugin.Payments.Robokassa
 {
 
     public class Robokassa : BasePlugin, IPaymentMethod
     {
+        private readonly RobokassaSettings _robokassaSettingsSettings;
+
         private readonly ISettingService _settingService;
 
         private readonly HttpContextBase _httpContext;
 
-        public Robokassa(ISettingService SettingService, HttpContextBase httpContext)
+        private readonly IOrderTotalCalculationService _orderTotalCalculationService;
+        
+        public Robokassa(RobokassaSettings robokassaSettingsSettings, ISettingService SettingService, IOrderTotalCalculationService orderTotalCalculationService,  HttpContextBase httpContext)
         {
             this._settingService = SettingService;
             this._httpContext = httpContext;
+            this._robokassaSettingsSettings = robokassaSettingsSettings;
+            this._orderTotalCalculationService = orderTotalCalculationService;
         }
 
 
@@ -71,7 +78,9 @@ namespace Nop.Plugin.Payments.Robokassa
         }
         public decimal GetAdditionalHandlingFee(IList<ShoppingCartItem> cart)
         {
-            return 0; //без дополнительной оплаты
+            var result = this.CalculateAdditionalFee(_orderTotalCalculationService, cart,
+                _robokassaSettingsSettings.AdditionalFee, _robokassaSettingsSettings.AdditionalFeePercentage);
+            return result;
         }
         public Type GetControllerType()
         {

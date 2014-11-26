@@ -37,6 +37,8 @@ namespace Nop.Plugin.Payments.Robokassa.Controllers
             model.password1 = settings.password1;
             model.password2 = settings.password2;
             model.paymentdescription = settings.paymentdescription;
+            model.AdditionalFee = settings.AdditionalFee;
+            model.AdditionalFeePercentage = settings.AdditionalFeePercentage;
             return View("~/Plugins/Payments.Robokassa/Views/Robokassa/Configure.cshtml", model);
         }
 
@@ -48,7 +50,15 @@ namespace Nop.Plugin.Payments.Robokassa.Controllers
             model.httpcontext = _httpcontext;
             if (!ModelState.IsValid)
                 return Configure();
-            _settings.SaveSetting<RobokassaSettings>(new RobokassaSettings() { login = model.login, password1 = model.password1, password2 = model.password2, paymentdescription = model.paymentdescription });
+            _settings.SaveSetting<RobokassaSettings>(new RobokassaSettings
+            {
+                login = model.login,
+                password1 = model.password1,
+                password2 = model.password2,
+                paymentdescription = model.paymentdescription,
+                AdditionalFee = model.AdditionalFee,
+                AdditionalFeePercentage = model.AdditionalFeePercentage
+            });
             return Configure();
         }
 
