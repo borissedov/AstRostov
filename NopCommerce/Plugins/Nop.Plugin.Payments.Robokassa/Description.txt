@@ -3,6 +3,6 @@ FriendlyName: Robokassa
 SystemName: Payments.Robokassa
 Version: 1.00
 SupportedVersions: 3.40
-Author: Arthur Alexeev
+Author: Boris Sedov
 DisplayOrder: 1
 FileName: Nop.Plugin.Payments.Robokassa.dll
