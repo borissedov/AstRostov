@@ -156,11 +156,11 @@ namespace Nop.Plugin.Payments.Comepay
                 string responseText = streamReader.ReadToEnd();
 
                 var logger = EngineContext.Current.Resolve<ILogger>();
-                logger.Error("Request: " + putBilltData + Environment.NewLine + "Response: " + responseText);
+                logger.Information("Request: " + putBilltData + Environment.NewLine + "Response: " + responseText);
             }
 
             string rootpath = "http://" + HttpContext.Current.Request.Url.Host;
-            if (HttpContext.Current.Request.Url.Port != 80)
+            if (HttpContext.Current.Request.Url.Port != 80 && HttpContext.Current.Request.Url.Port != 443)
             {
                 rootpath += ":" + HttpContext.Current.Request.Url.Port;
             }
