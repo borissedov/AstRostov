@@ -82,6 +82,10 @@ namespace Nop.Web.Models.Catalog
 
         public IList<ProductVariantAttributeModel> ProductVariantAttributes { get; set; }
 
+        public bool AllowAddingOnlyExistingAttributeCombinations { get; set; }
+
+        public IList<IList<string>> AllAttributeValuesForVariants { get; set; }
+
         public IList<ProductSpecificationModel> ProductSpecifications { get; set; }
 
         public IList<ManufacturerModel> ProductManufacturers { get; set; }
@@ -93,7 +97,7 @@ namespace Nop.Web.Models.Catalog
         //a list of associated products. For example, "Grouped" products could have several child "simple" products
         public IList<ProductDetailsModel> AssociatedProducts { get; set; }
 
-		#region Nested Classes
+        #region Nested Classes
 
         public partial class ProductBreadcrumbModel : BaseNopModel
         {
