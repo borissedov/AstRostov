@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.ServiceModel.Syndication;
 using System.Web.Mvc;
 using Nop.Core;
@@ -36,6 +37,7 @@ using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Catalog;
 using Nop.Web.Models.Media;
+using System.Xml.Linq;
 
 namespace Nop.Web.Controllers
 {
@@ -556,6 +558,15 @@ namespace Nop.Web.Controllers
             #endregion
 
             #region Product attributes
+
+            //!!!!!!!!!!!!!!!!!!!!!!!
+            //TODO: Add this behavior only for AllowAddingOnlyExistingAttributeCombinations with ALL DDLS attrs
+            //!!!!!!!!!!!!!!!!!!!!!!!
+            model.AllowAddingOnlyExistingAttributeCombinations = product.AllowAddingOnlyExistingAttributeCombinations;
+
+            model.AllAttributeValuesForVariants =
+                product.ProductVariantAttributeCombinations.Select(
+                    v => _productAttributeParser.ParseAllValuesForVariant(v.AttributesXml)).ToList();
 
             //performance optimization
             //We cache a value indicating whether a product has attributes

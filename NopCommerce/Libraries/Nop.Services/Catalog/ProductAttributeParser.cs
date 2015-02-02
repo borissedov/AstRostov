@@ -161,6 +161,33 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
+        /// Gets all attribute values Ids for product variant
+        /// </summary>
+        /// <param name="attributesXml">Attributes</param>
+        /// <returns>Product variant attribute value</returns>
+        public virtual IList<string> ParseAllValuesForVariant(string attributesXml)
+        {
+            var selectedProductVariantAttributeValues = new List<string>();
+            try
+            {
+                var xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(attributesXml);
+
+                var nodeList1 = xmlDoc.SelectNodes(@"//Attributes/ProductVariantAttribute/ProductVariantAttributeValue/Value");
+                foreach (XmlNode node1 in nodeList1)
+                {
+                    string value = node1.InnerText.Trim();
+                    selectedProductVariantAttributeValues.Add(value);
+                }
+            }
+            catch (Exception exc)
+            {
+                Debug.Write(exc.ToString());
+            }
+            return selectedProductVariantAttributeValues;
+        }
+
+        /// <summary>
         /// Adds an attribute
         /// </summary>
         /// <param name="attributes">Attributes</param>

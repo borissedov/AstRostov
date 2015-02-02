@@ -2155,3 +2155,8 @@ select {
     max-width: 250px;
 }
 
+select.form-control option[disabled] {
+    cursor: not-allowed;
+    color: whitesmoke;
+}
+
