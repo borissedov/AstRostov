@@ -146,7 +146,7 @@ namespace Nop.Plugin.Payments.Comepay
             webRequest.Headers.Add(HttpRequestHeader.Authorization, authHeaderValue);
             webRequest.ContentType = "application/x-www-form-urlencoded";
             byte[] byteData = Encoding.UTF8.GetBytes(putBilltData);
-            using (Stream stream = webRequest.GetRequestStream())
+            using (var stream = webRequest.GetRequestStream())
             {
                 stream.Write(byteData, 0, byteData.Length);
             }
