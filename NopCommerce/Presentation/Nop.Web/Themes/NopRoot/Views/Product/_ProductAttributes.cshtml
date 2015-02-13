@@ -284,7 +284,7 @@
                 {
                     //load using AJAX
                     //this way we also load GTIN, SKU, MPN
-                    var priceVarClass = string.Format("price-value-{0}", productId);
+                    //var priceVarClass = string.Format("price-val-for-dyn-upd-{0}", productId);
                     
                     <text>
                     $.ajax({
@@ -303,7 +303,7 @@
                                 $('#gtin-@productId').text(data.gtin);
                             }
                             if (data.price) {
-                                $(".@(priceVarClass)").text(data.price);
+                                $(".product-price span").text(data.price);
                             }
                         }
                     });

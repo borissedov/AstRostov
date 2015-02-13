@@ -8,5 +8,28 @@
         <td>
             @Html.Raw(Model.DescriptionText)
         </td>
+
+    </tr>
+    <tr>
+        <td>
+            <script>
+                function printframe() {
+                    window.frames[0].print();
+                    return false;
+                }
+                var doc = document.getElementById('check').contentWindow.document;
+                doc.open();
+                doc.write('<!DOCTYPE html> <html xmlns="http://www.w3.org/1999/xhtml"> <head runat="server"> <title>Квитанция СБ РФ (ПД-4)</title> </head> <body> <style> body {background-color: white; } .text14 li {list-style-type: none; padding-bottom: 5px; padding: 6px 0px 0px 5px; } .text14 {font-family: "Times New Roman", Times, serif; font-size: 14px; } .text14 strong {font-family: "Times New Roman", Times, serif; font-size: 11px; } </style> <div class="text14"> <table width="720" bordercolor="#000000" style="border: #000000 1px solid;" cellpadding="0" cellspacing="0"> <tr> <td width="220" valign="top" height="250" align="center" style="border-bottom: #000000 1px solid; border-right: #000000 1px solid;">&nbsp;<strong>Извещение</strong></td> <td valign="top" style="border-bottom: #000000 1px solid; border-right: #000000 1px solid;"> <li><strong>Получатель: </strong><font style="font-size: 90%">ИП Алехина Вита Александровна</font>&nbsp;&nbsp;&nbsp;<br /> <li><strong>КПП:</strong> __________&nbsp;&nbsp;&nbsp;&nbsp; <strong>ИНН:</strong> 616700770626&nbsp;&nbsp;<font style="font-size: 12px"> &nbsp;</font> &nbsp; <li><strong>Код ОКАТО:</strong>___________&nbsp;&nbsp;&nbsp;&nbsp;<strong>P/сч.:</strong> 40802810800020000768<li><strong>в:</strong> Ростовский филиал ОАО «ФОНДСЕРВИСБАНК»<br /> <li><strong>БИК:</strong> 046027998&nbsp; <strong>К/сч.: 30101810100000000998</strong><br /> <li><strong>Код бюджетной классификации (КБК):</strong> ____________________ <li><strong>Платеж:</strong> <font style="font-size: 90%">__________________________________</font> <br /> <li><strong>Плательщик:</strong>  _________________________________________________<br /> <li><strong>Адрес плательщика:</strong> <font style="font-size: 90%">____________________________________________</font> <br /> <li><strong>ИНН плательщика:</strong> ____________&nbsp;&nbsp;&nbsp;&nbsp; <strong>№ л/сч. плательщика:</strong> ______________ <li><strong>Сумма:</strong> <strong>____________</strong> руб. <strong>_______</strong> коп. &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br /> &nbsp;<br /> <br /> Подпись:________________________        Дата: _________________________ <br /> <br /> </td> </tr> <tr> <td width="220" valign="top" height="250" align="center" style="border-bottom: #000000 1px solid; border-right: #000000 1px solid;">&nbsp;<strong>Квитанция</strong></td> <td valign="top" style="border-bottom: #000000 1px solid; border-right: #000000 1px solid;"> <li><strong>Получатель: </strong><font style="font-size: 90%">ИП Алехина Вита Александровна</font>&nbsp;&nbsp;<br /> <li><strong>КПП:</strong> __________&nbsp;&nbsp;&nbsp;&nbsp; <strong>ИНН:</strong> 616700770626&nbsp;&nbsp;<font style="font-size: 12px"> &nbsp;</font> &nbsp; <li><strong>Код ОКАТО:</strong>___________&nbsp;&nbsp;&nbsp;&nbsp;<strong>P/сч.:</strong> 40802810800020000768<li><strong>в:</strong> Ростовский филиал ОАО «ФОНДСЕРВИСБАНК»<br /> <li><strong>БИК:</strong> 046027998&nbsp; <strong>К/сч.: 30101810100000000998</strong><br /> <li><strong>Код бюджетной классификации (КБК):</strong> ____________________ <li><strong>Платеж:</strong> <font style="font-size: 90%">_____________________________</font> <br /> <li><strong>Плательщик:</strong>  _________________________________________________<br /> <li><strong>Адрес плательщика:</strong> <font style="font-size: 90%">____________________________________________</font> <br /> <li><strong>ИНН плательщика:</strong> ____________&nbsp;&nbsp;&nbsp;&nbsp; <strong>№ л/сч. плательщика:</strong> ______________ <li><strong>Сумма:</strong> <strong>_______________</strong> руб. <strong>________</strong> коп. &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br /> &nbsp;<br /> <br /> Подпись:________________________        Дата: ______________________ <br /> <br /> </td> </tr> </table> </div> </body> </html>');
+            </script>
+            <iframe id="check" width="750" height="680"></iframe>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#" onclick="return printframe();" class="btn btn-inverse">
+                <i class="icon-white icon-print"></i>
+                Печаль 
+            </a>
+        </td>
     </tr>
 </table>
