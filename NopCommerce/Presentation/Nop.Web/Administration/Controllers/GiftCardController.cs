@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Orders;
 using Nop.Core;
 using Nop.Core.Domain.Directory;
@@ -76,18 +77,18 @@ namespace Nop.Admin.Controllers
                 return AccessDeniedView();
 
             var model = new GiftCardListModel();
-            model.ActivatedList.Add(new SelectListItem()
+            model.ActivatedList.Add(new SelectListItem
                 {
                     Value = "0",
                     Selected = true,
                     Text = "All"
                 });
-            model.ActivatedList.Add(new SelectListItem()
+            model.ActivatedList.Add(new SelectListItem
             {
                 Value = "1",
                 Text = "Activated"
             });
-            model.ActivatedList.Add(new SelectListItem()
+            model.ActivatedList.Add(new SelectListItem
             {
                 Value = "2",
                 Text = "Deactivated"
@@ -213,10 +214,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", giftCard.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
@@ -314,15 +312,12 @@ namespace Nop.Admin.Controllers
                 throw new ArgumentException("No gift card found with the specified id");
 
             var usageHistoryModel = giftCard.GiftCardUsageHistory.OrderByDescending(gcuh => gcuh.CreatedOnUtc)
-                .Select(x =>
+                .Select(x => new GiftCardModel.GiftCardUsageHistoryModel
                 {
-                    return new GiftCardModel.GiftCardUsageHistoryModel()
-                    {
-                        Id = x.Id,
-                        OrderId = x.UsedWithOrderId,
-                        UsedValue = _priceFormatter.FormatPrice(x.UsedValue, true, false),
-                        CreatedOn = _dateTimeHelper.ConvertToUserTime(x.CreatedOnUtc, DateTimeKind.Utc)
-                    };
+                    Id = x.Id,
+                    OrderId = x.UsedWithOrderId,
+                    UsedValue = _priceFormatter.FormatPrice(x.UsedValue, true, false),
+                    CreatedOn = _dateTimeHelper.ConvertToUserTime(x.CreatedOnUtc, DateTimeKind.Utc)
                 })
                 .ToList();
             var gridModel = new DataSourceResult

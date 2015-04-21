@@ -66,7 +66,6 @@ namespace Nop.Data.Tests.Orders
                 CaptureTransactionId= "CaptureTransactionId1",
                 CaptureTransactionResult = "CaptureTransactionResult1",
                 SubscriptionTransactionId = "SubscriptionTransactionId1",
-                PurchaseOrderNumber= "PurchaseOrderNumber1",
                 PaidDateUtc= new DateTime(2010, 01, 01),
                 BillingAddress = GetTestBillingAddress(),
                 ShippingAddress = null,
@@ -122,7 +121,6 @@ namespace Nop.Data.Tests.Orders
             fromDb.CaptureTransactionId.ShouldEqual("CaptureTransactionId1");
             fromDb.CaptureTransactionResult.ShouldEqual("CaptureTransactionResult1");
             fromDb.SubscriptionTransactionId.ShouldEqual("SubscriptionTransactionId1");
-            fromDb.PurchaseOrderNumber.ShouldEqual("PurchaseOrderNumber1");
             fromDb.PaidDateUtc.ShouldEqual(new DateTime(2010, 01, 01));
             fromDb.BillingAddress.ShouldNotBeNull();
             fromDb.BillingAddress.FirstName.ShouldEqual("FirstName 1");
@@ -160,7 +158,7 @@ namespace Nop.Data.Tests.Orders
             {
                 OrderGuid = Guid.NewGuid(),
                 Customer = GetTestCustomer(),
-                RedeemedRewardPointsEntry = new RewardPointsHistory()
+                RedeemedRewardPointsEntry = new RewardPointsHistory
                 {
                     Customer = GetTestCustomer(),
                     Points = -1,
@@ -195,7 +193,7 @@ namespace Nop.Data.Tests.Orders
             };
             order.DiscountUsageHistory.Add
                 (
-                    new DiscountUsageHistory()
+                    new DiscountUsageHistory
                     {
                         Discount = GetTestDiscount(),
                         CreatedOnUtc = new DateTime(2010, 01, 01)
@@ -223,7 +221,7 @@ namespace Nop.Data.Tests.Orders
             };
             order.GiftCardUsageHistory.Add
                 (
-                    new GiftCardUsageHistory()
+                    new GiftCardUsageHistory
                     {
                         UsedValue = 1.1M,
                         CreatedOnUtc = new DateTime(2010, 01, 01),
@@ -250,7 +248,7 @@ namespace Nop.Data.Tests.Orders
             };
             order.OrderNotes.Add
                 (
-                    new OrderNote()
+                    new OrderNote
                     {
                         Note = "Note 1",
                         CreatedOnUtc = new DateTime(2010, 01, 01),
@@ -276,7 +274,7 @@ namespace Nop.Data.Tests.Orders
             };
             order.OrderItems.Add
                 (
-                    new OrderItem()
+                    new OrderItem
                     {
                         Product = GetTestProduct(),
                         Quantity = 1
@@ -302,7 +300,7 @@ namespace Nop.Data.Tests.Orders
             };
             order.Shipments.Add
                 (
-                    new Shipment()
+                    new Shipment
                     {
                         TrackingNumber = "TrackingNumber 1",
                         ShippedDateUtc = new DateTime(2010, 01, 01),
@@ -334,7 +332,7 @@ namespace Nop.Data.Tests.Orders
             {
                 Deleted = true,
                 Active = true,
-                Address = new Address()
+                Address = new Address
                 {
                     FirstName = "FirstName 1",
                     LastName = "LastName 1",
@@ -359,7 +357,7 @@ namespace Nop.Data.Tests.Orders
 
         protected Address GetTestBillingAddress()
         {
-            return new Address()
+            return new Address
             {
                 FirstName = "FirstName 1",
                 LastName = "LastName 1",
@@ -378,7 +376,7 @@ namespace Nop.Data.Tests.Orders
 
         protected Address GetTestShippingAddress()
         {
-            return new Address()
+            return new Address
             {
                 FirstName = "FirstName 2",
                 LastName = "LastName 2",
@@ -413,7 +411,7 @@ namespace Nop.Data.Tests.Orders
 
         protected GiftCard GetTestGiftCard()
         {
-            return new GiftCard()
+            return new GiftCard
             {
                 Amount = 1,
                 IsGiftCardActivated = true,

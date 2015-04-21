@@ -94,9 +94,9 @@ namespace Nop.Services.Tests.ExportImport
         [Test]
         public void Can_export_orders_xlsx()
         {
-            var orders = new List<Order>()
+            var orders = new List<Order>
             {
-                new Order()
+                new Order
                 {
                 OrderGuid = Guid.NewGuid(),
                 Customer = GetTestCustomer(),
@@ -140,7 +140,6 @@ namespace Nop.Services.Tests.ExportImport
                 CaptureTransactionId= "CaptureTransactionId1",
                 CaptureTransactionResult = "CaptureTransactionResult1",
                 SubscriptionTransactionId = "SubscriptionTransactionId1",
-                PurchaseOrderNumber= "PurchaseOrderNumber1",
                 PaidDateUtc= new DateTime(2010, 01, 01),
                 BillingAddress = GetTestBillingAddress(),
                 ShippingAddress = GetTestShippingAddress(),
@@ -157,7 +156,7 @@ namespace Nop.Services.Tests.ExportImport
 
         protected Address GetTestBillingAddress()
         {
-            return new Address()
+            return new Address
             {
                 FirstName = "FirstName 1",
                 LastName = "LastName 1",
@@ -176,7 +175,7 @@ namespace Nop.Services.Tests.ExportImport
 
         protected Address GetTestShippingAddress()
         {
-            return new Address()
+            return new Address
             {
                 FirstName = "FirstName 2",
                 LastName = "LastName 2",

@@ -1,5 +1,5 @@
 ﻿@model OrderDetailsModel
-@using Nop.Web.Models.Order;
+@using Nop.Web.Models.Order
 @{
     if (!Model.PrintMode)
     {
@@ -130,17 +130,39 @@
                                         </span>
                                     </li>
                                 }
+                                @if (!String.IsNullOrEmpty(Model.BillingAddress.FormattedCustomAddressAttributes))
+                                {
+                                    <li class="custom-attributes-view">
+                                        @Html.Raw(Model.BillingAddress.FormattedCustomAddressAttributes)
+                                    </li>
+                                }
                                 @if (!String.IsNullOrEmpty(Model.PaymentMethod))
                                 {
                                     <li class="title">
-                                        <strong>@T("Order.PaymentMethod")</strong>
+                                        <strong>@T("Order.Payment")</strong>
                                     </li>
                                     <li class="payment-method">
-                                        @Model.PaymentMethod
+                                        <span class="label">
+                                            @T("Order.Payment.Method"):
+                                        </span>
+                                        <span class="value">
+                                            @Model.PaymentMethod
+                                        </span>
                                     </li>
+                                    if (!Model.PrintMode)
+                                    {
+                                        <li class="payment-method-status">
+                                            <span class="label">
+                                                @T("Order.Payment.Status"):
+                                            </span>
+                                            <span class="value">
+                                                @Model.PaymentMethodStatus
+                                            </span>
+                                        </li>
+                                    }
                                     if (!Model.PrintMode && Model.CanRePostProcessPayment)
                                     {
-@*Completing payment support (for redirection payment methods)*@
+                                        @*Complete payment (for redirection payment methods)*@
                                     <li class="repost">
                                         @using (Html.BeginRouteForm("OrderDetails", FormMethod.Post))
                                         {
@@ -152,16 +174,19 @@
                                     </li>
                                     }
                                 }
-                                @if (Model.DisplayPurchaseOrderNumber)
+                                @if (Model.CustomValues != null)
                                 {
-                                    <li class="po">
-                                        <span class="po-label">
-                                            <strong>@T("Order.PurchaseOrderNumber")</strong>
-                                        </span>
-                                        <span class="po-value">
-                                            @Model.PurchaseOrderNumber
-                                        </span>
-                                    </li>
+                                    foreach (var item in Model.CustomValues)
+                                    {
+                                        <li class="custom-value">
+                                            <span class="label">
+                                                @item.Key:
+                                            </span>
+                                            <span class="value">
+                                                @(item.Value != null ? item.Value.ToString() : "")
+                                            </span>
+                                        </li>
+                                    }
                                 }
                             </ul>
                         </td>
@@ -241,13 +266,35 @@
                                                 @Model.ShippingAddress.CountryName
                                             </li>
                                         }
+                                        if (!String.IsNullOrEmpty(Model.ShippingAddress.FormattedCustomAddressAttributes))
+                                        {
+                                            <li class="custom-attributes-view">
+                                                @Html.Raw(Model.ShippingAddress.FormattedCustomAddressAttributes)
+                                            </li>
+                                        }
                                     }
                                     <li class="title">
-                                        <strong>@T("Order.ShippingMethod")</strong>
+                                        <strong>@T("Order.Shipping")</strong>
                                     </li>
                                     <li class="shipping-method">
-                                        @Model.ShippingMethod
+                                        <span class="label">
+                                            @T("Order.Shipping.Name"):
+                                        </span>
+                                        <span class="value">
+                                            @Model.ShippingMethod
+                                        </span>
                                     </li>
+                                    @if (!Model.PrintMode && !Model.PickUpInStore)
+                                    {
+                                        <li class="shipping-status">
+                                            <span class="label">
+                                                @T("Order.Shipping.Status"):
+                                            </span>
+                                            <span class="value">
+                                                @Model.ShippingStatus
+                                            </span>
+                                        </li>
+                                    }
                                 </ul>
                             </td>
                         }
@@ -321,6 +368,24 @@
                                             @Html.Raw(item.AttributeInfo)
                                         </div>
                                     }
+                                    @if (!String.IsNullOrEmpty(item.RentalInfo))
+                                    {
+                                        <div class="rental-info">
+                                            @Html.Raw(item.RentalInfo)
+                                        </div>
+                                    }
+                                    @if (item.DownloadId > 0)
+                                    {
+                                        <div class="download">
+                                            <a href="@Url.RouteUrl("GetDownload", new { orderItemId = item.OrderItemGuid })">@T("DownloadableProducts.Fields.Download")</a>
+                                        </div>
+                                    }
+                                    @if (item.LicenseId > 0)
+                                    {
+                                        <div class="download license">
+                                            <a href="@Url.RouteUrl("GetLicense", new {orderItemId = item.OrderItemGuid})">@T("DownloadableProducts.Fields.DownloadLicense")</a>
+                                        </div>
+                                    }
                                 </td>
                                 <td class="a-right price">
                                     <span class="td-title">@T("Order.Product(s).Price"):</span>
@@ -338,6 +403,15 @@
                         }
                     </tbody>
                 </table>
+                @if (Model.Items.Count > 0 && Model.DisplayTaxShippingInfo)
+                {
+                var inclTax = Model.PricesIncludeTax;
+                //tax info is already included in the price (incl/excl tax). that's why we display only shipping info here
+                //of course, you can modify appropriate locales to include VAT info there
+                <div class="tax-shipping-info">
+                    @T(inclTax ? "Order.TaxShipping.InclTax" : "Order.TaxShipping.ExclTax", Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("shippinginfo") }))
+                </div>
+                }
                 @if (!String.IsNullOrEmpty(Model.CheckoutAttributeInfo))
                 {
                     <div class="checkout-attributes">

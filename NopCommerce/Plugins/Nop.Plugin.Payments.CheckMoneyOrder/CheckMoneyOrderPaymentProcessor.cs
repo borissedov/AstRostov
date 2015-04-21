@@ -59,6 +59,23 @@ namespace Nop.Plugin.Payments.CheckMoneyOrder
         }
 
         /// <summary>
+        /// Returns a value indicating whether payment method should be hidden during checkout
+        /// </summary>
+        /// <param name="cart">Shoping cart</param>
+        /// <returns>true - hide; false - display.</returns>
+        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        {
+            //you can put any logic here
+            //for example, hide this payment method if all products in the cart are downloadable
+            //or hide this payment method if current customer is from certain country
+
+            if (_checkMoneyOrderPaymentSettings.ShippableProductRequired && !cart.RequiresShipping())
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets additional handling fee
         /// </summary>
         /// <param name="cart">Shoping cart</param>
@@ -154,7 +171,7 @@ namespace Nop.Plugin.Payments.CheckMoneyOrder
         {
             actionName = "Configure";
             controllerName = "PaymentCheckMoneyOrder";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.CheckMoneyOrder.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.CheckMoneyOrder.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -167,7 +184,7 @@ namespace Nop.Plugin.Payments.CheckMoneyOrder
         {
             actionName = "PaymentInfo";
             controllerName = "PaymentCheckMoneyOrder";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.CheckMoneyOrder.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.CheckMoneyOrder.Controllers" }, { "area", null } };
         }
 
         public Type GetControllerType()
@@ -178,7 +195,7 @@ namespace Nop.Plugin.Payments.CheckMoneyOrder
         public override void Install()
         {
             //settings
-            var settings = new CheckMoneyOrderPaymentSettings()
+            var settings = new CheckMoneyOrderPaymentSettings
             {
                 DescriptionText = "<p>Mail Personal or Business Check, Cashier's Check or money order to:</p><p><br /><b>NOP SOLUTIONS</b> <br /><b>your address here,</b> <br /><b>New York, NY 10001 </b> <br /><b>USA</b></p><p>Notice that if you pay by Personal or Business Check, your order may be held for up to 10 days after we receive your check to allow enough time for the check to clear.  If you want us to ship faster upon receipt of your payment, then we recommend your send a money order or Cashier's check.</p><p>P.S. You can edit this text from admin panel.</p>"
             };
@@ -191,6 +208,8 @@ namespace Nop.Plugin.Payments.CheckMoneyOrder
             this.AddOrUpdatePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.AdditionalFee.Hint", "The additional fee.");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.AdditionalFeePercentage", "Additional fee. Use percentage");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.AdditionalFeePercentage.Hint", "Determines whether to apply a percentage additional fee to the order total. If not enabled, a fixed value is used.");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.ShippableProductRequired", "Shippable product required");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.ShippableProductRequired.Hint", "An option indicating whether shippable products are required in order to display this payment method during checkout.");
 
             
             base.Install();
@@ -208,6 +227,8 @@ namespace Nop.Plugin.Payments.CheckMoneyOrder
             this.DeletePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.AdditionalFee.Hint");
             this.DeletePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.AdditionalFeePercentage");
             this.DeletePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.AdditionalFeePercentage.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.ShippableProductRequired");
+            this.DeletePluginLocaleResource("Plugins.Payment.CheckMoneyOrder.ShippableProductRequired.Hint");
             
             base.Uninstall();
         }

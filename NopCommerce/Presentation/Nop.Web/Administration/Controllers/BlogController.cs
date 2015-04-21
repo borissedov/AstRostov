@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Blogs;
 using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Customers;
@@ -70,10 +71,6 @@ namespace Nop.Admin.Controllers
                 if (blogPost != null)
                 {
                     model.SelectedStoreIds = _storeMappingService.GetStoresIdsWithAccess(blogPost);
-                }
-                else
-                {
-                    model.SelectedStoreIds = new int[0];
                 }
             }
         }
@@ -245,10 +242,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", new {id = blogPost.Id});
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form

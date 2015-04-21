@@ -77,7 +77,7 @@ namespace Nop.Services.Seo
             if (record == null)
                 throw new ArgumentNullException("record");
 
-            var urlRecordForCaching = new UrlRecordForCaching()
+            var urlRecordForCaching = new UrlRecordForCaching
             {
                 Id = record.Id,
                 EntityId = record.EntityId,
@@ -228,20 +228,18 @@ namespace Nop.Services.Seo
                 var urlRecordForCaching = query.FirstOrDefault();
                 return urlRecordForCaching;
             }
-            else
-            {
-                //gradual loading
-                string key = string.Format(URLRECORD_BY_SLUG_KEY, slug);
-                return _cacheManager.Get(key, () =>
-                {
-                    var urlRecord = GetBySlug(slug);
-                    if (urlRecord == null)
-                        return null;
 
-                    var urlRecordForCaching = Map(urlRecord);
-                    return urlRecordForCaching;
-                });
-            }
+            //gradual loading
+            string key = string.Format(URLRECORD_BY_SLUG_KEY, slug);
+            return _cacheManager.Get(key, () =>
+            {
+                var urlRecord = GetBySlug(slug);
+                if (urlRecord == null)
+                    return null;
+
+                var urlRecordForCaching = Map(urlRecord);
+                return urlRecordForCaching;
+            });
         }
 
         /// <summary>
@@ -353,7 +351,7 @@ namespace Nop.Services.Seo
                 else
                 {
                     //new record
-                    var urlRecord = new UrlRecord()
+                    var urlRecord = new UrlRecord
                     {
                         EntityId = entity.Id,
                         EntityName = entityName,
@@ -400,7 +398,7 @@ namespace Nop.Services.Seo
                         //insert new record
                         //we do not update the existing record because we should track all previously entered slugs
                         //to ensure that URLs will work fine
-                        var urlRecord = new UrlRecord()
+                        var urlRecord = new UrlRecord
                         {
                             EntityId = entity.Id,
                             EntityName = entityName,

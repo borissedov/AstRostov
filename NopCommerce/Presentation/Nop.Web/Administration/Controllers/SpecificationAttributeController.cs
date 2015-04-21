@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Catalog;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Catalog;
@@ -23,7 +24,6 @@ namespace Nop.Admin.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IPermissionService _permissionService;
-        private readonly IProductService _productService;
 
         #endregion Fields
 
@@ -34,7 +34,7 @@ namespace Nop.Admin.Controllers
             ILocalizedEntityService localizedEntityService,
             ILocalizationService localizationService, 
             ICustomerActivityService customerActivityService,
-            IPermissionService permissionService, IProductService productService)
+            IPermissionService permissionService)
         {
             this._specificationAttributeService = specificationAttributeService;
             this._languageService = languageService;
@@ -42,7 +42,6 @@ namespace Nop.Admin.Controllers
             this._localizationService = localizationService;
             this._customerActivityService = customerActivityService;
             this._permissionService = permissionService;
-            this._productService = productService;
         }
 
         #endregion
@@ -194,10 +193,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", specificationAttribute.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form

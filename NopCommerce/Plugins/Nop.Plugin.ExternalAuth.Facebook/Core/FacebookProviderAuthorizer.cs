@@ -94,7 +94,7 @@ namespace Nop.Plugin.ExternalAuth.Facebook.Core
                 var name = authenticationResult.ExtraData["name"];
                 if (!String.IsNullOrEmpty(name))
                 {
-                    var nameSplit = name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    var nameSplit = name.Split(new [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (nameSplit.Length >= 2)
                     {
                         claims.Name.First = nameSplit[0];
@@ -110,7 +110,7 @@ namespace Nop.Plugin.ExternalAuth.Facebook.Core
             parameters.AddClaim(claims);
         }
 
-        private AuthorizeState RequestAuthentication(string returnUrl)
+        private AuthorizeState RequestAuthentication()
         {
             var authUrl = GenerateServiceLoginUrl().AbsoluteUri;
             return new AuthorizeState("", OpenAuthenticationStatus.RequiresRedirect) { Result = new RedirectResult(authUrl) };
@@ -145,9 +145,9 @@ namespace Nop.Plugin.ExternalAuth.Facebook.Core
 
         private void AppendQueryArgs(UriBuilder builder, IEnumerable<KeyValuePair<string, string>> args)
         {
-            if ((args != null) && (args.Count<KeyValuePair<string, string>>() > 0))
+            if (args != null && args.Any())
             {
-                StringBuilder builder2 = new StringBuilder(50 + (args.Count<KeyValuePair<string, string>>() * 10));
+                var builder2 = new StringBuilder();
                 if (!string.IsNullOrEmpty(builder.Query))
                 {
                     builder2.Append(builder.Query.Substring(1));
@@ -159,11 +159,11 @@ namespace Nop.Plugin.ExternalAuth.Facebook.Core
         }
         private string CreateQueryString(IEnumerable<KeyValuePair<string, string>> args)
         {
-            if (!args.Any<KeyValuePair<string, string>>())
+            if (!args.Any())
             {
                 return string.Empty;
             }
-            StringBuilder builder = new StringBuilder(args.Count<KeyValuePair<string, string>>() * 10);
+            var builder = new StringBuilder();
             foreach (KeyValuePair<string, string> pair in args)
             {
                 builder.Append(EscapeUriDataStringRfc3986(pair.Key));
@@ -177,7 +177,7 @@ namespace Nop.Plugin.ExternalAuth.Facebook.Core
         private readonly string[] UriRfc3986CharsToEscape = new string[] { "!", "*", "'", "(", ")" };
         private string EscapeUriDataStringRfc3986(string value)
         {
-            StringBuilder builder = new StringBuilder(Uri.EscapeDataString(value));
+            var builder = new StringBuilder(Uri.EscapeDataString(value));
             for (int i = 0; i < UriRfc3986CharsToEscape.Length; i++)
             {
                 builder.Replace(UriRfc3986CharsToEscape[i], Uri.HexEscape(UriRfc3986CharsToEscape[i][0]));
@@ -201,13 +201,9 @@ namespace Nop.Plugin.ExternalAuth.Facebook.Core
                 throw new ArgumentException("Facebook plugin cannot automatically determine verifyResponse property");
 
             if (verifyResponse.Value)
-            {
                 return VerifyAuthentication(returnUrl);
-            }
-            else
-            {
-                return RequestAuthentication(returnUrl);
-            }
+            
+            return RequestAuthentication();
         }
 
         #endregion

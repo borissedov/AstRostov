@@ -69,7 +69,7 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         /// Gets Authorize.NET URL
         /// </summary>
         /// <returns></returns>
-        private string GetAuthorizeNETUrl()
+        private string GetAuthorizeNetUrl()
         {
             return _authorizeNetPaymentSettings.UseSandbox ? "https://test.authorize.net/gateway/transact.dll" :
                 "https://secure.authorize.net/gateway/transact.dll";
@@ -99,10 +99,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         {
             var sb = new StringBuilder();
             sb.AppendLine("The API request failed with the following errors:");
-            for (int i = 0; i < response.messages.Length; i++)
-            {
-                sb.AppendLine("[" + response.messages[i].code + "] " + response.messages[i].text);
-            }
+            foreach (var message in response.messages)
+                sb.AppendLine("[" + message.code + "] " + message.text);
             return sb.ToString();
         }
         #endregion
@@ -167,9 +165,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
             form.Add("x_description", string.Format("Full order #{0}", processPaymentRequest.OrderGuid));
             form.Add("x_customer_ip", _webHelper.GetCurrentIpAddress());
 
-            string reply = null;
-            Byte[] responseData = webClient.UploadValues(GetAuthorizeNETUrl(), form);
-            reply = Encoding.ASCII.GetString(responseData);
+            var responseData = webClient.UploadValues(GetAuthorizeNetUrl(), form);
+            var reply = Encoding.ASCII.GetString(responseData);
 
             if (!String.IsNullOrEmpty(reply))
             {
@@ -229,6 +226,19 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         }
 
         /// <summary>
+        /// Returns a value indicating whether payment method should be hidden during checkout
+        /// </summary>
+        /// <param name="cart">Shoping cart</param>
+        /// <returns>true - hide; false - display.</returns>
+        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        {
+            //you can put any logic here
+            //for example, hide this payment method if all products in the cart are downloadable
+            //or hide this payment method if current customer is from certain country
+            return false;
+        }
+
+        /// <summary>
         /// Captures payment
         /// </summary>
         /// <param name="capturePaymentRequest">Capture payment request</param>
@@ -237,8 +247,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         {
             var result = new CapturePaymentResult();
 
-            WebClient webClient = new WebClient();
-            NameValueCollection form = new NameValueCollection();
+            var webClient = new WebClient();
+            var form = new NameValueCollection();
             form.Add("x_login", _authorizeNetPaymentSettings.LoginId);
             form.Add("x_tran_key", _authorizeNetPaymentSettings.TransactionKey);
 
@@ -264,9 +274,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
             //or when Test mode is enabled on the payment gateway, this value will be "0".
             form.Add("x_trans_id", codes[0]);
 
-            string reply = null;
-            Byte[] responseData = webClient.UploadValues(GetAuthorizeNETUrl(), form);
-            reply = Encoding.ASCII.GetString(responseData);
+            var responseData = webClient.UploadValues(GetAuthorizeNetUrl(), form);
+            var reply = Encoding.ASCII.GetString(responseData);
 
             if (!String.IsNullOrEmpty(reply))
             {
@@ -305,8 +314,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         {
             var result = new RefundPaymentResult();
 
-            WebClient webClient = new WebClient();
-            NameValueCollection form = new NameValueCollection();
+            var webClient = new WebClient();
+            var form = new NameValueCollection();
             form.Add("x_login", _authorizeNetPaymentSettings.LoginId);
             form.Add("x_tran_key", _authorizeNetPaymentSettings.TransactionKey);
 
@@ -340,9 +349,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
             form.Add("x_type", "CREDIT");
             
             // Send Request to Authorize and Get Response
-            string reply = null;
-            Byte[] responseData = webClient.UploadValues(GetAuthorizeNETUrl(), form);
-            reply = Encoding.ASCII.GetString(responseData);
+            var responseData = webClient.UploadValues(GetAuthorizeNetUrl(), form);
+            var reply = Encoding.ASCII.GetString(responseData);
 
             if (!String.IsNullOrEmpty(reply))
             {
@@ -377,8 +385,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         {
             var result = new VoidPaymentResult();
 
-            WebClient webClient = new WebClient();
-            NameValueCollection form = new NameValueCollection();
+            var webClient = new WebClient();
+            var form = new NameValueCollection();
             form.Add("x_login", _authorizeNetPaymentSettings.LoginId);
             form.Add("x_tran_key", _authorizeNetPaymentSettings.TransactionKey);
 
@@ -408,9 +416,8 @@ namespace Nop.Plugin.Payments.AuthorizeNet
             form.Add("x_type", "VOID");
 
             // Send Request to Authorize and Get Response
-            string reply = null;
-            Byte[] responseData = webClient.UploadValues(GetAuthorizeNETUrl(), form);
-            reply = Encoding.ASCII.GetString(responseData);
+            var responseData = webClient.UploadValues(GetAuthorizeNetUrl(), form);
+            var reply = Encoding.ASCII.GetString(responseData);
 
             if (!String.IsNullOrEmpty(reply))
             {
@@ -445,7 +452,6 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         {
             var result = new ProcessPaymentResult();
 
-            var authentication = PopulateMerchantAuthentication();
             if (!processPaymentRequest.IsRecurringPayment)
             {
                 var customer = _customerService.GetCustomerById(processPaymentRequest.CustomerId);
@@ -540,6 +546,7 @@ namespace Nop.Plugin.Payments.AuthorizeNet
                     else
                         webService.Url = "https://api.authorize.net/soap/v1/Service.asmx";
 
+                    var authentication = PopulateMerchantAuthentication();
                     var response = webService.ARBCreateSubscription(authentication, subscription);
 
                     if (response.resultCode == MessageTypeEnum.Ok)
@@ -575,8 +582,7 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         public CancelRecurringPaymentResult CancelRecurringPayment(CancelRecurringPaymentRequest cancelPaymentRequest)
         {
             var result = new CancelRecurringPaymentResult();
-            var authentication = PopulateMerchantAuthentication();
-            long subscriptionId = 0;
+            long subscriptionId;
             long.TryParse(cancelPaymentRequest.Order.SubscriptionTransactionId, out subscriptionId);
 
 
@@ -587,6 +593,7 @@ namespace Nop.Plugin.Payments.AuthorizeNet
                 else
                     webService.Url = "https://api.authorize.net/soap/v1/Service.asmx";
 
+                var authentication = PopulateMerchantAuthentication();
                 var response = webService.ARBCancelSubscription(authentication, subscriptionId);
 
                 if (response.resultCode == MessageTypeEnum.Ok)
@@ -625,7 +632,7 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         {
             actionName = "Configure";
             controllerName = "PaymentAuthorizeNet";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.AuthorizeNet.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.AuthorizeNet.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -638,7 +645,7 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         {
             actionName = "PaymentInfo";
             controllerName = "PaymentAuthorizeNet";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.AuthorizeNet.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.AuthorizeNet.Controllers" }, { "area", null } };
         }
 
         public Type GetControllerType()
@@ -649,7 +656,7 @@ namespace Nop.Plugin.Payments.AuthorizeNet
         public override void Install()
         {
             //settings
-            var settings = new AuthorizeNetPaymentSettings()
+            var settings = new AuthorizeNetPaymentSettings
             {
                 UseSandbox = true,
                 TransactMode = TransactMode.Authorize,

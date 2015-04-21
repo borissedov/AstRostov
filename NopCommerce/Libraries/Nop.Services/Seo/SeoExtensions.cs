@@ -1358,15 +1358,14 @@ namespace Nop.Services.Seo
         /// <returns>A unicode character, as string.</returns>
         private static string ToUnichar(string hexString)
         {
-            string returnChar;
-            byte[] b = new byte[2];
+            var b = new byte[2];
             var ue = new UnicodeEncoding();
 
             // Take hexadecimal as text and make a Unicode char number
             b[0] = Convert.ToByte(hexString.Substring(2, 2), 16);
             b[1] = Convert.ToByte(hexString.Substring(0, 2), 16);
             // Get the character the number represents
-            returnChar = ue.GetString(b);
+            var returnChar = ue.GetString(b);
             return returnChar;
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Directory;
 using Nop.Core;
 using Nop.Core.Domain.Directory;
@@ -87,10 +88,6 @@ namespace Nop.Admin.Controllers
                 {
                     model.SelectedStoreIds = _storeMappingService.GetStoresIdsWithAccess(currency);
                 }
-                else
-                {
-                    model.SelectedStoreIds = new int[0];
-                }
             }
         }
 
@@ -149,7 +146,7 @@ namespace Nop.Admin.Controllers
             ViewBag.ExchangeRateProviders = new List<SelectListItem>();
             foreach (var erp in _currencyService.LoadAllExchangeRateProviders())
             {
-                ViewBag.ExchangeRateProviders.Add(new SelectListItem()
+                ViewBag.ExchangeRateProviders.Add(new SelectListItem
                 {
                     Text = erp.PluginDescriptor.FriendlyName,
                     Value = erp.PluginDescriptor.SystemName,
@@ -183,7 +180,7 @@ namespace Nop.Admin.Controllers
                 return AccessDeniedView();
 
             _currencySettings.ActiveExchangeRateProviderSystemName = formValues["exchangeRateProvider"];
-            _currencySettings.AutoUpdateEnabled = formValues["autoUpdateEnabled"].Equals("false") ? false : true;
+            _currencySettings.AutoUpdateEnabled = !formValues["autoUpdateEnabled"].Equals("false");
             _settingService.SaveSetting(_currencySettings);
             return RedirectToAction("List", "Currency");
         }
@@ -196,9 +193,9 @@ namespace Nop.Admin.Controllers
 
             var currenciesModel = _currencyService.GetAllCurrencies(true).Select(x => x.ToModel()).ToList();
             foreach (var currency in currenciesModel)
-                currency.IsPrimaryExchangeRateCurrency = currency.Id == _currencySettings.PrimaryExchangeRateCurrencyId ? true : false;
+                currency.IsPrimaryExchangeRateCurrency = currency.Id == _currencySettings.PrimaryExchangeRateCurrencyId;
             foreach (var currency in currenciesModel)
-                currency.IsPrimaryStoreCurrency = currency.Id == _currencySettings.PrimaryStoreCurrencyId ? true : false;
+                currency.IsPrimaryStoreCurrency = currency.Id == _currencySettings.PrimaryStoreCurrencyId;
 
             var gridModel = new DataSourceResult
             {
@@ -313,6 +310,15 @@ namespace Nop.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                //ensure we have at least one published language
+                var allCurrencies = _currencyService.GetAllCurrencies();
+                if (allCurrencies.Count == 1 && allCurrencies[0].Id == currency.Id &&
+                    !model.Published)
+                {
+                    ErrorNotification("At least one published currency is required.");
+                    return RedirectToAction("Edit", new { id = currency.Id });
+                }
+
                 currency = model.ToEntity(currency);
                 currency.UpdatedOnUtc = DateTime.UtcNow;
                 _currencyService.UpdateCurrency(currency);
@@ -331,10 +337,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", new {id = currency.Id});
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
@@ -364,6 +367,14 @@ namespace Nop.Admin.Controllers
 
                 if (currency.Id == _currencySettings.PrimaryExchangeRateCurrencyId)
                     throw new NopException(_localizationService.GetResource("Admin.Configuration.Currencies.CantDeleteExchange"));
+
+                //ensure we have at least one published currency
+                var allCurrencies = _currencyService.GetAllCurrencies();
+                if (allCurrencies.Count == 1 && allCurrencies[0].Id == currency.Id)
+                {
+                    ErrorNotification("At least one published currency is required.");
+                    return RedirectToAction("Edit", new { id = currency.Id });
+                }
 
                 _currencyService.DeleteCurrency(currency);
 

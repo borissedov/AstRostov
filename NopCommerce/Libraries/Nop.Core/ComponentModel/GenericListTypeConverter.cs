@@ -21,12 +21,14 @@ namespace Nop.Core.ComponentModel
         {
             if (!String.IsNullOrEmpty(input))
             {
-                string[] result = input.Split(',');
-                Array.ForEach(result, s => s.Trim());
+                var result = input
+                    .Split(',')
+                    .Select(x=>x.Trim())
+                    .ToArray();
                 return result;
             }
-            else
-                return new string[0];
+            
+            return new string[0];
         }
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
@@ -66,7 +68,7 @@ namespace Nop.Core.ComponentModel
             if (destinationType == typeof(string))
             {
                 string result = string.Empty;
-                if (((IList<T>)value) != null)
+                if (value != null)
                 {
                     //we don't use string.Join() because it doesn't support invariant culture
                     for (int i = 0; i < ((IList<T>)value).Count; i++)

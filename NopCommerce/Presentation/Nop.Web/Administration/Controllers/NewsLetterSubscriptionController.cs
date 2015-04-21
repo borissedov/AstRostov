@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Messages;
 using Nop.Core;
-using Nop.Core.Domain.Messages;
+using Nop.Services.ExportImport;
 using Nop.Services.Helpers;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
@@ -22,22 +22,25 @@ namespace Nop.Admin.Controllers
 		private readonly IDateTimeHelper _dateTimeHelper;
         private readonly ILocalizationService _localizationService;
         private readonly IPermissionService _permissionService;
-        private readonly IStoreContext _storeContext;
         private readonly IStoreService _storeService;
+        private readonly IExportManager _exportManager;
+        private readonly IImportManager _importManager;
 
 		public NewsLetterSubscriptionController(INewsLetterSubscriptionService newsLetterSubscriptionService,
 			IDateTimeHelper dateTimeHelper,
             ILocalizationService localizationService,
             IPermissionService permissionService,
-            IStoreContext storeContext,
-            IStoreService storeService)
+            IStoreService storeService,
+            IExportManager exportManager,
+            IImportManager importManager)
 		{
 			this._newsLetterSubscriptionService = newsLetterSubscriptionService;
 			this._dateTimeHelper = dateTimeHelper;
             this._localizationService = localizationService;
             this._permissionService = permissionService;
-            this._storeContext = storeContext;
             this._storeService = storeService;
+            this._exportManager = exportManager;
+            this._importManager = importManager;
 		}
 
 		public ActionResult Index()
@@ -53,9 +56,9 @@ namespace Nop.Admin.Controllers
             var model = new NewsLetterSubscriptionListModel();
 
             //stores
-            model.AvailableStores.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            model.AvailableStores.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
             foreach (var s in _storeService.GetAllStores())
-                model.AvailableStores.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
+                model.AvailableStores.Add(new SelectListItem { Text = s.Name, Value = s.Id.ToString() });
             
 			return View(model);
 		}
@@ -93,7 +96,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var subscription = _newsLetterSubscriptionService.GetNewsLetterSubscriptionById(model.Id);
@@ -125,19 +128,9 @@ namespace Nop.Admin.Controllers
 
 			string fileName = String.Format("newsletter_emails_{0}_{1}.txt", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), CommonHelper.GenerateRandomDigitCode(4));
 
-			var sb = new StringBuilder();
-			var newsLetterSubscriptions = _newsLetterSubscriptionService.GetAllNewsLetterSubscriptions(model.SearchEmail,
+			var subscriptions = _newsLetterSubscriptionService.GetAllNewsLetterSubscriptions(model.SearchEmail,
                 model.StoreId, 0, int.MaxValue, true);
-			foreach (var subscription in newsLetterSubscriptions)
-			{
-				sb.Append(subscription.Email);
-                sb.Append(",");
-                sb.Append(subscription.Active);
-                sb.Append(",");
-                sb.Append(subscription.StoreId);
-                sb.Append(Environment.NewLine);  //new line
-			}
-			string result = sb.ToString();
+		    string result = _exportManager.ExportNewsletterSubscribersToTxt(subscriptions);
 
 			return File(Encoding.UTF8.GetBytes(result), "text/csv", fileName);
 		}
@@ -153,67 +146,9 @@ namespace Nop.Admin.Controllers
                 var file = Request.Files["importcsvfile"];
                 if (file != null && file.ContentLength > 0)
                 {
-                    int count = 0;
-
-                    using (var reader = new StreamReader(file.InputStream))
-                    {
-                        while (!reader.EndOfStream)
-                        {
-                            string line = reader.ReadLine();
-                            if (String.IsNullOrWhiteSpace(line))
-                                continue;
-                            string[] tmp = line.Split(',');
-
-                            var email = "";
-                            bool isActive = true;
-                            int storeId = _storeContext.CurrentStore.Id;
-                            //parse
-                            if (tmp.Length == 1)
-                            {
-                                //"email" only
-                                email = tmp[0].Trim();
-                            }
-                            else if (tmp.Length == 2)
-                            {
-                                //"email" and "active" fields specified
-                                email = tmp[0].Trim();
-                                isActive = Boolean.Parse(tmp[1].Trim());
-                            }
-                            else if (tmp.Length ==3)
-                            {
-                                //"email" and "active" and "storeId" fields specified
-                                email = tmp[0].Trim();
-                                isActive = Boolean.Parse(tmp[1].Trim());
-                                storeId = Int32.Parse(tmp[2].Trim());
-                            }
-                            else
-                                throw new NopException("Wrong file format");
-
-                            //import
-                            var subscription = _newsLetterSubscriptionService.GetNewsLetterSubscriptionByEmailAndStoreId(email, storeId);
-                            if (subscription != null)
-                            {
-                                subscription.Email = email;
-                                subscription.Active = isActive;
-                                _newsLetterSubscriptionService.UpdateNewsLetterSubscription(subscription);
-                            }
-                            else
-                            {
-                                subscription = new NewsLetterSubscription()
-                                {
-                                    Active = isActive,
-                                    CreatedOnUtc = DateTime.UtcNow,
-                                    Email = email,
-                                    StoreId = storeId,
-                                    NewsLetterSubscriptionGuid = Guid.NewGuid()
-                                };
-                                _newsLetterSubscriptionService.InsertNewsLetterSubscription(subscription);
-                            }
-                            count++;
-                        }
-                        SuccessNotification(String.Format(_localizationService.GetResource("Admin.Promotions.NewsLetterSubscriptions.ImportEmailsSuccess"), count));
-                        return RedirectToAction("List");
-                    }
+                    int count = _importManager.ImportNewsletterSubscribersFromTxt(file.InputStream);
+                    SuccessNotification(String.Format(_localizationService.GetResource("Admin.Promotions.NewsLetterSubscriptions.ImportEmailsSuccess"), count));
+                    return RedirectToAction("List");
                 }
                 ErrorNotification(_localizationService.GetResource("Admin.Common.UploadFile"));
                 return RedirectToAction("List");

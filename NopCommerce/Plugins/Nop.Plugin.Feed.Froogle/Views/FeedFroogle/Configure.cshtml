@@ -73,6 +73,15 @@
         </tr>
         <tr>
             <td class="adminTitle">
+                @Html.NopLabelFor(model => model.PassShippingInfo):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.PassShippingInfo)
+                @Html.ValidationMessageFor(model => model.PassShippingInfo)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
                 @Html.NopLabelFor(model => model.StoreId):
             </td>
             <td class="adminData">
@@ -123,19 +132,6 @@
                 <input type="submit" name="generate" class="k-button" value="@T("Plugins.Feed.Froogle.Generate")" />
             </td>
         </tr>
-        @if (!String.IsNullOrEmpty(Model.GenerateFeedResult))
-        {
-            <tr class="adminSeparator">
-                <td colspan="2">
-                    <hr />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <b>@Html.Raw(Model.GenerateFeedResult)</b>
-                </td>
-            </tr>
-        }
     </table>
 }
 @helper TabOverride()
@@ -183,12 +179,12 @@
                                 type: "json",
                                 transport: {
                                     read: {
-                                        url: "@Html.Raw(Url.Action("GoogleProductList", "FeedFroogle", new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Feed.Froogle.Controllers" }, { "area", "" } }))",
+                                        url: "@Html.Raw(Url.Action("GoogleProductList", "FeedFroogle", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Feed.Froogle.Controllers" }, { "area", "" } }))",
                                         type: "POST",
                                         dataType: "json"
                                     },
                                     update: {
-                                        url: "@Html.Raw(Url.Action("GoogleProductUpdate", "FeedFroogle", new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Feed.Froogle.Controllers" }, { "area", "" } }))",
+                                        url: "@Html.Raw(Url.Action("GoogleProductUpdate", "FeedFroogle", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Feed.Froogle.Controllers" }, { "area", "" } }))",
                                         type: "POST",
                                         dataType: "json"
                                     }

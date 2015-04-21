@@ -1,10 +1,8 @@
-using System.Data.Entity.ModelConfiguration;
-using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 
 namespace Nop.Data.Mapping.Customers
 {
-    public partial class CustomerMap : EntityTypeConfiguration<Customer>
+    public partial class CustomerMap : NopEntityTypeConfiguration<Customer>
     {
         public CustomerMap()
         {
@@ -19,11 +17,11 @@ namespace Nop.Data.Mapping.Customers
                 .WithMany()
                 .Map(m => m.ToTable("Customer_CustomerRole_Mapping"));
 
-            this.HasMany<Address>(c => c.Addresses)
+            this.HasMany(c => c.Addresses)
                 .WithMany()
                 .Map(m => m.ToTable("CustomerAddresses"));
-            this.HasOptional<Address>(c => c.BillingAddress);
-            this.HasOptional<Address>(c => c.ShippingAddress);
+            this.HasOptional(c => c.BillingAddress);
+            this.HasOptional(c => c.ShippingAddress);
         }
     }
 }

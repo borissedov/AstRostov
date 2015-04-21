@@ -51,6 +51,7 @@ namespace Nop.Services.Common
         private readonly IStoreContext _storeContext;
         private readonly ISettingService _settingContext;
         private readonly IWebHelper _webHelper;
+        private readonly IAddressAttributeFormatter _addressAttributeFormatter;
 
         private readonly CatalogSettings _catalogSettings;
         private readonly CurrencySettings _currencySettings;
@@ -78,7 +79,8 @@ namespace Nop.Services.Common
             IStoreService storeService,
             IStoreContext storeContext,
             ISettingService settingContext,
-            IWebHelper webHelper, 
+            IWebHelper webHelper,
+            IAddressAttributeFormatter addressAttributeFormatter,
             CatalogSettings catalogSettings, 
             CurrencySettings currencySettings,
             MeasureSettings measureSettings,
@@ -102,6 +104,7 @@ namespace Nop.Services.Common
             this._storeContext = storeContext;
             this._settingContext = settingContext;
             this._webHelper = webHelper;
+            this._addressAttributeFormatter = addressAttributeFormatter;
             this._currencySettings = currencySettings;
             this._catalogSettings = catalogSettings;
             this._measureSettings = measureSettings;
@@ -146,8 +149,8 @@ namespace Nop.Services.Common
             //if we need the element to be opposite, like logo etc`.
             if (!isOpposite)
                 return lang.Rtl ? Element.ALIGN_RIGHT : Element.ALIGN_LEFT;
-            else
-                return lang.Rtl ? Element.ALIGN_LEFT : Element.ALIGN_RIGHT;
+            
+            return lang.Rtl ? Element.ALIGN_LEFT : Element.ALIGN_RIGHT;
         }
 
         #endregion
@@ -232,13 +235,13 @@ namespace Nop.Services.Common
                 var logoExists = logoPicture != null;
 
                 //header
-                PdfPTable headerTable = new PdfPTable(logoExists ? 2 : 1);
+                var headerTable = new PdfPTable(logoExists ? 2 : 1);
                 headerTable.RunDirection = GetDirection(lang);
                 headerTable.DefaultCell.Border = Rectangle.NO_BORDER;
 
                 //store info
                 var store = _storeService.GetStoreById(order.StoreId) ?? _storeContext.CurrentStore;
-                var anchor = new Anchor(store.Url.Trim(new char[] { '/' }), font);
+                var anchor = new Anchor(store.Url.Trim(new [] { '/' }), font);
                 anchor.Reference = store.Url;
 
                 var cellHeader = new PdfPCell(new Phrase(String.Format(_localizationService.GetResource("PDFInvoice.Order#", lang.Id), order.Id), titleFont));
@@ -264,13 +267,13 @@ namespace Nop.Services.Common
                 if (logoExists)
                 {
                     var logoFilePath = _pictureService.GetThumbLocalPath(logoPicture, 0, false);
-                    Image Logo = Image.GetInstance(logoFilePath);
-                    Logo.Alignment = GetAlignment(lang, true);
-                    Logo.ScaleToFit(65f, 65f);
+                    var logo = Image.GetInstance(logoFilePath);
+                    logo.Alignment = GetAlignment(lang, true);
+                    logo.ScaleToFit(65f, 65f);
 
                     var cellLogo = new PdfPCell();
                     cellLogo.Border = Rectangle.NO_BORDER;
-                    cellLogo.AddElement(Logo);
+                    cellLogo.AddElement(logo);
                     headerTable.AddCell(cellLogo);
                 }
                 doc.Add(headerTable); 
@@ -313,6 +316,15 @@ namespace Nop.Services.Common
                 if (!String.IsNullOrEmpty(order.VatNumber))
                     billingAddress.AddCell(new Paragraph("   " + String.Format(_localizationService.GetResource("PDFInvoice.VATNumber", lang.Id), order.VatNumber), font));
 
+                //custom attributes
+                var customBillingAddressAttributes = _addressAttributeFormatter.FormatAttributes( order.BillingAddress.CustomAttributes);
+                if (!String.IsNullOrEmpty(customBillingAddressAttributes))
+                {
+                    //TODO: we should add padding to each line (in case if we have sevaral custom address attributes)
+                    billingAddress.AddCell(new Paragraph("   " + HtmlHelper.ConvertHtmlToPlainText(customBillingAddressAttributes, true, true), font));
+                }
+
+
                 //payment method
                 var paymentMethod = _paymentService.LoadPaymentMethodBySystemName(order.PaymentMethodSystemName);
                 string paymentMethodStr = paymentMethod != null ? paymentMethod.GetLocalizedFriendlyName(_localizationService, lang.Id) : order.PaymentMethodSystemName;
@@ -323,12 +335,16 @@ namespace Nop.Services.Common
                     billingAddress.AddCell(new Paragraph());
                 }
 
-                //purchase order number (we have to find a better to inject this information because it's related to a certain plugin)
-                if (paymentMethod != null && paymentMethod.PluginDescriptor.SystemName.Equals("Payments.PurchaseOrder", StringComparison.InvariantCultureIgnoreCase))
+                //custom values
+                var customValues = order.DeserializeCustomValues();
+                if (customValues != null)
                 {
-                    billingAddress.AddCell(new Paragraph(" "));
-                    billingAddress.AddCell(new Paragraph("   " + String.Format(_localizationService.GetResource("PDFInvoice.PurchaseOrderNumber", lang.Id), order.PurchaseOrderNumber), font));
-                    billingAddress.AddCell(new Paragraph());
+                    foreach (var item in customValues)
+                    {
+                        billingAddress.AddCell(new Paragraph(" "));
+                        billingAddress.AddCell(new Paragraph("   " + item.Key + ": " + item.Value, font));
+                        billingAddress.AddCell(new Paragraph());
+                    }
                 }
 
                 addressTable.AddCell(billingAddress);
@@ -364,6 +380,13 @@ namespace Nop.Services.Common
                             shippingAddress.AddCell(new Paragraph("   " + String.Format("{0}, {1} {2}", order.ShippingAddress.City, order.ShippingAddress.StateProvince != null ? order.ShippingAddress.StateProvince.GetLocalized(x => x.Name, lang.Id) : "", order.ShippingAddress.ZipPostalCode), font));
                         if (_addressSettings.CountryEnabled && order.ShippingAddress.Country != null)
                             shippingAddress.AddCell(new Paragraph("   " + String.Format("{0}", order.ShippingAddress.Country != null ? order.ShippingAddress.Country.GetLocalized(x => x.Name, lang.Id) : ""), font));
+                        //custom attributes
+                        var customShippingAddressAttributes = _addressAttributeFormatter.FormatAttributes(order.ShippingAddress.CustomAttributes);
+                        if (!String.IsNullOrEmpty(customShippingAddressAttributes))
+                        {
+                            //TODO: we should add padding to each line (in case if we have sevaral custom address attributes)
+                            shippingAddress.AddCell(new Paragraph("   " + HtmlHelper.ConvertHtmlToPlainText(customShippingAddressAttributes, true, true), font));
+                        }
                         shippingAddress.AddCell(new Paragraph(" "));
                     }
                     shippingAddress.AddCell(new Paragraph("   " + String.Format(_localizationService.GetResource("PDFInvoice.ShippingMethod", lang.Id), order.ShippingMethod), font));
@@ -385,7 +408,7 @@ namespace Nop.Services.Common
                 #region Products
 
                 //products
-                PdfPTable productsHeader = new PdfPTable(1);
+                var productsHeader = new PdfPTable(1);
                 productsHeader.RunDirection = GetDirection(lang);
                 productsHeader.WidthPercentage = 100f;
                 var cellProducts = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.Product(s)", lang.Id), titleFont));
@@ -446,23 +469,34 @@ namespace Nop.Services.Common
                 cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
                 productsTable.AddCell(cellProductItem);
 
-                for (int i = 0; i < orderItems.Count; i++)
+                foreach (var orderItem in orderItems)
                 {
                     var pAttribTable = new PdfPTable(1);
                     pAttribTable.RunDirection = GetDirection(lang);
                     pAttribTable.DefaultCell.Border = Rectangle.NO_BORDER;
 
-                    var orderItem = orderItems[i];
                     var p = orderItem.Product;
 
                     //product name
                     string name = p.GetLocalized(x => x.Name, lang.Id);
                     pAttribTable.AddCell(new Paragraph(name, font));
                     cellProductItem.AddElement(new Paragraph(name, font));
+                    //attributes
                     if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
                     {
                         var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(orderItem.AttributeDescription, true, true), attributesFont);
                         pAttribTable.AddCell(attributesParagraph);
+                    }
+                    //rental info
+                    if (orderItem.Product.IsRental)
+                    {
+                        var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
+                        var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
+                        var rentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
+                            rentalStartDate, rentalEndDate);
+
+                        var rentalInfoParagraph = new Paragraph(rentalInfo, attributesFont);
+                        pAttribTable.AddCell(rentalInfoParagraph);
                     }
                     productsTable.AddCell(pAttribTable);
 
@@ -525,12 +559,12 @@ namespace Nop.Services.Common
                 if (!String.IsNullOrEmpty(order.CheckoutAttributeDescription))
                 {
                     doc.Add(new Paragraph(" "));
-                    PdfPTable attribTable = new PdfPTable(1);
+                    var attribTable = new PdfPTable(1);
                     attribTable.RunDirection = GetDirection(lang);
                     attribTable.WidthPercentage = 100f;
 
                     string attributes = HtmlHelper.ConvertHtmlToPlainText(order.CheckoutAttributeDescription, true, true);
-                    PdfPCell cCheckoutAttributes = new PdfPCell(new Phrase(attributes, font));
+                    var cCheckoutAttributes = new PdfPCell(new Phrase(attributes, font));
                     cCheckoutAttributes.Border = Rectangle.NO_BORDER;
                     cCheckoutAttributes.HorizontalAlignment = Element.ALIGN_RIGHT;
                     attribTable.AddCell(cCheckoutAttributes);
@@ -542,7 +576,7 @@ namespace Nop.Services.Common
                 #region Totals
 
                 //subtotal
-                PdfPTable totalsTable = new PdfPTable(1);
+                var totalsTable = new PdfPTable(1);
                 totalsTable.RunDirection = GetDirection(lang);
                 totalsTable.DefaultCell.Border = Rectangle.NO_BORDER;
                 totalsTable.WidthPercentage = 100f;
@@ -765,7 +799,7 @@ namespace Nop.Services.Common
                         .ToList();
                     if (orderNotes.Count > 0)
                     { 
-                        PdfPTable notesHeader = new PdfPTable(1);
+                        var notesHeader = new PdfPTable(1);
                         notesHeader.RunDirection = GetDirection(lang);
                         notesHeader.WidthPercentage = 100f;
                         var cellOrderNote = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.OrderNotes", lang.Id), titleFont));
@@ -995,6 +1029,13 @@ namespace Nop.Services.Common
                         addressTable.AddCell(new Paragraph(String.Format("{0}", order.ShippingAddress.Country != null
                                         ? order.ShippingAddress.Country.GetLocalized(x => x.Name, lang.Id)
                                         : ""), font));
+
+                    //custom attributes
+                    var customShippingAddressAttributes = _addressAttributeFormatter.FormatAttributes(order.ShippingAddress.CustomAttributes);
+                    if (!String.IsNullOrEmpty(customShippingAddressAttributes))
+                    {
+                        addressTable.AddCell(new Paragraph(HtmlHelper.ConvertHtmlToPlainText(customShippingAddressAttributes, true, true), font));
+                    }
                 }
 
                 addressTable.AddCell(new Paragraph(" "));
@@ -1048,10 +1089,22 @@ namespace Nop.Services.Common
                     var p = orderItem.Product;
                     string name = p.GetLocalized(x => x.Name, lang.Id);
                     productAttribTable.AddCell(new Paragraph(name, font));
+                    //attributes
                     if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
                     {
                         var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(orderItem.AttributeDescription, true, true), attributesFont);
                         productAttribTable.AddCell(attributesParagraph);
+                    }
+                    //rental info
+                    if (orderItem.Product.IsRental)
+                    {
+                        var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
+                        var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
+                        var rentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
+                            rentalStartDate, rentalEndDate);
+
+                        var rentalInfoParagraph = new Paragraph(rentalInfo, attributesFont);
+                        productAttribTable.AddCell(rentalInfoParagraph);
                     }
                     productsTable.AddCell(productAttribTable);
 
@@ -1136,14 +1189,17 @@ namespace Nop.Services.Common
                 {
                     //simple product
                     //render its properties such as price, weight, etc
-                    productTable.AddCell(new Paragraph(String.Format("{0}: {1} {2}", _localizationService.GetResource("PDFProductCatalog.Price", lang.Id), product.Price.ToString("0.00"), _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId).CurrencyCode), font));
+                    var priceStr = string.Format("{0} {1}", product.Price.ToString("0.00"), _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId).CurrencyCode);
+                    if (product.IsRental)
+                        priceStr = _priceFormatter.FormatRentalProductPeriod(product, priceStr);
+                    productTable.AddCell(new Paragraph(String.Format("{0}: {1}", _localizationService.GetResource("PDFProductCatalog.Price", lang.Id), priceStr), font));
                     productTable.AddCell(new Paragraph(String.Format("{0}: {1}", _localizationService.GetResource("PDFProductCatalog.SKU", lang.Id), product.Sku), font));
 
                     if (product.IsShipEnabled && product.Weight > Decimal.Zero)
                         productTable.AddCell(new Paragraph(String.Format("{0}: {1} {2}", _localizationService.GetResource("PDFProductCatalog.Weight", lang.Id), product.Weight.ToString("0.00"), _measureService.GetMeasureWeightById(_measureSettings.BaseWeightId).Name), font));
 
                     if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock)
-                        productTable.AddCell(new Paragraph(String.Format("{0}: {1}", _localizationService.GetResource("PDFProductCatalog.StockQuantity", lang.Id), product.StockQuantity), font));
+                        productTable.AddCell(new Paragraph(String.Format("{0}: {1}", _localizationService.GetResource("PDFProductCatalog.StockQuantity", lang.Id), product.GetTotalStockQuantity()), font));
 
                     productTable.AddCell(new Paragraph(" "));
                 }
@@ -1157,20 +1213,16 @@ namespace Nop.Services.Common
                         table.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
                     }
 
-                    for (int i = 0; i < pictures.Count; i++)
+                    foreach (var pic in pictures)
                     {
-                        var pic = pictures[i];
-                        if (pic != null)
+                        var picBinary = _pictureService.LoadPictureBinary(pic);
+                        if (picBinary != null && picBinary.Length > 0)
                         {
-                            var picBinary = _pictureService.LoadPictureBinary(pic);
-                            if (picBinary != null && picBinary.Length > 0)
-                            {
-                                var pictureLocalPath = _pictureService.GetThumbLocalPath(pic, 200, false);
-                                var cell = new PdfPCell(Image.GetInstance(pictureLocalPath));
-                                cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                                cell.Border = Rectangle.NO_BORDER;
-                                table.AddCell(cell);
-                            }
+                            var pictureLocalPath = _pictureService.GetThumbLocalPath(pic, 200, false);
+                            var cell = new PdfPCell(Image.GetInstance(pictureLocalPath));
+                            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                            cell.Border = Rectangle.NO_BORDER;
+                            table.AddCell(cell);
                         }
                     }
 
@@ -1222,7 +1274,7 @@ namespace Nop.Services.Common
                             productTable.AddCell(new Paragraph(String.Format("{0}: {1} {2}", _localizationService.GetResource("PDFProductCatalog.Weight", lang.Id), associatedProduct.Weight.ToString("0.00"), _measureService.GetMeasureWeightById(_measureSettings.BaseWeightId).Name), font));
 
                         if (associatedProduct.ManageInventoryMethod == ManageInventoryMethod.ManageStock)
-                            productTable.AddCell(new Paragraph(String.Format("{0}: {1}", _localizationService.GetResource("PDFProductCatalog.StockQuantity", lang.Id), associatedProduct.StockQuantity), font));
+                            productTable.AddCell(new Paragraph(String.Format("{0}: {1}", _localizationService.GetResource("PDFProductCatalog.StockQuantity", lang.Id), associatedProduct.GetTotalStockQuantity()), font));
 
                         productTable.AddCell(new Paragraph(" "));
 

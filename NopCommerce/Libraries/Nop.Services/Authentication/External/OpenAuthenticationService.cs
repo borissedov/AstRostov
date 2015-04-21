@@ -10,6 +10,9 @@ using Nop.Services.Customers;
 
 namespace Nop.Services.Authentication.External
 {
+    /// <summary>
+    /// Open authentication service
+    /// </summary>
     public partial class OpenAuthenticationService : IOpenAuthenticationService
     {
         private readonly ICustomerService _customerService;
@@ -85,7 +88,7 @@ namespace Nop.Services.Authentication.External
                         break;
                     }
 
-            var externalAuthenticationRecord = new ExternalAuthenticationRecord()
+            var externalAuthenticationRecord = new ExternalAuthenticationRecord
             {
                 CustomerId = customer.Id,
                 Email = email,

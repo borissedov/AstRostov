@@ -17,7 +17,7 @@ namespace Nop.Web.Models.Catalog
             GiftCard = new GiftCardModel();
             ProductPrice = new ProductPriceModel();
             AddToCart = new AddToCartModel();
-            ProductVariantAttributes = new List<ProductVariantAttributeModel>();
+            ProductAttributes = new List<ProductAttributeModel>();
             AssociatedProducts = new List<ProductDetailsModel>();
             VendorModel = new VendorBriefInfoModel();
             Breadcrumb = new ProductBreadcrumbModel();
@@ -63,6 +63,11 @@ namespace Nop.Web.Models.Catalog
         public bool FreeShippingNotificationEnabled { get; set; }
         public string DeliveryDate { get; set; }
 
+
+        public bool IsRental { get; set; }
+        public DateTime? RentalStartDate { get; set; }
+        public DateTime? RentalEndDate { get; set; }
+
         public string StockAvailability { get; set; }
 
         public bool DisplayBackInStockSubscription { get; set; }
@@ -80,7 +85,7 @@ namespace Nop.Web.Models.Catalog
 
         public IList<ProductTagModel> ProductTags { get; set; }
 
-        public IList<ProductVariantAttributeModel> ProductVariantAttributes { get; set; }
+        public IList<ProductAttributeModel> ProductAttributes { get; set; }
 
         public IList<ProductSpecificationModel> ProductSpecifications { get; set; }
 
@@ -130,6 +135,9 @@ namespace Nop.Web.Models.Catalog
             public bool DisableWishlistButton { get; set; }
             public List<SelectListItem> AllowedQuantities { get; set; }
 
+            //rental
+            public bool IsRental { get; set; }
+
             //pre-order
             public bool AvailableForPreOrder { get; set; }
             public DateTime? PreOrderAvailabilityStartDateTimeUtc { get; set; }
@@ -160,6 +168,10 @@ namespace Nop.Web.Models.Catalog
             public int ProductId { get; set; }
 
             public bool HidePrices { get; set; }
+
+            //rental
+            public bool IsRental { get; set; }
+            public string RentalPrice { get; set; }
 
             /// <summary>
             /// A value indicating whether we should display tax/shipping info (used in Germany)
@@ -197,12 +209,12 @@ namespace Nop.Web.Models.Catalog
             public int Quantity { get; set; }
         }
 
-        public partial class ProductVariantAttributeModel : BaseNopEntityModel
+        public partial class ProductAttributeModel : BaseNopEntityModel
         {
-            public ProductVariantAttributeModel()
+            public ProductAttributeModel()
             {
                 AllowedFileExtensions = new List<string>();
-                Values = new List<ProductVariantAttributeValueModel>();
+                Values = new List<ProductAttributeValueModel>();
             }
 
             public int ProductId { get; set; }
@@ -218,7 +230,7 @@ namespace Nop.Web.Models.Catalog
             public bool IsRequired { get; set; }
 
             /// <summary>
-            /// Selected value for textboxes
+            /// Default value for textboxes
             /// </summary>
             public string DefaultValue { get; set; }
             /// <summary>
@@ -241,11 +253,11 @@ namespace Nop.Web.Models.Catalog
 
             public AttributeControlType AttributeControlType { get; set; }
 
-            public IList<ProductVariantAttributeValueModel> Values { get; set; }
+            public IList<ProductAttributeValueModel> Values { get; set; }
 
         }
 
-        public partial class ProductVariantAttributeValueModel : BaseNopEntityModel
+        public partial class ProductAttributeValueModel : BaseNopEntityModel
         {
             public string Name { get; set; }
 

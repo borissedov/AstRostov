@@ -50,7 +50,7 @@ namespace Nop.Plugin.Shipping.FixedRateShipping.Controllers
 
             var rateModels = new List<FixedShippingRateModel>();
             foreach (var shippingMethod in _shippingService.GetAllShippingMethods())
-                rateModels.Add(new FixedShippingRateModel()
+                rateModels.Add(new FixedShippingRateModel
                 {
                     ShippingMethodId = shippingMethod.Id,
                     ShippingMethodName = shippingMethod.Name,
@@ -82,7 +82,7 @@ namespace Nop.Plugin.Shipping.FixedRateShipping.Controllers
         [NonAction]
         protected decimal GetShippingRate(int shippingMethodId)
         {
-            decimal rate = this._settingService.GetSettingByKey<decimal>(string.Format("ShippingRateComputationMethod.FixedRate.Rate.ShippingMethodId{0}", shippingMethodId));
+            var rate = this._settingService.GetSettingByKey<decimal>(string.Format("ShippingRateComputationMethod.FixedRate.Rate.ShippingMethodId{0}", shippingMethodId));
             return rate;
         }
     }

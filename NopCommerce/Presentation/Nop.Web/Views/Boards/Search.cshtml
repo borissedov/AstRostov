@@ -78,7 +78,7 @@
                     forumId = Model.ForumIdSelected.ToString();
                 }
 
-                var pager = Html.Pager(new PagerModel()
+                var pager = Html.Pager(new PagerModel
                 {
                     PageSize = Model.TopicPageSize,
                     TotalRecords = Model.TopicTotalRecords,
@@ -91,12 +91,12 @@
             @pager
         </div>
         <div class="search-results">
-            @if (Model.NoResultsVisisble == true)
+            @if (Model.NoResultsVisisble)
             {   
                 <span class="result">@T("Forum.SearchNoResultsText")</span>                
             }
             <div class="forums-table-section topics-group">
-                @if (Model.SearchResultsVisible == true)
+                @if (Model.SearchResultsVisible)
                 {   
                     <table>
                         <thead>

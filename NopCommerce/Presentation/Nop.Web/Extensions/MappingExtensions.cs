@@ -23,7 +23,7 @@ namespace Nop.Web.Extensions
             if (entity == null)
                 return null;
 
-            var model = new CategoryModel()
+            var model = new CategoryModel
             {
                 Id = entity.Id,
                 Name = entity.GetLocalized(x => x.Name),
@@ -42,7 +42,7 @@ namespace Nop.Web.Extensions
             if (entity == null)
                 return null;
 
-            var model = new ManufacturerModel()
+            var model = new ManufacturerModel
             {
                 Id = entity.Id,
                 Name = entity.GetLocalized(x => x.Name),
@@ -55,6 +55,8 @@ namespace Nop.Web.Extensions
             return model;
         }
 
+
+        //address
         /// <summary>
         /// Prepare address model
         /// </summary>
@@ -64,6 +66,9 @@ namespace Nop.Web.Extensions
         /// <param name="addressSettings">Address settings</param>
         /// <param name="localizationService">Localization service (used to prepare a select list)</param>
         /// <param name="stateProvinceService">State service (used to prepare a select list). null to don't prepare the list.</param>
+        /// <param name="addressAttributeService">Address attribute service. null to don't prepare the list.</param>
+        /// <param name="addressAttributeParser">Address attribute parser. null to don't prepare the list.</param>
+        /// <param name="addressAttributeFormatter">Address attribute formatter. null to don't prepare the formatted custom attributes.</param>
         /// <param name="loadCountries">A function to load countries  (used to prepare a select list). null to don't prepare the list.</param>
         /// <param name="prePopulateWithCustomerFields">A value indicating whether to pre-populate an address with customer fields entered during registration. It's used only when "address" parameter is set to "null"</param>
         /// <param name="customer">Customer record which will be used to pre-populate address. Used only when "prePopulateWithCustomerFields" is "true".</param>
@@ -72,6 +77,9 @@ namespace Nop.Web.Extensions
             AddressSettings addressSettings,
             ILocalizationService localizationService = null,
             IStateProvinceService stateProvinceService = null,
+            IAddressAttributeService addressAttributeService = null,
+            IAddressAttributeParser addressAttributeParser = null,
+            IAddressAttributeFormatter addressAttributeFormatter = null,
             Func<IList<Country>> loadCountries = null,
             bool prePopulateWithCustomerFields = false,
             Customer customer = null)
@@ -130,10 +138,10 @@ namespace Nop.Web.Extensions
                 if (localizationService == null)
                     throw new ArgumentNullException("localizationService");
 
-                model.AvailableCountries.Add(new SelectListItem() { Text = localizationService.GetResource("Address.SelectCountry"), Value = "0" });
+                model.AvailableCountries.Add(new SelectListItem { Text = localizationService.GetResource("Address.SelectCountry"), Value = "0" });
                 foreach (var c in loadCountries())
                 {
-                    model.AvailableCountries.Add(new SelectListItem()
+                    model.AvailableCountries.Add(new SelectListItem
                     {
                         Text = c.GetLocalized(x => x.Name),
                         Value = c.Id.ToString(),
@@ -152,9 +160,11 @@ namespace Nop.Web.Extensions
                         .ToList();
                     if (states.Count > 0)
                     {
+                        model.AvailableStates.Add(new SelectListItem { Text = localizationService.GetResource("Address.SelectState"), Value = "0" });
+
                         foreach (var s in states)
                         {
-                            model.AvailableStates.Add(new SelectListItem()
+                            model.AvailableStates.Add(new SelectListItem
                             {
                                 Text = s.GetLocalized(x => x.Name),
                                 Value = s.Id.ToString(), 
@@ -164,9 +174,10 @@ namespace Nop.Web.Extensions
                     }
                     else
                     {
-                        model.AvailableStates.Add(new SelectListItem()
+                        bool anyCountrySelected = model.AvailableCountries.Any(x => x.Selected);
+                        model.AvailableStates.Add(new SelectListItem
                         {
-                            Text = localizationService.GetResource("Address.OtherNonUS"),
+                            Text = localizationService.GetResource(anyCountrySelected ? "Address.OtherNonUS" : "Address.SelectState"),
                             Value = "0"
                         });
                     }
@@ -190,6 +201,105 @@ namespace Nop.Web.Extensions
             model.PhoneRequired = addressSettings.PhoneRequired;
             model.FaxEnabled = addressSettings.FaxEnabled;
             model.FaxRequired = addressSettings.FaxRequired;
+
+            //customer attribute services
+            if (addressAttributeService != null && addressAttributeParser != null)
+            {
+                PrepareCustomAddressAttributes(model, address, addressAttributeService, addressAttributeParser);
+            }
+            if (addressAttributeFormatter != null && address != null)
+            {
+                model.FormattedCustomAddressAttributes = addressAttributeFormatter.FormatAttributes(address.CustomAttributes);
+            }
+        }
+        private static void PrepareCustomAddressAttributes(this AddressModel model, 
+            Address address,
+            IAddressAttributeService addressAttributeService,
+            IAddressAttributeParser addressAttributeParser)
+        {
+            if (addressAttributeService == null)
+                throw new ArgumentNullException("addressAttributeService");
+
+            if (addressAttributeParser == null)
+                throw new ArgumentNullException("addressAttributeParser");
+
+            var attributes = addressAttributeService.GetAllAddressAttributes();
+            foreach (var attribute in attributes)
+            {
+                var attributeModel = new AddressAttributeModel
+                {
+                    Id = attribute.Id,
+                    Name = attribute.GetLocalized(x => x.Name),
+                    IsRequired = attribute.IsRequired,
+                    AttributeControlType = attribute.AttributeControlType,
+                };
+
+                if (attribute.ShouldHaveValues())
+                {
+                    //values
+                    var attributeValues = addressAttributeService.GetAddressAttributeValues(attribute.Id);
+                    foreach (var attributeValue in attributeValues)
+                    {
+                        var attributeValueModel = new AddressAttributeValueModel
+                        {
+                            Id = attributeValue.Id,
+                            Name = attributeValue.GetLocalized(x => x.Name),
+                            IsPreSelected = attributeValue.IsPreSelected
+                        };
+                        attributeModel.Values.Add(attributeValueModel);
+                    }
+                }
+
+                //set already selected attributes
+                var selectedAddressAttributes = address != null ? address.CustomAttributes : null;
+                switch (attribute.AttributeControlType)
+                {
+                    case AttributeControlType.DropdownList:
+                    case AttributeControlType.RadioList:
+                    case AttributeControlType.Checkboxes:
+                        {
+                            if (!String.IsNullOrEmpty(selectedAddressAttributes))
+                            {
+                                //clear default selection
+                                foreach (var item in attributeModel.Values)
+                                    item.IsPreSelected = false;
+
+                                //select new values
+                                var selectedValues = addressAttributeParser.ParseAddressAttributeValues(selectedAddressAttributes);
+                                foreach (var attributeValue in selectedValues)
+                                    foreach (var item in attributeModel.Values)
+                                        if (attributeValue.Id == item.Id)
+                                            item.IsPreSelected = true;
+                            }
+                        }
+                        break;
+                    case AttributeControlType.ReadonlyCheckboxes:
+                        {
+                            //do nothing
+                            //values are already pre-set
+                        }
+                        break;
+                    case AttributeControlType.TextBox:
+                    case AttributeControlType.MultilineTextbox:
+                        {
+                            if (!String.IsNullOrEmpty(selectedAddressAttributes))
+                            {
+                                var enteredText = addressAttributeParser.ParseValues(selectedAddressAttributes, attribute.Id);
+                                if (enteredText.Count > 0)
+                                    attributeModel.DefaultValue = enteredText[0];
+                            }
+                        }
+                        break;
+                    case AttributeControlType.ColorSquares:
+                    case AttributeControlType.Datepicker:
+                    case AttributeControlType.FileUpload:
+                    default:
+                        //not supported attribute control types
+                        break;
+                }
+
+                model.CustomAddressAttributes.Add(attributeModel);
+            }
         }
         public static Address ToEntity(this AddressModel model, bool trimFields = true)
         {

@@ -47,7 +47,7 @@ namespace Nop.Core.Html
             if (tag.IndexOf("vbscript") >= 0) return false;
             if (tag.IndexOf("onclick") >= 0) return false;
 
-            var endchars = new char[] { ' ', '>', '/', '\t' };
+            var endchars = new [] { ' ', '>', '/', '\t' };
 
             int pos = tag.IndexOfAny(endchars, 1);
             if (pos > 0) tag = tag.Substring(0, pos);
@@ -86,12 +86,12 @@ namespace Nop.Core.Html
             {
                 if (stripTags)
                 {
-                    text = HtmlHelper.StripTags(text);
+                    text = StripTags(text);
                 }
 
                 if (allowHtml)
                 {
-                    text = HtmlHelper.EnsureOnlyAllowedHtml(text);
+                    text = EnsureOnlyAllowedHtml(text);
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace Nop.Core.Html
 
                 if (convertPlainTextToHtml)
                 {
-                    text = HtmlHelper.ConvertPlainTextToHtml(text);
+                    text = ConvertPlainTextToHtml(text);
                 }
 
                 if (allowBBCode)
@@ -218,7 +218,7 @@ namespace Nop.Core.Html
             text = text.Replace("\r\n", "\n").Replace("\r", "\n");
             text = text + "\n\n";
             text = text.Replace("\n\n", "\n");
-            var strArray = text.Split(new char[] { '\n' });
+            var strArray = text.Split(new [] { '\n' });
             var builder = new StringBuilder();
             foreach (string str in strArray)
             {

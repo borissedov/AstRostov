@@ -6,6 +6,7 @@ using Nop.Core.Plugins;
 using Nop.Services.Configuration;
 using Nop.Services.Discounts;
 using Nop.Services.Localization;
+using Nop.Services.Orders;
 
 namespace Nop.Plugin.DiscountRules.HasAllProducts
 {
@@ -55,9 +56,8 @@ namespace Nop.Plugin.DiscountRules.HasAllProducts
             //group products in the cart by product ID
             //it could be the same product with distinct product attributes
             //that's why we get the total quantity of this product
-            var cartQuery = from sci in request.Customer.ShoppingCartItems
-                            where sci.ShoppingCartType == ShoppingCartType.ShoppingCart &&
-                            sci.StoreId == request.Store.Id
+            var cartQuery = from sci in request.Customer.ShoppingCartItems.LimitPerStore(request.Store.Id)
+                            where sci.ShoppingCartType == ShoppingCartType.ShoppingCart
                             group sci by sci.ProductId into g
                             select new { ProductId = g.Key, TotalQuantity = g.Sum(x => x.Quantity) };
             var cart = cartQuery.ToList();
@@ -77,15 +77,15 @@ namespace Nop.Plugin.DiscountRules.HasAllProducts
                          {
                              //the third way (the quantity rage specified)
                              //{Product ID}:{Min quantity}-{Max quantity}. For example, 77:1-3, 123:2-5, 156:3-8
-                             int restrictedProductId = 0;
+                             int restrictedProductId;
                              if (!int.TryParse(restrictedProduct.Split(new[] { ':' })[0], out restrictedProductId))
                                  //parsing error; exit;
                                  return false;
-                             int quantityMin = 0;
+                             int quantityMin;
                              if (!int.TryParse(restrictedProduct.Split(new[] { ':' })[1].Split(new[] { '-' })[0], out quantityMin))
                                  //parsing error; exit;
                                  return false;
-                             int quantityMax = 0;
+                             int quantityMax;
                              if (!int.TryParse(restrictedProduct.Split(new[] { ':' })[1].Split(new[] { '-' })[1], out quantityMax))
                                  //parsing error; exit;
                                  return false;
@@ -100,11 +100,11 @@ namespace Nop.Plugin.DiscountRules.HasAllProducts
                          {
                              //the second way (the quantity specified)
                              //{Product ID}:{Quantity}. For example, 77:1, 123:2, 156:3
-                             int restrictedProductId = 0;
+                             int restrictedProductId;
                              if (!int.TryParse(restrictedProduct.Split(new[] { ':' })[0], out restrictedProductId))
                                  //parsing error; exit;
                                  return false;
-                             int quantity = 0;
+                             int quantity;
                              if (!int.TryParse(restrictedProduct.Split(new[] { ':' })[1], out quantity))
                                  //parsing error; exit;
                                  return false;
@@ -119,7 +119,7 @@ namespace Nop.Plugin.DiscountRules.HasAllProducts
                     else
                     {
                         //the first way (the quantity is not specified)
-                        int restrictedProductId = 0;
+                        int restrictedProductId;
                         if (int.TryParse(restrictedProduct, out restrictedProductId))
                         {
                             if (sci.ProductId == restrictedProductId)
@@ -164,6 +164,8 @@ namespace Nop.Plugin.DiscountRules.HasAllProducts
             //locales
             this.AddOrUpdatePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products", "Restricted products");
             this.AddOrUpdatePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products.Hint", "The comma-separated list of product identifiers (e.g. 77, 123, 156). You can find a product ID on its details page. You can also specify the comma-separated list of product identifiers with quantities ({Product ID}:{Quantity}. for example, 77:1, 123:2, 156:3). And you can also specify the comma-separated list of product identifiers with quantity range ({Product ID}:{Min quantity}-{Max quantity}. for example, 77:1-3, 123:2-5, 156:3-8).");
+            this.AddOrUpdatePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products.AddNew", "Add product");
+            this.AddOrUpdatePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products.Choose", "Choose");
             base.Install();
         }
 
@@ -172,6 +174,8 @@ namespace Nop.Plugin.DiscountRules.HasAllProducts
             //locales
             this.DeletePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products");
             this.DeletePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products.Hint");
+            this.DeletePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products.AddNew");
+            this.DeletePluginLocaleResource("Plugins.DiscountRules.HasAllProducts.Fields.Products.Choose");
             base.Uninstall();
         }
     }

@@ -194,9 +194,22 @@ namespace Nop.Services.Orders
             }
             if (warehouseId > 0)
             {
+                var manageStockInventoryMethodId = (int)ManageInventoryMethod.ManageStock;
                 query = query
                     .Where(o => o.OrderItems
-                    .Any(orderItem => orderItem.Product.WarehouseId == warehouseId));
+                    .Any(orderItem =>
+                        //"Use multiple warehouses" enabled
+                        //we search in each warehouse
+                        (orderItem.Product.ManageInventoryMethodId == manageStockInventoryMethodId && 
+                        orderItem.Product.UseMultipleWarehouses &&
+                        orderItem.Product.ProductWarehouseInventory.Any(pwi => pwi.WarehouseId == warehouseId))
+                        ||
+                        //"Use multiple warehouses" disabled
+                        //we use standard "warehouse" property
+                        ((orderItem.Product.ManageInventoryMethodId != manageStockInventoryMethodId ||
+                        !orderItem.Product.UseMultipleWarehouses) &&
+                        orderItem.Product.WarehouseId == warehouseId))
+                        );
             }
             if (affiliateId > 0)
                 query = query.Where(o => o.AffiliateId == affiliateId);
@@ -224,12 +237,9 @@ namespace Nop.Services.Orders
                 orders = orders.FindAll(o => o.OrderGuid.ToString().ToLowerInvariant().Contains(orderGuid.ToLowerInvariant()));
                 return new PagedList<Order>(orders, pageIndex, pageSize);
             }
-            else
-            {
-                //database layer paging
-                return new PagedList<Order>(query, pageIndex, pageSize);
-            }  
-
+            
+            //database layer paging
+            return new PagedList<Order>(query, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -566,7 +576,7 @@ namespace Nop.Services.Orders
                 query = query.Where(rr => customerId == rr.CustomerId);
             if (rs.HasValue)
             {
-                int returnStatusId = (int)rs.Value;
+                var returnStatusId = (int)rs.Value;
                 query = query.Where(rr => rr.ReturnRequestStatusId == returnStatusId);
             }
             if (orderItemId > 0)

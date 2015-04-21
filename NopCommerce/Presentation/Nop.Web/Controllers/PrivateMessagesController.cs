@@ -95,7 +95,7 @@ namespace Nop.Web.Controllers
                     break;
             }
 
-            var model = new PrivateMessageIndexModel()
+            var model = new PrivateMessageIndexModel
             {
                 InboxPage = inboxPage,
                 SentItemsPage = sentItemsPage,
@@ -123,7 +123,7 @@ namespace Nop.Web.Controllers
 
             foreach (var pm in list)
             {
-                inbox.Add(new PrivateMessageModel()
+                inbox.Add(new PrivateMessageModel
                 {
                     Id = pm.Id,
                     FromCustomerId = pm.FromCustomer.Id,
@@ -139,7 +139,7 @@ namespace Nop.Web.Controllers
                 });
             }
 
-            var pagerModel = new PagerModel()
+            var pagerModel = new PagerModel
             {
                 PageSize = list.PageSize,
                 TotalRecords = list.TotalCount,
@@ -150,7 +150,7 @@ namespace Nop.Web.Controllers
                 RouteValues = new PrivateMessageRouteValues { page = page, tab = tab }
             };
 
-            var model = new PrivateMessageListModel()
+            var model = new PrivateMessageListModel
             {
                 Messages = inbox,
                 PagerModel = pagerModel
@@ -177,7 +177,7 @@ namespace Nop.Web.Controllers
 
             foreach (var pm in list)
             {
-                sentItems.Add(new PrivateMessageModel()
+                sentItems.Add(new PrivateMessageModel
                 {
                     Id = pm.Id,
                     FromCustomerId = pm.FromCustomer.Id,
@@ -193,7 +193,7 @@ namespace Nop.Web.Controllers
                 });
             }
 
-            var pagerModel = new PagerModel()
+            var pagerModel = new PagerModel
             {
                 PageSize = list.PageSize,
                 TotalRecords = list.TotalCount,
@@ -204,7 +204,7 @@ namespace Nop.Web.Controllers
                 RouteValues = new PrivateMessageRouteValues { page = page, tab = tab }
             };
 
-            var model = new PrivateMessageListModel()
+            var model = new PrivateMessageListModel
             {
                 Messages = sentItems,
                 PagerModel = pagerModel
@@ -223,8 +223,7 @@ namespace Nop.Web.Controllers
                 if (value.Equals("on") && key.StartsWith("pm", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var id = key.Replace("pm", "").Trim();
-                    int privateMessageId = 0;
-
+                    int privateMessageId;
                     if (Int32.TryParse(id, out privateMessageId))
                     {
                         var pm = _forumService.GetPrivateMessageById(privateMessageId);
@@ -252,8 +251,7 @@ namespace Nop.Web.Controllers
                 if (value.Equals("on") && key.StartsWith("pm", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var id = key.Replace("pm", "").Trim();
-                    int privateMessageId = 0;
-
+                    int privateMessageId;
                     if (Int32.TryParse(id, out privateMessageId))
                     {
                         var pm = _forumService.GetPrivateMessageById(privateMessageId);
@@ -282,8 +280,7 @@ namespace Nop.Web.Controllers
                 if (value.Equals("on") && key.StartsWith("si", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var id = key.Replace("si", "").Trim();
-                    int privateMessageId = 0;
-
+                    int privateMessageId;
                     if (Int32.TryParse(id, out privateMessageId))
                     {
                         PrivateMessage pm = _forumService.GetPrivateMessageById(privateMessageId);
@@ -464,7 +461,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("PrivateMessages");
             }
 
-            var model = new PrivateMessageModel()
+            var model = new PrivateMessageModel
             {
                 Id = pm.Id,
                 FromCustomerId = pm.FromCustomer.Id,

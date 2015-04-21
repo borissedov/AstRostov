@@ -22,8 +22,8 @@ namespace Nop.Data
             {
                 if (throwExceptionIfNonExists)
                     throw new ArgumentException(string.Format("Specified file doesn't exist - {0}", filePath));
-                else
-                    return new string[0];
+                
+                return new string[0];
             }
 
 
@@ -31,7 +31,7 @@ namespace Nop.Data
             using (var stream = File.OpenRead(filePath))
             using (var reader = new StreamReader(stream))
             {
-                var statement = "";
+                string statement;
                 while ((statement = ReadNextStatementFromStream(reader)) != null)
                 {
                     statements.Add(statement);
@@ -45,17 +45,15 @@ namespace Nop.Data
         {
             var sb = new StringBuilder();
 
-            string lineOfText;
-
             while (true)
             {
-                lineOfText = reader.ReadLine();
+                var lineOfText = reader.ReadLine();
                 if (lineOfText == null)
                 {
                     if (sb.Length > 0)
                         return sb.ToString();
-                    else
-                        return null;
+                    
+                    return null;
                 }
 
                 if (lineOfText.TrimEnd().ToUpper() == "GO")
@@ -103,9 +101,9 @@ namespace Nop.Data
 
             var customCommands = new List<string>();
             //use webHelper.MapPath instead of HostingEnvironment.MapPath which is not available in unit tests
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/SqlServer.Indexes.sql"), false));
+            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Install/SqlServer.Indexes.sql"), false));
             //use webHelper.MapPath instead of HostingEnvironment.MapPath which is not available in unit tests
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/SqlServer.StoredProcedures.sql"), false));
+            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Install/SqlServer.StoredProcedures.sql"), false));
 
             var initializer = new CreateTablesIfNotExist<NopObjectContext>(tablesToValidate, customCommands.ToArray());
             Database.SetInitializer(initializer);

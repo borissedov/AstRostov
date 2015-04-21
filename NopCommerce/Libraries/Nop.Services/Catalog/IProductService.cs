@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Orders;
+using Nop.Core.Domain.Shipping;
 
 namespace Nop.Services.Catalog
 {
@@ -185,10 +186,10 @@ namespace Nop.Services.Catalog
         /// </summary>
         /// <param name="vendorId">Vendor identifier; 0 to load all records</param>
         /// <param name="products">Low stock products</param>
-        /// <param name="combinations">Low stock  attribute combinations</param>
+        /// <param name="combinations">Low stock attribute combinations</param>
         void GetLowStockProducts(int vendorId,
             out IList<Product> products,
-            out IList<ProductVariantAttributeCombination> combinations);
+            out IList<ProductAttributeCombination> combinations);
 
         /// <summary>
         /// Gets a product by SKU
@@ -196,16 +197,6 @@ namespace Nop.Services.Catalog
         /// <param name="sku">SKU</param>
         /// <returns>Product</returns>
         Product GetProductBySku(string sku);
-        
-        /// <summary>
-        /// Adjusts inventory
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="decrease">A value indicating whether to increase or descrease product stock quantity</param>
-        /// <param name="quantity">Quantity</param>
-        /// <param name="attributesXml">Attributes in XML format</param>
-        void AdjustInventory(Product product, bool decrease,
-            int quantity, string attributesXml);
 
         /// <summary>
         /// Update HasTierPrices property (used for performance optimization)
@@ -213,12 +204,53 @@ namespace Nop.Services.Catalog
         /// <param name="product">Product</param>
         void UpdateHasTierPricesProperty(Product product);
 
-
         /// <summary>
         /// Update HasDiscountsApplied property (used for performance optimization)
         /// </summary>
         /// <param name="product">Product</param>
         void UpdateHasDiscountsApplied(Product product);
+
+        #endregion
+
+        #region Inventory management methods
+
+        /// <summary>
+        /// Adjust inventory
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="quantityToChange">Quantity to increase or descrease</param>
+        /// <param name="attributesXml">Attributes in XML format</param>
+        void AdjustInventory(Product product, int quantityToChange, string attributesXml = "");
+
+        /// <summary>
+        /// Reserve the given quantity in the warehouses.
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="quantity">Quantity, must be negative</param>
+        void ReserveInventory(Product product, int quantity);
+
+        /// <summary>
+        /// Unblocks the given quantity reserved items in the warehouses
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="quantity">Quantity, must be positive</param>
+        void UnblockReservedInventory(Product product, int quantity);
+
+        /// <summary>
+        /// Book the reserved quantity
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="warehouseId">Warehouse identifier</param>
+        /// <param name="quantity">Quantity, must be negative</param>
+        void BookReservedInventory(Product product, int warehouseId, int quantity);
+
+        /// <summary>
+        /// Reverse booked inventory (if acceptable)
+        /// </summary>
+        /// <param name="product">product</param>
+        /// <param name="shipmentItem">Shipment item</param>
+        /// <returns>Quantity reversed</returns>
+        int ReverseBookedInventory(Product product, ShipmentItem shipmentItem);
 
         #endregion
 
@@ -396,6 +428,16 @@ namespace Nop.Services.Catalog
         /// </summary>
         /// <param name="productReview">Product review</param>
         void DeleteProductReview(ProductReview productReview);
+
+        #endregion
+
+        #region Product warehouse inventory
+
+        /// <summary>
+        /// Deletes a ProductWarehouseInventory
+        /// </summary>
+        /// <param name="pwi">ProductWarehouseInventory</param>
+        void DeleteProductWarehouseInventory(ProductWarehouseInventory pwi);
 
         #endregion
     }

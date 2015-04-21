@@ -132,6 +132,14 @@
                             </td>
                         </tr>
                     }
+                    @if (!String.IsNullOrEmpty(Model.ShippingAddress.FormattedCustomAddressAttributes))
+                    {
+                        <tr class="custom-attributes-view">
+                            <td colspan="2">
+                                @Html.Raw(Model.ShippingAddress.FormattedCustomAddressAttributes)
+                            </td>
+                        </tr>
+                    }
                     @if (!Model.IsLoggedInAsVendor)
                     {
                         <tr>
@@ -320,7 +328,7 @@
                                     title: "@T("Admin.Orders.Shipments.Products.ProductName")",
                                     width: 400
                                 },{
-                                    field: "Warehouse",
+                                    field: "ShippedFromWarehouse",
                                     title: "@T("Admin.Orders.Shipments.Products.Warehouse")",
                                     width: 150
                                 },{

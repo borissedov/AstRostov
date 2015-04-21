@@ -72,15 +72,15 @@ namespace Nop.Services.Messages
             string replyToEmailAddress = null, string replyToName = null)
         {
             //retrieve localized message template data
-            var bcc = messageTemplate.GetLocalized((mt) => mt.BccEmailAddresses, languageId);
-            var subject = messageTemplate.GetLocalized((mt) => mt.Subject, languageId);
-            var body = messageTemplate.GetLocalized((mt) => mt.Body, languageId);
+            var bcc = messageTemplate.GetLocalized(mt => mt.BccEmailAddresses, languageId);
+            var subject = messageTemplate.GetLocalized(mt => mt.Subject, languageId);
+            var body = messageTemplate.GetLocalized(mt => mt.Body, languageId);
 
             //Replace subject and body tokens 
             var subjectReplaced = _tokenizer.Replace(subject, tokens, false);
             var bodyReplaced = _tokenizer.Replace(body, tokens, true);
             
-            var email = new QueuedEmail()
+            var email = new QueuedEmail
             {
                 Priority = 5,
                 From = emailAccount.Email,
@@ -95,6 +95,7 @@ namespace Nop.Services.Messages
                 Body = bodyReplaced,
                 AttachmentFilePath = attachmentFilePath,
                 AttachmentFileName = attachmentFileName,
+                AttachedDownloadId = messageTemplate.AttachedDownloadId,
                 CreatedOnUtc = DateTime.UtcNow,
                 EmailAccountId = emailAccount.Id
             };
@@ -418,6 +419,89 @@ namespace Nop.Services.Messages
 
             var toEmail = emailAccount.Email;
             var toName = emailAccount.DisplayName;
+            return SendNotification(messageTemplate, emailAccount,
+                languageId, tokens,
+                toEmail, toName);
+        }
+
+        /// <summary>
+        /// Sends an order paid notification to a customer
+        /// </summary>
+        /// <param name="order">Order instance</param>
+        /// <param name="languageId">Message language identifier</param>
+        /// <param name="attachmentFilePath">Attachment file path</param>
+        /// <param name="attachmentFileName">Attachment file name. If specified, then this file name will be sent to a recipient. Otherwise, "AttachmentFilePath" name will be used.</param>
+        /// <returns>Queued email identifier</returns>
+        public virtual int SendOrderPaidCustomerNotification(Order order, int languageId,
+            string attachmentFilePath = null, string attachmentFileName = null)
+        {
+            if (order == null)
+                throw new ArgumentNullException("order");
+
+            var store = _storeService.GetStoreById(order.StoreId) ?? _storeContext.CurrentStore;
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+            var messageTemplate = GetActiveMessageTemplate("OrderPaid.CustomerNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+            //email account
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddOrderTokens(tokens, order, languageId);
+            _messageTokenProvider.AddCustomerTokens(tokens, order.Customer);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+            var toEmail = order.BillingAddress.Email;
+            var toName = string.Format("{0} {1}", order.BillingAddress.FirstName, order.BillingAddress.LastName);
+            return SendNotification(messageTemplate, emailAccount,
+                languageId, tokens,
+                toEmail, toName,
+                attachmentFilePath,
+                attachmentFileName);
+        }
+
+        /// <summary>
+        /// Sends an order paid notification to a vendor
+        /// </summary>
+        /// <param name="order">Order instance</param>
+        /// <param name="vendor">Vendor instance</param>
+        /// <param name="languageId">Message language identifier</param>
+        /// <returns>Queued email identifier</returns>
+        public virtual int SendOrderPaidVendorNotification(Order order, Vendor vendor, int languageId)
+        {
+            if (order == null)
+                throw new ArgumentNullException("order");
+
+            if (vendor == null)
+                throw new ArgumentNullException("vendor");
+
+            var store = _storeService.GetStoreById(order.StoreId) ?? _storeContext.CurrentStore;
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+            var messageTemplate = GetActiveMessageTemplate("OrderPaid.VendorNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+            //email account
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddOrderTokens(tokens, order, languageId, vendor.Id);
+            _messageTokenProvider.AddCustomerTokens(tokens, order.Customer);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+            var toEmail = vendor.Email;
+            var toName = vendor.Name;
             return SendNotification(messageTemplate, emailAccount,
                 languageId, tokens,
                 toEmail, toName);
@@ -1142,7 +1226,7 @@ namespace Nop.Services.Messages
         /// <param name="product">Product</param>
         /// <param name="languageId">Message language identifier</param>
         /// <returns>Queued email identifier</returns>
-        public virtual int SendQuantityBelowStoreOwnerNotification(Product product, int languageId)
+        public virtual int SendQuantityBelowStoreOwnerNotification(Product product,  int languageId)
         {
             if (product== null)
                 throw new ArgumentNullException("product");
@@ -1160,6 +1244,44 @@ namespace Nop.Services.Messages
             var tokens = new List<Token>();
             _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
             _messageTokenProvider.AddProductTokens(tokens, product, languageId);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+            var toEmail = emailAccount.Email;
+            var toName = emailAccount.DisplayName;
+            return SendNotification(messageTemplate, emailAccount,
+                languageId, tokens,
+                toEmail, toName);
+        }
+
+        /// <summary>
+        /// Sends a "quantity below" notification to a store owner
+        /// </summary>
+        /// <param name="combination">Attribute combination</param>
+        /// <param name="languageId">Message language identifier</param>
+        /// <returns>Queued email identifier</returns>
+        public virtual int SendQuantityBelowStoreOwnerNotification(ProductAttributeCombination combination, int languageId)
+        {
+            if (combination == null)
+                throw new ArgumentNullException("combination");
+
+            var store = _storeContext.CurrentStore;
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+            var messageTemplate = GetActiveMessageTemplate("QuantityBelow.AttributeCombination.StoreOwnerNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+            //email account
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            var product = combination.Product;
+
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddProductTokens(tokens, product, languageId);
+            _messageTokenProvider.AddAttributeCombinationTokens(tokens, combination, languageId);
 
             //event notification
             _eventPublisher.MessageTokensAdded(messageTemplate, tokens);

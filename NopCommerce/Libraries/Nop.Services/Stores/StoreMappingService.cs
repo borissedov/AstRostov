@@ -147,7 +147,7 @@ namespace Nop.Services.Stores
             int entityId = entity.Id;
             string entityName = typeof(T).Name;
 
-            var storeMapping = new StoreMapping()
+            var storeMapping = new StoreMapping
             {
                 EntityId = entityId,
                 EntityName = entityName,
@@ -193,11 +193,7 @@ namespace Nop.Services.Stores
                             where sm.EntityId == entityId &&
                             sm.EntityName == entityName
                             select sm.StoreId;
-                var result = query.ToArray();
-                //little hack here. nulls aren't cacheable so set it to ""
-                if (result == null)
-                    result = new int[0];
-                return result;
+                return query.ToArray();
             });
         }
 

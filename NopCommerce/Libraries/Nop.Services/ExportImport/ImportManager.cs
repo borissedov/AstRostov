@@ -4,8 +4,12 @@ using System.Linq;
 using System.Web;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.Directory;
+using Nop.Core.Domain.Messages;
 using Nop.Services.Catalog;
+using Nop.Services.Directory;
 using Nop.Services.Media;
+using Nop.Services.Messages;
 using Nop.Services.Seo;
 using OfficeOpenXml;
 
@@ -23,20 +27,34 @@ namespace Nop.Services.ExportImport
         private readonly IManufacturerService _manufacturerService;
         private readonly IPictureService _pictureService;
         private readonly IUrlRecordService _urlRecordService;
+        private readonly IStoreContext _storeContext;
+        private readonly INewsLetterSubscriptionService _newsLetterSubscriptionService;
+        private readonly ICountryService _countryService;
+        private readonly IStateProvinceService _stateProvinceService;
 
         #endregion
 
         #region Ctor
 
-        public ImportManager(IProductService productService, ICategoryService categoryService,
-            IManufacturerService manufacturerService, IPictureService pictureService,
-            IUrlRecordService urlRecordService)
+        public ImportManager(IProductService productService, 
+            ICategoryService categoryService,
+            IManufacturerService manufacturerService,
+            IPictureService pictureService,
+            IUrlRecordService urlRecordService,
+            IStoreContext storeContext,
+            INewsLetterSubscriptionService newsLetterSubscriptionService,
+            ICountryService countryService,
+            IStateProvinceService stateProvinceService)
         {
             this._productService = productService;
             this._categoryService = categoryService;
             this._manufacturerService = manufacturerService;
             this._pictureService = pictureService;
             this._urlRecordService = urlRecordService;
+            this._storeContext = storeContext;
+            this._newsLetterSubscriptionService = newsLetterSubscriptionService;
+            this._countryService = countryService;
+            this._stateProvinceService = stateProvinceService;
         }
 
         #endregion
@@ -75,6 +93,7 @@ namespace Nop.Services.ExportImport
 
             return mimeType;
         }
+
         #endregion
 
         #region Methods
@@ -94,7 +113,7 @@ namespace Nop.Services.ExportImport
                     throw new NopException("No worksheet found");
 
                 //the columns
-                var properties = new string[]
+                var properties = new []
                 {
                     "ProductTypeId",
                     "ParentGroupedProductId",
@@ -132,14 +151,20 @@ namespace Nop.Services.ExportImport
                     "RecurringCycleLength",
                     "RecurringCyclePeriodId",
                     "RecurringTotalCycles",
+                    "IsRental",
+                    "RentalPriceLength",
+                    "RentalPricePeriodId",
                     "IsShipEnabled",
                     "IsFreeShipping",
+                    "ShipSeparately",
                     "AdditionalShippingCharge",
                     "DeliveryDateId",
-                    "WarehouseId",
                     "IsTaxExempt",
                     "TaxCategoryId",
+                    "IsTelecommunicationsOrBroadcastingOrElectronicServices",
                     "ManageInventoryMethodId",
+                    "UseMultipleWarehouses",
+                    "WarehouseId",
                     "StockQuantity",
                     "DisplayStockAvailability",
                     "DisplayStockQuantity",
@@ -175,7 +200,7 @@ namespace Nop.Services.ExportImport
                     "ManufacturerIds",
                     "Picture1",
                     "Picture2",
-                    "Picture3",
+                    "Picture3"
                 };
 
 
@@ -228,14 +253,20 @@ namespace Nop.Services.ExportImport
                     int recurringCycleLength = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "RecurringCycleLength")].Value);
                     int recurringCyclePeriodId = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "RecurringCyclePeriodId")].Value);
                     int recurringTotalCycles = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "RecurringTotalCycles")].Value);
+                    bool isRental = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "IsRental")].Value);
+                    int rentalPriceLength = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "RentalPriceLength")].Value);
+                    int rentalPricePeriodId = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "RentalPricePeriodId")].Value);
                     bool isShipEnabled = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "IsShipEnabled")].Value);
                     bool isFreeShipping = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "IsFreeShipping")].Value);
+                    bool shipSeparately = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "ShipSeparately")].Value);
                     decimal additionalShippingCharge = Convert.ToDecimal(worksheet.Cells[iRow, GetColumnIndex(properties, "AdditionalShippingCharge")].Value);
                     int deliveryDateId = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "DeliveryDateId")].Value);
-                    int warehouseId = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "WarehouseId")].Value);
                     bool isTaxExempt = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "IsTaxExempt")].Value);
                     int taxCategoryId = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "TaxCategoryId")].Value);
+                    bool isTelecommunicationsOrBroadcastingOrElectronicServices = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "IsTelecommunicationsOrBroadcastingOrElectronicServices")].Value);
                     int manageInventoryMethodId = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "ManageInventoryMethodId")].Value);
+                    bool useMultipleWarehouses = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "UseMultipleWarehouses")].Value);
+                    int warehouseId = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "WarehouseId")].Value);
                     int stockQuantity = Convert.ToInt32(worksheet.Cells[iRow, GetColumnIndex(properties, "StockQuantity")].Value);
                     bool displayStockAvailability = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "DisplayStockAvailability")].Value);
                     bool displayStockQuantity = Convert.ToBoolean(worksheet.Cells[iRow, GetColumnIndex(properties, "DisplayStockQuantity")].Value);
@@ -329,14 +360,20 @@ namespace Nop.Services.ExportImport
                     product.RecurringCycleLength = recurringCycleLength;
                     product.RecurringCyclePeriodId = recurringCyclePeriodId;
                     product.RecurringTotalCycles = recurringTotalCycles;
+                    product.IsRental = isRental;
+                    product.RentalPriceLength = rentalPriceLength;
+                    product.RentalPricePeriodId = rentalPricePeriodId;
                     product.IsShipEnabled = isShipEnabled;
                     product.IsFreeShipping = isFreeShipping;
+                    product.ShipSeparately = shipSeparately;
                     product.AdditionalShippingCharge = additionalShippingCharge;
                     product.DeliveryDateId = deliveryDateId;
-                    product.WarehouseId = warehouseId;
                     product.IsTaxExempt = isTaxExempt;
                     product.TaxCategoryId = taxCategoryId;
+                    product.IsTelecommunicationsOrBroadcastingOrElectronicServices = isTelecommunicationsOrBroadcastingOrElectronicServices;
                     product.ManageInventoryMethodId = manageInventoryMethodId;
+                    product.UseMultipleWarehouses = useMultipleWarehouses;
+                    product.WarehouseId = warehouseId;
                     product.StockQuantity = stockQuantity;
                     product.DisplayStockAvailability = displayStockAvailability;
                     product.DisplayStockQuantity = displayStockQuantity;
@@ -385,7 +422,7 @@ namespace Nop.Services.ExportImport
                     //category mappings
                     if (!String.IsNullOrEmpty(categoryIds))
                     {
-                        foreach (var id in categoryIds.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x.Trim())))
+                        foreach (var id in categoryIds.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x.Trim())))
                         {
                             if (product.ProductCategories.FirstOrDefault(x => x.CategoryId == id) == null)
                             {
@@ -393,7 +430,7 @@ namespace Nop.Services.ExportImport
                                 var category = _categoryService.GetCategoryById(id);
                                 if (category != null)
                                 {
-                                    var productCategory = new ProductCategory()
+                                    var productCategory = new ProductCategory
                                     {
                                         ProductId = product.Id,
                                         CategoryId = category.Id,
@@ -409,7 +446,7 @@ namespace Nop.Services.ExportImport
                     //manufacturer mappings
                     if (!String.IsNullOrEmpty(manufacturerIds))
                     {
-                        foreach (var id in manufacturerIds.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x.Trim())))
+                        foreach (var id in manufacturerIds.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x.Trim())))
                         {
                             if (product.ProductManufacturers.FirstOrDefault(x => x.ManufacturerId == id) == null)
                             {
@@ -417,7 +454,7 @@ namespace Nop.Services.ExportImport
                                 var manufacturer = _manufacturerService.GetManufacturerById(id);
                                 if (manufacturer != null)
                                 {
-                                    var productManufacturer = new ProductManufacturer()
+                                    var productManufacturer = new ProductManufacturer
                                     {
                                         ProductId = product.Id,
                                         ManufacturerId = manufacturer.Id,
@@ -431,7 +468,7 @@ namespace Nop.Services.ExportImport
                     }
 
                     //pictures
-                    foreach (var picturePath in new string[] { picture1, picture2, picture3 })
+                    foreach (var picturePath in new [] { picture1, picture2, picture3 })
                     {
                         if (String.IsNullOrEmpty(picturePath))
                             continue;
@@ -459,7 +496,7 @@ namespace Nop.Services.ExportImport
 
                         if (!pictureAlreadyExists)
                         {
-                            product.ProductPictures.Add(new ProductPicture()
+                            product.ProductPictures.Add(new ProductPicture
                             {
                                 Picture = _pictureService.InsertPicture(newPictureBinary, mimeType , _pictureService.GetPictureSeName(name), true),
                                 DisplayOrder = 1,
@@ -478,6 +515,139 @@ namespace Nop.Services.ExportImport
                     iRow++;
                 }
             }
+        }
+
+        /// <summary>
+        /// Import newsletter subscribers from TXT file
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <returns>Number of imported subscribers</returns>
+        public virtual int ImportNewsletterSubscribersFromTxt(Stream stream)
+        {
+            int count = 0;
+            using (var reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    if (String.IsNullOrWhiteSpace(line))
+                        continue;
+                    string[] tmp = line.Split(',');
+
+                    var email = "";
+                    bool isActive = true;
+                    int storeId = _storeContext.CurrentStore.Id;
+                    //parse
+                    if (tmp.Length == 1)
+                    {
+                        //"email" only
+                        email = tmp[0].Trim();
+                    }
+                    else if (tmp.Length == 2)
+                    {
+                        //"email" and "active" fields specified
+                        email = tmp[0].Trim();
+                        isActive = Boolean.Parse(tmp[1].Trim());
+                    }
+                    else if (tmp.Length == 3)
+                    {
+                        //"email" and "active" and "storeId" fields specified
+                        email = tmp[0].Trim();
+                        isActive = Boolean.Parse(tmp[1].Trim());
+                        storeId = Int32.Parse(tmp[2].Trim());
+                    }
+                    else
+                        throw new NopException("Wrong file format");
+
+                    //import
+                    var subscription = _newsLetterSubscriptionService.GetNewsLetterSubscriptionByEmailAndStoreId(email, storeId);
+                    if (subscription != null)
+                    {
+                        subscription.Email = email;
+                        subscription.Active = isActive;
+                        _newsLetterSubscriptionService.UpdateNewsLetterSubscription(subscription);
+                    }
+                    else
+                    {
+                        subscription = new NewsLetterSubscription
+                        {
+                            Active = isActive,
+                            CreatedOnUtc = DateTime.UtcNow,
+                            Email = email,
+                            StoreId = storeId,
+                            NewsLetterSubscriptionGuid = Guid.NewGuid()
+                        };
+                        _newsLetterSubscriptionService.InsertNewsLetterSubscription(subscription);
+                    }
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Import states from TXT file
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <returns>Number of imported states</returns>
+        public virtual int ImportStatesFromTxt(Stream stream)
+        {
+            int count = 0;
+            using (var reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    if (String.IsNullOrWhiteSpace(line))
+                        continue;
+                    string[] tmp = line.Split(',');
+
+                    if (tmp.Length != 5)
+                        throw new NopException("Wrong file format");
+                    
+                    //parse
+                    var countryTwoLetterIsoCode = tmp[0].Trim();
+                    var name = tmp[1].Trim();
+                    var abbreviation = tmp[2].Trim();
+                    bool published = Boolean.Parse(tmp[3].Trim());
+                    int displayOrder = Int32.Parse(tmp[4].Trim());
+
+                    var country = _countryService.GetCountryByTwoLetterIsoCode(countryTwoLetterIsoCode);
+                    if (country == null)
+                    {
+                        //country cannot be loaded. skip
+                        continue;
+                    }
+
+                    //import
+                    var states = _stateProvinceService.GetStateProvincesByCountryId(country.Id, true);
+                    var state = states.FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (state != null)
+                    {
+                        state.Abbreviation = abbreviation;
+                        state.Published = published;
+                        state.DisplayOrder = displayOrder;
+                        _stateProvinceService.UpdateStateProvince(state);
+                    }
+                    else
+                    {
+                        state = new StateProvince
+                        {
+                            CountryId = country.Id,
+                            Name = name,
+                            Abbreviation = abbreviation,
+                            Published = published,
+                            DisplayOrder = displayOrder,
+                        };
+                        _stateProvinceService.InsertStateProvince(state);
+                    }
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         #endregion

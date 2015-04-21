@@ -96,7 +96,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                     continue;
                 }
 
-                var categoryModel = new CategoryModel()
+                var categoryModel = new CategoryModel
                 {
                     Id = category.Id,
                     Name = category.GetLocalized(x => x.Name),
@@ -150,7 +150,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
             var models = new List<ProductOverviewModel>();
             foreach (var product in products)
             {
-                var model = new ProductOverviewModel()
+                var model = new ProductOverviewModel
                 {
                     Id = product.Id,
                     Name = product.GetLocalized(x => x.Name),
@@ -218,7 +218,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                                                     else if (minPossiblePrice.HasValue)
                                                     {
                                                         //calculate prices
-                                                        decimal taxRate = decimal.Zero;
+                                                        decimal taxRate;
                                                         decimal finalPriceBase = _taxService.GetProductPrice(minPriceProduct, minPossiblePrice.Value, out taxRate);
                                                         decimal finalPrice = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceBase, _workContext.WorkingCurrency);
 
@@ -230,7 +230,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                                                     {
                                                         //Actually it's not possible (we presume that minimalPrice always has a value)
                                                         //We never should get here
-                                                        Debug.WriteLine(string.Format("Cannot calculate minPrice for product #{0}", product.Id));
+                                                        Debug.WriteLine("Cannot calculate minPrice for product #{0}", product.Id);
                                                     }
                                                 }
                                             }
@@ -261,6 +261,10 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                                 priceModel.DisableWishlistButton = product.DisableWishlistButton ||
                                     !_permissionService.Authorize(StandardPermissionProvider.EnableWishlist) ||
                                     !_permissionService.Authorize(StandardPermissionProvider.DisplayPrices);
+
+                                //rental
+                                priceModel.IsRental = product.IsRental;
+
                                 //pre-order
                                 if (product.AvailableForPreOrder)
                                 {
@@ -286,7 +290,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                                         else
                                         {
                                             //calculate prices
-                                            decimal taxRate = decimal.Zero;
+                                            decimal taxRate;
                                             decimal oldPriceBase = _taxService.GetProductPrice(product, product.OldPrice, out taxRate);
                                             decimal finalPriceBase = _taxService.GetProductPrice(product, minPossiblePrice, out taxRate);
 
@@ -326,6 +330,12 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                                                     priceModel.Price = _priceFormatter.FormatPrice(finalPrice);
                                                 }
                                             }
+                                            if (product.IsRental)
+                                            {
+                                                //rental product
+                                                priceModel.OldPrice = _priceFormatter.FormatRentalProductPeriod(product, priceModel.OldPrice);
+                                                priceModel.Price = _priceFormatter.FormatRentalProductPeriod(product, priceModel.Price);
+                                            }
                                         }
                                     }
                                 }
@@ -355,7 +365,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                     int pictureSize = productThumbPictureSize.HasValue ? productThumbPictureSize.Value : 125;
                     //prepare picture model
                     var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
-                    model.DefaultPictureModel = new PictureModel()
+                    model.DefaultPictureModel = new PictureModel
                         {
                             ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
                             FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
@@ -403,9 +413,8 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
             string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_NAVIGATION_MODEL_KEY, _workContext.WorkingLanguage.Id,
                 string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
             var model = _cacheManager.Get(cacheKey, () =>
-            {
-                return PrepareCategorySimpleModels(0, null, 0, _catalogSettings.TopCategoryMenuSubcategoryLevelsToDisplay, true).ToList();
-            });
+                PrepareCategorySimpleModels(0, null, 0, _catalogSettings.TopCategoryMenuSubcategoryLevelsToDisplay, true).ToList()
+                );
 
             return PartialView("~/Plugins/Misc.FacebookShop/Views/MiscFacebookShop/CategoryNavigation.cshtml", model);
         }
@@ -438,7 +447,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                 command.PageNumber = 1;
             }
 
-            var model = new CategoryModel()
+            var model = new CategoryModel
             {
                 Id = category.Id,
                 Name = category.GetLocalized(x => x.Name),
@@ -452,7 +461,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                 .Select(x =>
                 {
                     var subCatName = x.GetLocalized(y => y.Name);
-                    var subCatModel = new CategoryModel()
+                    var subCatModel = new CategoryModel
                     {
                         Id = x.Id,
                         Name = subCatName,
@@ -462,7 +471,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                     //prepare picture model
                     int pictureSize = 125;
                     var picture = _pictureService.GetPictureById(x.PictureId);
-                    subCatModel.PictureModel = new PictureModel()
+                    subCatModel.PictureModel = new PictureModel
                         {
                             FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
                             ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
@@ -480,7 +489,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                 categoryIds.Add(categoryId);
             }
             //products
-            IList<int> filterableSpecificationAttributeOptionIds = null;
+            IList<int> filterableSpecificationAttributeOptionIds;
             var products = _productService.SearchProducts(out filterableSpecificationAttributeOptionIds,
                 categoryIds: categoryIds,
                 storeId: _storeContext.CurrentStore.Id,
@@ -546,7 +555,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
 
         public ActionResult Footer()
         {
-            var model = new FooterModel()
+            var model = new FooterModel
             {
                 StoreName = _storeContext.CurrentStore.GetLocalized(x => x.Name)
             };

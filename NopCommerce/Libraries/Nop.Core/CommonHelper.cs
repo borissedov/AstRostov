@@ -98,10 +98,8 @@ namespace Nop.Core
                 }
                 return result;
             }
-            else
-            {
-                return str;
-            }
+
+            return str;
         }
 
         /// <summary>
@@ -176,7 +174,7 @@ namespace Nop.Core
             return true;
         }
 
-        private static AspNetHostingPermissionLevel? _trustLevel = null;
+        private static AspNetHostingPermissionLevel? _trustLevel;
         /// <summary>
         /// Finds the trust level of the running application (http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx)
         /// </summary>
@@ -189,8 +187,7 @@ namespace Nop.Core
                 _trustLevel = AspNetHostingPermissionLevel.None;
 
                 //determine maximum
-                foreach (AspNetHostingPermissionLevel trustLevel in
-                        new AspNetHostingPermissionLevel[] {
+                foreach (AspNetHostingPermissionLevel trustLevel in new[] {
                                 AspNetHostingPermissionLevel.Unrestricted,
                                 AspNetHostingPermissionLevel.High,
                                 AspNetHostingPermissionLevel.Medium,
@@ -287,7 +284,7 @@ namespace Nop.Core
                     return sourceConverter.ConvertTo(null, culture, value, destinationType);
                 if (destinationType.IsEnum && value is int)
                     return Enum.ToObject(destinationType, (int)value);
-                if (!destinationType.IsAssignableFrom(value.GetType()))
+                if (!destinationType.IsInstanceOfType(value))
                     return Convert.ChangeType(value, destinationType, culture);
             }
             return value;

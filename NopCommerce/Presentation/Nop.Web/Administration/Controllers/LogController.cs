@@ -46,7 +46,7 @@ namespace Nop.Admin.Controllers
 
             var model = new LogListModel();
             model.AvailableLogLevels = LogLevel.Debug.ToSelectList(false).ToList();
-            model.AvailableLogLevels.Insert(0, new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            model.AvailableLogLevels.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
 
             return View(model);
         }
@@ -71,27 +71,24 @@ namespace Nop.Admin.Controllers
                 logLevel, command.Page - 1, command.PageSize);
             var gridModel = new DataSourceResult
             {
-                Data = logItems.Select(x =>
+                Data = logItems.Select(x => new LogModel
                 {
-                    return new LogModel()
-                    {
-                        Id = x.Id,
-                        LogLevel = x.LogLevel.GetLocalizedEnum(_localizationService, _workContext),
-                        ShortMessage = x.ShortMessage,
-                        //little hack here:
-                        //ensure that FullMessage is not returned
-                        //otherwise, we can get the following error if log records have too long FullMessage:
-                        //"Error during serialization or deserialization using the JSON JavaScriptSerializer. The length of the string exceeds the value set on the maxJsonLength property. "
-                        //also it improves performance
-                        //FullMessage = x.FullMessage,
-                        FullMessage = "",
-                        IpAddress = x.IpAddress,
-                        CustomerId = x.CustomerId,
-                        CustomerEmail = x.Customer != null ? x.Customer.Email : null,
-                        PageUrl = x.PageUrl,
-                        ReferrerUrl = x.ReferrerUrl,
-                        CreatedOn = _dateTimeHelper.ConvertToUserTime(x.CreatedOnUtc, DateTimeKind.Utc)
-                    };
+                    Id = x.Id,
+                    LogLevel = x.LogLevel.GetLocalizedEnum(_localizationService, _workContext),
+                    ShortMessage = x.ShortMessage,
+                    //little hack here:
+                    //ensure that FullMessage is not returned
+                    //otherwise, we can get the following error if log records have too long FullMessage:
+                    //"Error during serialization or deserialization using the JSON JavaScriptSerializer. The length of the string exceeds the value set on the maxJsonLength property. "
+                    //also it improves performance
+                    //FullMessage = x.FullMessage,
+                    FullMessage = "",
+                    IpAddress = x.IpAddress,
+                    CustomerId = x.CustomerId,
+                    CustomerEmail = x.Customer != null ? x.Customer.Email : null,
+                    PageUrl = x.PageUrl,
+                    ReferrerUrl = x.ReferrerUrl,
+                    CreatedOn = _dateTimeHelper.ConvertToUserTime(x.CreatedOnUtc, DateTimeKind.Utc)
                 }),
                 Total = logItems.TotalCount
             };
@@ -122,7 +119,7 @@ namespace Nop.Admin.Controllers
                 //No log found with the specified id
                 return RedirectToAction("List");
 
-            var model = new LogModel()
+            var model = new LogModel
             {
                 Id = log.Id,
                 LogLevel = log.LogLevel.GetLocalizedEnum(_localizationService, _workContext),

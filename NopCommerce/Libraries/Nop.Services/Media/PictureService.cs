@@ -272,10 +272,14 @@ namespace Nop.Services.Media
         /// Get picture local path. Used when images stored on file system (not in the database)
         /// </summary>
         /// <param name="fileName">Filename</param>
+        /// <param name="imagesDirectoryPath">Directory path with images; if null, then default one is used</param>
         /// <returns>Local picture path</returns>
-        protected virtual string GetPictureLocalPath(string fileName)
+        protected virtual string GetPictureLocalPath(string fileName, string imagesDirectoryPath = null)
         {
-            var imagesDirectoryPath = _webHelper.MapPath("~/content/images/");
+            if (String.IsNullOrEmpty(imagesDirectoryPath))
+            {
+                imagesDirectoryPath = _webHelper.MapPath("~/content/images/");
+            }
             var filePath = Path.Combine(imagesDirectoryPath, fileName);
             return filePath;
         }
@@ -291,11 +295,9 @@ namespace Nop.Services.Media
             if (picture == null)
                 throw new ArgumentNullException("picture");
 
-            byte[] result = null;
-            if (fromDb)
-                result = picture.PictureBinary;
-            else
-                result = LoadPictureFromFile(picture.Id, picture.MimeType);
+            var result = fromDb 
+                ? picture.PictureBinary
+                : LoadPictureFromFile(picture.Id, picture.MimeType);
             return result;
         }
 
@@ -348,7 +350,9 @@ namespace Nop.Services.Media
                     break;
             }
 
-            string filePath = GetPictureLocalPath(defaultImageFileName);
+            string filePath = GetPictureLocalPath(defaultImageFileName,
+                imagesDirectoryPath: _settingService.GetSettingByKey<string>("Media.DefaultImageDirectoryPath"));
+
             if (!File.Exists(filePath))
             {
                 return "";
@@ -376,7 +380,7 @@ namespace Nop.Services.Media
                         var newSize = CalculateDimensions(b.Size, targetSize);
 
                         var destStream = new MemoryStream();
-                        ImageBuilder.Current.Build(b, destStream, new ResizeSettings()
+                        ImageBuilder.Current.Build(b, destStream, new ResizeSettings
                         {
                             Width = newSize.Width,
                             Height = newSize.Height,
@@ -496,7 +500,7 @@ namespace Nop.Services.Media
                             var newSize = CalculateDimensions(b.Size, targetSize);
 
                             var destStream = new MemoryStream();
-                            ImageBuilder.Current.Build(b, destStream, new ResizeSettings()
+                            ImageBuilder.Current.Build(b, destStream, new ResizeSettings
                             {
                                 Width = newSize.Width,
                                 Height = newSize.Height,
@@ -527,8 +531,8 @@ namespace Nop.Services.Media
             string url = GetPictureUrl(picture, targetSize, showDefaultPicture);
             if(String.IsNullOrEmpty(url))
                 return String.Empty;
-            else
-                return GetThumbLocalPath(Path.GetFileName(url));
+            
+            return GetThumbLocalPath(Path.GetFileName(url));
         }
 
         #endregion
@@ -632,7 +636,7 @@ namespace Nop.Services.Media
             if (validateBinary)
                 pictureBinary = ValidatePicture(pictureBinary, mimeType);
 
-            var picture = new Picture()
+            var picture = new Picture
                               {
                                   PictureBinary = this.StoreInDb ? pictureBinary : new byte[0],
                                   MimeType = mimeType,
@@ -725,7 +729,7 @@ namespace Nop.Services.Media
         public virtual byte[] ValidatePicture(byte[] pictureBinary, string mimeType)
         {
             var destStream = new MemoryStream();
-            ImageBuilder.Current.Build(pictureBinary, destStream, new ResizeSettings()
+            ImageBuilder.Current.Build(pictureBinary, destStream, new ResizeSettings
             {
                 MaxWidth = _mediaSettings.MaximumImageSize,
                 MaxHeight = _mediaSettings.MaximumImageSize,
@@ -745,7 +749,7 @@ namespace Nop.Services.Media
         {
             get
             {
-                return _settingService.GetSettingByKey<bool>("Media.Images.StoreInDB", true);
+                return _settingService.GetSettingByKey("Media.Images.StoreInDB", true);
             }
             set
             {
@@ -753,7 +757,7 @@ namespace Nop.Services.Media
                 if (this.StoreInDb != value)
                 {
                     //save the new setting value
-                    _settingService.SetSetting<bool>("Media.Images.StoreInDB", value);
+                    _settingService.SetSetting("Media.Images.StoreInDB", value);
 
                     //update all picture objects
                     var pictures = this.GetPictures(0, int.MaxValue);

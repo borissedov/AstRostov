@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Plugins;
+using Nop.Services.Catalog;
 using Nop.Services.Configuration;
 
 namespace Nop.Services.Payments
@@ -128,7 +129,7 @@ namespace Nop.Services.Payments
 
             //we should be sure that countryIds is of type List<int> (not IList<int>)
             var settingKey = string.Format("PaymentMethodRestictions.{0}", paymentMethod.PluginDescriptor.SystemName);
-            _settingService.SetSetting<List<int>>(settingKey, countryIds);
+            _settingService.SetSetting(settingKey, countryIds);
         }
 
 
@@ -141,25 +142,23 @@ namespace Nop.Services.Payments
         {
             if (processPaymentRequest.OrderTotal == decimal.Zero)
             {
-                var result = new ProcessPaymentResult()
+                var result = new ProcessPaymentResult
                 {
                     NewPaymentStatus = PaymentStatus.Paid
                 };
                 return result;
             }
-            else
+
+            //We should strip out any white space or dash in the CC number entered.
+            if (!String.IsNullOrWhiteSpace(processPaymentRequest.CreditCardNumber))
             {
-                //We should strip out any white space or dash in the CC number entered.
-                if (!String.IsNullOrWhiteSpace(processPaymentRequest.CreditCardNumber))
-                {
-                    processPaymentRequest.CreditCardNumber = processPaymentRequest.CreditCardNumber.Replace(" ", "");
-                    processPaymentRequest.CreditCardNumber = processPaymentRequest.CreditCardNumber.Replace("-", "");
-                }
-                var paymentMethod = LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
-                if (paymentMethod == null)
-                    throw new NopException("Payment method couldn't be loaded");
-                return paymentMethod.ProcessPayment(processPaymentRequest);
+                processPaymentRequest.CreditCardNumber = processPaymentRequest.CreditCardNumber.Replace(" ", "");
+                processPaymentRequest.CreditCardNumber = processPaymentRequest.CreditCardNumber.Replace("-", "");
             }
+            var paymentMethod = LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
+            if (paymentMethod == null)
+                throw new NopException("Payment method couldn't be loaded");
+            return paymentMethod.ProcessPayment(processPaymentRequest);
         }
 
         /// <summary>
@@ -228,7 +227,9 @@ namespace Nop.Services.Payments
             if (result < decimal.Zero)
                 result = decimal.Zero;
             if (_shoppingCartSettings.RoundPricesDuringCalculation)
-                result = Math.Round(result, 2);
+            {
+                result = RoundingHelper.RoundPrice(result);
+            }
             return result;
         }
 
@@ -353,19 +354,17 @@ namespace Nop.Services.Payments
         {
             if (processPaymentRequest.OrderTotal == decimal.Zero)
             {
-                var result = new ProcessPaymentResult()
+                var result = new ProcessPaymentResult
                 {
                     NewPaymentStatus = PaymentStatus.Paid
                 };
                 return result;
             }
-            else
-            {
-                var paymentMethod = LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
-                if (paymentMethod == null)
-                    throw new NopException("Payment method couldn't be loaded");
-                return paymentMethod.ProcessRecurringPayment(processPaymentRequest);
-            }
+
+            var paymentMethod = LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
+            if (paymentMethod == null)
+                throw new NopException("Payment method couldn't be loaded");
+            return paymentMethod.ProcessRecurringPayment(processPaymentRequest);
         }
 
         /// <summary>

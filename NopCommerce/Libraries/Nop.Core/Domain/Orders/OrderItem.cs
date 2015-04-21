@@ -72,7 +72,7 @@ namespace Nop.Core.Domain.Orders
         public string AttributeDescription { get; set; }
 
         /// <summary>
-        /// Gets or sets the product variant attributes in XML format
+        /// Gets or sets the product attributes in XML format
         /// </summary>
         public string AttributesXml { get; set; }
         
@@ -96,6 +96,16 @@ namespace Nop.Core.Domain.Orders
         /// It's nullable for compatibility with the previous version of nopCommerce where was no such property
         /// </summary>
         public decimal? ItemWeight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rental product start date (null if it's not a rental product)
+        /// </summary>
+        public DateTime? RentalStartDateUtc { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rental product end date (null if it's not a rental product)
+        /// </summary>
+        public DateTime? RentalEndDateUtc { get; set; }
 
         /// <summary>
         /// Gets the order

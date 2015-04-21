@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Affiliates;
 using Nop.Core;
 using Nop.Core.Domain.Affiliates;
@@ -76,6 +77,7 @@ namespace Nop.Admin.Controllers
                 model.Url = _webHelper.ModifyQueryString(_webHelper.GetStoreLocation(false), "affiliateid=" + affiliate.Id, null);
                 if (!excludeProperties)
                 {
+                    model.AdminComment = affiliate.AdminComment;
                     model.Active = affiliate.Active;
                     model.Address = affiliate.Address.ToModel();
                 }
@@ -104,18 +106,18 @@ namespace Nop.Admin.Controllers
                 model.Address.FaxEnabled = true;
 
                 //address
-                model.Address.AvailableCountries.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
+                model.Address.AvailableCountries.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
                 foreach (var c in _countryService.GetAllCountries(true))
-                    model.Address.AvailableCountries.Add(new SelectListItem() { Text = c.Name, Value = c.Id.ToString(), Selected = (affiliate != null && c.Id == affiliate.Address.CountryId) });
+                    model.Address.AvailableCountries.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString(), Selected = (affiliate != null && c.Id == affiliate.Address.CountryId) });
 
                 var states = model.Address.CountryId.HasValue ? _stateProvinceService.GetStateProvincesByCountryId(model.Address.CountryId.Value, true).ToList() : new List<StateProvince>();
                 if (states.Count > 0)
                 {
                     foreach (var s in states)
-                        model.Address.AvailableStates.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString(), Selected = (affiliate != null && s.Id == affiliate.Address.StateProvinceId) });
+                        model.Address.AvailableStates.Add(new SelectListItem { Text = s.Name, Value = s.Id.ToString(), Selected = (affiliate != null && s.Id == affiliate.Address.StateProvinceId) });
                 }
                 else
-                    model.Address.AvailableStates.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
+                    model.Address.AvailableStates.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
             }
         }
         
@@ -181,6 +183,7 @@ namespace Nop.Admin.Controllers
                 var affiliate = new Affiliate();
 
                 affiliate.Active = model.Active;
+                affiliate.AdminComment = model.AdminComment;
                 affiliate.Address = model.Address.ToEntity();
                 affiliate.Address.CreatedOnUtc = DateTime.UtcNow;
                 //some validation
@@ -231,6 +234,7 @@ namespace Nop.Admin.Controllers
             if (ModelState.IsValid)
             {
                 affiliate.Active = model.Active;
+                affiliate.AdminComment = model.AdminComment;
                 affiliate.Address = model.Address.ToEntity(affiliate.Address);
                 //some validation
                 if (affiliate.Address.CountryId == 0)
@@ -247,10 +251,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", affiliate.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form

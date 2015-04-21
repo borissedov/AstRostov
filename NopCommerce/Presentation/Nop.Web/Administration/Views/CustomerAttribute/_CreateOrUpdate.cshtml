@@ -98,7 +98,7 @@
                     var attributeControlTypes = ((AttributeControlType) Model.AttributeControlTypeId)
                         .ToSelectList(valuesToExclude:
                         //custom customer attributes don't support some attribute control types
-                        new int[] { (int)AttributeControlType.FileUpload, (int)AttributeControlType.Datepicker, (int)AttributeControlType.ColorSquares });
+                        new [] { (int)AttributeControlType.FileUpload, (int)AttributeControlType.Datepicker, (int)AttributeControlType.ColorSquares });
                 }
                 @Html.DropDownListFor(model => model.AttributeControlTypeId, attributeControlTypes)
                 @Html.ValidationMessageFor(model => model.AttributeControlTypeId)
@@ -204,14 +204,14 @@
                 </tr>
                 <tr>
                     <td width="100%">
-                        <input type="submit" id="btnAddNewValue" name="btnAddNewValue" value="@T("Admin.Customers.CustomerAttributes.Values.AddNew")" onclick="javascript:OpenWindow('@(Url.Action("ValueCreatePopup", "CustomerAttribute", new { customerAttributeId = Model.Id, btnId = "btnRefresh", formId = "customerattribute-form" }))', 800, 350, true); return false;" class="k-button" />
-                        <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
+                        <input type="submit" id="btnAddNewValue" value="@T("Admin.Customers.CustomerAttributes.Values.AddNew")" onclick="javascript:OpenWindow('@(Url.Action("ValueCreatePopup", "CustomerAttribute", new { customerAttributeId = Model.Id, btnId = "btnRefresh", formId = "customerattribute-form" }))', 800, 350, true); return false;" class="k-button" />
+                        <input type="submit" id="btnRefresh" style="display: none" />
                         <script type="text/javascript">
                             $(document).ready(function () {
                                 $('#btnRefresh').click(function () {
                                     //refresh grid
-                                    var valuesGrid = $("#customerattributevalues-grid").data('kendoGrid');
-                                    valuesGrid.dataSource.read();
+                                    var grid = $("#customerattributevalues-grid").data('kendoGrid');
+                                    grid.dataSource.read();
 
                                     //return false to don't reload a page
                                     return false;

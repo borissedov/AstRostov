@@ -65,7 +65,6 @@ namespace Nop.Web.Controllers
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IProductTagService _productTagService;
         private readonly IOrderReportService _orderReportService;
-        private readonly IBackInStockSubscriptionService _backInStockSubscriptionService;
         private readonly IAclService _aclService;
         private readonly IStoreMappingService _storeMappingService;
         private readonly IPermissionService _permissionService;
@@ -108,7 +107,6 @@ namespace Nop.Web.Controllers
             IWorkflowMessageService workflowMessageService, 
             IProductTagService productTagService,
             IOrderReportService orderReportService, 
-            IBackInStockSubscriptionService backInStockSubscriptionService, 
             IAclService aclService,
             IStoreMappingService storeMappingService,
             IPermissionService permissionService, 
@@ -147,7 +145,6 @@ namespace Nop.Web.Controllers
             this._workflowMessageService = workflowMessageService;
             this._productTagService = productTagService;
             this._orderReportService = orderReportService;
-            this._backInStockSubscriptionService = backInStockSubscriptionService;
             this._aclService = aclService;
             this._storeMappingService = storeMappingService;
             this._permissionService = permissionService;
@@ -200,7 +197,7 @@ namespace Nop.Web.Controllers
 
             #region Standard properties
 
-            var model = new ProductDetailsModel()
+            var model = new ProductDetailsModel
             {
                 Id = product.Id,
                 Name = product.GetLocalized(x => x.Name),
@@ -258,7 +255,7 @@ namespace Nop.Web.Controllers
                 {
                     model.ShowVendor = true;
 
-                    model.VendorModel = new VendorBriefInfoModel()
+                    model.VendorModel = new VendorBriefInfoModel
                     {
                         Id = vendor.Id,
                         Name = vendor.GetLocalized(x => x.Name),
@@ -289,7 +286,7 @@ namespace Nop.Web.Controllers
             if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
                 product.BackorderMode == BackorderMode.NoBackorders &&
                 product.AllowBackInStockSubscriptions &&
-                product.StockQuantity <= 0)
+                product.GetTotalStockQuantity() <= 0)
             {
                 //out of stock
                 model.DisplayBackInStockSubscription = true;
@@ -299,13 +296,13 @@ namespace Nop.Web.Controllers
 
             #region Breadcrumb
 
-            //do not prepare this model for the associated products. any it's not used
+            //do not prepare this model for the associated products. anyway it's not used
             if (_catalogSettings.CategoryBreadcrumbEnabled && !isAssociatedProduct)
             {
                 var breadcrumbCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_BREADCRUMB_MODEL_KEY, product.Id, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
                 model.Breadcrumb = _cacheManager.Get(breadcrumbCacheKey, () =>
                 {
-                    var breadcrumbModel = new ProductDetailsModel.ProductBreadcrumbModel()
+                    var breadcrumbModel = new ProductDetailsModel.ProductBreadcrumbModel
                     {
                         Enabled = _catalogSettings.CategoryBreadcrumbEnabled,
                         ProductId = product.Id,
@@ -320,7 +317,7 @@ namespace Nop.Web.Controllers
                         {
                             foreach (var catBr in category.GetCategoryBreadCrumb(_categoryService, _aclService, _storeMappingService))
                             {
-                                breadcrumbModel.CategoryBreadcrumb.Add(new CategorySimpleModel()
+                                breadcrumbModel.CategoryBreadcrumb.Add(new CategorySimpleModel
                                 {
                                     Id = catBr.Id,
                                     Name = catBr.GetLocalized(x => x.Name),
@@ -342,23 +339,17 @@ namespace Nop.Web.Controllers
             {
                 var productTagsCacheKey = string.Format(ModelCacheEventConsumer.PRODUCTTAG_BY_PRODUCT_MODEL_KEY, product.Id, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
                 model.ProductTags = _cacheManager.Get(productTagsCacheKey, () =>
-                {
-                    return product.ProductTags
-                        //filter by store
-                        .Where(x => _productTagService.GetProductCount(x.Id, _storeContext.CurrentStore.Id) > 0)
-                        .Select(x =>
-                        {
-                            var ptModel = new ProductTagModel()
-                            {
-                                Id = x.Id,
-                                Name = x.GetLocalized(y => y.Name),
-                                SeName = x.GetSeName(),
-                                ProductCount = _productTagService.GetProductCount(x.Id, _storeContext.CurrentStore.Id)
-                            };
-                            return ptModel;
-                        })
-                        .ToList();
-                });
+                    product.ProductTags
+                    //filter by store
+                    .Where(x => _productTagService.GetProductCount(x.Id, _storeContext.CurrentStore.Id) > 0)
+                    .Select(x =>  new ProductTagModel
+                    {
+                        Id = x.Id,
+                        Name = x.GetLocalized(y => y.Name),
+                        SeName = x.GetSeName(),
+                        ProductCount = _productTagService.GetProductCount(x.Id, _storeContext.CurrentStore.Id)
+                    })
+                    .ToList());
             }
 
             #endregion
@@ -391,7 +382,7 @@ namespace Nop.Web.Controllers
             {
                 var pictures = _pictureService.GetPicturesByProductId(product.Id);
 
-                var defaultPictureModel = new PictureModel()
+                var defaultPictureModel = new PictureModel
                 {
                     ImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureSize, !isAssociatedProduct),
                     FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), 0, !isAssociatedProduct),
@@ -402,7 +393,7 @@ namespace Nop.Web.Controllers
                 var pictureModels = new List<PictureModel>();
                 foreach (var picture in pictures)
                 {
-                    pictureModels.Add(new PictureModel()
+                    pictureModels.Add(new PictureModel
                     {
                         ImageUrl = _pictureService.GetPictureUrl(picture, _mediaSettings.ProductThumbPictureSizeOnProductDetailsPage),
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
@@ -436,10 +427,10 @@ namespace Nop.Web.Controllers
                     }
                     else
                     {
-                        decimal taxRate = decimal.Zero;
+                        decimal taxRate;
                         decimal oldPriceBase = _taxService.GetProductPrice(product, product.OldPrice, out taxRate);
-                        decimal finalPriceWithoutDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, false), out taxRate);
-                        decimal finalPriceWithDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, true), out taxRate);
+                        decimal finalPriceWithoutDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: false), out taxRate);
+                        decimal finalPriceWithDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: true), out taxRate);
 
                         decimal oldPrice = _currencyService.ConvertFromPrimaryStoreCurrency(oldPriceBase, _workContext.WorkingCurrency);
                         decimal finalPriceWithoutDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceWithoutDiscountBase, _workContext.WorkingCurrency);
@@ -465,6 +456,14 @@ namespace Nop.Web.Controllers
 
                         //currency code
                         model.ProductPrice.CurrencyCode = _workContext.WorkingCurrency.CurrencyCode;
+
+                        //rental
+                        if (product.IsRental)
+                        {
+                            model.ProductPrice.IsRental = true;
+                            var priceStr = _priceFormatter.FormatPrice(finalPriceWithDiscount);
+                            model.ProductPrice.RentalPrice = _priceFormatter.FormatRentalProductPeriod(product, priceStr);
+                        }
                     }
                 }
             }
@@ -499,6 +498,8 @@ namespace Nop.Web.Controllers
                     product.PreOrderAvailabilityStartDateTimeUtc.Value >= DateTime.UtcNow;
                 model.AddToCart.PreOrderAvailabilityStartDateTimeUtc = product.PreOrderAvailabilityStartDateTimeUtc;
             }
+            //rental
+            model.AddToCart.IsRental = product.IsRental;
 
             //customer entered price
             model.AddToCart.CustomerEntersPrice = product.CustomerEntersPrice;
@@ -516,7 +517,7 @@ namespace Nop.Web.Controllers
             var allowedQuantities = product.ParseAllowedQuatities();
             foreach (var qty in allowedQuantities)
             {
-                model.AddToCart.AllowedQuantities.Add(new SelectListItem()
+                model.AddToCart.AllowedQuantities.Add(new SelectListItem
                 {
                     Text = qty.ToString(),
                     Value = qty.ToString(),
@@ -559,30 +560,30 @@ namespace Nop.Web.Controllers
 
             //performance optimization
             //We cache a value indicating whether a product has attributes
-            IList<ProductVariantAttribute> productVariantAttributes = null;
+            IList<ProductAttributeMapping> productAttributeMapping = null;
             string cacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_HAS_PRODUCT_ATTRIBUTES_KEY, product.Id);
             var hasProductAttributesCache = _cacheManager.Get<bool?>(cacheKey);
             if (!hasProductAttributesCache.HasValue)
             {
                 //no value in the cache yet
                 //let's load attributes and cache the result (true/false)
-                productVariantAttributes = _productAttributeService.GetProductVariantAttributesByProductId(product.Id);
-                hasProductAttributesCache = productVariantAttributes.Count > 0;
+                productAttributeMapping = _productAttributeService.GetProductAttributeMappingsByProductId(product.Id);
+                hasProductAttributesCache = productAttributeMapping.Count > 0;
                 _cacheManager.Set(cacheKey, hasProductAttributesCache, 60);
             }
-            if (hasProductAttributesCache.Value && productVariantAttributes == null)
+            if (hasProductAttributesCache.Value && productAttributeMapping == null)
             {
                 //cache indicates that the product has attributes
                 //let's load them
-                productVariantAttributes = _productAttributeService.GetProductVariantAttributesByProductId(product.Id);
+                productAttributeMapping = _productAttributeService.GetProductAttributeMappingsByProductId(product.Id);
             }
-            if (productVariantAttributes == null)
+            if (productAttributeMapping == null)
             {
-                productVariantAttributes = new List<ProductVariantAttribute>();
+                productAttributeMapping = new List<ProductAttributeMapping>();
             }
-            foreach (var attribute in productVariantAttributes)
+            foreach (var attribute in productAttributeMapping)
             {
-                var pvaModel = new ProductDetailsModel.ProductVariantAttributeModel()
+                var attributeModel = new ProductDetailsModel.ProductAttributeModel
                 {
                     Id = attribute.Id,
                     ProductId = product.Id,
@@ -596,7 +597,7 @@ namespace Nop.Web.Controllers
                 };
                 if (!String.IsNullOrEmpty(attribute.ValidationFileAllowedExtensions))
                 {
-                    pvaModel.AllowedFileExtensions = attribute.ValidationFileAllowedExtensions
+                    attributeModel.AllowedFileExtensions = attribute.ValidationFileAllowedExtensions
                         .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
                         .ToList();
                 }
@@ -604,40 +605,40 @@ namespace Nop.Web.Controllers
                 if (attribute.ShouldHaveValues())
                 {
                     //values
-                    var pvaValues = _productAttributeService.GetProductVariantAttributeValues(attribute.Id);
-                    foreach (var pvaValue in pvaValues)
+                    var attributeValues = _productAttributeService.GetProductAttributeValues(attribute.Id);
+                    foreach (var attributeValue in attributeValues)
                     {
-                        var pvaValueModel = new ProductDetailsModel.ProductVariantAttributeValueModel()
+                        var valueModel = new ProductDetailsModel.ProductAttributeValueModel
                         {
-                            Id = pvaValue.Id,
-                            Name = pvaValue.GetLocalized(x => x.Name),
-                            ColorSquaresRgb = pvaValue.ColorSquaresRgb, //used with "Color squares" attribute type
-                            IsPreSelected = pvaValue.IsPreSelected
+                            Id = attributeValue.Id,
+                            Name = attributeValue.GetLocalized(x => x.Name),
+                            ColorSquaresRgb = attributeValue.ColorSquaresRgb, //used with "Color squares" attribute type
+                            IsPreSelected = attributeValue.IsPreSelected
                         };
-                        pvaModel.Values.Add(pvaValueModel);
+                        attributeModel.Values.Add(valueModel);
 
                         //display price if allowed
                         if (_permissionService.Authorize(StandardPermissionProvider.DisplayPrices))
                         {
-                            decimal taxRate = decimal.Zero;
-                            decimal pvaValuePriceAdjustment = _priceCalculationService.GetProductVariantAttributeValuePriceAdjustment(pvaValue);
-                            decimal priceAdjustmentBase = _taxService.GetProductPrice(product, pvaValuePriceAdjustment, out taxRate);
+                            decimal taxRate;
+                            decimal attributeValuePriceAdjustment = _priceCalculationService.GetProductAttributeValuePriceAdjustment(attributeValue);
+                            decimal priceAdjustmentBase = _taxService.GetProductPrice(product, attributeValuePriceAdjustment, out taxRate);
                             decimal priceAdjustment = _currencyService.ConvertFromPrimaryStoreCurrency(priceAdjustmentBase, _workContext.WorkingCurrency);
                             if (priceAdjustmentBase > decimal.Zero)
-                                pvaValueModel.PriceAdjustment = "+" + _priceFormatter.FormatPrice(priceAdjustment, false, false);
+                                valueModel.PriceAdjustment = "+" + _priceFormatter.FormatPrice(priceAdjustment, false, false);
                             else if (priceAdjustmentBase < decimal.Zero)
-                                pvaValueModel.PriceAdjustment = "-" + _priceFormatter.FormatPrice(-priceAdjustment, false, false);
+                                valueModel.PriceAdjustment = "-" + _priceFormatter.FormatPrice(-priceAdjustment, false, false);
 
-                            pvaValueModel.PriceAdjustmentValue = priceAdjustment;
+                            valueModel.PriceAdjustmentValue = priceAdjustment;
                         }
 
                         //picture
-                        var pvavPicture = _pictureService.GetPictureById(pvaValue.PictureId);
-                        if (pvavPicture != null)
+                        var valuePicture = _pictureService.GetPictureById(attributeValue.PictureId);
+                        if (valuePicture != null)
                         {
-                            pvaValueModel.PictureUrl = _pictureService.GetPictureUrl(pvavPicture, defaultPictureSize);
-                            pvaValueModel.FullSizePictureUrl = _pictureService.GetPictureUrl(pvavPicture);
-                            pvaValueModel.PictureId = pvavPicture.Id;
+                            valueModel.PictureUrl = _pictureService.GetPictureUrl(valuePicture, defaultPictureSize);
+                            valueModel.FullSizePictureUrl = _pictureService.GetPictureUrl(valuePicture);
+                            valueModel.PictureId = valuePicture.Id;
                         }
                     }
                 }
@@ -655,14 +656,14 @@ namespace Nop.Web.Controllers
                                 if (!String.IsNullOrEmpty(updatecartitem.AttributesXml))
                                 {
                                     //clear default selection
-                                    foreach (var item in pvaModel.Values)
+                                    foreach (var item in attributeModel.Values)
                                         item.IsPreSelected = false;
 
                                     //select new values
-                                    var selectedPvaValues = _productAttributeParser.ParseProductVariantAttributeValues(updatecartitem.AttributesXml);
-                                    foreach (var pvaValue in selectedPvaValues)
-                                        foreach (var item in pvaModel.Values)
-                                            if (pvaValue.Id == item.Id)
+                                    var selectedValues = _productAttributeParser.ParseProductAttributeValues(updatecartitem.AttributesXml);
+                                    foreach (var attributeValue in selectedValues)
+                                        foreach (var item in attributeModel.Values)
+                                            if (attributeValue.Id == item.Id)
                                                 item.IsPreSelected = true;
                                 }
                             }
@@ -680,7 +681,7 @@ namespace Nop.Web.Controllers
                                 {
                                     var enteredText = _productAttributeParser.ParseValues(updatecartitem.AttributesXml, attribute.Id);
                                     if (enteredText.Count > 0)
-                                        pvaModel.DefaultValue = enteredText[0];
+                                        attributeModel.DefaultValue = enteredText[0];
                                 }
                             }
                             break;
@@ -695,9 +696,9 @@ namespace Nop.Web.Controllers
                                                            DateTimeStyles.None, out selectedDate))
                                     {
                                         //successfully parsed
-                                        pvaModel.SelectedDay = selectedDate.Day;
-                                        pvaModel.SelectedMonth = selectedDate.Month;
-                                        pvaModel.SelectedYear = selectedDate.Year;
+                                        attributeModel.SelectedDay = selectedDate.Day;
+                                        attributeModel.SelectedMonth = selectedDate.Month;
+                                        attributeModel.SelectedYear = selectedDate.Year;
                                     }
                                 }
 
@@ -708,7 +709,7 @@ namespace Nop.Web.Controllers
                     }
                 }
 
-                model.ProductVariantAttributes.Add(pvaModel);
+                model.ProductAttributes.Add(attributeModel);
             }
 
             #endregion 
@@ -728,7 +729,7 @@ namespace Nop.Web.Controllers
 
             #region Product review overview
 
-            model.ProductReviewOverview = new ProductReviewOverviewModel()
+            model.ProductReviewOverview = new ProductReviewOverviewModel
             {
                 ProductId = product.Id,
                 RatingSum = product.ApprovedRatingSum,
@@ -750,11 +751,11 @@ namespace Nop.Web.Controllers
                     .RemoveDuplicatedQuantities()
                     .Select(tierPrice =>
                     {
-                        var m = new ProductDetailsModel.TierPriceModel()
+                        var m = new ProductDetailsModel.TierPriceModel
                         {
                             Quantity = tierPrice.Quantity,
                         };
-                        decimal taxRate = decimal.Zero;
+                        decimal taxRate;
                         decimal priceBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, decimal.Zero, _catalogSettings.DisplayTierPricesWithDiscounts, tierPrice.Quantity), out taxRate);
                         decimal price = _currencyService.ConvertFromPrimaryStoreCurrency(priceBase, _workContext.WorkingCurrency);
                         m.Price = _priceFormatter.FormatPrice(price, false, false);
@@ -772,14 +773,28 @@ namespace Nop.Web.Controllers
             {
                 string manufacturersCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_MANUFACTURERS_MODEL_KEY, product.Id, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
                 model.ProductManufacturers = _cacheManager.Get(manufacturersCacheKey, () =>
-                {
-                    return _manufacturerService.GetProductManufacturersByProductId(product.Id)
-                        .Select(x => x.Manufacturer.ToModel())
-                        .ToList();
-                });
+                    _manufacturerService.GetProductManufacturersByProductId(product.Id)
+                    .Select(x => x.Manufacturer.ToModel())
+                    .ToList()
+                    );
             }
             #endregion
 
+            #region Rental products
+
+            if (product.IsRental)
+            {
+                model.IsRental = true;
+                //set already entered dates attributes (if we're going to update the existing shopping cart item)
+                if (updatecartitem != null)
+                {
+                    model.RentalStartDate = updatecartitem.RentalStartDateUtc;
+                    model.RentalEndDate = updatecartitem.RentalEndDateUtc;
+                }
+            }
+
+            #endregion
+            
             #region Associated products
 
             if (product.ProductType == ProductType.GroupedProduct)
@@ -815,7 +830,7 @@ namespace Nop.Web.Controllers
             foreach (var pr in productReviews)
             {
                 var customer = pr.Customer;
-                model.Items.Add(new ProductReviewModel()
+                model.Items.Add(new ProductReviewModel
                 {
                     Id = pr.Id,
                     CustomerId = pr.CustomerId,
@@ -824,7 +839,7 @@ namespace Nop.Web.Controllers
                     Title = pr.Title,
                     ReviewText = pr.ReviewText,
                     Rating = pr.Rating,
-                    Helpfulness = new ProductReviewHelpfulnessModel()
+                    Helpfulness = new ProductReviewHelpfulnessModel
                     {
                         ProductReviewId = pr.Id,
                         HelpfulYesTotal = pr.HelpfulYesTotal,
@@ -863,19 +878,19 @@ namespace Nop.Web.Controllers
             if (!_storeMappingService.Authorize(product))
                 return InvokeHttp404();
 
+            //availability dates
+            if (!product.IsAvailable())
+                return InvokeHttp404();
+            
             //visible individually?
             if (!product.VisibleIndividually)
             {
                 //is this one an associated products?
                 var parentGroupedProduct = _productService.GetProductById(product.ParentGroupedProductId);
-                if (parentGroupedProduct != null)
-                {
-                    return RedirectToRoute("Product", new { SeName = parentGroupedProduct.GetSeName() });
-                }
-                else
-                {
+                if (parentGroupedProduct == null)
                     return RedirectToRoute("HomePage");
-                }
+
+                return RedirectToRoute("Product", new { SeName = parentGroupedProduct.GetSeName() });
             }
 
             //update existing shopping cart item?
@@ -924,6 +939,8 @@ namespace Nop.Web.Controllers
             var products = _productService.GetProductsByIds(productIds);
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+            //availability dates
+            products = products.Where(p => p.IsAvailable()).ToList();
             
             if (products.Count == 0)
                 return Content("");
@@ -949,6 +966,8 @@ namespace Nop.Web.Controllers
             var products = _productService.GetProductsByIds(productIds);
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+            //availability dates
+            products = products.Where(p => p.IsAvailable()).ToList();
 
             if (products.Count == 0)
                 return Content("");
@@ -970,6 +989,8 @@ namespace Nop.Web.Controllers
             var products = _productService.GetCrosssellProductsByShoppingCart(cart, _shoppingCartSettings.CrossSellsNumber);
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+            //availability dates
+            products = products.Where(p => p.IsAvailable()).ToList();
 
             if (products.Count == 0)
                 return Content("");
@@ -1015,6 +1036,8 @@ namespace Nop.Web.Controllers
 
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+            //availability dates
+            products = products.Where(p => p.IsAvailable()).ToList();
 
             if (products.Count == 0)
                 return Content("");
@@ -1022,7 +1045,7 @@ namespace Nop.Web.Controllers
             //prepare model
             var model = new List<ProductOverviewModel>();
             model.AddRange(PrepareProductOverviewModels(products,
-                preparePriceModel.HasValue ? preparePriceModel.Value : false,
+                preparePriceModel.GetValueOrDefault(),
                 preparePictureModel,
                 productThumbPictureSize));
 
@@ -1031,7 +1054,7 @@ namespace Nop.Web.Controllers
 
         #endregion
 
-        #region Rrecently added products
+        #region Recently added products
 
         [NopHttpsRequirement(SslRequirement.No)]
         public ActionResult RecentlyAddedProducts()
@@ -1061,7 +1084,7 @@ namespace Nop.Web.Controllers
                                     DateTime.UtcNow);
 
             if (!_catalogSettings.RecentlyAddedProductsEnabled)
-                return new RssActionResult() { Feed = feed };
+                return new RssActionResult { Feed = feed };
 
             var items = new List<SyndicationItem>();
 
@@ -1087,7 +1110,7 @@ namespace Nop.Web.Controllers
 
             }
             feed.Items = items;
-            return new RssActionResult() { Feed = feed };
+            return new RssActionResult { Feed = feed };
         }
 
         #endregion
@@ -1111,6 +1134,8 @@ namespace Nop.Web.Controllers
             var products = _productService.GetProductsByIds(report.Select(x => x.ProductId).ToArray());
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+            //availability dates
+            products = products.Where(p => p.IsAvailable()).ToList();
 
             if (products.Count == 0)
                 return Content("");
@@ -1126,94 +1151,14 @@ namespace Nop.Web.Controllers
             var products = _productService.GetAllProductsDisplayedOnHomePage();
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+            //availability dates
+            products = products.Where(p => p.IsAvailable()).ToList();
 
             if (products.Count == 0)
                 return Content("");
 
             var model = PrepareProductOverviewModels(products, true, true, productThumbPictureSize).ToList();
             return PartialView(model);
-        }
-
-        #endregion
-
-        #region Back in stock subscriptions
-
-        public ActionResult BackInStockSubscribePopup(int productId)
-        {
-            var product = _productService.GetProductById(productId);
-            if (product == null || product.Deleted)
-                throw new ArgumentException("No product found with the specified id");
-
-            var model = new BackInStockSubscribeModel();
-            model.ProductId = product.Id;
-            model.ProductName = product.GetLocalized(x => x.Name);
-            model.ProductSeName = product.GetSeName();
-            model.IsCurrentCustomerRegistered = _workContext.CurrentCustomer.IsRegistered();
-            model.MaximumBackInStockSubscriptions = _catalogSettings.MaximumBackInStockSubscriptions;
-            model.CurrentNumberOfBackInStockSubscriptions = _backInStockSubscriptionService
-                .GetAllSubscriptionsByCustomerId(_workContext.CurrentCustomer.Id, _storeContext.CurrentStore.Id, 0, 1)
-                .TotalCount;
-            if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
-                product.BackorderMode == BackorderMode.NoBackorders &&
-                product.AllowBackInStockSubscriptions &&
-                product.StockQuantity <= 0)
-            {
-                //out of stock
-                model.SubscriptionAllowed = true;
-                model.AlreadySubscribed = _backInStockSubscriptionService
-                    .FindSubscription(_workContext.CurrentCustomer.Id, product.Id, _storeContext.CurrentStore.Id) != null;
-            }
-            return View(model);
-        }
-
-        [HttpPost, ActionName("BackInStockSubscribePopup")]
-        public ActionResult BackInStockSubscribePopupPOST(int productId)
-        {
-            var product = _productService.GetProductById(productId);
-            if (product == null || product.Deleted)
-                throw new ArgumentException("No product found with the specified id");
-
-            if (!_workContext.CurrentCustomer.IsRegistered())
-                return Content(_localizationService.GetResource("BackInStockSubscriptions.OnlyRegistered"));
-
-            if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
-                product.BackorderMode == BackorderMode.NoBackorders &&
-                product.AllowBackInStockSubscriptions &&
-                product.StockQuantity <= 0)
-            {
-                //out of stock
-                var subscription = _backInStockSubscriptionService
-                    .FindSubscription(_workContext.CurrentCustomer.Id, product.Id, _storeContext.CurrentStore.Id);
-                if (subscription != null)
-                {
-                    //unsubscribe
-                    _backInStockSubscriptionService.DeleteSubscription(subscription);
-                    return Content("Unsubscribed");
-                }
-                else
-                {
-                    if (_backInStockSubscriptionService
-                        .GetAllSubscriptionsByCustomerId(_workContext.CurrentCustomer.Id, _storeContext.CurrentStore.Id, 0, 1)
-                        .TotalCount >= _catalogSettings.MaximumBackInStockSubscriptions)
-                        return Content(string.Format(_localizationService.GetResource("BackInStockSubscriptions.MaxSubscriptions"), _catalogSettings.MaximumBackInStockSubscriptions));
-            
-                    //subscribe   
-                    subscription = new BackInStockSubscription()
-                    {
-                        Customer = _workContext.CurrentCustomer,
-                        Product = product,
-                        StoreId = _storeContext.CurrentStore.Id,
-                        CreatedOnUtc = DateTime.UtcNow
-                    };
-                    _backInStockSubscriptionService.InsertSubscription(subscription);
-                    return Content("Subscribed");
-                }
-                
-            }
-            else
-            {
-                return Content(_localizationService.GetResource("BackInStockSubscriptions.NotAllowed"));
-            }
         }
 
         #endregion
@@ -1265,7 +1210,7 @@ namespace Nop.Web.Controllers
                     rating = _catalogSettings.DefaultProductRatingValue;
                 bool isApproved = !_catalogSettings.ProductReviewsMustBeApproved;
 
-                var productReview = new ProductReview()
+                var productReview = new ProductReview
                 {
                     ProductId = product.Id,
                     CustomerId = _workContext.CurrentCustomer.Id,
@@ -1348,7 +1293,7 @@ namespace Nop.Web.Controllers
             else
             {
                 //insert new helpfulness
-                prh = new ProductReviewHelpfulness()
+                prh = new ProductReviewHelpfulness
                 {
                     ProductReviewId = productReview.Id,
                     CustomerId = _workContext.CurrentCustomer.Id,
@@ -1479,7 +1424,7 @@ namespace Nop.Web.Controllers
             if (!_catalogSettings.CompareProductsEnabled)
                 return RedirectToRoute("HomePage");
 
-            var model = new CompareProductsModel()
+            var model = new CompareProductsModel
             {
                 IncludeShortDescriptionInCompareProducts = _catalogSettings.IncludeShortDescriptionInCompareProducts,
                 IncludeFullDescriptionInCompareProducts = _catalogSettings.IncludeFullDescriptionInCompareProducts,
@@ -1489,6 +1434,8 @@ namespace Nop.Web.Controllers
 
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+            //availability dates
+            products = products.Where(p => p.IsAvailable()).ToList();
 
             //prepare model
             PrepareProductOverviewModels(products, prepareSpecificationAttributes: true)

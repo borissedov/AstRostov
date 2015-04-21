@@ -82,11 +82,13 @@ namespace Nop.Web.Models.Customer
         public string City { get; set; }
 
         public bool CountryEnabled { get; set; }
+        public bool CountryRequired { get; set; }
         [NopResourceDisplayName("Account.Fields.Country")]
         public int CountryId { get; set; }
         public IList<SelectListItem> AvailableCountries { get; set; }
 
         public bool StateProvinceEnabled { get; set; }
+        public bool StateProvinceRequired { get; set; }
         [NopResourceDisplayName("Account.Fields.StateProvince")]
         public int StateProvinceId { get; set; }
         public IList<SelectListItem> AvailableStates { get; set; }
@@ -130,8 +132,6 @@ namespace Nop.Web.Models.Customer
         [NopResourceDisplayName("Account.AssociatedExternalAuth")]
         public IList<AssociatedExternalAuthModel> AssociatedExternalAuthRecords { get; set; }
         public int NumberOfExternalAuthenticationProviders { get; set; }
-
-        public CustomerNavigationModel NavigationModel { get; set; }
 
         public IList<CustomerAttributeModel> CustomerAttributes { get; set; }
 

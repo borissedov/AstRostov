@@ -8,7 +8,7 @@
 }
 @section left
 {
-    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Addresses })
 }
 <div class="page account-page address-list-page">
     <div class="page-title">
@@ -100,6 +100,12 @@
                         {
                             <li class="country">
                                 @address.CountryName
+                            </li>
+                        }
+                        @if (!String.IsNullOrEmpty(address.FormattedCustomAddressAttributes))
+                        {
+                            <li class="custom-attributes-view">
+                                @Html.Raw(address.FormattedCustomAddressAttributes)
                             </li>
                         }
                     </ul>

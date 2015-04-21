@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Plugin.Shipping.UPS.Domain;
 using Nop.Plugin.Shipping.UPS.Models;
 using Nop.Services.Configuration;
+using Nop.Services.Localization;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 
@@ -15,11 +16,15 @@ namespace Nop.Plugin.Shipping.UPS.Controllers
     {
         private readonly UPSSettings _upsSettings;
         private readonly ISettingService _settingService;
+        private readonly ILocalizationService _localizationService;
 
-        public ShippingUPSController(UPSSettings upsSettings, ISettingService settingService)
+        public ShippingUPSController(UPSSettings upsSettings,
+            ISettingService settingService,
+            ILocalizationService localizationService)
         {
             this._upsSettings = upsSettings;
             this._settingService = settingService;
+            this._localizationService = localizationService;
         }
 
         [ChildActionOnly]
@@ -39,7 +44,7 @@ namespace Nop.Plugin.Shipping.UPS.Controllers
 
             foreach (UPSCustomerClassification customerClassification in Enum.GetValues(typeof(UPSCustomerClassification)))
             {
-                model.AvailableCustomerClassifications.Add(new SelectListItem()
+                model.AvailableCustomerClassifications.Add(new SelectListItem
                     {
                         Text = CommonHelper.ConvertEnum(customerClassification.ToString()),
                         Value = customerClassification.ToString(),
@@ -48,7 +53,7 @@ namespace Nop.Plugin.Shipping.UPS.Controllers
             }
             foreach (UPSPickupType pickupType in Enum.GetValues(typeof(UPSPickupType)))
             {
-                model.AvailablePickupTypes.Add(new SelectListItem()
+                model.AvailablePickupTypes.Add(new SelectListItem
                 {
                     Text = CommonHelper.ConvertEnum(pickupType.ToString()),
                     Value = pickupType.ToString(),
@@ -57,7 +62,7 @@ namespace Nop.Plugin.Shipping.UPS.Controllers
             }
             foreach (UPSPackagingType packagingType in Enum.GetValues(typeof(UPSPackagingType)))
             {
-                model.AvailablePackagingTypes.Add(new SelectListItem()
+                model.AvailablePackagingTypes.Add(new SelectListItem
                 {
                     Text = CommonHelper.ConvertEnum(packagingType.ToString()),
                     Value = packagingType.ToString(),
@@ -65,14 +70,13 @@ namespace Nop.Plugin.Shipping.UPS.Controllers
                 });
             }
 
-            var services = new UPSServices();
             // Load Domestic service names
             string carrierServicesOfferedDomestic = _upsSettings.CarrierServicesOffered;
-            foreach (string service in services.Services)
+            foreach (string service in UPSServices.Services)
                 model.AvailableCarrierServices.Add(service);
 
             if (!String.IsNullOrEmpty(carrierServicesOfferedDomestic))
-                foreach (string service in services.Services)
+                foreach (string service in UPSServices.Services)
                 {
                     string serviceId = UPSServices.GetServiceId(service);
                     if (!String.IsNullOrEmpty(serviceId) && !String.IsNullOrEmpty(carrierServicesOfferedDomestic))
@@ -134,6 +138,8 @@ namespace Nop.Plugin.Shipping.UPS.Controllers
                 _upsSettings.CarrierServicesOffered = carrierServicesOfferedDomestic.ToString();
 
             _settingService.SaveSetting(_upsSettings);
+
+            SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
 
             return Configure();
         }

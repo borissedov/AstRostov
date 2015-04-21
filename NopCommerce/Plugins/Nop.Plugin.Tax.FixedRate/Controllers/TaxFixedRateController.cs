@@ -50,7 +50,7 @@ namespace Nop.Plugin.Tax.FixedRate.Controllers
 
             var taxRateModels = new List<FixedTaxRateModel>();
             foreach (var taxCategory in _taxCategoryService.GetAllTaxCategories())
-                taxRateModels.Add(new FixedTaxRateModel()
+                taxRateModels.Add(new FixedTaxRateModel
                 {
                     TaxCategoryId = taxCategory.Id,
                     TaxCategoryName = taxCategory.Name,
@@ -82,7 +82,7 @@ namespace Nop.Plugin.Tax.FixedRate.Controllers
         [NonAction]
         protected decimal GetTaxRate(int taxCategoryId)
         {
-            decimal rate = this._settingService.GetSettingByKey<decimal>(string.Format("Tax.TaxProvider.FixedRate.TaxCategoryId{0}", taxCategoryId));
+            var rate = this._settingService.GetSettingByKey<decimal>(string.Format("Tax.TaxProvider.FixedRate.TaxCategoryId{0}", taxCategoryId));
             return rate;
         }
     }

@@ -61,6 +61,23 @@ namespace Nop.Plugin.Payments.PurchaseOrder
         }
 
         /// <summary>
+        /// Returns a value indicating whether payment method should be hidden during checkout
+        /// </summary>
+        /// <param name="cart">Shoping cart</param>
+        /// <returns>true - hide; false - display.</returns>
+        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        {
+            //you can put any logic here
+            //for example, hide this payment method if all products in the cart are downloadable
+            //or hide this payment method if current customer is from certain country
+
+            if (_purchaseOrderPaymentSettings.ShippableProductRequired && !cart.RequiresShipping())
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets additional handling fee
         /// </summary>
         /// <param name="cart">Shoping cart</param>
@@ -156,7 +173,7 @@ namespace Nop.Plugin.Payments.PurchaseOrder
         {
             actionName = "Configure";
             controllerName = "PaymentPurchaseOrder";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.PurchaseOrder.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.PurchaseOrder.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -169,7 +186,7 @@ namespace Nop.Plugin.Payments.PurchaseOrder
         {
             actionName = "PaymentInfo";
             controllerName = "PaymentPurchaseOrder";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.PurchaseOrder.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.PurchaseOrder.Controllers" }, { "area", null } };
         }
 
         public Type GetControllerType()
@@ -183,7 +200,7 @@ namespace Nop.Plugin.Payments.PurchaseOrder
         public override void Install()
         {
             //settings
-            var settings = new PurchaseOrderPaymentSettings()
+            var settings = new PurchaseOrderPaymentSettings
             {
                 AdditionalFee = 0,
             };
@@ -196,6 +213,8 @@ namespace Nop.Plugin.Payments.PurchaseOrder
             this.AddOrUpdatePluginLocaleResource("Plugins.Payment.PurchaseOrder.AdditionalFee.Hint", "The additional fee.");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payment.PurchaseOrder.AdditionalFeePercentage", "Additional fee. Use percentage");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payment.PurchaseOrder.AdditionalFeePercentage.Hint", "Determines whether to apply a percentage additional fee to the order total. If not enabled, a fixed value is used.");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payment.PurchaseOrder.ShippableProductRequired", "Shippable product required");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payment.PurchaseOrder.ShippableProductRequired.Hint", "An option indicating whether shippable products are required in order to display this payment method during checkout.");
 
             base.Install();
         }
@@ -211,6 +230,8 @@ namespace Nop.Plugin.Payments.PurchaseOrder
             this.DeletePluginLocaleResource("Plugins.Payment.PurchaseOrder.AdditionalFee.Hint");
             this.DeletePluginLocaleResource("Plugins.Payment.PurchaseOrder.AdditionalFeePercentage");
             this.DeletePluginLocaleResource("Plugins.Payment.PurchaseOrder.AdditionalFeePercentage.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payment.PurchaseOrder.ShippableProductRequired");
+            this.DeletePluginLocaleResource("Plugins.Payment.PurchaseOrder.ShippableProductRequired.Hint");
 
             base.Uninstall();
         }

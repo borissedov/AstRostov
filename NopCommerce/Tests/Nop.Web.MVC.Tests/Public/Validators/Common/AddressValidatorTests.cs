@@ -1,18 +1,28 @@
 ﻿using FluentValidation.TestHelper;
 using Nop.Core.Domain.Common;
+using Nop.Services.Directory;
 using Nop.Web.Models.Common;
 using Nop.Web.Validators.Common;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace Nop.Web.MVC.Tests.Public.Validators.Common
 {
     [TestFixture]
     public class AddressValidatorTests : BaseValidatorTests
     {
+        private IStateProvinceService _stateProvinceService;
+
+        [SetUp]
+        public new void Setup()
+        {
+            _stateProvinceService = MockRepository.GenerateMock<IStateProvinceService>();
+        }
+
         [Test]
         public void Should_have_error_when_email_is_null_or_empty()
         {
-            var validator = new AddressValidator(_localizationService,
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
                 new AddressSettings());
 
             var model = new AddressModel();
@@ -24,7 +34,7 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_have_error_when_email_is_wrong_format()
         {
-            var validator = new AddressValidator(_localizationService,
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
                 new AddressSettings());
 
             var model = new AddressModel();
@@ -34,7 +44,7 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_email_is_correct_format()
         {
-            var validator = new AddressValidator(_localizationService,
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
                 new AddressSettings());
 
             var model = new AddressModel();
@@ -45,7 +55,7 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_have_error_when_firstName_is_null_or_empty()
         {
-            var validator = new AddressValidator(_localizationService,
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
                 new AddressSettings());
 
             var model = new AddressModel();
@@ -57,7 +67,7 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_firstName_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
                 new AddressSettings());
 
             var model = new AddressModel();
@@ -68,7 +78,7 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_have_error_when_lastName_is_null_or_empty()
         {
-            var validator = new AddressValidator(_localizationService,
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
                 new AddressSettings());
 
             var model = new AddressModel();
@@ -80,7 +90,7 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_lastName_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
                 new AddressSettings());
 
             var model = new AddressModel();
@@ -94,8 +104,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             var model = new AddressModel();
 
             //required
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     CompanyEnabled = true,
                     CompanyRequired = true
@@ -107,8 +117,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
 
 
             //not required
-            validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     CompanyEnabled = true,
                     CompanyRequired = false
@@ -121,8 +131,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_company_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     CompanyEnabled = true
                 });
@@ -138,8 +148,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             var model = new AddressModel();
 
             //required
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     StreetAddressEnabled = true,
                     StreetAddressRequired = true
@@ -150,8 +160,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             validator.ShouldHaveValidationErrorFor(x => x.Address1, model);
 
             //not required
-            validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     StreetAddressEnabled = true,
                     StreetAddressRequired = false
@@ -164,8 +174,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_streetaddress_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     StreetAddressEnabled = true
                 });
@@ -181,8 +191,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             var model = new AddressModel();
 
             //required
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     StreetAddress2Enabled = true,
                     StreetAddress2Required = true
@@ -193,8 +203,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             validator.ShouldHaveValidationErrorFor(x => x.Address2, model);
 
             //not required
-            validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     StreetAddress2Enabled = true,
                     StreetAddress2Required = false
@@ -207,8 +217,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_streetaddress2_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     StreetAddress2Enabled = true
                 });
@@ -224,8 +234,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             var model = new AddressModel();
 
             //required
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     ZipPostalCodeEnabled = true,
                     ZipPostalCodeRequired = true
@@ -237,8 +247,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
 
 
             //not required
-            validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     ZipPostalCodeEnabled = true,
                     ZipPostalCodeRequired = false
@@ -251,8 +261,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_zippostalcode_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     StreetAddress2Enabled = true
                 });
@@ -268,8 +278,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             var model = new AddressModel();
 
             //required
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     CityEnabled = true,
                     CityRequired = true
@@ -281,8 +291,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
 
 
             //not required
-            validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     CityEnabled = true,
                     CityRequired = false
@@ -295,8 +305,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_city_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     CityEnabled = true
                 });
@@ -312,8 +322,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             var model = new AddressModel();
 
             //required
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     PhoneEnabled = true,
                     PhoneRequired = true
@@ -324,8 +334,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             validator.ShouldHaveValidationErrorFor(x => x.PhoneNumber, model);
 
             //not required
-            validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     PhoneEnabled = true,
                     PhoneRequired = false
@@ -338,8 +348,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_phone_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     PhoneEnabled = true
                 });
@@ -355,8 +365,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
             var model = new AddressModel();
 
             //required
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     FaxEnabled = true,
                     FaxRequired = true
@@ -368,8 +378,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
 
 
             //not required
-            validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     FaxEnabled = true,
                     FaxRequired = false
@@ -382,8 +392,8 @@ namespace Nop.Web.MVC.Tests.Public.Validators.Common
         [Test]
         public void Should_not_have_error_when_fax_is_specified()
         {
-            var validator = new AddressValidator(_localizationService,
-                new AddressSettings()
+            var validator = new AddressValidator(_localizationService, _stateProvinceService,
+                new AddressSettings
                 {
                     FaxEnabled = true
                 });

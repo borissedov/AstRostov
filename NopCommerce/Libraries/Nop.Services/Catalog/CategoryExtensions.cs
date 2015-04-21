@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Domain.Catalog;
+using Nop.Services.Localization;
 using Nop.Services.Security;
 using Nop.Services.Stores;
 
@@ -26,7 +27,7 @@ namespace Nop.Services.Catalog
 
             var result = new List<Category>();
 
-            foreach (var cat in source.ToList().FindAll(c => c.ParentCategoryId == parentId))
+            foreach (var cat in source.Where(c => c.ParentCategoryId == parentId).ToList())
             {
                 result.Add(cat);
                 result.AddRange(SortCategoriesForTree(source, cat.Id, true));
@@ -65,10 +66,11 @@ namespace Nop.Services.Catalog
         /// <param name="category">Category</param>
         /// <param name="categoryService">Category service</param>
         /// <param name="separator">Separator</param>
+        /// <param name="languageId">Language identifier for localization</param>
         /// <returns>Formatted breadcrumb</returns>
         public static string GetFormattedBreadCrumb(this Category category,
             ICategoryService categoryService,
-            string separator = ">>")
+            string separator = ">>", int languageId = 0)
         {
             if (category == null)
                 throw new ArgumentNullException("category");
@@ -76,19 +78,20 @@ namespace Nop.Services.Catalog
             string result = string.Empty;
 
             //used to prevent circular references
-            var alreadyProcessedCategoryIds = new List<int>() { };
+            var alreadyProcessedCategoryIds = new List<int>();
 
             while (category != null &&  //not null
                 !category.Deleted &&  //not deleted
                 !alreadyProcessedCategoryIds.Contains(category.Id)) //prevent circular references
             {
+                var categoryName = category.GetLocalized(x => x.Name, languageId);
                 if (String.IsNullOrEmpty(result))
                 {
-                    result = category.Name;
+                    result = categoryName;
                 }
                 else
                 {
-                    result = string.Format("{0} {1} {2}", category.Name, separator, result);
+                    result = string.Format("{0} {1} {2}", categoryName, separator, result);
                 }
 
                 alreadyProcessedCategoryIds.Add(category.Id);
@@ -106,10 +109,11 @@ namespace Nop.Services.Catalog
         /// <param name="category">Category</param>
         /// <param name="allCategories">All categories</param>
         /// <param name="separator">Separator</param>
+        /// <param name="languageId">Language identifier for localization</param>
         /// <returns>Formatted breadcrumb</returns>
         public static string GetFormattedBreadCrumb(this Category category,
             IList<Category> allCategories,
-            string separator = ">>")
+            string separator = ">>", int languageId = 0)
         {
             if (category == null)
                 throw new ArgumentNullException("category");
@@ -120,19 +124,20 @@ namespace Nop.Services.Catalog
             string result = string.Empty;
 
             //used to prevent circular references 
-            var alreadyProcessedCategoryIds = new List<int>() {};
+            var alreadyProcessedCategoryIds = new List<int>();
 
             while (category != null && //not null 
                    !category.Deleted && //not deleted 
                    !alreadyProcessedCategoryIds.Contains(category.Id)) //prevent circular references 
             {
+                var categoryName = category.GetLocalized(x => x.Name, languageId);
                 if (String.IsNullOrEmpty(result))
                 {
-                    result = category.Name;
+                    result = categoryName;
                 }
                 else
                 {
-                    result = string.Format("{0} {1} {2}", category.Name, separator, result);
+                    result = string.Format("{0} {1} {2}", categoryName, separator, result);
                 }
 
                 alreadyProcessedCategoryIds.Add(category.Id);
@@ -165,7 +170,7 @@ namespace Nop.Services.Catalog
             var result = new List<Category>();
 
             //used to prevent circular references
-            var alreadyProcessedCategoryIds = new List<int>() { };
+            var alreadyProcessedCategoryIds = new List<int>();
 
             while (category != null && //not null
                 !category.Deleted && //not deleted

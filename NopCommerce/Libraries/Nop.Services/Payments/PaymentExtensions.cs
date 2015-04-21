@@ -137,13 +137,8 @@ namespace Nop.Services.Payments
                 {
                     var ds = serializer.Deserialize(xmlReader) as DictionarySerializer;
                     if (ds != null)
-                    {
                         return ds.Dictionary;
-                    }
-                    else
-                    {
-                        return new Dictionary<string, object>();
-                    }
+                    return new Dictionary<string, object>();
                 }
             }
         }
@@ -191,7 +186,7 @@ namespace Nop.Services.Payments
                 reader.Read();
                 if (wasEmpty)
                     return;
-                while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+                while (reader.NodeType != XmlNodeType.EndElement)
                 {
                     reader.ReadStartElement("item");
                     string key = reader.ReadElementString("key");

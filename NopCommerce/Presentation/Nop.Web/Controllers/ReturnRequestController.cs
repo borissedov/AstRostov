@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Web.Mvc;
 using Nop.Core;
+using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Tax;
 using Nop.Services.Catalog;
 using Nop.Services.Customers;
 using Nop.Services.Directory;
+using Nop.Services.Helpers;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
@@ -29,6 +31,7 @@ namespace Nop.Web.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly ICustomerService _customerService;
         private readonly IWorkflowMessageService _workflowMessageService;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         private readonly LocalizationSettings _localizationSettings;
         private readonly OrderSettings _orderSettings;
@@ -38,12 +41,15 @@ namespace Nop.Web.Controllers
 		#region Constructors
 
         public ReturnRequestController(IOrderService orderService, 
-            IWorkContext workContext, IStoreContext storeContext,
-            ICurrencyService currencyService, IPriceFormatter priceFormatter,
+            IWorkContext workContext, 
+            IStoreContext storeContext,
+            ICurrencyService currencyService, 
+            IPriceFormatter priceFormatter,
             IOrderProcessingService orderProcessingService,
             ILocalizationService localizationService,
             ICustomerService customerService,
             IWorkflowMessageService workflowMessageService,
+            IDateTimeHelper dateTimeHelper,
             LocalizationSettings localizationSettings,
             OrderSettings orderSettings)
         {
@@ -56,6 +62,7 @@ namespace Nop.Web.Controllers
             this._localizationService = localizationService;
             this._customerService = customerService;
             this._workflowMessageService = workflowMessageService;
+            this._dateTimeHelper = dateTimeHelper;
 
             this._localizationSettings = localizationSettings;
             this._orderSettings = orderSettings;
@@ -80,7 +87,7 @@ namespace Nop.Web.Controllers
             if (_orderSettings.ReturnRequestReasons != null)
                 foreach (var rrr in _orderSettings.ReturnRequestReasons)
                 {
-                    model.AvailableReturnReasons.Add(new SelectListItem()
+                    model.AvailableReturnReasons.Add(new SelectListItem
                         {
                             Text = rrr,
                             Value = rrr
@@ -91,7 +98,7 @@ namespace Nop.Web.Controllers
             if (_orderSettings.ReturnRequestActions != null)
                 foreach (var rra in _orderSettings.ReturnRequestActions)
                 {
-                    model.AvailableReturnActions.Add(new SelectListItem()
+                    model.AvailableReturnActions.Add(new SelectListItem
                     {
                         Text = rra,
                         Value = rra
@@ -102,7 +109,7 @@ namespace Nop.Web.Controllers
             var orderItems = _orderService.GetAllOrderItems(order.Id, null, null, null, null, null, null);
             foreach (var orderItem in orderItems)
             {
-                var orderItemModel = new SubmitReturnRequestModel.OrderItemModel()
+                var orderItemModel = new SubmitReturnRequestModel.OrderItemModel
                 {
                     Id = orderItem.Id,
                     ProductId = orderItem.Product.Id,
@@ -134,6 +141,43 @@ namespace Nop.Web.Controllers
         #endregion
         
         #region Methods
+
+        [NopHttpsRequirement(SslRequirement.Yes)]
+        public ActionResult CustomerReturnRequests()
+        {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return new HttpUnauthorizedResult();
+
+            var model = new CustomerReturnRequestsModel();
+
+            var returnRequests = _orderService.SearchReturnRequests(_storeContext.CurrentStore.Id, 
+                _workContext.CurrentCustomer.Id, 0, null, 0, int.MaxValue);
+            foreach (var returnRequest in returnRequests)
+            {
+                var orderItem = _orderService.GetOrderItemById(returnRequest.OrderItemId);
+                if (orderItem != null)
+                {
+                    var product = orderItem.Product;
+
+                    var itemModel = new CustomerReturnRequestsModel.ReturnRequestModel
+                    {
+                        Id = returnRequest.Id,
+                        ReturnRequestStatus = returnRequest.ReturnRequestStatus.GetLocalizedEnum(_localizationService, _workContext),
+                        ProductId = product.Id,
+                        ProductName = product.GetLocalized(x => x.Name),
+                        ProductSeName = product.GetSeName(),
+                        Quantity = returnRequest.Quantity,
+                        ReturnAction = returnRequest.RequestedAction,
+                        ReturnReason = returnRequest.ReasonForReturn,
+                        Comments = returnRequest.CustomerComments,
+                        CreatedOn = _dateTimeHelper.ConvertToUserTime(returnRequest.CreatedOnUtc, DateTimeKind.Utc),
+                    };
+                    model.Items.Add(itemModel);
+                }
+            }
+
+            return View(model);
+        }
 
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult ReturnRequest(int orderId)
@@ -173,7 +217,7 @@ namespace Nop.Web.Controllers
                     }
                 if (quantity > 0)
                 {
-                    var rr = new ReturnRequest()
+                    var rr = new ReturnRequest
                     {
                         StoreId = _storeContext.CurrentStore.Id,
                         OrderItemId = orderItem.Id,

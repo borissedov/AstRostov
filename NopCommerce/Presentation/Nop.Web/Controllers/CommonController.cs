@@ -192,7 +192,7 @@ namespace Nop.Web.Controllers
             {
                 var result = _languageService
                     .GetAllLanguages(storeId: _storeContext.CurrentStore.Id)
-                    .Select(x => new LanguageModel()
+                    .Select(x => new LanguageModel
                     {
                         Id = x.Id,
                         Name = x.Name,
@@ -202,7 +202,7 @@ namespace Nop.Web.Controllers
                 return result;
             });
 
-            var model = new LanguageSelectorModel()
+            var model = new LanguageSelectorModel
             {
                 CurrentLanguageId = _workContext.WorkingLanguage.Id,
                 AvailableLanguages = availableLanguages,
@@ -261,7 +261,7 @@ namespace Nop.Web.Controllers
                         else
                             currencySymbol = x.CurrencyCode;
                         //model
-                        var currencyModel = new CurrencyModel()
+                        var currencyModel = new CurrencyModel
                         {
                             Id = x.Id,
                             Name = x.GetLocalized(y => y.Name),
@@ -273,7 +273,7 @@ namespace Nop.Web.Controllers
                 return result;
             });
 
-            var model = new CurrencySelectorModel()
+            var model = new CurrencySelectorModel
             {
                 CurrentCurrencyId = _workContext.WorkingCurrency.Id,
                 AvailableCurrencies = availableCurrencies
@@ -308,7 +308,7 @@ namespace Nop.Web.Controllers
             if (!_taxSettings.AllowCustomersToSelectTaxDisplayType)
                 return Content("");
 
-            var model = new TaxTypeSelectorModel()
+            var model = new TaxTypeSelectorModel
             {
                 CurrentTaxType = _workContext.TaxDisplayType
             };
@@ -363,7 +363,7 @@ namespace Nop.Web.Controllers
                 }
             }
 
-            var model = new HeaderLinksModel()
+            var model = new HeaderLinksModel
             {
                 IsAuthenticated = customer.IsRegistered(),
                 CustomerEmailUsername = customer.IsRegistered() ? (_customerSettings.UsernamesEnabled ? customer.Username : customer.Email) : "",
@@ -395,7 +395,7 @@ namespace Nop.Web.Controllers
         {
             var customer = _workContext.CurrentCustomer;
 
-            var model = new AdminHeaderLinksModel()
+            var model = new AdminHeaderLinksModel
             {
                 ImpersonatedCustomerEmailUsername = customer.IsRegistered() ? (_customerSettings.UsernamesEnabled ? customer.Username : customer.Email) : "",
                 IsCustomerImpersonated = _workContext.OriginalCustomerIfImpersonated != null,
@@ -409,7 +409,7 @@ namespace Nop.Web.Controllers
         [ChildActionOnly]
         public ActionResult Footer()
         {
-            var model = new FooterModel()
+            var model = new FooterModel
             {
                 StoreName = _storeContext.CurrentStore.GetLocalized(x => x.Name),
                 WishlistEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableWishlist),
@@ -437,7 +437,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.No)]
         public ActionResult ContactUs()
         {
-            var model = new ContactUsModel()
+            var model = new ContactUsModel
             {
                 Email = _workContext.CurrentCustomer.Email,
                 FullName = _workContext.CurrentCustomer.GetFullName(),
@@ -467,8 +467,8 @@ namespace Nop.Web.Controllers
                 if (emailAccount == null)
                     throw new Exception("No email account could be loaded");
 
-                string from = null;
-                string fromName = null;
+                string from;
+                string fromName;
                 string body = Core.Html.HtmlHelper.FormatText(model.Enquiry, false, true, false, false, false, false);
                 //required for some SMTP servers
                 if (_commonSettings.UseSystemEmailForContactUsForm)
@@ -484,7 +484,7 @@ namespace Nop.Web.Controllers
                     from = email;
                     fromName = fullName;
                 }
-                _queuedEmailService.InsertQueuedEmail(new QueuedEmail()
+                _queuedEmailService.InsertQueuedEmail(new QueuedEmail
                 {
                     From = from,
                     FromName = fromName,
@@ -524,29 +524,32 @@ namespace Nop.Web.Controllers
             string cacheKey = string.Format(ModelCacheEventConsumer.SITEMAP_PAGE_MODEL_KEY, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
             var cachedModel = _cacheManager.Get(cacheKey, () =>
             {
-                var model = new SitemapModel()
+                var model = new SitemapModel
                 {
                     BlogEnabled = _blogSettings.Enabled,
                     ForumEnabled = _forumSettings.ForumsEnabled,
-                    NewsEnabled = _newsSettings.Enabled,    
+                    NewsEnabled = _newsSettings.Enabled,
                 };
+                //categories
                 if (_commonSettings.SitemapIncludeCategories)
                 {
                     var categories = _categoryService.GetAllCategories();
                     model.Categories = categories.Select(x => x.ToModel()).ToList();
                 }
+                //manufacturers
                 if (_commonSettings.SitemapIncludeManufacturers)
                 {
                     var manufacturers = _manufacturerService.GetAllManufacturers();
                     model.Manufacturers = manufacturers.Select(x => x.ToModel()).ToList();
                 }
+                //products
                 if (_commonSettings.SitemapIncludeProducts)
                 {
                     //limit product to 200 until paging is supported on this page
                     var products = _productService.SearchProducts(storeId: _storeContext.CurrentStore.Id,
                         visibleIndividuallyOnly: true,
                         pageSize: 200);
-                    model.Products = products.Select(product => new ProductOverviewModel()
+                    model.Products = products.Select(product => new ProductOverviewModel
                     {
                         Id = product.Id,
                         Name = product.GetLocalized(x => x.Name),
@@ -555,21 +558,20 @@ namespace Nop.Web.Controllers
                         SeName = product.GetSeName(),
                     }).ToList();
                 }
-                if (_commonSettings.SitemapIncludeTopics)
-                {
-                    var topics = _topicService.GetAllTopics(_storeContext.CurrentStore.Id)
-                        .ToList()
-                        .FindAll(t => t.IncludeInSitemap);
-                    model.Topics = topics.Select(topic => new TopicModel()
-                    {
-                        Id = topic.Id,
-                        SystemName = topic.SystemName,
-                        IncludeInSitemap = topic.IncludeInSitemap,
-                        IsPasswordProtected = topic.IsPasswordProtected,
-                        Title = topic.GetLocalized(x => x.Title),
-                    })
+
+                //topics
+                var topics = _topicService.GetAllTopics(_storeContext.CurrentStore.Id)
+                    .Where(t => t.IncludeInSitemap)
                     .ToList();
-                }
+                model.Topics = topics.Select(topic => new TopicModel
+                {
+                    Id = topic.Id,
+                    SystemName = topic.SystemName,
+                    IncludeInSitemap = topic.IncludeInSitemap,
+                    IsPasswordProtected = topic.IsPasswordProtected,
+                    Title = topic.GetLocalized(x => x.Title),
+                })
+                .ToList();
                 return model;
             });
 
@@ -586,10 +588,7 @@ namespace Nop.Web.Controllers
              var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
                .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
             string cacheKey = string.Format(ModelCacheEventConsumer.SITEMAP_SEO_MODEL_KEY, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
-            var siteMap = _cacheManager.Get(cacheKey, () =>
-            {
-                return _sitemapGenerator.Generate(this.Url);
-            });
+            var siteMap = _cacheManager.Get(cacheKey, () => _sitemapGenerator.Generate(this.Url));
             return Content(siteMap, "text/xml");
         }
 
@@ -602,19 +601,16 @@ namespace Nop.Web.Controllers
 
             var model = new StoreThemeSelectorModel();
             var currentTheme = _themeProvider.GetThemeConfiguration(_themeContext.WorkingThemeName);
-            model.CurrentStoreTheme = new StoreThemeModel()
+            model.CurrentStoreTheme = new StoreThemeModel
             {
                 Name = currentTheme.ThemeName,
                 Title = currentTheme.ThemeTitle
             };
             model.AvailableStoreThemes = _themeProvider.GetThemeConfigurations()
-                .Select(x =>
+                .Select(x => new StoreThemeModel
                 {
-                    return new StoreThemeModel()
-                    {
-                        Name = x.ThemeName,
-                        Title = x.ThemeTitle
-                    };
+                    Name = x.ThemeName,
+                    Title = x.ThemeTitle
                 })
                 .ToList();
             return PartialView(model);
@@ -652,7 +648,7 @@ namespace Nop.Web.Controllers
                 }
             }
 
-            var model = new FaviconModel()
+            var model = new FaviconModel
             {
                 FaviconUrl = _webHelper.GetStoreLocation() + faviconFileName
             };
@@ -691,7 +687,7 @@ namespace Nop.Web.Controllers
 
         public ActionResult RobotsTextFile()
         {
-            var disallowPaths = new List<string>()
+            var disallowPaths = new List<string>
                                     {
                                         "/bin/",
                                         "/content/files/",
@@ -700,10 +696,12 @@ namespace Nop.Web.Controllers
                                         "/install",
                                         "/setproductreviewhelpfulness",
                                     };
-            var localizableDisallowPaths = new List<string>()
+            var localizableDisallowPaths = new List<string>
                                                {
                                                    "/addproducttocart/catalog/",
                                                    "/addproducttocart/details/",
+                                                   "/backinstocksubscriptions/manage",
+                                                   "/boards/forumsubscriptions",
                                                    "/boards/forumwatch",
                                                    "/boards/postedit",
                                                    "/boards/postdelete",
@@ -727,25 +725,23 @@ namespace Nop.Web.Controllers
                                                    "/customer/avatar",
                                                    "/customer/activation",
                                                    "/customer/addresses",
-                                                   "/customer/backinstocksubscriptions",
                                                    "/customer/changepassword",
                                                    "/customer/checkusernameavailability",
                                                    "/customer/downloadableproducts",
-                                                   "/customer/forumsubscriptions",
                                                    "/customer/info",
-                                                   "/customer/orders",
-                                                   "/customer/returnrequests",
-                                                   "/customer/rewardpoints",
                                                    "/deletepm",
                                                    "/emailwishlist",
                                                    "/inboxupdate",
                                                    "/newsletter/subscriptionactivation",
                                                    "/onepagecheckout",
+                                                   "/order/history",
                                                    "/orderdetails",
                                                    "/passwordrecovery/confirm",
                                                    "/poll/vote",
                                                    "/privatemessages",
                                                    "/returnrequest",
+                                                   "/returnrequest/history",
+                                                   "/rewardpoints/history",
                                                    "/sendpm",
                                                    "/sentupdate",
                                                    "/shoppingcart/productdetails_attributechange",

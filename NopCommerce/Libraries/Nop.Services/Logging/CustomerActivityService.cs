@@ -100,7 +100,7 @@ namespace Nop.Services.Logging
                 var activityLogTypes = GetAllActivityTypes();
                 foreach (var alt in activityLogTypes)
                 {
-                    var altForCaching = new ActivityLogTypeForCaching()
+                    var altForCaching = new ActivityLogTypeForCaching
                     {
                         Id = alt.Id,
                         SystemKeyword = alt.SystemKeyword,
@@ -299,8 +299,8 @@ namespace Nop.Services.Logging
 
 
                 //do all databases support "Truncate command"?
-                //TODO: do not hard-code the table name
-                _dbContext.ExecuteSqlCommand("TRUNCATE TABLE [ActivityLog]");
+                string activityLogTableName = _dbContext.GetTableName<ActivityLog>();
+                _dbContext.ExecuteSqlCommand(String.Format("TRUNCATE TABLE [{0}]", activityLogTableName));
             }
             else
             {

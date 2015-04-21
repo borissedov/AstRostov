@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Logging;
 using Nop.Services.Helpers;
 using Nop.Services.Localization;
@@ -58,7 +59,7 @@ namespace Nop.Admin.Controllers
                 return AccessDeniedView();
 
             string formKey = "checkbox_activity_types";
-            var checkedActivityTypes = form[formKey] != null ? form[formKey].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToList() : new List<int>();
+            var checkedActivityTypes = form[formKey] != null ? form[formKey].Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToList() : new List<int>();
             
             var activityTypes = _customerActivityService.GetAllActivityTypes();
             foreach (var activityType in activityTypes)
@@ -80,23 +81,21 @@ namespace Nop.Admin.Controllers
                 return AccessDeniedView();
 
             var activityLogSearchModel = new ActivityLogSearchModel();
-            activityLogSearchModel.ActivityLogType.Add(new SelectListItem()
+            activityLogSearchModel.ActivityLogType.Add(new SelectListItem
             {
                 Value = "0",
                 Text = "All"
             });
 
 
-            foreach (var at in _customerActivityService.GetAllActivityTypes()
-                .Select(x =>
+            foreach (var at in _customerActivityService.GetAllActivityTypes())
+            {
+                activityLogSearchModel.ActivityLogType.Add(new SelectListItem
                 {
-                    return new SelectListItem()
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Name
-                    };
-                }))
-                activityLogSearchModel.ActivityLogType.Add(at);
+                    Value = at.Id.ToString(),
+                    Text = at.Name
+                });
+            }
             return View(activityLogSearchModel);
         }
 
@@ -113,7 +112,7 @@ namespace Nop.Admin.Controllers
                             : (DateTime?)_dateTimeHelper.ConvertToUtcTime(model.CreatedOnTo.Value, _dateTimeHelper.CurrentTimeZone).AddDays(1);
 
             var activityLog = _customerActivityService.GetAllActivities(startDateValue, endDateValue,null, model.ActivityLogTypeId, command.Page - 1, command.PageSize);
-            var gridModel = new DataSourceResult()
+            var gridModel = new DataSourceResult
             {
                 Data = activityLog.Select(x =>
                 {

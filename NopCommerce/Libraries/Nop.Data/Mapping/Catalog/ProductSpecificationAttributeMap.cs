@@ -1,9 +1,8 @@
-using System.Data.Entity.ModelConfiguration;
 using Nop.Core.Domain.Catalog;
 
 namespace Nop.Data.Mapping.Catalog
 {
-    public partial class ProductSpecificationAttributeMap : EntityTypeConfiguration<ProductSpecificationAttribute>
+    public partial class ProductSpecificationAttributeMap : NopEntityTypeConfiguration<ProductSpecificationAttribute>
     {
         public ProductSpecificationAttributeMap()
         {
@@ -11,6 +10,8 @@ namespace Nop.Data.Mapping.Catalog
             this.HasKey(psa => psa.Id);
 
             this.Property(psa => psa.CustomValue).HasMaxLength(4000);
+
+            this.Ignore(psa => psa.AttributeType);
 
             this.HasRequired(psa => psa.SpecificationAttributeOption)
                 .WithMany(sao => sao.ProductSpecificationAttributes)

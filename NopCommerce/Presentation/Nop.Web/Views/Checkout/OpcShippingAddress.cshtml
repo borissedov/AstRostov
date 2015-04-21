@@ -1,6 +1,23 @@
 ﻿@model CheckoutShippingAddressModel
 @using Nop.Web.Models.Checkout;
 <div class="checkout-data">
+    @if (Model.AllowPickUpInStore)
+        {
+            <div class="section pickup-in-store">
+                <p class="selector">
+                    @{
+                        var pickupInStoreName = T("Checkout.PickUpInStore").Text;
+                        if (!String.IsNullOrEmpty(Model.PickUpInStoreFee))
+                        {
+                            pickupInStoreName = T("Checkout.PickUpInStoreAndFee", Model.PickUpInStoreFee).Text;
+                        }
+                    }
+                    @Html.CheckBoxFor(x => x.PickUpInStore, new { @onclick = "Shipping.togglePickUpInStore(this)" })
+                    <label for="@Html.FieldIdFor(model => model.PickUpInStore)">@pickupInStoreName</label>
+                </p>
+                <p class="description"><i>@T("Checkout.PickUpInStore.Description")</i></p>
+            </div>
+        }
     <div class="shipping-addresses" id="shipping-addresses-form">
         @Html.Widget("op_checkout_shipping_address_top")
         @if (Model.ExistingAddresses.Count > 0)
@@ -35,6 +52,7 @@
                             {
                                 addressLine += ", " + address.CountryName;
                             }
+                            //how should we render "FormattedCustomAddressAttributes" here?
                             <option value="@(address.Id)">@(addressLine)</option>
                         }
                         <option value="" selected="@Model.NewAddressPreselected">@T("Checkout.NewAddress")</option>
@@ -45,6 +63,9 @@
         @Html.Widget("op_checkout_shipping_address_middle")
         <div class="section new-shipping-address" id="shipping-new-address-form">
             <div class="enter-address">
+                <div class="message-error">
+                    @Html.ValidationSummary(true)
+                </div>
                 <div class="enter-address-body">
                     @{
                         var dataDictAddress = new ViewDataDictionary();
@@ -58,14 +79,4 @@
         </div>
         @Html.Widget("op_checkout_shipping_address_bottom")
     </div>
-    @if (Model.AllowPickUpInStore)
-    {
-        <div class="section pickup-in-store">
-            <p class="selector">
-                @Html.CheckBoxFor(x => x.PickUpInStore, new { @onclick = "Shipping.togglePickUpInStore(this)" })
-                <label for="@Html.FieldIdFor(model => model.PickUpInStore)">@T("Checkout.PickUpInStore")</label>
-            </p>
-            <p class="description"><i>@T("Checkout.PickUpInStore.Description")</i></p>
-        </div>
-    }
 </div>

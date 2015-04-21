@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Common;
 using Nop.Core;
 using Nop.Core.Caching;
@@ -136,7 +137,7 @@ namespace Nop.Admin.Controllers
             model.HttpHost = _webHelper.ServerVariables("HTTP_HOST");
             foreach (var key in _httpContext.Request.ServerVariables.AllKeys)
             {
-                model.ServerVariables.Add(new SystemInfoModel.ServerVariableModel()
+                model.ServerVariables.Add(new SystemInfoModel.ServerVariableModel
                 {
                     Name = key,
                     Value = _httpContext.Request.ServerVariables[key]
@@ -145,7 +146,7 @@ namespace Nop.Admin.Controllers
             //Environment.GetEnvironmentVariable("USERNAME");
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                model.LoadedAssemblies.Add(new SystemInfoModel.LoadedAssembly()
+                model.LoadedAssemblies.Add(new SystemInfoModel.LoadedAssembly
                 {
                     FullName =  assembly.FullName,
                     //we cannot use Location property in medium trust
@@ -169,13 +170,13 @@ namespace Nop.Admin.Controllers
                 ||
                 currentStoreUrl.Equals(_webHelper.GetStoreLocation(true), StringComparison.InvariantCultureIgnoreCase)
                 ))
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Pass,
                         Text = _localizationService.GetResource("Admin.System.Warnings.URL.Match")
                     });
             else
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Warning,
                     Text = string.Format(_localizationService.GetResource("Admin.System.Warnings.URL.NoMatch"), currentStoreUrl, _webHelper.GetStoreLocation(false))
@@ -186,14 +187,14 @@ namespace Nop.Admin.Controllers
             var perCurrency = _currencyService.GetCurrencyById(_currencySettings.PrimaryExchangeRateCurrencyId);
             if (perCurrency != null)
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Pass,
                     Text = _localizationService.GetResource("Admin.System.Warnings.ExchangeCurrency.Set"),
                 });
                 if (perCurrency.Rate != 1)
                 {
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Fail,
                         Text = _localizationService.GetResource("Admin.System.Warnings.ExchangeCurrency.Rate1")
@@ -202,7 +203,7 @@ namespace Nop.Admin.Controllers
             }
             else
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Fail,
                     Text = _localizationService.GetResource("Admin.System.Warnings.ExchangeCurrency.NotSet")
@@ -213,7 +214,7 @@ namespace Nop.Admin.Controllers
             var pscCurrency = _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId);
             if (pscCurrency != null)
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Pass,
                     Text = _localizationService.GetResource("Admin.System.Warnings.PrimaryCurrency.Set"),
@@ -221,7 +222,7 @@ namespace Nop.Admin.Controllers
             }
             else
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Fail,
                     Text = _localizationService.GetResource("Admin.System.Warnings.PrimaryCurrency.NotSet")
@@ -233,7 +234,7 @@ namespace Nop.Admin.Controllers
             var bWeight = _measureService.GetMeasureWeightById(_measureSettings.BaseWeightId);
             if (bWeight != null)
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Pass,
                     Text = _localizationService.GetResource("Admin.System.Warnings.DefaultWeight.Set"),
@@ -241,7 +242,7 @@ namespace Nop.Admin.Controllers
 
                 if (bWeight.Ratio != 1)
                 {
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Fail,
                         Text = _localizationService.GetResource("Admin.System.Warnings.DefaultWeight.Ratio1")
@@ -250,7 +251,7 @@ namespace Nop.Admin.Controllers
             }
             else
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Fail,
                     Text = _localizationService.GetResource("Admin.System.Warnings.DefaultWeight.NotSet")
@@ -262,7 +263,7 @@ namespace Nop.Admin.Controllers
             var bDimension = _measureService.GetMeasureDimensionById(_measureSettings.BaseDimensionId);
             if (bDimension != null)
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Pass,
                     Text = _localizationService.GetResource("Admin.System.Warnings.DefaultDimension.Set"),
@@ -270,7 +271,7 @@ namespace Nop.Admin.Controllers
 
                 if (bDimension.Ratio != 1)
                 {
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Fail,
                         Text = _localizationService.GetResource("Admin.System.Warnings.DefaultDimension.Ratio1")
@@ -279,7 +280,7 @@ namespace Nop.Admin.Controllers
             }
             else
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Fail,
                     Text = _localizationService.GetResource("Admin.System.Warnings.DefaultDimension.NotSet")
@@ -289,13 +290,13 @@ namespace Nop.Admin.Controllers
             //shipping rate coputation methods
             var srcMethods = _shippingService.LoadActiveShippingRateComputationMethods();
             if (srcMethods.Count == 0)
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Fail,
                     Text = _localizationService.GetResource("Admin.System.Warnings.Shipping.NoComputationMethods")
                 });
             if (srcMethods.Count(x => x.ShippingRateComputationMethodType == ShippingRateComputationMethodType.Offline) > 1)
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Warning,
                     Text = _localizationService.GetResource("Admin.System.Warnings.Shipping.OnlyOneOffline")
@@ -303,13 +304,13 @@ namespace Nop.Admin.Controllers
 
             //payment methods
             if (_paymentService.LoadActivePaymentMethods().Any())
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Pass,
                     Text = _localizationService.GetResource("Admin.System.Warnings.PaymentMethods.OK")
                 });
             else
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Fail,
                     Text = _localizationService.GetResource("Admin.System.Warnings.PaymentMethods.NoActive")
@@ -318,7 +319,7 @@ namespace Nop.Admin.Controllers
             //incompatible plugins
             if (PluginManager.IncompatiblePlugins != null)
                 foreach (var pluginName in PluginManager.IncompatiblePlugins)
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Warning,
                         Text = string.Format(_localizationService.GetResource("Admin.System.Warnings.IncompatiblePlugin"), pluginName )
@@ -327,7 +328,7 @@ namespace Nop.Admin.Controllers
             //performance settings
             if (!_catalogSettings.IgnoreStoreLimitations && _storeService.GetAllStores().Count == 1)
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Warning,
                     Text = _localizationService.GetResource("Admin.System.Warnings.Performance.IgnoreStoreLimitations")
@@ -335,7 +336,7 @@ namespace Nop.Admin.Controllers
             }
             if (!_catalogSettings.IgnoreAcl)
             {
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Warning,
                     Text = _localizationService.GetResource("Admin.System.Warnings.Performance.IgnoreAcl")
@@ -348,7 +349,7 @@ namespace Nop.Admin.Controllers
             foreach (string dir in dirsToCheck)
                 if (!FilePermissionHelper.CheckPermissions(dir, false, true, true, false))
                 {
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Warning,
                         Text = string.Format(_localizationService.GetResource("Admin.System.Warnings.DirectoryPermission.Wrong"), WindowsIdentity.GetCurrent().Name, dir)
@@ -356,7 +357,7 @@ namespace Nop.Admin.Controllers
                     dirPermissionsOk = false;
                 }
             if (dirPermissionsOk)
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Pass,
                     Text = _localizationService.GetResource("Admin.System.Warnings.DirectoryPermission.OK")
@@ -367,7 +368,7 @@ namespace Nop.Admin.Controllers
             foreach (string file in filesToCheck)
                 if (!FilePermissionHelper.CheckPermissions(file, false, true, true, true))
                 {
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Warning,
                         Text = string.Format(_localizationService.GetResource("Admin.System.Warnings.FilePermission.Wrong"), WindowsIdentity.GetCurrent().Name, file)
@@ -375,7 +376,7 @@ namespace Nop.Admin.Controllers
                     filePermissionsOk = false;
                 }
             if (filePermissionsOk)
-                model.Add(new SystemWarningModel()
+                model.Add(new SystemWarningModel
                 {
                     Level = SystemWarningLevel.Pass,
                     Text = _localizationService.GetResource("Admin.System.Warnings.FilePermission.OK")
@@ -391,7 +392,7 @@ namespace Nop.Admin.Controllers
 
                 if (!machineKeySpecified)
                 {
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Warning,
                         Text = _localizationService.GetResource("Admin.System.Warnings.MachineKey.NotSpecified")
@@ -399,7 +400,7 @@ namespace Nop.Admin.Controllers
                 }
                 else
                 {
-                    model.Add(new SystemWarningModel()
+                    model.Add(new SystemWarningModel
                     {
                         Level = SystemWarningLevel.Pass,
                         Text = _localizationService.GetResource("Admin.System.Warnings.MachineKey.Specified")
@@ -439,7 +440,7 @@ namespace Nop.Admin.Controllers
             DateTime? endDateValue = (model.DeleteGuests.EndDate == null) ? null
                             : (DateTime?)_dateTimeHelper.ConvertToUtcTime(model.DeleteGuests.EndDate.Value, _dateTimeHelper.CurrentTimeZone).AddDays(1);
 
-            model.DeleteGuests.NumberOfDeletedCustomers = _customerService.DeleteGuestCustomers(startDateValue, endDateValue, model.DeleteGuests.OnlyWithoutShoppingCart, int.MaxValue);
+            model.DeleteGuests.NumberOfDeletedCustomers = _customerService.DeleteGuestCustomers(startDateValue, endDateValue, model.DeleteGuests.OnlyWithoutShoppingCart);
 
             return View(model);
         }
@@ -473,8 +474,8 @@ namespace Nop.Admin.Controllers
 
 
             model.DeleteExportedFiles.NumberOfDeletedFiles = 0;
-            string path = System.IO.Path.Combine(this.Request.PhysicalApplicationPath, "content\\files\\exportimport");
-            foreach (var fullPath in System.IO.Directory.GetFiles(path))
+            string path = Path.Combine(this.Request.PhysicalApplicationPath, "content\\files\\exportimport");
+            foreach (var fullPath in Directory.GetFiles(path))
             {
                 try
                 {
@@ -580,7 +581,7 @@ namespace Nop.Admin.Controllers
                         var language = _languageService.GetLanguageById(x.LanguageId);
                         languageName = language != null ? language.Name : "Unknown";
                     }
-                    return new UrlRecordModel()
+                    return new UrlRecordModel
                     {
                         Id = x.Id,
                         Name = x.Slug,
@@ -637,13 +638,10 @@ namespace Nop.Admin.Controllers
             var searchTermRecordLines = _searchTermService.GetStats(command.Page - 1, command.PageSize);
             var gridModel = new DataSourceResult
             {
-                Data = searchTermRecordLines.Select(x =>
+                Data = searchTermRecordLines.Select(x => new SearchTermReportLineModel
                 {
-                    return new SearchTermReportLineModel()
-                    {
-                        Keyword = x.Keyword,
-                        Count = x.Count,
-                    };
+                    Keyword = x.Keyword,
+                    Count = x.Count,
                 }),
                 Total = searchTermRecordLines.TotalCount
             };

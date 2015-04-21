@@ -78,30 +78,12 @@ namespace Nop.Plugin.Shipping.AustraliaPost
 
         private int GetWeight(GetShippingOptionRequest getShippingOptionRequest)
         {
-            var totalWeigth = _shippingService.GetTotalWeight(getShippingOptionRequest.Items);
+            var totalWeigth = _shippingService.GetTotalWeight(getShippingOptionRequest);
 
             int value = Convert.ToInt32(Math.Ceiling(this._measureService.ConvertFromPrimaryMeasureWeight(totalWeigth, this.GatewayMeasureWeight)));
             return (value < MIN_WEIGHT ? MIN_WEIGHT : value);
         }
-
-        private int GetLength(GetShippingOptionRequest getShippingOptionRequest)
-        {
-            int value = Convert.ToInt32(Math.Ceiling(this._measureService.ConvertFromPrimaryMeasureDimension(_shippingService.GetTotalLength(getShippingOptionRequest.Items), this.GatewayMeasureDimension)));
-            return (value < MIN_LENGTH ? MIN_LENGTH : value);
-        }
-
-        private int GetWidth(GetShippingOptionRequest getShippingOptionRequest)
-        {
-            int value = Convert.ToInt32(Math.Ceiling(this._measureService.ConvertFromPrimaryMeasureDimension(_shippingService.GetTotalWidth(getShippingOptionRequest.Items), this.GatewayMeasureDimension)));
-            return (value < MIN_LENGTH ? MIN_LENGTH : value);
-        }
-
-        private int GetHeight(GetShippingOptionRequest getShippingOptionRequest)
-        {
-            int value = Convert.ToInt32(Math.Ceiling(this._measureService.ConvertFromPrimaryMeasureDimension(_shippingService.GetTotalHeight(getShippingOptionRequest.Items), this.GatewayMeasureDimension)));
-            return (value < MIN_LENGTH ? MIN_LENGTH : value);
-        }
-
+        
         private ShippingOption RequestShippingOption(string zipPostalCodeFrom,
             string zipPostalCodeTo, string countryCode, string serviceType,
             int weight, int length, int width, int height, int quantity)
@@ -120,7 +102,7 @@ namespace Nop.Plugin.Shipping.AustraliaPost
             sb.AppendFormat("Height={0}&", height);
             sb.AppendFormat("Quantity={0}", quantity);
 
-            HttpWebRequest request = WebRequest.Create(sb.ToString()) as HttpWebRequest;
+            var request = WebRequest.Create(sb.ToString()) as HttpWebRequest;
             request.Method = "GET";
             //request.ContentType = "application/x-www-form-urlencoded";
             //byte[] reqContent = Encoding.ASCII.GetBytes(sb.ToString());
@@ -132,12 +114,12 @@ namespace Nop.Plugin.Shipping.AustraliaPost
 
             WebResponse response = request.GetResponse();
             string rspContent;
-            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 rspContent = reader.ReadToEnd();
             }
 
-            string[] tmp = rspContent.Split(new char[] { '\n' }, 3);
+            string[] tmp = rspContent.Split(new [] { '\n' }, 3);
             if (tmp.Length != 3)
             {
                 throw new NopException("Response is not valid.");
@@ -146,7 +128,7 @@ namespace Nop.Plugin.Shipping.AustraliaPost
             var rspParams = new NameValueCollection();
             foreach (string s in tmp)
             {
-                string[] tmp2 = s.Split(new char[] { '=' });
+                string[] tmp2 = s.Split(new [] { '=' });
                 if (tmp2.Length != 2)
                 {
                     throw new NopException("Response is not valid.");
@@ -155,10 +137,10 @@ namespace Nop.Plugin.Shipping.AustraliaPost
             }
 
 
-            string err_msg = rspParams["err_msg"];
-            if (!err_msg.ToUpperInvariant().StartsWith("OK"))
+            string errMsg = rspParams["err_msg"];
+            if (!errMsg.ToUpperInvariant().StartsWith("OK"))
             {
-                throw new NopException(err_msg);
+                throw new NopException(errMsg);
             }
 
             var serviceName = GetServiceNameByType(serviceType);
@@ -176,7 +158,7 @@ namespace Nop.Plugin.Shipping.AustraliaPost
             if (String.IsNullOrEmpty(type))
                 return type;
 
-            var serviceName = "";
+            string serviceName;
             switch (type)
             {
                 case "Standard":
@@ -242,14 +224,15 @@ namespace Nop.Plugin.Shipping.AustraliaPost
             string zipPostalCodeFrom = getShippingOptionRequest.ZipPostalCodeFrom;
             string zipPostalCodeTo = getShippingOptionRequest.ShippingAddress.ZipPostalCode;
             int weight = GetWeight(getShippingOptionRequest);
-            int length = GetLength(getShippingOptionRequest);
-            int width = GetWidth(getShippingOptionRequest);
-            int height = GetHeight(getShippingOptionRequest);
 
-            var country = getShippingOptionRequest.ShippingAddress.Country;
 
+            decimal lengthTmp, widthTmp, heightTmp;
+            _shippingService.GetDimensions(getShippingOptionRequest.Items, out widthTmp, out lengthTmp, out heightTmp);
+            int length = Math.Min(Convert.ToInt32(Math.Ceiling(this._measureService.ConvertFromPrimaryMeasureDimension(lengthTmp, this.GatewayMeasureDimension))), MIN_LENGTH);
+            int width = Math.Min(Convert.ToInt32(Math.Ceiling(this._measureService.ConvertFromPrimaryMeasureDimension(widthTmp, this.GatewayMeasureDimension))), MIN_LENGTH);
+            int height = Math.Min(Convert.ToInt32(Math.Ceiling(this._measureService.ConvertFromPrimaryMeasureDimension(heightTmp, this.GatewayMeasureDimension))), MIN_LENGTH);
+            
             //estimate packaging
-            int totalPackages = 1;
             int totalPackagesDims = 1;
             int totalPackagesWeights = 1;
             if (length > MAX_LENGTH || width > MAX_LENGTH || height > MAX_LENGTH)
@@ -260,7 +243,7 @@ namespace Nop.Plugin.Shipping.AustraliaPost
             {
                 totalPackagesWeights = Convert.ToInt32(Math.Ceiling((decimal)weight / (decimal)MAX_WEIGHT));
             }
-            totalPackages = totalPackagesDims > totalPackagesWeights ? totalPackagesDims : totalPackagesWeights;
+            var totalPackages = totalPackagesDims > totalPackagesWeights ? totalPackagesDims : totalPackagesWeights;
             if (totalPackages == 0)
                 totalPackages = 1;
             if (totalPackages > 1)
@@ -293,6 +276,12 @@ namespace Nop.Plugin.Shipping.AustraliaPost
             }
             try
             {
+                var country = getShippingOptionRequest.ShippingAddress.Country;
+                if (country == null)
+                {
+                    response.AddError("Shipping country is not specified");
+                    return response;
+                }
                 switch (country.ThreeLetterIsoCode)
                 {
                     case "AUS":
@@ -344,7 +333,7 @@ namespace Nop.Plugin.Shipping.AustraliaPost
         {
             actionName = "Configure";
             controllerName = "ShippingAustraliaPost";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.AustraliaPost.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Shipping.AustraliaPost.Controllers" }, { "area", null } };
         }
         
         /// <summary>
@@ -353,7 +342,7 @@ namespace Nop.Plugin.Shipping.AustraliaPost
         public override void Install()
         {
             //settings
-            var settings = new AustraliaPostSettings()
+            var settings = new AustraliaPostSettings
             {
                 GatewayUrl = "http://drc.edeliver.com.au/ratecalc.asp",
             };

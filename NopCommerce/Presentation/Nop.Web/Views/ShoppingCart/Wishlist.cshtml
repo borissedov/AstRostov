@@ -1,5 +1,8 @@
 ﻿@model WishlistModel
-@using Nop.Web.Models.ShoppingCart;
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.ShoppingCart
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
@@ -27,9 +30,9 @@
                 {
                 <div class="message-error">
                     <ul>
-                        @for (int i = 0; i < Model.Warnings.Count; i++)
+                        @foreach (var warning in Model.Warnings)
                         {
-                            <li>@Model.Warnings[i]</li>
+                            <li>@warning</li>
                         }
                     </ul>
                 </div>
@@ -145,13 +148,19 @@
                                             @Html.Raw(item.RecurringInfo)
                                         </div>
                                     }
+                                    @if (!String.IsNullOrEmpty(item.RentalInfo))
+                                    {
+                                        <div class="rental-info">
+                                            @Html.Raw(item.RentalInfo)
+                                        </div>
+                                    }
                                     @if (item.Warnings.Count > 0)
                                     {
                                         <div class="message-error">
                                             <ul>
-                                                @for (int i = 0; i < item.Warnings.Count; i++)
+                                                @foreach (var warning in item.Warnings)
                                                 {
-                                                    <li>@item.Warnings[i]</li>
+                                                    <li>@warning</li>
                                                 }
                                             </ul>
                                         </div>
@@ -196,7 +205,16 @@
                             </tr>
                         }
                     </tbody>
-                </table>                
+                </table>
+                if (Model.Items.Count > 0 && Model.DisplayTaxShippingInfo)
+                {
+                var inclTax = EngineContext.Current.Resolve<IWorkContext>().TaxDisplayType == TaxDisplayType.IncludingTax;
+                //tax info is already included in the price (incl/excl tax). that's why we display only shipping info here
+                //of course, you can modify appropriate locales to include VAT info there
+                <div class="tax-shipping-info">
+                    @T(inclTax ? "Wishlist.TaxShipping.InclTax" : "Wishlist.TaxShipping.ExclTax", Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("shippinginfo") }))
+                </div>
+                }
                 <div class="buttons">
                     <div class="common-buttons">
                         @if (Model.IsEditable)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Common;
 using Nop.Admin.Models.Settings;
 using Nop.Admin.Models.Stores;
@@ -63,7 +64,6 @@ namespace Nop.Admin.Controllers
         private readonly ICustomerService _customerService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IPermissionService _permissionService;
-        private readonly IWebHelper _webHelper;
         private readonly IFulltextService _fulltextService;
         private readonly IMaintenanceService _maintenanceService;
         private readonly IStoreService _storeService;
@@ -75,16 +75,25 @@ namespace Nop.Admin.Controllers
 		#region Constructors
 
         public SettingController(ISettingService settingService,
-            ICountryService countryService, IStateProvinceService stateProvinceService,
-            IAddressService addressService, ITaxCategoryService taxCategoryService,
-            ICurrencyService currencyService, IPictureService pictureService, 
-            ILocalizationService localizationService, IDateTimeHelper dateTimeHelper,
-            IOrderService orderService, IEncryptionService encryptionService,
-            IThemeProvider themeProvider, ICustomerService customerService, 
-            ICustomerActivityService customerActivityService, IPermissionService permissionService,
-            IWebHelper webHelper, IFulltextService fulltextService, 
-            IMaintenanceService maintenanceService, IStoreService storeService,
-            IWorkContext workContext, IGenericAttributeService genericAttributeService)
+            ICountryService countryService, 
+            IStateProvinceService stateProvinceService,
+            IAddressService addressService, 
+            ITaxCategoryService taxCategoryService,
+            ICurrencyService currencyService,
+            IPictureService pictureService, 
+            ILocalizationService localizationService, 
+            IDateTimeHelper dateTimeHelper,
+            IOrderService orderService,
+            IEncryptionService encryptionService,
+            IThemeProvider themeProvider,
+            ICustomerService customerService, 
+            ICustomerActivityService customerActivityService,
+            IPermissionService permissionService,
+            IFulltextService fulltextService, 
+            IMaintenanceService maintenanceService,
+            IStoreService storeService,
+            IWorkContext workContext, 
+            IGenericAttributeService genericAttributeService)
         {
             this._settingService = settingService;
             this._countryService = countryService;
@@ -101,7 +110,6 @@ namespace Nop.Admin.Controllers
             this._customerService = customerService;
             this._customerActivityService = customerActivityService;
             this._permissionService = permissionService;
-            this._webHelper = webHelper;
             this._fulltextService = fulltextService;
             this._maintenanceService = maintenanceService;
             this._storeService = storeService;
@@ -123,7 +131,7 @@ namespace Nop.Admin.Controllers
             var model = new StoreScopeConfigurationModel();
             foreach (var s in allStores)
             {
-                model.Stores.Add(new StoreModel()
+                model.Stores.Add(new StoreModel
                 {
                     Id = s.Id,
                     Name = s.Name
@@ -547,6 +555,7 @@ namespace Nop.Admin.Controllers
             if (storeScope > 0)
             {
                 model.AllowPickUpInStore_OverrideForStore = _settingService.SettingExists(shippingSettings, x => x.AllowPickUpInStore, storeScope);
+                model.PickUpInStoreFee_OverrideForStore = _settingService.SettingExists(shippingSettings, x => x.PickUpInStoreFee, storeScope);
                 model.UseWarehouseLocation_OverrideForStore = _settingService.SettingExists(shippingSettings, x => x.UseWarehouseLocation, storeScope);
                 model.FreeShippingOverXEnabled_OverrideForStore = _settingService.SettingExists(shippingSettings, x => x.FreeShippingOverXEnabled, storeScope);
                 model.FreeShippingOverXValue_OverrideForStore = _settingService.SettingExists(shippingSettings, x => x.FreeShippingOverXValue, storeScope);
@@ -566,18 +575,18 @@ namespace Nop.Admin.Controllers
             else
                 model.ShippingOriginAddress = new AddressModel();
 
-            model.ShippingOriginAddress.AvailableCountries.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
+            model.ShippingOriginAddress.AvailableCountries.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
             foreach (var c in _countryService.GetAllCountries(true))
-                model.ShippingOriginAddress.AvailableCountries.Add(new SelectListItem() { Text = c.Name, Value = c.Id.ToString(), Selected = (originAddress != null && c.Id == originAddress.CountryId) });
+                model.ShippingOriginAddress.AvailableCountries.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString(), Selected = (originAddress != null && c.Id == originAddress.CountryId) });
 
             var states = originAddress != null && originAddress.Country != null ? _stateProvinceService.GetStateProvincesByCountryId(originAddress.Country.Id, true).ToList() : new List<StateProvince>();
             if (states.Count > 0)
             {
                 foreach (var s in states)
-                    model.ShippingOriginAddress.AvailableStates.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString(), Selected = (s.Id == originAddress.StateProvinceId) });
+                    model.ShippingOriginAddress.AvailableStates.Add(new SelectListItem { Text = s.Name, Value = s.Id.ToString(), Selected = (s.Id == originAddress.StateProvinceId) });
             }
             else
-                model.ShippingOriginAddress.AvailableStates.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
+                model.ShippingOriginAddress.AvailableStates.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
             model.ShippingOriginAddress.CountryEnabled = true;
             model.ShippingOriginAddress.StateProvinceEnabled = true;
             model.ShippingOriginAddress.CityEnabled = true;
@@ -606,6 +615,11 @@ namespace Nop.Admin.Controllers
                 _settingService.SaveSetting(shippingSettings, x => x.AllowPickUpInStore, storeScope, false);
             else if (storeScope > 0)
                 _settingService.DeleteSetting(shippingSettings, x => x.AllowPickUpInStore, storeScope);
+
+            if (model.PickUpInStoreFee_OverrideForStore || storeScope == 0)
+                _settingService.SaveSetting(shippingSettings, x => x.PickUpInStoreFee, storeScope, false);
+            else if (storeScope > 0)
+                _settingService.DeleteSetting(shippingSettings, x => x.PickUpInStoreFee, storeScope);
 
             if (model.UseWarehouseLocation_OverrideForStore || storeScope == 0)
                 _settingService.SaveSetting(shippingSettings, x => x.UseWarehouseLocation, storeScope, false);
@@ -653,7 +667,7 @@ namespace Nop.Admin.Controllers
                 var addressId = _settingService.SettingExists(shippingSettings, x => x.ShippingOriginAddressId, storeScope) ?
                     shippingSettings.ShippingOriginAddressId : 0;
                 var originAddress = _addressService.GetAddressById(addressId) ??
-                    new Core.Domain.Common.Address()
+                    new Address
                     {
                         CreatedOnUtc = DateTime.UtcNow,
                     };
@@ -728,17 +742,17 @@ namespace Nop.Admin.Controllers
 
             //tax categories
             var taxCategories = _taxCategoryService.GetAllTaxCategories();
-            model.ShippingTaxCategories.Add(new SelectListItem() { Text = "---", Value = "0" });
+            model.ShippingTaxCategories.Add(new SelectListItem { Text = "---", Value = "0" });
             foreach (var tc in taxCategories)
-                model.ShippingTaxCategories.Add(new SelectListItem() { Text = tc.Name, Value = tc.Id.ToString(), Selected = tc.Id == taxSettings.ShippingTaxClassId });
-            model.PaymentMethodAdditionalFeeTaxCategories.Add(new SelectListItem() { Text = "---", Value = "0" });
+                model.ShippingTaxCategories.Add(new SelectListItem { Text = tc.Name, Value = tc.Id.ToString(), Selected = tc.Id == taxSettings.ShippingTaxClassId });
+            model.PaymentMethodAdditionalFeeTaxCategories.Add(new SelectListItem { Text = "---", Value = "0" });
             foreach (var tc in taxCategories)
-                model.PaymentMethodAdditionalFeeTaxCategories.Add(new SelectListItem() { Text = tc.Name, Value = tc.Id.ToString(), Selected = tc.Id == taxSettings.PaymentMethodAdditionalFeeTaxClassId });
+                model.PaymentMethodAdditionalFeeTaxCategories.Add(new SelectListItem { Text = tc.Name, Value = tc.Id.ToString(), Selected = tc.Id == taxSettings.PaymentMethodAdditionalFeeTaxClassId });
 
             //EU VAT countries
-            model.EuVatShopCountries.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
+            model.EuVatShopCountries.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
             foreach (var c in _countryService.GetAllCountries(true))
-                model.EuVatShopCountries.Add(new SelectListItem() { Text = c.Name, Value = c.Id.ToString(), Selected = c.Id == taxSettings.EuVatShopCountryId });
+                model.EuVatShopCountries.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString(), Selected = c.Id == taxSettings.EuVatShopCountryId });
 
             //default tax address
             var defaultAddress = taxSettings.DefaultTaxAddressId > 0
@@ -749,18 +763,18 @@ namespace Nop.Admin.Controllers
             else
                 model.DefaultTaxAddress = new AddressModel();
 
-            model.DefaultTaxAddress.AvailableCountries.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
+            model.DefaultTaxAddress.AvailableCountries.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
             foreach (var c in _countryService.GetAllCountries(true))
-                model.DefaultTaxAddress.AvailableCountries.Add(new SelectListItem() { Text = c.Name, Value = c.Id.ToString(), Selected = (defaultAddress != null && c.Id == defaultAddress.CountryId) });
+                model.DefaultTaxAddress.AvailableCountries.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString(), Selected = (defaultAddress != null && c.Id == defaultAddress.CountryId) });
 
             var states = defaultAddress != null && defaultAddress.Country != null ? _stateProvinceService.GetStateProvincesByCountryId(defaultAddress.Country.Id, true).ToList() : new List<StateProvince>();
             if (states.Count > 0)
             {
                 foreach (var s in states)
-                    model.DefaultTaxAddress.AvailableStates.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString(), Selected = (s.Id == defaultAddress.StateProvinceId) });
+                    model.DefaultTaxAddress.AvailableStates.Add(new SelectListItem { Text = s.Name, Value = s.Id.ToString(), Selected = (s.Id == defaultAddress.StateProvinceId) });
             }
             else
-                model.DefaultTaxAddress.AvailableStates.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
+                model.DefaultTaxAddress.AvailableStates.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
             model.DefaultTaxAddress.CountryEnabled = true;
             model.DefaultTaxAddress.StateProvinceEnabled = true;
             model.DefaultTaxAddress.ZipPostalCodeEnabled = true;
@@ -836,7 +850,7 @@ namespace Nop.Admin.Controllers
                 var addressId = _settingService.SettingExists(taxSettings, x => x.DefaultTaxAddressId, storeScope) ?
                     taxSettings.DefaultTaxAddressId : 0;
                 var originAddress = _addressService.GetAddressById(addressId) ??
-                    new Core.Domain.Common.Address()
+                    new Address
                     {
                         CreatedOnUtc = DateTime.UtcNow,
                     };
@@ -993,6 +1007,8 @@ namespace Nop.Admin.Controllers
                 model.DisplayTaxShippingInfoFooter_OverrideForStore = _settingService.SettingExists(catalogSettings, x => x.DisplayTaxShippingInfoFooter, storeScope);
                 model.DisplayTaxShippingInfoProductDetailsPage_OverrideForStore = _settingService.SettingExists(catalogSettings, x => x.DisplayTaxShippingInfoProductDetailsPage, storeScope);
                 model.DisplayTaxShippingInfoProductBoxes_OverrideForStore = _settingService.SettingExists(catalogSettings, x => x.DisplayTaxShippingInfoProductBoxes, storeScope);
+                model.DisplayTaxShippingInfoWishlist_OverrideForStore = _settingService.SettingExists(catalogSettings, x => x.DisplayTaxShippingInfoWishlist, storeScope);
+                model.DisplayTaxShippingInfoOrderDetailsPage_OverrideForStore = _settingService.SettingExists(catalogSettings, x => x.DisplayTaxShippingInfoOrderDetailsPage, storeScope);
             }
             return View(model);
         }
@@ -1261,6 +1277,16 @@ namespace Nop.Admin.Controllers
             else if (storeScope > 0)
                 _settingService.DeleteSetting(catalogSettings, x => x.DisplayTaxShippingInfoProductBoxes, storeScope);
 
+            if (model.DisplayTaxShippingInfoWishlist_OverrideForStore || storeScope == 0)
+                _settingService.SaveSetting(catalogSettings, x => x.DisplayTaxShippingInfoWishlist, storeScope, false);
+            else if (storeScope > 0)
+                _settingService.DeleteSetting(catalogSettings, x => x.DisplayTaxShippingInfoWishlist, storeScope);
+
+            if (model.DisplayTaxShippingInfoOrderDetailsPage_OverrideForStore || storeScope == 0)
+                _settingService.SaveSetting(catalogSettings, x => x.DisplayTaxShippingInfoOrderDetailsPage, storeScope, false);
+            else if (storeScope > 0)
+                _settingService.DeleteSetting(catalogSettings, x => x.DisplayTaxShippingInfoOrderDetailsPage, storeScope);
+
             //now clear settings cache
             _settingService.ClearCache();
 
@@ -1294,6 +1320,7 @@ namespace Nop.Admin.Controllers
                     _settingService.SettingExists(rewardPointsSettings, x => x.PointsForPurchases_Points, storeScope);
                 model.PointsForPurchases_Awarded_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForPurchases_Awarded, storeScope);
                 model.PointsForPurchases_Canceled_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForPurchases_Canceled, storeScope);
+                model.DisplayHowMuchWillBeEarned_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.DisplayHowMuchWillBeEarned, storeScope); model.PointsForRegistration_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForRegistration, storeScope);
             }
             var currencySettings = _settingService.LoadSetting<CurrencySettings>(storeScope); 
             model.PrimaryStoreCurrencyCode = _currencyService.GetCurrencyById(currencySettings.PrimaryStoreCurrencyId).CurrencyCode;
@@ -1355,7 +1382,12 @@ namespace Nop.Admin.Controllers
                     _settingService.SaveSetting(rewardPointsSettings, x => x.PointsForPurchases_Canceled, storeScope, false);
                 else if (storeScope > 0)
                     _settingService.DeleteSetting(rewardPointsSettings, x => x.PointsForPurchases_Canceled, storeScope);
-
+                
+                if (model.DisplayHowMuchWillBeEarned_OverrideForStore || storeScope == 0)
+                    _settingService.SaveSetting(rewardPointsSettings, x => x.DisplayHowMuchWillBeEarned, storeScope, false);
+                else if (storeScope > 0)
+                    _settingService.DeleteSetting(rewardPointsSettings, x => x.DisplayHowMuchWillBeEarned, storeScope);
+                
                 //now clear settings cache
                 _settingService.ClearCache();
 
@@ -1402,6 +1434,7 @@ namespace Nop.Admin.Controllers
                 model.DisableBillingAddressCheckoutStep_OverrideForStore = _settingService.SettingExists(orderSettings, x => x.DisableBillingAddressCheckoutStep, storeScope);
                 model.DisableOrderCompletedPage_OverrideForStore = _settingService.SettingExists(orderSettings, x => x.DisableOrderCompletedPage, storeScope);
                 model.AttachPdfInvoiceToOrderPlacedEmail_OverrideForStore = _settingService.SettingExists(orderSettings, x => x.AttachPdfInvoiceToOrderPlacedEmail, storeScope);
+                model.AttachPdfInvoiceToOrderPaidEmail_OverrideForStore = _settingService.SettingExists(orderSettings, x => x.AttachPdfInvoiceToOrderPaidEmail, storeScope);
                 model.AttachPdfInvoiceToOrderCompletedEmail_OverrideForStore = _settingService.SettingExists(orderSettings, x => x.AttachPdfInvoiceToOrderCompletedEmail, storeScope);
                 model.ReturnRequestsEnabled_OverrideForStore = _settingService.SettingExists(orderSettings, x => x.ReturnRequestsEnabled, storeScope);
                 model.NumberOfDaysReturnRequestAvailable_OverrideForStore = _settingService.SettingExists(orderSettings, x => x.NumberOfDaysReturnRequestAvailable, storeScope);
@@ -1412,9 +1445,9 @@ namespace Nop.Admin.Controllers
 
             //gift card activation/deactivation
             model.GiftCards_Activated_OrderStatuses = OrderStatus.Pending.ToSelectList(false).ToList();
-            model.GiftCards_Activated_OrderStatuses.Insert(0, new SelectListItem() { Text = "---", Value = "0" });
+            model.GiftCards_Activated_OrderStatuses.Insert(0, new SelectListItem { Text = "---", Value = "0" });
             model.GiftCards_Deactivated_OrderStatuses = OrderStatus.Pending.ToSelectList(false).ToList();
-            model.GiftCards_Deactivated_OrderStatuses.Insert(0, new SelectListItem() { Text = "---", Value = "0" });
+            model.GiftCards_Deactivated_OrderStatuses.Insert(0, new SelectListItem { Text = "---", Value = "0" });
 
 
             //parse return request actions
@@ -1508,6 +1541,11 @@ namespace Nop.Admin.Controllers
                 else if (storeScope > 0)
                     _settingService.DeleteSetting(orderSettings, x => x.AttachPdfInvoiceToOrderPlacedEmail, storeScope);
 
+                if (model.AttachPdfInvoiceToOrderPaidEmail_OverrideForStore || storeScope == 0)
+                    _settingService.SaveSetting(orderSettings, x => x.AttachPdfInvoiceToOrderPaidEmail, storeScope, false);
+                else if (storeScope > 0)
+                    _settingService.DeleteSetting(orderSettings, x => x.AttachPdfInvoiceToOrderPaidEmail, storeScope);
+
                 if (model.AttachPdfInvoiceToOrderCompletedEmail_OverrideForStore || storeScope == 0)
                     _settingService.SaveSetting(orderSettings, x => x.AttachPdfInvoiceToOrderCompletedEmail, storeScope, false);
                 else if (storeScope > 0)
@@ -1535,7 +1573,7 @@ namespace Nop.Admin.Controllers
                 orderSettings.ReturnRequestActions.Clear();
                 if (model.ReturnRequestActionsParsed != null)
                 {
-                    foreach (var returnAction in model.ReturnRequestActionsParsed.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    foreach (var returnAction in model.ReturnRequestActionsParsed.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                         orderSettings.ReturnRequestActions.Add(returnAction);
                 }
                 //note that we do not store this setting for a store (cannot be overridden)
@@ -1545,7 +1583,7 @@ namespace Nop.Admin.Controllers
                 orderSettings.ReturnRequestReasons.Clear();
                 if (model.ReturnRequestReasonsParsed != null)
                 {
-                    foreach (var returnReason in model.ReturnRequestReasonsParsed.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    foreach (var returnReason in model.ReturnRequestReasonsParsed.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                         orderSettings.ReturnRequestReasons.Add(returnReason);
                 }
                 //note that we do not store this setting for a store (cannot be overridden)
@@ -1758,6 +1796,7 @@ namespace Nop.Admin.Controllers
                 model.CartThumbPictureSize_OverrideForStore = _settingService.SettingExists(mediaSettings, x => x.CartThumbPictureSize, storeScope);
                 model.MiniCartThumbPictureSize_OverrideForStore = _settingService.SettingExists(mediaSettings, x => x.MiniCartThumbPictureSize, storeScope);
                 model.MaximumImageSize_OverrideForStore = _settingService.SettingExists(mediaSettings, x => x.MaximumImageSize, storeScope);
+                model.MultipleThumbDirectories_OverrideForStore = _settingService.SettingExists(mediaSettings, x => x.MultipleThumbDirectories, storeScope);
             }
             model.PicturesStoredIntoDatabase = _pictureService.StoreInDb;
             return View(model);
@@ -1826,7 +1865,12 @@ namespace Nop.Admin.Controllers
                 _settingService.SaveSetting(mediaSettings, x => x.MaximumImageSize, storeScope, false);
             else if (storeScope > 0)
                 _settingService.DeleteSetting(mediaSettings, x => x.MaximumImageSize, storeScope);
-                
+
+            if (model.MultipleThumbDirectories_OverrideForStore || storeScope == 0)
+                _settingService.SaveSetting(mediaSettings, x => x.MultipleThumbDirectories, storeScope, false);
+            else if (storeScope > 0)
+                _settingService.DeleteSetting(mediaSettings, x => x.MultipleThumbDirectories, storeScope);
+
             //now clear settings cache
             _settingService.ClearCache();
             
@@ -1874,7 +1918,7 @@ namespace Nop.Admin.Controllers
             model.DateTimeSettings.DefaultStoreTimeZoneId = _dateTimeHelper.DefaultStoreTimeZone.Id;
             foreach (TimeZoneInfo timeZone in _dateTimeHelper.GetSystemTimeZones())
             {
-                model.DateTimeSettings.AvailableTimeZones.Add(new SelectListItem()
+                model.DateTimeSettings.AvailableTimeZones.Add(new SelectListItem
                     {
                         Text = timeZone.DisplayName,
                         Value = timeZone.Id,
@@ -1947,17 +1991,14 @@ namespace Nop.Admin.Controllers
             model.StoreInformationSettings.DefaultStoreTheme = storeInformationSettings.DefaultStoreTheme;
             model.StoreInformationSettings.AvailableStoreThemes = _themeProvider
                 .GetThemeConfigurations()
-                .Select(x =>
+                .Select(x => new GeneralCommonSettingsModel.StoreInformationSettingsModel.ThemeConfigurationModel
                 {
-                    return new GeneralCommonSettingsModel.StoreInformationSettingsModel.ThemeConfigurationModel()
-                    {
-                        ThemeTitle = x.ThemeTitle,
-                        ThemeName = x.ThemeName,
-                        PreviewImageUrl = x.PreviewImageUrl,
-                        PreviewText = x.PreviewText,
-                        SupportRtl = x.SupportRtl,
-                        Selected = x.ThemeName.Equals(storeInformationSettings.DefaultStoreTheme, StringComparison.InvariantCultureIgnoreCase)
-                    };
+                    ThemeTitle = x.ThemeTitle,
+                    ThemeName = x.ThemeName,
+                    PreviewImageUrl = x.PreviewImageUrl,
+                    PreviewText = x.PreviewText,
+                    SupportRtl = x.SupportRtl,
+                    Selected = x.ThemeName.Equals(storeInformationSettings.DefaultStoreTheme, StringComparison.InvariantCultureIgnoreCase)
                 })
                 .ToList();
             model.StoreInformationSettings.AllowCustomerToSelectTheme = storeInformationSettings.AllowCustomerToSelectTheme;
@@ -2257,7 +2298,7 @@ namespace Nop.Admin.Controllers
                 securitySettings.AdminAreaAllowedIpAddresses = new List<string>();
             securitySettings.AdminAreaAllowedIpAddresses.Clear();
             if (!String.IsNullOrEmpty(model.SecuritySettings.AdminAreaAllowedIpAddresses))
-                foreach (string s in model.SecuritySettings.AdminAreaAllowedIpAddresses.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string s in model.SecuritySettings.AdminAreaAllowedIpAddresses.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                     if (!String.IsNullOrWhiteSpace(s))
                         securitySettings.AdminAreaAllowedIpAddresses.Add(s.Trim());
             securitySettings.ForceSslForAllPages = model.SecuritySettings.ForceSslForAllPages;
@@ -2497,7 +2538,7 @@ namespace Nop.Admin.Controllers
                 .GetAllSettings()
                 .Select(x =>
                             {
-                                string storeName = "";
+                                string storeName;
                                 if (x.StoreId == 0)
                                 {
                                     storeName = _localizationService.GetResource("Admin.Configuration.Settings.AllSettings.Fields.StoreName.AllStores");
@@ -2507,7 +2548,7 @@ namespace Nop.Admin.Controllers
                                     var store = _storeService.GetStoreById(x.StoreId);
                                     storeName = store != null ? store.Name : "Unknown";
                                 }
-                                var settingModel = new SettingModel()
+                                var settingModel = new SettingModel
                                 {
                                     Id = x.Id,
                                     Name = x.Name,
@@ -2542,7 +2583,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var setting = _settingService.GetSettingById(model.Id);
@@ -2578,7 +2619,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
             var storeId = model.StoreId;
             _settingService.SetSetting(model.Name, model.Value, storeId);

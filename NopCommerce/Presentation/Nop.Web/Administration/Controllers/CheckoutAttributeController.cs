@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Orders;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
@@ -114,9 +115,9 @@ namespace Nop.Admin.Controllers
 
             //tax categories
             var taxCategories = _taxCategoryService.GetAllTaxCategories();
-            model.AvailableTaxCategories.Add(new SelectListItem() { Text = "---", Value = "0" });
+            model.AvailableTaxCategories.Add(new SelectListItem { Text = "---", Value = "0" });
             foreach (var tc in taxCategories)
-                model.AvailableTaxCategories.Add(new SelectListItem() { Text = tc.Name, Value = tc.Id.ToString(), Selected = checkoutAttribute != null && !excludeProperties && tc.Id == checkoutAttribute.TaxCategoryId });
+                model.AvailableTaxCategories.Add(new SelectListItem { Text = tc.Name, Value = tc.Id.ToString(), Selected = checkoutAttribute != null && !excludeProperties && tc.Id == checkoutAttribute.TaxCategoryId });
         }
 
         [NonAction]
@@ -134,10 +135,6 @@ namespace Nop.Admin.Controllers
                 if (checkoutAttribute != null)
                 {
                     model.SelectedStoreIds = _storeMappingService.GetStoresIdsWithAccess(checkoutAttribute);
-                }
-                else
-                {
-                    model.SelectedStoreIds = new int[0];
                 }
             }
         }
@@ -194,9 +191,9 @@ namespace Nop.Admin.Controllers
             {
                 Data = checkoutAttributes.Select(x =>
                 {
-                    var caModel = x.ToModel();
-                    caModel.AttributeControlTypeName = x.AttributeControlType.GetLocalizedEnum(_localizationService, _workContext);
-                    return caModel;
+                    var attributeModel = x.ToModel();
+                    attributeModel.AttributeControlTypeName = x.AttributeControlType.GetLocalizedEnum(_localizationService, _workContext);
+                    return attributeModel;
                 }),
                 Total = checkoutAttributes.Count()
             };
@@ -307,10 +304,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", checkoutAttribute.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
@@ -354,19 +348,16 @@ namespace Nop.Admin.Controllers
             var values = _checkoutAttributeService.GetCheckoutAttributeValues(checkoutAttributeId);
             var gridModel = new DataSourceResult
             {
-                Data = values.Select(x =>
+                Data = values.Select(x => new CheckoutAttributeValueModel
                 {
-                    return new CheckoutAttributeValueModel()
-                    {
-                        Id = x.Id,
-                        CheckoutAttributeId = x.CheckoutAttributeId,
-                        Name = x.CheckoutAttribute.AttributeControlType != AttributeControlType.ColorSquares ? x.Name : string.Format("{0} - {1}", x.Name, x.ColorSquaresRgb),
-                        ColorSquaresRgb = x.ColorSquaresRgb,
-                        PriceAdjustment = x.PriceAdjustment,
-                        WeightAdjustment = x.WeightAdjustment,
-                        IsPreSelected = x.IsPreSelected,
-                        DisplayOrder = x.DisplayOrder,
-                    };
+                    Id = x.Id,
+                    CheckoutAttributeId = x.CheckoutAttributeId,
+                    Name = x.CheckoutAttribute.AttributeControlType != AttributeControlType.ColorSquares ? x.Name : string.Format("{0} - {1}", x.Name, x.ColorSquaresRgb),
+                    ColorSquaresRgb = x.ColorSquaresRgb,
+                    PriceAdjustment = x.PriceAdjustment,
+                    WeightAdjustment = x.WeightAdjustment,
+                    IsPreSelected = x.IsPreSelected,
+                    DisplayOrder = x.DisplayOrder,
                 }),
                 Total = values.Count()
             };
@@ -415,7 +406,8 @@ namespace Nop.Admin.Controllers
                     ModelState.AddModelError("", "Color is required");
                 try
                 {
-                    var color = System.Drawing.ColorTranslator.FromHtml(model.ColorSquaresRgb);
+                    //ensure color is valid (can be instanciated)
+                    System.Drawing.ColorTranslator.FromHtml(model.ColorSquaresRgb);
                 }
                 catch (Exception exc)
                 {
@@ -425,7 +417,7 @@ namespace Nop.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var cav = new CheckoutAttributeValue()
+                var cav = new CheckoutAttributeValue
                 {
                     CheckoutAttributeId = model.CheckoutAttributeId,
                     Name = model.Name,
@@ -460,7 +452,7 @@ namespace Nop.Admin.Controllers
                 //No checkout attribute value found with the specified id
                 return RedirectToAction("List");
 
-            var model = new CheckoutAttributeValueModel()
+            var model = new CheckoutAttributeValueModel
             {
                 CheckoutAttributeId = cav.CheckoutAttributeId,
                 Name = cav.Name,
@@ -504,7 +496,8 @@ namespace Nop.Admin.Controllers
                     ModelState.AddModelError("", "Color is required");
                 try
                 {
-                    var color = System.Drawing.ColorTranslator.FromHtml(model.ColorSquaresRgb);
+                    //ensure color is valid (can be instanciated)
+                    System.Drawing.ColorTranslator.FromHtml(model.ColorSquaresRgb);
                 }
                 catch (Exception exc)
                 {

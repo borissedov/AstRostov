@@ -132,7 +132,6 @@ namespace Nop.Services.Catalog
                                     ProductCount = pt.Products
                                         //published and not deleted products
                                         .Count(p => !p.Deleted && p.Published)
-                                    //UNDONE filter by store identifier if specified ( > 0 )
                                 };
 
                     var dictionary = new Dictionary<int, int>();
@@ -254,8 +253,8 @@ namespace Nop.Services.Catalog
             var dictionary = GetProductCount(storeId);
             if (dictionary.ContainsKey(productTagId))
                 return dictionary[productTagId];
-            else
-                return 0;
+            
+            return 0;
         }
 
         #endregion

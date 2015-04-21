@@ -12,6 +12,38 @@ namespace Nop.Services.Catalog
     public static class ProductExtensions
     {
         /// <summary>
+        /// Get product special price
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <returns>Special price; null if product does not have special price specified</returns>
+        public static decimal? GetSpecialPrice(this Product product)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            if (!product.SpecialPrice.HasValue)
+                return null;
+
+            //check date range
+            DateTime now = DateTime.UtcNow;
+            if (product.SpecialPriceStartDateTimeUtc.HasValue)
+            {
+                DateTime startDate = DateTime.SpecifyKind(product.SpecialPriceStartDateTimeUtc.Value, DateTimeKind.Utc);
+                if (startDate.CompareTo(now) > 0)
+                    return null;
+            }
+            if (product.SpecialPriceEndDateTimeUtc.HasValue)
+            {
+                DateTime endDate = DateTime.SpecifyKind(product.SpecialPriceEndDateTimeUtc.Value, DateTimeKind.Utc);
+                if (endDate.CompareTo(now) < 0)
+                    return null;
+            }
+
+            return product.SpecialPrice.Value;
+        }
+
+
+        /// <summary>
         /// Finds a related product item by specified identifiers
         /// </summary>
         /// <param name="source">Source</param>
@@ -59,76 +91,39 @@ namespace Nop.Services.Catalog
 
             string stockMessage = string.Empty;
 
-            if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock
-                && product.DisplayStockAvailability)
+            if (product.ManageInventoryMethod != ManageInventoryMethod.ManageStock)
+                return stockMessage;
+
+            if(!product.DisplayStockAvailability)
+                return stockMessage;
+
+            var stockQuantity = product.GetTotalStockQuantity();
+            if (stockQuantity > 0)
             {
+                if (product.DisplayStockQuantity)
+                {
+                    //display "in stock" with stock quantity
+                    stockMessage = string.Format(localizationService.GetResource("Products.Availability.InStockWithQuantity"), stockQuantity);
+                }
+                else
+                {
+                    //display "in stock" without stock quantity
+                    stockMessage = localizationService.GetResource("Products.Availability.InStock");
+                }
+            }
+            else
+            {
+                //out of stock
                 switch (product.BackorderMode)
                 {
                     case BackorderMode.NoBackorders:
-                        {
-                            if (product.StockQuantity > 0)
-                            {
-                                if (product.DisplayStockQuantity)
-                                {
-                                    //display "in stock" with stock quantity
-                                    stockMessage = string.Format(localizationService.GetResource("Products.Availability.InStockWithQuantity"), product.StockQuantity);
-                                }
-                                else
-                                {
-                                    //display "in stock" without stock quantity
-                                    stockMessage = localizationService.GetResource("Products.Availability.InStock");
-                                }
-                            }
-                            else
-                            {
-                                //display "out of stock"
-                                stockMessage = localizationService.GetResource("Products.Availability.OutOfStock");
-                            }
-                        }
+                        stockMessage = localizationService.GetResource("Products.Availability.OutOfStock");
                         break;
                     case BackorderMode.AllowQtyBelow0:
-                        {
-                            if (product.StockQuantity > 0)
-                            {
-                                if (product.DisplayStockQuantity)
-                                {
-                                    //display "in stock" with stock quantity
-                                    stockMessage = string.Format(localizationService.GetResource("Products.Availability.InStockWithQuantity"), product.StockQuantity);
-                                }
-                                else
-                                {
-                                    //display "in stock" without stock quantity
-                                    stockMessage = localizationService.GetResource("Products.Availability.InStock");
-                                }
-                            }
-                            else
-                            {
-                                //display "in stock" without stock quantity
-                                stockMessage = localizationService.GetResource("Products.Availability.InStock");
-                            }
-                        }
+                        stockMessage = localizationService.GetResource("Products.Availability.InStock");
                         break;
                     case BackorderMode.AllowQtyBelow0AndNotifyCustomer:
-                        {
-                            if (product.StockQuantity > 0)
-                            {
-                                if (product.DisplayStockQuantity)
-                                {
-                                    //display "in stock" with stock quantity
-                                    stockMessage = string.Format(localizationService.GetResource("Products.Availability.InStockWithQuantity"), product.StockQuantity);
-                                }
-                                else
-                                {
-                                    //display "in stock" without stock quantity
-                                    stockMessage = localizationService.GetResource("Products.Availability.InStock");
-                                }
-                            }
-                            else
-                            {
-                                //display "backorder" without stock quantity
-                                stockMessage = localizationService.GetResource("Products.Availability.Backordering");
-                            }
-                        }
+                        stockMessage = localizationService.GetResource("Products.Availability.Backordering");
                         break;
                     default:
                         break;
@@ -168,19 +163,62 @@ namespace Nop.Services.Catalog
             if (!String.IsNullOrWhiteSpace(product.AllowedQuantities))
             {
                 product.AllowedQuantities
-                    .Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries)
+                    .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
                     .ToList()
                     .ForEach(qtyStr =>
-                                 {
-                                     int qty = 0;
-                                     if (int.TryParse(qtyStr.Trim(), out qty))
-                                     {
-                                         result.Add(qty);
-                                     }
-                                 } );
+                    {
+                        int qty;
+                        if (int.TryParse(qtyStr.Trim(), out qty))
+                        {
+                            result.Add(qty);
+                        }
+                    });
             }
 
             return result.ToArray();
+        }
+
+        /// <summary>
+        /// Get total quantity
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="useReservedQuantity">
+        /// A value indicating whether we should consider "Reserved Quantity" property 
+        /// when "multiple warehouses" are used
+        /// </param>
+        /// <param name="warehouseId">
+        /// Warehouse identifier. Used to limit result to certain warehouse.
+        /// Used only with "multiple warehouses" enabled.
+        /// </param>
+        /// <returns>Result</returns>
+        public static int GetTotalStockQuantity(this Product product, 
+            bool useReservedQuantity = true, int warehouseId = 0)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            if (product.ManageInventoryMethod != ManageInventoryMethod.ManageStock)
+            {
+                //We can calculate total stock quantity when 'Manage inventory' property is set to 'Track inventory'
+                return 0;
+            }
+
+            if (product.UseMultipleWarehouses)
+            {
+                var pwi = product.ProductWarehouseInventory;
+                if (warehouseId > 0)
+                {
+                    pwi = pwi.Where(x => x.WarehouseId == warehouseId).ToList();
+                }
+                var result = pwi.Sum(x => x.StockQuantity);
+                if (useReservedQuantity)
+                {
+                    result = result - pwi.Sum(x => x.ReservedQuantity);
+                }
+                return result;
+            }
+            
+            return product.StockQuantity;
         }
 
 
@@ -189,12 +227,12 @@ namespace Nop.Services.Catalog
         /// Gets SKU, Manufacturer part number and GTIN
         /// </summary>
         /// <param name="product">Product</param>
-        /// <param name="selectedAttributes">Selected attributes (XML format)</param>
+        /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="productAttributeParser">Product attribute service (used when attributes are specified)</param>
         /// <param name="sku">SKU</param>
         /// <param name="manufacturerPartNumber">Manufacturer part number</param>
         /// <param name="gtin">GTIN</param>
-        private static void GetSkuMpnGtin(this Product product, string selectedAttributes, IProductAttributeParser productAttributeParser,
+        private static void GetSkuMpnGtin(this Product product, string attributesXml, IProductAttributeParser productAttributeParser,
             out string sku, out string manufacturerPartNumber, out string gtin)
         {
             if (product == null)
@@ -204,7 +242,8 @@ namespace Nop.Services.Catalog
             manufacturerPartNumber = null;
             gtin = null;
 
-            if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStockByAttributes)
+            if (!String.IsNullOrEmpty(attributesXml) && 
+                product.ManageInventoryMethod == ManageInventoryMethod.ManageStockByAttributes)
             {
                 //manage stock by attribute combinations
                 if (productAttributeParser == null)
@@ -212,8 +251,8 @@ namespace Nop.Services.Catalog
 
                 //let's find appropriate record
                 var combination = product
-                    .ProductVariantAttributeCombinations
-                    .FirstOrDefault(x => productAttributeParser.AreProductAttributesEqual(x.AttributesXml, selectedAttributes));
+                    .ProductAttributeCombinations
+                    .FirstOrDefault(x => productAttributeParser.AreProductAttributesEqual(x.AttributesXml, attributesXml));
                 if (combination != null)
                 {
                     sku = combination.Sku;
@@ -234,19 +273,19 @@ namespace Nop.Services.Catalog
         /// Formats SKU
         /// </summary>
         /// <param name="product">Product</param>
-        /// <param name="selectedAttributes">Selected attributes (XML format)</param>
+        /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="productAttributeParser">Product attribute service (used when attributes are specified)</param>
         /// <returns>SKU</returns>
-        public static string FormatSku(this Product product, string selectedAttributes = null, IProductAttributeParser productAttributeParser = null)
+        public static string FormatSku(this Product product, string attributesXml = null, IProductAttributeParser productAttributeParser = null)
         {
             if (product == null)
                 throw new ArgumentNullException("product");
 
-            string sku = null;
-            string manufacturerPartNumber = null;
-            string gtin = null;
+            string sku;
+            string manufacturerPartNumber;
+            string gtin;
 
-            product.GetSkuMpnGtin(selectedAttributes, productAttributeParser,
+            product.GetSkuMpnGtin(attributesXml, productAttributeParser,
                 out sku, out manufacturerPartNumber, out gtin);
 
             return sku;
@@ -256,19 +295,19 @@ namespace Nop.Services.Catalog
         /// Formats manufacturer part number
         /// </summary>
         /// <param name="product">Product</param>
-        /// <param name="selectedAttributes">Selected attributes (XML format)</param>
+        /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="productAttributeParser">Product attribute service (used when attributes are specified)</param>
         /// <returns>Manufacturer part number</returns>
-        public static string FormatMpn(this Product product, string selectedAttributes = null, IProductAttributeParser productAttributeParser = null)
+        public static string FormatMpn(this Product product, string attributesXml = null, IProductAttributeParser productAttributeParser = null)
         {
             if (product == null)
                 throw new ArgumentNullException("product");
 
-            string sku = null;
-            string manufacturerPartNumber = null;
-            string gtin = null;
+            string sku;
+            string manufacturerPartNumber;
+            string gtin;
 
-            product.GetSkuMpnGtin(selectedAttributes, productAttributeParser,
+            product.GetSkuMpnGtin(attributesXml, productAttributeParser,
                 out sku, out manufacturerPartNumber, out gtin);
 
             return manufacturerPartNumber;
@@ -278,22 +317,39 @@ namespace Nop.Services.Catalog
         /// Formats GTIN
         /// </summary>
         /// <param name="product">Product</param>
-        /// <param name="selectedAttributes">Selected attributes (XML format)</param>
+        /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="productAttributeParser">Product attribute service (used when attributes are specified)</param>
         /// <returns>GTIN</returns>
-        public static string FormatGtin(this Product product, string selectedAttributes = null, IProductAttributeParser productAttributeParser = null)
+        public static string FormatGtin(this Product product, string attributesXml = null, IProductAttributeParser productAttributeParser = null)
         {
             if (product == null)
                 throw new ArgumentNullException("product");
 
-            string sku = null;
-            string manufacturerPartNumber = null;
-            string gtin = null;
+            string sku;
+            string manufacturerPartNumber;
+            string gtin;
 
-            product.GetSkuMpnGtin(selectedAttributes, productAttributeParser,
+            product.GetSkuMpnGtin(attributesXml, productAttributeParser,
                 out sku, out manufacturerPartNumber, out gtin);
 
             return gtin;
+        }
+
+        /// <summary>
+        /// Formats start/end date for rental product
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="date">Date</param>
+        /// <returns>Formatted date</returns>
+        public static string FormatRentalDate(this Product product, DateTime date)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            if (!product.IsRental)
+                return null;
+
+            return date.ToShortDateString();
         }
     }
 }

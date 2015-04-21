@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Payments;
 using Nop.Core;
 using Nop.Core.Domain.Payments;
@@ -189,7 +190,7 @@ namespace Nop.Admin.Controllers
             foreach (var pm in paymentMethods)
             {
                 string formKey = "restrict_" + pm.PluginDescriptor.SystemName;
-                var countryIdsToRestrict = (form[formKey] != null ? form[formKey].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() : new List<string>())
+                var countryIdsToRestrict = (form[formKey] != null ? form[formKey].Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() : new List<string>())
                     .Select(x => Convert.ToInt32(x)).ToList();
 
                 var newCountryIds = new List<int>();

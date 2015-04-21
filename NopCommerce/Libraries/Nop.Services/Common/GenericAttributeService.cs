@@ -160,6 +160,9 @@ namespace Nop.Services.Common
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
+            if (key == null)
+                throw new ArgumentNullException("key");
+
             string keyGroup = entity.GetUnproxiedEntityType().Name;
 
             var props = GetAttributesForEntity(entity.Id, keyGroup)
@@ -168,7 +171,7 @@ namespace Nop.Services.Common
             var prop = props.FirstOrDefault(ga =>
                 ga.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase)); //should be culture invariant
 
-            string valueStr = CommonHelper.To<string>(value);
+            var valueStr = CommonHelper.To<string>(value);
 
             if (prop != null)
             {
@@ -189,7 +192,7 @@ namespace Nop.Services.Common
                 if (!string.IsNullOrWhiteSpace(valueStr))
                 {
                     //insert
-                    prop = new GenericAttribute()
+                    prop = new GenericAttribute
                     {
                         EntityId = entity.Id,
                         Key = key,

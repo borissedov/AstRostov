@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Plugins;
 using Nop.Core;
 using Nop.Core.Domain.Cms;
@@ -20,6 +22,7 @@ using Nop.Services.Security;
 using Nop.Services.Shipping;
 using Nop.Services.Stores;
 using Nop.Services.Tax;
+using Nop.Web.Framework;
 using Nop.Web.Framework.Kendoui;
 
 namespace Nop.Admin.Controllers
@@ -29,6 +32,7 @@ namespace Nop.Admin.Controllers
 		#region Fields
 
         private readonly IPluginFinder _pluginFinder;
+        private readonly IOfficialFeedManager _officialFeedManager;
         private readonly ILocalizationService _localizationService;
         private readonly IWebHelper _webHelper;
         private readonly IPermissionService _permissionService;
@@ -45,6 +49,7 @@ namespace Nop.Admin.Controllers
 		#region Constructors
 
         public PluginController(IPluginFinder pluginFinder,
+            IOfficialFeedManager officialFeedManager,
             ILocalizationService localizationService,
             IWebHelper webHelper,
             IPermissionService permissionService, 
@@ -58,6 +63,7 @@ namespace Nop.Admin.Controllers
             WidgetSettings widgetSettings)
 		{
             this._pluginFinder = pluginFinder;
+            this._officialFeedManager = officialFeedManager;
             this._localizationService = localizationService;
             this._webHelper = webHelper;
             this._permissionService = permissionService;
@@ -185,6 +191,30 @@ namespace Nop.Admin.Controllers
             return pluginModel;
         }
 
+        [NonAction]
+        protected static string GetCategoryBreadCrumbName(OfficialFeedCategory category,
+            IList<OfficialFeedCategory> allCategories)
+        {
+            if (category == null)
+                throw new ArgumentNullException("category");
+
+            var breadCrumb = new List<OfficialFeedCategory>();
+            while (category != null)
+            {
+                breadCrumb.Add(category);
+                category = allCategories.FirstOrDefault(x => x.Id == category.ParentCategoryId);
+            }
+            breadCrumb.Reverse();
+
+            var result = "";
+            for (int i = 0; i <= breadCrumb.Count - 1; i++)
+            {
+                result += breadCrumb[i].Name;
+                if (i != breadCrumb.Count - 1)
+                    result += " >> ";
+            }
+            return result;
+        }
         #endregion
 
         #region Methods
@@ -198,17 +228,24 @@ namespace Nop.Admin.Controllers
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
                 return AccessDeniedView();
-            
-            return View();
-        }
 
+            var model = new PluginListModel();
+            //load modes
+            model.AvailableLoadModes = LoadPluginsMode.All.ToSelectList(false).ToList();
+            //groups
+            model.AvailableGroups.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "" });
+            foreach (var g in _pluginFinder.GetPluginGroups())
+                model.AvailableGroups.Add(new SelectListItem { Text = g, Value = g });
+            return View(model);
+        }
 	    [HttpPost]
-	    public ActionResult ListSelect(DataSourceRequest command)
+        public ActionResult ListSelect(DataSourceRequest command, PluginListModel model)
 	    {
 	        if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
 	            return AccessDeniedView();
 
-	        var pluginDescriptors = _pluginFinder.GetPluginDescriptors(false).ToList();
+	        var loadMode = (LoadPluginsMode) model.SearchLoadModeId;
+            var pluginDescriptors = _pluginFinder.GetPluginDescriptors(loadMode, 0, model.SearchGroup).ToList();
 	        var gridModel = new DataSourceResult
             {
                 Data = pluginDescriptors.Select(x => PreparePluginModel(x, false, false))
@@ -226,8 +263,7 @@ namespace Nop.Admin.Controllers
 
             try
             {
-                var pluginDescriptor = _pluginFinder.GetPluginDescriptors(false)
-                    .FirstOrDefault(x => x.SystemName.Equals(systemName, StringComparison.InvariantCultureIgnoreCase));
+                var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(systemName, LoadPluginsMode.All);
                 if (pluginDescriptor == null)
                     //No plugin found with the specified id
                     return RedirectToAction("List");
@@ -257,8 +293,7 @@ namespace Nop.Admin.Controllers
 
             try
             {
-                var pluginDescriptor = _pluginFinder.GetPluginDescriptors(false)
-                    .FirstOrDefault(x => x.SystemName.Equals(systemName, StringComparison.InvariantCultureIgnoreCase));
+                var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(systemName, LoadPluginsMode.All);
                 if (pluginDescriptor == null)
                     //No plugin found with the specified id
                     return RedirectToAction("List");
@@ -321,7 +356,7 @@ namespace Nop.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
                 return AccessDeniedView();
 
-            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(systemName, false);
+            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(systemName, LoadPluginsMode.All);
             if (pluginDescriptor == null)
                 //No plugin found with the specified id
                 return RedirectToAction("List");
@@ -336,7 +371,7 @@ namespace Nop.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
                 return AccessDeniedView();
 
-            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(model.SystemName, false);
+            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(model.SystemName, LoadPluginsMode.All);
             if (pluginDescriptor == null)
                 //No plugin found with the specified id
                 return RedirectToAction("List");
@@ -481,6 +516,64 @@ namespace Nop.Admin.Controllers
             return View(model);
         }
 
+        //official feed
+        public ActionResult OfficialFeed()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
+                return AccessDeniedView();
+
+            var model = new OfficialFeedListModel();
+            //versions
+            model.AvailableVersions.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            foreach (var version in _officialFeedManager.GetVersions())
+                model.AvailableVersions.Add(new SelectListItem{ Text = version.Name, Value = version.Id.ToString()});
+            //pre-select current version
+            //current version name and named on official site do not match. that's why we use "Contains"
+            var currentVersionItem = model.AvailableVersions.FirstOrDefault(x => x.Text.Contains(NopVersion.CurrentVersion));
+            if (currentVersionItem != null)
+            {
+                model.SearchVersionId = int.Parse(currentVersionItem.Value);
+                currentVersionItem.Selected = true;
+            }
+
+            //categories
+            var categories = _officialFeedManager.GetCategories();
+            model.AvailableCategories.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            foreach (var category in categories)
+                model.AvailableCategories.Add(new SelectListItem { Text = GetCategoryBreadCrumbName(category, categories), Value = category.Id.ToString() });
+            //prices
+            model.AvailablePrices.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            model.AvailablePrices.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Configuration.Plugins.OfficialFeed.Price.Free"), Value = "10" });
+            model.AvailablePrices.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Configuration.Plugins.OfficialFeed.Price.Commercial"), Value = "20" });
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult OfficialFeedSelect(DataSourceRequest command, OfficialFeedListModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
+                return AccessDeniedView();
+
+            var plugins = _officialFeedManager.GetAllPlugins(categoryId: model.SearchCategoryId,
+                versionId: model.SearchVersionId,
+                price : model.SearchPriceId,
+                searchTerm: model.SearchName,
+                pageIndex: command.Page - 1,
+                pageSize: command.PageSize);
+
+            var gridModel = new DataSourceResult();
+            gridModel.Data = plugins.Select(x => new OfficialFeedListModel.ItemOverview
+            {
+                Url = x.Url,
+                Name = x.Name,
+                CategoryName = x.Category,
+                SupportedVersions = x.SupportedVersions,
+                PictureUrl = x.PictureUrl,
+                Price = x.Price
+            });
+            gridModel.Total = plugins.TotalCount;
+
+            return Json(gridModel);
+        }
         #endregion
     }
 }

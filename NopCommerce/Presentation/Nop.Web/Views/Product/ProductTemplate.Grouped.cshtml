@@ -120,7 +120,7 @@
                                     @{
                                         var dataDictAttributes = new ViewDataDictionary();
                                         dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", variant.Id);
-                                        @Html.Partial("_ProductAttributes", variant.ProductVariantAttributes, dataDictAttributes)                  
+                                        @Html.Partial("_ProductAttributes", variant.ProductAttributes, dataDictAttributes)                  
                                     }
                                     <!--product SKU, manufacturer part number, stock info-->
                                     @Html.Partial("_SKU_Man_Stock", variant)
@@ -132,13 +132,18 @@
                                         @Html.Partial("_GiftCardInfo", variant.GiftCard, dataDictGiftCard)
                                     }
                                     @{
+                                        var dataDictRental = new ViewDataDictionary();
+                                        dataDictRental.TemplateInfo.HtmlFieldPrefix = string.Format("rental_{0}", variant.Id);
+                                        @Html.Partial("_RentalInfo", variant, dataDictRental)
+                                    }
+                                    @{
                                         var dataDictPrice = new ViewDataDictionary();
                                         dataDictPrice.TemplateInfo.HtmlFieldPrefix = string.Format("price_{0}", variant.Id);
                                         @Html.Partial("_ProductPrice", variant.ProductPrice, dataDictPrice)
                                     }
                                     @{
-                                    var dataDictAddToCart = new ViewDataDictionary();
-                                    dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", variant.Id);
+                                        var dataDictAddToCart = new ViewDataDictionary();
+                                        dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", variant.Id);
                                         @Html.Partial("_AddToCart", variant.AddToCart, dataDictAddToCart)
                                     }
                                 </div>

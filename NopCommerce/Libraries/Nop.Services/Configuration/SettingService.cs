@@ -91,7 +91,7 @@ namespace Nop.Services.Configuration
                 foreach (var s in settings)
                 {
                     var resourceName = s.Name.ToLowerInvariant();
-                    var settingForCaching = new SettingForCaching()
+                    var settingForCaching = new SettingForCaching
                             {
                                 Id = s.Id,
                                 Name = s.Name,
@@ -101,7 +101,7 @@ namespace Nop.Services.Configuration
                     if (!dictionary.ContainsKey(resourceName))
                     {
                         //first setting
-                        dictionary.Add(resourceName, new List<SettingForCaching>()
+                        dictionary.Add(resourceName, new List<SettingForCaching>
                         {
                             settingForCaching
                         });
@@ -191,7 +191,37 @@ namespace Nop.Services.Configuration
 
             return _settingRepository.GetById(settingId);
         }
-        
+
+        /// <summary>
+        /// Get setting by key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="storeId">Store identifier</param>
+        /// <param name="loadSharedValueIfNotFound">A value indicating whether a shared (for all stores) value should be loaded if a value specific for a certain is not found</param>
+        /// <returns>Setting</returns>
+        public virtual Setting GetSetting(string key, int storeId = 0, bool loadSharedValueIfNotFound = false)
+        {
+            if (String.IsNullOrEmpty(key))
+                return null;
+
+            var settings = GetAllSettingsCached();
+            key = key.Trim().ToLowerInvariant();
+            if (settings.ContainsKey(key))
+            {
+                var settingsByKey = settings[key];
+                var setting = settingsByKey.FirstOrDefault(x => x.StoreId == storeId);
+
+                //load shared value?
+                if (setting == null && storeId > 0 && loadSharedValueIfNotFound)
+                    setting = settingsByKey.FirstOrDefault(x => x.StoreId == 0);
+
+                if (setting != null)
+                    return GetSettingById(setting.Id);
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Get setting value by key
         /// </summary>
@@ -253,7 +283,7 @@ namespace Nop.Services.Configuration
             else
             {
                 //insert
-                var setting = new Setting()
+                var setting = new Setting
                 {
                     Name = key,
                     Value = valueStr,
@@ -289,25 +319,9 @@ namespace Nop.Services.Configuration
             Expression<Func<T, TPropType>> keySelector, int storeId = 0) 
             where T : ISettings, new()
         {
-            var member = keySelector.Body as MemberExpression;
-            if (member == null)
-            {
-                throw new ArgumentException(string.Format(
-                    "Expression '{0}' refers to a method, not a property.",
-                    keySelector));
-            }
+            string key = settings.GetSettingKey(keySelector);
 
-            var propInfo = member.Member as PropertyInfo;
-            if (propInfo == null)
-            {
-                throw new ArgumentException(string.Format(
-                       "Expression '{0}' refers to a field, not a property.",
-                       keySelector));
-            }
-
-            string key = typeof(T).Name + "." + propInfo.Name;
-
-            string setting = GetSettingByKey<string>(key, storeId: storeId);
+            var setting = GetSettingByKey<string>(key, storeId: storeId);
             return setting != null;
         }
 
@@ -328,7 +342,7 @@ namespace Nop.Services.Configuration
 
                 var key = typeof(T).Name + "." + prop.Name;
                 //load by store
-                string setting = GetSettingByKey<string>(key, storeId: storeId, loadSharedValueIfNotFound: true);
+                var setting = GetSettingByKey<string>(key, storeId: storeId, loadSharedValueIfNotFound: true);
                 if (setting == null)
                     continue;
 
@@ -409,7 +423,7 @@ namespace Nop.Services.Configuration
                        keySelector));
             }
 
-            string key = typeof(T).Name + "." + propInfo.Name;
+            string key = settings.GetSettingKey(keySelector);
             //Duck typing is not supported in C#. That's why we're using dynamic type
             dynamic value = propInfo.GetValue(settings, null);
             if (value != null)
@@ -447,23 +461,7 @@ namespace Nop.Services.Configuration
         public virtual void DeleteSetting<T, TPropType>(T settings,
             Expression<Func<T, TPropType>> keySelector, int storeId = 0) where T : ISettings, new()
         {
-            var member = keySelector.Body as MemberExpression;
-            if (member == null)
-            {
-                throw new ArgumentException(string.Format(
-                    "Expression '{0}' refers to a method, not a property.",
-                    keySelector));
-            }
-
-            var propInfo = member.Member as PropertyInfo;
-            if (propInfo == null)
-            {
-                throw new ArgumentException(string.Format(
-                       "Expression '{0}' refers to a field, not a property.",
-                       keySelector));
-            }
-
-            string key = typeof(T).Name + "." + propInfo.Name;
+            string key = settings.GetSettingKey(keySelector);
             key = key.Trim().ToLowerInvariant();
 
             var allSettings = GetAllSettingsCached();

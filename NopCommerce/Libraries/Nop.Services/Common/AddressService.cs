@@ -33,6 +33,7 @@ namespace Nop.Services.Common
         private readonly IRepository<Address> _addressRepository;
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
+        private readonly IAddressAttributeService _addressAttributeService;
         private readonly IEventPublisher _eventPublisher;
         private readonly AddressSettings _addressSettings;
         private readonly ICacheManager _cacheManager;
@@ -48,16 +49,22 @@ namespace Nop.Services.Common
         /// <param name="addressRepository">Address repository</param>
         /// <param name="countryService">Country service</param>
         /// <param name="stateProvinceService">State/province service</param>
+        /// <param name="addressAttributeService">Address attribute service</param>
         /// <param name="eventPublisher">Event publisher</param>
         /// <param name="addressSettings">Address settings</param>
-        public AddressService(ICacheManager cacheManager, IRepository<Address> addressRepository,
-            ICountryService countryService, IStateProvinceService stateProvinceService,
-            IEventPublisher eventPublisher, AddressSettings addressSettings)
+        public AddressService(ICacheManager cacheManager,
+            IRepository<Address> addressRepository,
+            ICountryService countryService, 
+            IStateProvinceService stateProvinceService,
+            IAddressAttributeService addressAttributeService,
+            IEventPublisher eventPublisher, 
+            AddressSettings addressSettings)
         {
             this._cacheManager = cacheManager;
             this._addressRepository = addressRepository;
             this._countryService = countryService;
             this._stateProvinceService = stateProvinceService;
+            this._addressAttributeService = addressAttributeService;
             this._eventPublisher = eventPublisher;
             this._addressSettings = addressSettings;
         }
@@ -127,7 +134,7 @@ namespace Nop.Services.Common
                 return null;
 
             string key = string.Format(ADDRESSES_BY_ID_KEY, addressId);
-            return _cacheManager.Get(key, () => { return _addressRepository.GetById(addressId); });
+            return _cacheManager.Get(key, () => _addressRepository.GetById(addressId));
         }
 
         /// <summary>
@@ -237,7 +244,7 @@ namespace Nop.Services.Common
                         if (address.StateProvinceId == null || address.StateProvinceId.Value == 0)
                             return false;
 
-                        var state = _stateProvinceService.GetStateProvinceById(address.StateProvinceId.Value);
+                        var state = states.FirstOrDefault(x => x.Id == address.StateProvinceId.Value);
                         if (state == null)
                             return false;
                     }
@@ -257,6 +264,10 @@ namespace Nop.Services.Common
             if (_addressSettings.FaxEnabled &&
                 _addressSettings.FaxRequired &&
                 String.IsNullOrWhiteSpace(address.FaxNumber))
+                return false;
+
+            var attributes = _addressAttributeService.GetAllAddressAttributes();
+            if (attributes.Any(x => x.IsRequired))
                 return false;
 
             return true;

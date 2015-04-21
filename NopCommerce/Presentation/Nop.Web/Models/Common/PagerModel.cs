@@ -22,7 +22,7 @@ namespace Nop.Web.Models.Common
 
         #region Fields
 
-        private ILocalizationService _localizationService;
+        private readonly ILocalizationService _localizationService;
         private int individualPagesDisplayedCount;
         private int pageIndex = -2;
         private int pageSize;
@@ -35,7 +35,6 @@ namespace Nop.Web.Models.Common
         private bool? showPrevious;
         private bool? showTotalSummary;
 
-        private int totalRecords;
         private string firstButtonText;
         private string lastButtonText;
         private string nextButtonText;
@@ -66,8 +65,8 @@ namespace Nop.Web.Models.Common
             {
                 if (individualPagesDisplayedCount <= 0)
                     return 5;
-                else
-                    return individualPagesDisplayedCount;
+                
+                return individualPagesDisplayedCount;
             }
             set
             {
@@ -237,17 +236,7 @@ namespace Nop.Web.Models.Common
         /// <summary>
         /// Gets or sets a total records count
         /// </summary>
-        public int TotalRecords
-        {
-            get
-            {
-                return totalRecords;
-            }
-            set
-            {
-                totalRecords = value;
-            }
-        }
+        public int TotalRecords { get; set; }
 
         /// <summary>
         /// Gets or sets the first button text

@@ -13,13 +13,14 @@ using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Plugins;
 using Nop.Plugin.Payments.PayPalDirect.Controllers;
-using Nop.Plugin.Payments.PayPalDirect.PayPalSvc;
 using Nop.Services.Configuration;
 using Nop.Services.Customers;
 using Nop.Services.Directory;
 using Nop.Services.Localization;
 using Nop.Services.Orders;
 using Nop.Services.Payments;
+using PayPal.PayPalAPIInterfaceService;
+using PayPal.PayPalAPIInterfaceService.Model;
 
 namespace Nop.Plugin.Payments.PayPalDirect
 {
@@ -70,6 +71,22 @@ namespace Nop.Plugin.Payments.PayPalDirect
                 "https://www.paypal.com/us/cgi-bin/webscr";
         }
 
+        protected PayPalAPIInterfaceServiceService GetService()
+        {
+            var config = new Dictionary<string, string>();
+            var url = _paypalDirectPaymentSettings.UseSandbox ? "https://api-3t.sandbox.paypal.com/2.0" : "https://api-3t.paypal.com/2.0";
+            var mode = _paypalDirectPaymentSettings.UseSandbox ? "sandbox" : "live";
+
+            config.Add("PayPalAPI", url);
+            config.Add("mode", mode);
+            config.Add("account0.apiUsername", _paypalDirectPaymentSettings.ApiAccountName);
+            config.Add("account0.apiPassword", _paypalDirectPaymentSettings.ApiAccountPassword);
+            config.Add("account0.apiSignature", _paypalDirectPaymentSettings.Signature);
+
+            var service = new PayPalAPIInterfaceServiceService(config);
+            return service;
+        }
+
         /// <summary>
         /// Get Paypal country code
         /// </summary>
@@ -77,10 +94,10 @@ namespace Nop.Plugin.Payments.PayPalDirect
         /// <returns>Paypal country code</returns>
         protected CountryCodeType GetPaypalCountryCodeType(Country country)
         {
-            CountryCodeType payerCountry = CountryCodeType.US;
+            var payerCountry = CountryCodeType.US;
             try
             {
-                payerCountry = (CountryCodeType)Enum.Parse(typeof(CountryCodeType), country.TwoLetterIsoCode);
+                payerCountry = (CountryCodeType)Enum.Parse(typeof(CountryCodeType), country.TwoLetterIsoCode.ToUpperInvariant());
             }
             catch
             {
@@ -95,26 +112,30 @@ namespace Nop.Plugin.Payments.PayPalDirect
         /// <returns>Paypal credit card type</returns>
         protected CreditCardTypeType GetPaypalCreditCardType(string creditCardType)
         {
-            var creditCardTypeType = (CreditCardTypeType)Enum.Parse(typeof(CreditCardTypeType), creditCardType);
-            return creditCardTypeType;
-            //if (creditCardType.ToLower() == "visa")
-            //    return CreditCardTypeType.Visa;
+            if (String.IsNullOrEmpty(creditCardType))
+                return CreditCardTypeType.VISA;
 
-            //if (creditCardType.ToLower() == "mastercard")
-            //    return CreditCardTypeType.MasterCard;
+            if (creditCardType.Equals("VISA", StringComparison.InvariantCultureIgnoreCase))
+                return CreditCardTypeType.VISA;
+            if (creditCardType.Equals("MASTERCARD", StringComparison.InvariantCultureIgnoreCase))
+                return CreditCardTypeType.MASTERCARD;
+            if (creditCardType.Equals("DISCOVER", StringComparison.InvariantCultureIgnoreCase))
+                return CreditCardTypeType.DISCOVER;
+            if (creditCardType.Equals("AMEX", StringComparison.InvariantCultureIgnoreCase))
+                return CreditCardTypeType.AMEX;
+            if (creditCardType.Equals("MAESTRO", StringComparison.InvariantCultureIgnoreCase))
+                return CreditCardTypeType.MAESTRO;
+            if (creditCardType.Equals("SOLO", StringComparison.InvariantCultureIgnoreCase))
+                return CreditCardTypeType.SOLO;
+            if (creditCardType.Equals("SWITCH", StringComparison.InvariantCultureIgnoreCase))
+                return CreditCardTypeType.SWITCH;
 
-            //if (creditCardType.ToLower() == "americanexpress")
-            //    return CreditCardTypeType.Amex;
-
-            //if (creditCardType.ToLower() == "discover")
-            //    return CreditCardTypeType.Discover;
-
-            //throw new NopException("Unknown credit card type");
+            return (CreditCardTypeType)Enum.Parse(typeof(CreditCardTypeType), creditCardType);
         }
 
         protected string GetApiVersion()
         {
-            return "63";
+            return "117";
         }
 
         protected ProcessPaymentResult AuthorizeOrSale(ProcessPaymentRequest processPaymentRequest, bool authorizeOnly)
@@ -132,24 +153,20 @@ namespace Nop.Plugin.Payments.PayPalDirect
             req.DoDirectPaymentRequest.DoDirectPaymentRequestDetails = details;
             details.IPAddress = _webHelper.GetCurrentIpAddress() ?? "";
             if (authorizeOnly)
-                details.PaymentAction = PaymentActionCodeType.Authorization;
+                details.PaymentAction = PaymentActionCodeType.AUTHORIZATION;
             else
-                details.PaymentAction = PaymentActionCodeType.Sale;
+                details.PaymentAction = PaymentActionCodeType.SALE;
             //credit card
             details.CreditCard = new CreditCardDetailsType();
             details.CreditCard.CreditCardNumber = processPaymentRequest.CreditCardNumber;
             details.CreditCard.CreditCardType = GetPaypalCreditCardType(processPaymentRequest.CreditCardType);
-            details.CreditCard.ExpMonthSpecified = true;
             details.CreditCard.ExpMonth = processPaymentRequest.CreditCardExpireMonth;
-            details.CreditCard.ExpYearSpecified = true;
             details.CreditCard.ExpYear = processPaymentRequest.CreditCardExpireYear;
             details.CreditCard.CVV2 = processPaymentRequest.CreditCardCvv2;
             details.CreditCard.CardOwner = new PayerInfoType();
             details.CreditCard.CardOwner.PayerCountry = GetPaypalCountryCodeType(customer.BillingAddress.Country);
-            details.CreditCard.CreditCardTypeSpecified = true;
             //billing address
             details.CreditCard.CardOwner.Address = new AddressType();
-            details.CreditCard.CardOwner.Address.CountrySpecified = true;
             details.CreditCard.CardOwner.Address.Street1 = customer.BillingAddress.Address1;
             details.CreditCard.CardOwner.Address.Street2 = customer.BillingAddress.Address2;
             details.CreditCard.CardOwner.Address.CityName = customer.BillingAddress.City;
@@ -167,54 +184,10 @@ namespace Nop.Plugin.Payments.PayPalDirect
             var payPalCurrency = PaypalHelper.GetPaypalCurrency(_currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId));
             details.PaymentDetails = new PaymentDetailsType();
             details.PaymentDetails.OrderTotal = new BasicAmountType();
-            details.PaymentDetails.OrderTotal.Value = Math.Round(processPaymentRequest.OrderTotal, 2).ToString("N", new CultureInfo("en-us"));
+            details.PaymentDetails.OrderTotal.value = Math.Round(processPaymentRequest.OrderTotal, 2).ToString("N", new CultureInfo("en-us"));
             details.PaymentDetails.OrderTotal.currencyID = payPalCurrency;
             details.PaymentDetails.Custom = processPaymentRequest.OrderGuid.ToString();
             details.PaymentDetails.ButtonSource = "nopCommerceCart";
-            //pass product names and totals to PayPal
-            //if (_paypalDirectPaymentSettings.PassProductNamesAndTotals)
-            //{
-            //    //individual items
-                //var cart = customer.ShoppingCartItems
-                //    .Where(x=>x.ShoppingCartType == ShoppingCartType.ShoppingCart)
-                //    .LimitPerStore(processPaymentRequest.StoreId)
-                //    .ToList();
-            //    var cartItems = new PaymentDetailsItemType[cart.Count];
-            //    for (int i = 0; i < cart.Count; i++)
-            //    {
-            //        var sc = cart[i];
-            //        decimal taxRate = decimal.Zero;
-            //        var customer = processPaymentRequest.Customer;
-            //        decimal scUnitPrice = _priceCalculationService.GetUnitPrice(sc, true);
-            //        decimal scSubTotal = _priceCalculationService.GetSubTotal(sc, true);
-            //        decimal scUnitPriceInclTax = _taxService.GetProductPrice(sc.ProductVariant, scUnitPrice, true, customer, out taxRate);
-            //        decimal scUnitPriceExclTax = _taxService.GetProductPrice(sc.ProductVariant, scUnitPrice, false, customer, out taxRate);
-            //        //decimal scSubTotalInclTax = _taxService.GetProductPrice(sc.ProductVariant, scSubTotal, true, customer, out taxRate);
-            //        //decimal scSubTotalExclTax = _taxService.GetProductPrice(sc.ProductVariant, scSubTotal, false, customer, out taxRate);
-            //        cartItems[i] = new PaymentDetailsItemType()
-            //        {
-            //            Name = sc.ProductVariant.FullProductName,
-            //            Number = sc.ProductVariant.Id.ToString(),
-            //            Quantity = sc.Quantity.ToString(),
-            //            Amount = new BasicAmountType()
-            //            {
-            //                currencyID = payPalCurrency,
-            //                Value = scUnitPriceExclTax.ToString("N", new CultureInfo("en-us")),
-            //            },
-            //            Tax = new BasicAmountType()
-            //            {
-            //                currencyID = payPalCurrency,
-            //                Value = (scUnitPriceInclTax - scUnitPriceExclTax).ToString("N", new CultureInfo("en-us")),
-            //            },
-            //        };
-            //    };
-            //    details.PaymentDetails.PaymentDetailsItem = cartItems;
-            //    //other totals (undone)
-            //    details.PaymentDetails.ItemTotal = null;
-            //    details.PaymentDetails.ShippingTotal = null;
-            //    details.PaymentDetails.TaxTotal = null;
-            //    details.PaymentDetails.HandlingTotal = null;
-            //}
             //shipping
             if (customer.ShippingAddress != null)
             {
@@ -223,57 +196,43 @@ namespace Nop.Plugin.Payments.PayPalDirect
                     var shippingAddress = new AddressType();
                     shippingAddress.Name = customer.ShippingAddress.FirstName + " " + customer.ShippingAddress.LastName;
                     shippingAddress.Street1 = customer.ShippingAddress.Address1;
+                    shippingAddress.Street2 = customer.ShippingAddress.Address2;
                     shippingAddress.CityName = customer.ShippingAddress.City;
                     shippingAddress.StateOrProvince = customer.ShippingAddress.StateProvince.Abbreviation;
                     shippingAddress.PostalCode = customer.ShippingAddress.ZipPostalCode;
                     shippingAddress.Country = (CountryCodeType)Enum.Parse(typeof(CountryCodeType), customer.ShippingAddress.Country.TwoLetterIsoCode, true);
-                    shippingAddress.CountrySpecified = true;
                     details.PaymentDetails.ShipToAddress = shippingAddress;
                 }
             }
 
             //send request
-            using (var service2 = new PayPalAPIAASoapBinding())
+            var service = GetService();
+            DoDirectPaymentResponseType response = service.DoDirectPayment(req);
+
+            string error;
+            bool success = PaypalHelper.CheckSuccess(response, out error);
+            if (success)
             {
-                if (!_paypalDirectPaymentSettings.UseSandbox)
-                    service2.Url = "https://api-3t.paypal.com/2.0/";
-                else
-                    service2.Url = "https://api-3t.sandbox.paypal.com/2.0/";
-
-                service2.RequesterCredentials = new CustomSecurityHeaderType();
-                service2.RequesterCredentials.Credentials = new UserIdPasswordType();
-                service2.RequesterCredentials.Credentials.Username = _paypalDirectPaymentSettings.ApiAccountName;
-                service2.RequesterCredentials.Credentials.Password = _paypalDirectPaymentSettings.ApiAccountPassword;
-                service2.RequesterCredentials.Credentials.Signature = _paypalDirectPaymentSettings.Signature;
-                service2.RequesterCredentials.Credentials.Subject = "";
-
-                DoDirectPaymentResponseType response = service2.DoDirectPayment(req);
-
-                string error = "";
-                bool success = PaypalHelper.CheckSuccess(response, out error);
-                if (success)
+                result.AvsResult = response.AVSCode;
+                result.AuthorizationTransactionCode = response.CVV2Code;
+                if (authorizeOnly)
                 {
-                    result.AvsResult = response.AVSCode;
-                    result.AuthorizationTransactionCode = response.CVV2Code;
-                    if (authorizeOnly)
-                    {
-                        result.AuthorizationTransactionId = response.TransactionID;
-                        result.AuthorizationTransactionResult = response.Ack.ToString();
+                    result.AuthorizationTransactionId = response.TransactionID;
+                    result.AuthorizationTransactionResult = response.Ack.ToString();
 
-                        result.NewPaymentStatus = PaymentStatus.Authorized;
-                    }
-                    else
-                    {
-                        result.CaptureTransactionId = response.TransactionID;
-                        result.CaptureTransactionResult = response.Ack.ToString();
-
-                        result.NewPaymentStatus = PaymentStatus.Paid;
-                    }
+                    result.NewPaymentStatus = PaymentStatus.Authorized;
                 }
                 else
                 {
-                    result.AddError(error);
+                    result.CaptureTransactionId = response.TransactionID;
+                    result.CaptureTransactionResult = response.Ack.ToString();
+
+                    result.NewPaymentStatus = PaymentStatus.Paid;
                 }
+            }
+            else
+            {
+                result.AddError(error);
             }
             return result;
         }
@@ -284,11 +243,13 @@ namespace Nop.Plugin.Payments.PayPalDirect
         /// <param name="formString">Form string</param>
         /// <param name="values">Values</param>
         /// <returns>Result</returns>
-        public bool VerifyIPN(string formString, out Dictionary<string, string> values)
+        public bool VerifyIpn(string formString, out Dictionary<string, string> values)
         {
             var req = (HttpWebRequest)WebRequest.Create(GetPaypalUrl());
             req.Method = "POST";
             req.ContentType = "application/x-www-form-urlencoded";
+            //now PayPal requires user-agent. otherwise, we can get 403 error
+            req.UserAgent = HttpContext.Current.Request.UserAgent;
 
             string formContent = string.Format("{0}&cmd=_notify-validate", formString);
             req.ContentLength = formContent.Length;
@@ -298,7 +259,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
                 sw.Write(formContent);
             }
 
-            string response = null;
+            string response;
             using (var sr = new StreamReader(req.GetResponse().GetResponseStream()))
             {
                 response = HttpUtility.UrlDecode(sr.ReadToEnd());
@@ -332,10 +293,8 @@ namespace Nop.Plugin.Payments.PayPalDirect
             {
                 return AuthorizeOrSale(processPaymentRequest, true);
             }
-            else
-            {
-                return AuthorizeOrSale(processPaymentRequest, false);
-            }
+            
+            return AuthorizeOrSale(processPaymentRequest, false);
         }
 
         /// <summary>
@@ -344,6 +303,19 @@ namespace Nop.Plugin.Payments.PayPalDirect
         /// <param name="postProcessPaymentRequest">Payment info required for an order processing</param>
         public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether payment method should be hidden during checkout
+        /// </summary>
+        /// <param name="cart">Shoping cart</param>
+        /// <returns>true - hide; false - display.</returns>
+        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        {
+            //you can put any logic here
+            //for example, hide this payment method if all products in the cart are downloadable
+            //or hide this payment method if current customer is from certain country
+            return false;
         }
 
         /// <summary>
@@ -373,38 +345,24 @@ namespace Nop.Plugin.Payments.PayPalDirect
             req.DoCaptureRequest.Version = GetApiVersion();
             req.DoCaptureRequest.AuthorizationID = authorizationId;
             req.DoCaptureRequest.Amount = new BasicAmountType();
-            req.DoCaptureRequest.Amount.Value = Math.Round(capturePaymentRequest.Order.OrderTotal, 2).ToString("N", new CultureInfo("en-us"));
+            req.DoCaptureRequest.Amount.value = Math.Round(capturePaymentRequest.Order.OrderTotal, 2).ToString("N", new CultureInfo("en-us"));
             req.DoCaptureRequest.Amount.currencyID = PaypalHelper.GetPaypalCurrency(_currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId));
-            req.DoCaptureRequest.CompleteType = CompleteCodeType.Complete;
+            req.DoCaptureRequest.CompleteType = CompleteCodeType.COMPLETE;
 
-            using (var service2 = new PayPalAPIAASoapBinding())
+            var service = GetService();
+            DoCaptureResponseType response = service.DoCapture(req);
+
+            string error;
+            bool success = PaypalHelper.CheckSuccess(response, out error);
+            if (success)
             {
-                if (!_paypalDirectPaymentSettings.UseSandbox)
-                    service2.Url = "https://api-3t.paypal.com/2.0/";
-                else
-                    service2.Url = "https://api-3t.sandbox.paypal.com/2.0/";
-
-                service2.RequesterCredentials = new CustomSecurityHeaderType();
-                service2.RequesterCredentials.Credentials = new UserIdPasswordType();
-                service2.RequesterCredentials.Credentials.Username = _paypalDirectPaymentSettings.ApiAccountName;
-                service2.RequesterCredentials.Credentials.Password = _paypalDirectPaymentSettings.ApiAccountPassword;
-                service2.RequesterCredentials.Credentials.Signature = _paypalDirectPaymentSettings.Signature;
-                service2.RequesterCredentials.Credentials.Subject = "";
-
-                DoCaptureResponseType response = service2.DoCapture(req);
-
-                string error = "";
-                bool success = PaypalHelper.CheckSuccess(response, out error);
-                if (success)
-                {
-                    result.NewPaymentStatus = PaymentStatus.Paid;
-                    result.CaptureTransactionId = response.DoCaptureResponseDetails.PaymentInfo.TransactionID;
-                    result.CaptureTransactionResult = response.Ack.ToString();
-                }
-                else
-                {
-                    result.AddError(error);
-                }
+                result.NewPaymentStatus = PaymentStatus.Paid;
+                result.CaptureTransactionId = response.DoCaptureResponseDetails.PaymentInfo.TransactionID;
+                result.CaptureTransactionResult = response.Ack.ToString();
+            }
+            else
+            {
+                result.AddError(error);
             }
             return result;
         }
@@ -423,38 +381,23 @@ namespace Nop.Plugin.Payments.PayPalDirect
             var req = new RefundTransactionReq();
             req.RefundTransactionRequest = new RefundTransactionRequestType();
             //NOTE: Specify amount in partial refund
-            req.RefundTransactionRequest.RefundType = RefundType.Full;
-            req.RefundTransactionRequest.RefundTypeSpecified = true;
+            req.RefundTransactionRequest.RefundType = RefundType.FULL;
             req.RefundTransactionRequest.Version = GetApiVersion();
             req.RefundTransactionRequest.TransactionID = transactionId;
 
-            using (var service1 = new PayPalAPISoapBinding())
+            var service = GetService();
+            RefundTransactionResponseType response = service.RefundTransaction(req);
+
+            string error;
+            bool success = PaypalHelper.CheckSuccess(response, out error);
+            if (success)
             {
-                if (!_paypalDirectPaymentSettings.UseSandbox)
-                    service1.Url = "https://api-3t.paypal.com/2.0/";
-                else
-                    service1.Url = "https://api-3t.sandbox.paypal.com/2.0/";
-
-                service1.RequesterCredentials = new CustomSecurityHeaderType();
-                service1.RequesterCredentials.Credentials = new UserIdPasswordType();
-                service1.RequesterCredentials.Credentials.Username = _paypalDirectPaymentSettings.ApiAccountName;
-                service1.RequesterCredentials.Credentials.Password = _paypalDirectPaymentSettings.ApiAccountPassword;
-                service1.RequesterCredentials.Credentials.Signature = _paypalDirectPaymentSettings.Signature;
-                service1.RequesterCredentials.Credentials.Subject = "";
-
-                RefundTransactionResponseType response = service1.RefundTransaction(req);
-
-                string error = string.Empty;
-                bool Success = PaypalHelper.CheckSuccess(response, out error);
-                if (Success)
-                {
-                    result.NewPaymentStatus = PaymentStatus.Refunded;
-                    //cancelPaymentResult.RefundTransactionID = response.RefundTransactionID;
-                }
-                else
-                {
-                    result.AddError(error);
-                }
+                result.NewPaymentStatus = PaymentStatus.Refunded;
+                //cancelPaymentResult.RefundTransactionID = response.RefundTransactionID;
+            }
+            else
+            {
+                result.AddError(error);
             }
 
             return result;
@@ -478,34 +421,19 @@ namespace Nop.Plugin.Payments.PayPalDirect
             req.DoVoidRequest.Version = GetApiVersion();
             req.DoVoidRequest.AuthorizationID = transactionId;
 
+            var service = GetService();
+            DoVoidResponseType response = service.DoVoid(req);
 
-            using (var service2 = new PayPalAPIAASoapBinding())
+            string error;
+            bool success = PaypalHelper.CheckSuccess(response, out error);
+            if (success)
             {
-                if (!_paypalDirectPaymentSettings.UseSandbox)
-                    service2.Url = "https://api-3t.paypal.com/2.0/";
-                else
-                    service2.Url = "https://api-3t.sandbox.paypal.com/2.0/";
-
-                service2.RequesterCredentials = new CustomSecurityHeaderType();
-                service2.RequesterCredentials.Credentials = new UserIdPasswordType();
-                service2.RequesterCredentials.Credentials.Username = _paypalDirectPaymentSettings.ApiAccountName;
-                service2.RequesterCredentials.Credentials.Password = _paypalDirectPaymentSettings.ApiAccountPassword;
-                service2.RequesterCredentials.Credentials.Signature = _paypalDirectPaymentSettings.Signature;
-                service2.RequesterCredentials.Credentials.Subject = "";
-
-                DoVoidResponseType response = service2.DoVoid(req);
-
-                string error = "";
-                bool success = PaypalHelper.CheckSuccess(response, out error);
-                if (success)
-                {
-                    result.NewPaymentStatus = PaymentStatus.Voided;
-                    //result.VoidTransactionID = response.RefundTransactionID;
-                }
-                else
-                {
-                    result.AddError(error);
-                }
+                result.NewPaymentStatus = PaymentStatus.Voided;
+                //result.VoidTransactionID = response.RefundTransactionID;
+            }
+            else
+            {
+                result.AddError(error);
             }
             return result;
         }
@@ -530,17 +458,13 @@ namespace Nop.Plugin.Payments.PayPalDirect
             details.CreditCard = new CreditCardDetailsType();
             details.CreditCard.CreditCardNumber = processPaymentRequest.CreditCardNumber;
             details.CreditCard.CreditCardType = GetPaypalCreditCardType(processPaymentRequest.CreditCardType);
-            details.CreditCard.ExpMonthSpecified = true;
             details.CreditCard.ExpMonth = processPaymentRequest.CreditCardExpireMonth;
-            details.CreditCard.ExpYearSpecified = true;
             details.CreditCard.ExpYear = processPaymentRequest.CreditCardExpireYear;
             details.CreditCard.CVV2 = processPaymentRequest.CreditCardCvv2;
             details.CreditCard.CardOwner = new PayerInfoType();
             details.CreditCard.CardOwner.PayerCountry = GetPaypalCountryCodeType(customer.BillingAddress.Country);
-            details.CreditCard.CreditCardTypeSpecified = true;
 
             details.CreditCard.CardOwner.Address = new AddressType();
-            details.CreditCard.CardOwner.Address.CountrySpecified = true;
             details.CreditCard.CardOwner.Address.Street1 = customer.BillingAddress.Address1;
             details.CreditCard.CardOwner.Address.Street2 = customer.BillingAddress.Address2;
             details.CreditCard.CardOwner.Address.CityName = customer.BillingAddress.City;
@@ -557,7 +481,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
 
             //start date
             details.RecurringPaymentsProfileDetails = new RecurringPaymentsProfileDetailsType();
-            details.RecurringPaymentsProfileDetails.BillingStartDate = DateTime.UtcNow;
+            details.RecurringPaymentsProfileDetails.BillingStartDate = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture);
             details.RecurringPaymentsProfileDetails.ProfileReference = processPaymentRequest.OrderGuid.ToString();
 
             //schedule
@@ -565,63 +489,47 @@ namespace Nop.Plugin.Payments.PayPalDirect
             details.ScheduleDetails.Description = "Recurring payment";
             details.ScheduleDetails.PaymentPeriod = new BillingPeriodDetailsType();
             details.ScheduleDetails.PaymentPeriod.Amount = new BasicAmountType();
-            details.ScheduleDetails.PaymentPeriod.Amount.Value = Math.Round(processPaymentRequest.OrderTotal, 2).ToString("N", new CultureInfo("en-us"));
+            details.ScheduleDetails.PaymentPeriod.Amount.value = Math.Round(processPaymentRequest.OrderTotal, 2).ToString("N", new CultureInfo("en-us"));
             details.ScheduleDetails.PaymentPeriod.Amount.currencyID = PaypalHelper.GetPaypalCurrency(_currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId));
             details.ScheduleDetails.PaymentPeriod.BillingFrequency = processPaymentRequest.RecurringCycleLength;
             switch (processPaymentRequest.RecurringCyclePeriod)
             {
                 case RecurringProductCyclePeriod.Days:
-                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.Day;
+                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.DAY;
                     break;
                 case RecurringProductCyclePeriod.Weeks:
-                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.Week;
+                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.WEEK;
                     break;
                 case RecurringProductCyclePeriod.Months:
-                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.Month;
+                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.MONTH;
                     break;
                 case RecurringProductCyclePeriod.Years:
-                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.Year;
+                    details.ScheduleDetails.PaymentPeriod.BillingPeriod = BillingPeriodType.YEAR;
                     break;
                 default:
                     throw new NopException("Not supported cycle period");
             }
             details.ScheduleDetails.PaymentPeriod.TotalBillingCycles = processPaymentRequest.RecurringTotalCycles;
-            details.ScheduleDetails.PaymentPeriod.TotalBillingCyclesSpecified = true;
 
 
 
-            using (var service2 = new PayPalAPIAASoapBinding())
+            var service = GetService();
+            CreateRecurringPaymentsProfileResponseType response = service.CreateRecurringPaymentsProfile(req);
+
+            string error;
+            bool success = PaypalHelper.CheckSuccess(response, out error);
+            if (success)
             {
-                if (!_paypalDirectPaymentSettings.UseSandbox)
-                    service2.Url = "https://api-3t.paypal.com/2.0/";
-                else
-                    service2.Url = "https://api-3t.sandbox.paypal.com/2.0/";
-
-                service2.RequesterCredentials = new CustomSecurityHeaderType();
-                service2.RequesterCredentials.Credentials = new UserIdPasswordType();
-                service2.RequesterCredentials.Credentials.Username = _paypalDirectPaymentSettings.ApiAccountName;
-                service2.RequesterCredentials.Credentials.Password = _paypalDirectPaymentSettings.ApiAccountPassword;
-                service2.RequesterCredentials.Credentials.Signature = _paypalDirectPaymentSettings.Signature;
-                service2.RequesterCredentials.Credentials.Subject = "";
-
-                CreateRecurringPaymentsProfileResponseType response = service2.CreateRecurringPaymentsProfile(req);
-
-                string error = "";
-                bool success = PaypalHelper.CheckSuccess(response, out error);
-                if (success)
+                result.NewPaymentStatus = PaymentStatus.Pending;
+                if (response.CreateRecurringPaymentsProfileResponseDetails != null)
                 {
-                    result.NewPaymentStatus = PaymentStatus.Pending;
-                    if (response.CreateRecurringPaymentsProfileResponseDetails != null)
-                    {
-                        result.SubscriptionTransactionId = response.CreateRecurringPaymentsProfileResponseDetails.ProfileID;
-                    }
-                }
-                else
-                {
-                    result.AddError(error);
+                    result.SubscriptionTransactionId = response.CreateRecurringPaymentsProfileResponseDetails.ProfileID;
                 }
             }
-
+            else
+            {
+                result.AddError(error);
+            }
             return result;
         }
 
@@ -641,31 +549,16 @@ namespace Nop.Plugin.Payments.PayPalDirect
             var details = new ManageRecurringPaymentsProfileStatusRequestDetailsType();
             req.ManageRecurringPaymentsProfileStatusRequest.ManageRecurringPaymentsProfileStatusRequestDetails = details;
 
-            details.Action = StatusChangeActionType.Cancel;
+            details.Action = StatusChangeActionType.CANCEL;
             //Recurring payments profile ID returned in the CreateRecurringPaymentsProfile response
             details.ProfileID = order.SubscriptionTransactionId;
-            
-            using (var service2 = new PayPalAPIAASoapBinding())
+
+            var service = GetService();
+            var response = service.ManageRecurringPaymentsProfileStatus(req);
+            string error;
+            if (!PaypalHelper.CheckSuccess(response, out error))
             {
-                if (!_paypalDirectPaymentSettings.UseSandbox)
-                    service2.Url = "https://api-3t.paypal.com/2.0/";
-                else
-                    service2.Url = "https://api-3t.sandbox.paypal.com/2.0/";
-
-                service2.RequesterCredentials = new CustomSecurityHeaderType();
-                service2.RequesterCredentials.Credentials = new UserIdPasswordType();
-                service2.RequesterCredentials.Credentials.Username = _paypalDirectPaymentSettings.ApiAccountName;
-                service2.RequesterCredentials.Credentials.Password = _paypalDirectPaymentSettings.ApiAccountPassword;
-                service2.RequesterCredentials.Credentials.Signature = _paypalDirectPaymentSettings.Signature;
-                service2.RequesterCredentials.Credentials.Subject = "";
-
-                var response = service2.ManageRecurringPaymentsProfileStatus(req);
-
-                string error = "";
-                if (!PaypalHelper.CheckSuccess(response, out error))
-                {
-                    result.AddError(error);
-                }
+                result.AddError(error);
             }
 
             return result;
@@ -695,7 +588,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
         {
             actionName = "Configure";
             controllerName = "PaymentPayPalDirect";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.PayPalDirect.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.PayPalDirect.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -708,7 +601,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
         {
             actionName = "PaymentInfo";
             controllerName = "PaymentPayPalDirect";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.PayPalDirect.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.PayPalDirect.Controllers" }, { "area", null } };
         }
 
         public Type GetControllerType()
@@ -719,7 +612,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
         public override void Install()
         {
             //settings
-            var settings = new PayPalDirectPaymentSettings()
+            var settings = new PayPalDirectPaymentSettings
             {
                 TransactMode = TransactMode.Authorize,
                 UseSandbox = true,

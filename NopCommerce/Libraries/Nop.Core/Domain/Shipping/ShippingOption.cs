@@ -52,7 +52,7 @@ namespace Nop.Core.Domain.Shipping
             if (value is string)
             {
                 ShippingOption shippingOption = null;
-                string valueStr = value as string;
+                var valueStr = value as string;
                 if (!String.IsNullOrEmpty(valueStr))
                 {
                     try
@@ -89,10 +89,8 @@ namespace Nop.Core.Domain.Shipping
                         return serialized;
                     }
                 }
-                else
-                {
-                    return "";
-                }
+
+                return "";
             }
 
             return base.ConvertTo(context, culture, value, destinationType);
@@ -117,7 +115,7 @@ namespace Nop.Core.Domain.Shipping
             if (value is string)
             {
                 List<ShippingOption> shippingOptions = null;
-                string valueStr = value as string;
+                var valueStr = value as string;
                 if (!String.IsNullOrEmpty(valueStr))
                 {
                     try
@@ -154,10 +152,8 @@ namespace Nop.Core.Domain.Shipping
                         return serialized;
                     }
                 }
-                else
-                {
-                    return "";
-                }
+
+                return "";
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

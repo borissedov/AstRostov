@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Discounts;
 using Nop.Core;
 using Nop.Core.Domain.Directory;
@@ -81,10 +82,10 @@ namespace Nop.Admin.Controllers
                 throw new ArgumentNullException("model");
 
             model.PrimaryStoreCurrencyCode = _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId).CurrencyCode;
-            model.AvailableDiscountRequirementRules.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Promotions.Discounts.Requirements.DiscountRequirementType.Select"), Value = "" });
+            model.AvailableDiscountRequirementRules.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Promotions.Discounts.Requirements.DiscountRequirementType.Select"), Value = "" });
             var discountRules = _discountService.LoadAllDiscountRequirementRules();
             foreach (var discountRule in discountRules)
-                model.AvailableDiscountRequirementRules.Add(new SelectListItem() { Text = discountRule.PluginDescriptor.FriendlyName, Value = discountRule.PluginDescriptor.SystemName });
+                model.AvailableDiscountRequirementRules.Add(new SelectListItem { Text = discountRule.PluginDescriptor.FriendlyName, Value = discountRule.PluginDescriptor.SystemName });
 
             if (discount != null)
             {
@@ -93,7 +94,7 @@ namespace Nop.Admin.Controllers
                 {
                     if (category != null && !category.Deleted)
                     {
-                        model.AppliedToCategoryModels.Add(new DiscountModel.AppliedToCategoryModel()
+                        model.AppliedToCategoryModels.Add(new DiscountModel.AppliedToCategoryModel
                         {
                             CategoryId = category.Id,
                             Name = category.Name
@@ -101,12 +102,12 @@ namespace Nop.Admin.Controllers
                     }
                 }
 
-                //applied to product variants
+                //applied to products
                 foreach (var product in discount.AppliedToProducts)
                 {
                     if (product != null && !product.Deleted)
                     {
-                        var appliedToProductModel = new DiscountModel.AppliedToProductModel()
+                        var appliedToProductModel = new DiscountModel.AppliedToProductModel
                         {
                             ProductId = product.Id,
                             ProductName = product.Name
@@ -121,7 +122,7 @@ namespace Nop.Admin.Controllers
                     var drr = _discountService.LoadDiscountRequirementRuleBySystemName(dr.DiscountRequirementRuleSystemName);
                     if (drr != null)
                     {
-                        model.DiscountRequirementMetaInfos.Add(new DiscountModel.DiscountRequirementMetaInfo()
+                        model.DiscountRequirementMetaInfos.Add(new DiscountModel.DiscountRequirementMetaInfo
                         {
                             DiscountRequirementId = dr.Id,
                             RuleName = drr.PluginDescriptor.FriendlyName,
@@ -276,10 +277,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", discount.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
@@ -402,15 +400,12 @@ namespace Nop.Admin.Controllers
 
             var gridModel = new DataSourceResult
             {
-                Data = duh.Select(x =>
+                Data = duh.Select(x => new DiscountModel.DiscountUsageHistoryModel
                 {
-                    return new DiscountModel.DiscountUsageHistoryModel()
-                    {
-                        Id = x.Id,
-                        DiscountId = x.DiscountId,
-                        OrderId = x.OrderId,
-                        CreatedOn = _dateTimeHelper.ConvertToUserTime(x.CreatedOnUtc, DateTimeKind.Utc)
-                    };
+                    Id = x.Id,
+                    DiscountId = x.DiscountId,
+                    OrderId = x.OrderId,
+                    CreatedOn = _dateTimeHelper.ConvertToUserTime(x.CreatedOnUtc, DateTimeKind.Utc)
                 }),
                 Total = duh.TotalCount
             };

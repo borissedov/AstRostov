@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Payments;
-using Nop.Plugin.Payments.PayPalDirect.PayPalSvc;
+using PayPal.PayPalAPIInterfaceService.Model;
 
 namespace Nop.Plugin.Payments.PayPalDirect
 {
@@ -70,11 +70,11 @@ namespace Nop.Plugin.Payments.PayPalDirect
         public static bool CheckSuccess(AbstractResponseType abstractResponse, out string errorMsg)
         {
             bool success = false;
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             switch (abstractResponse.Ack)
             {
-                case AckCodeType.Success:
-                case AckCodeType.SuccessWithWarning:
+                case AckCodeType.SUCCESS:
+                case AckCodeType.SUCCESSWITHWARNING:
                     success = true;
                     break;
                 default:
@@ -104,7 +104,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
         /// <returns>Paypal currency code</returns>
         public static CurrencyCodeType GetPaypalCurrency(Currency currency)
         {
-            CurrencyCodeType currencyCodeType = CurrencyCodeType.USD;
+            var currencyCodeType = CurrencyCodeType.USD;
             try
             {
                 currencyCodeType = (CurrencyCodeType)Enum.Parse(typeof(CurrencyCodeType), currency.CurrencyCode, true);

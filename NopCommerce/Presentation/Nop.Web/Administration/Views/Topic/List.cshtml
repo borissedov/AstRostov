@@ -27,8 +27,6 @@
         </td>
     </tr>
 </table>
-<p>
-</p>
 <table class="adminContent">
     <tr>
         <td>
@@ -90,6 +88,13 @@
                             attributes: { style: "text-align:center" },
                             template: '<img src="@Url.Content("~/Administration/Content/images/")active-#=IncludeInSitemap#.gif" />'
                         }, {
+                            field: "IncludeInTopMenu",
+                            title: "@T("Admin.ContentManagement.Topics.Fields.IncludeInTopMenu")",
+                            width: 100,
+                            headerAttributes: { style: "text-align:center" },
+                            attributes: { style: "text-align:center" },
+                            template: '<img src="@Url.Content("~/Administration/Content/images/")active-#=IncludeInTopMenu#.gif" />'
+                        }, {
                             field: "Id",
                             title: "@T("Admin.Common.Edit")",
                             width: 100,
@@ -106,7 +111,6 @@
                     $('#search-topics').click(function () {
                         //search
                         var grid = $('#topics-grid').data('kendoGrid');
-                        //grid.dataSource.page(1); //new search. Set page size to 1
                         grid.dataSource.read();
                         return false;
                     });

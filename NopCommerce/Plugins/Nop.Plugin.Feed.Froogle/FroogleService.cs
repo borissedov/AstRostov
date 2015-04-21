@@ -34,6 +34,7 @@ namespace Nop.Plugin.Feed.Froogle
         private readonly IManufacturerService _manufacturerService;
         private readonly IPictureService _pictureService;
         private readonly ICurrencyService _currencyService;
+        private readonly ILanguageService _languageService;
         private readonly ISettingService _settingService;
         private readonly IWorkContext _workContext;
         private readonly IMeasureService _measureService;
@@ -51,6 +52,7 @@ namespace Nop.Plugin.Feed.Froogle
             IManufacturerService manufacturerService,
             IPictureService pictureService,
             ICurrencyService currencyService,
+            ILanguageService languageService,
             ISettingService settingService,
             IWorkContext workContext,
             IMeasureService measureService,
@@ -65,6 +67,7 @@ namespace Nop.Plugin.Feed.Froogle
             this._manufacturerService = manufacturerService;
             this._pictureService = pictureService;
             this._currencyService = currencyService;
+            this._languageService = languageService;
             this._settingService = settingService;
             this._workContext = workContext;
             this._measureService = measureService;
@@ -137,7 +140,7 @@ namespace Nop.Plugin.Feed.Froogle
         {
             actionName = "Configure";
             controllerName = "FeedFroogle";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Feed.Froogle.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Feed.Froogle.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -160,6 +163,20 @@ namespace Nop.Plugin.Feed.Froogle
             {
                 Encoding = Encoding.UTF8
             };
+            
+            //language
+            var languageId = 0;
+            var languages = _languageService.GetAllLanguages(storeId: store.Id);
+            //if we have only one language, let's use it
+            if (languages.Count == 1)
+            {
+                //let's use the first one
+                var language = languages.FirstOrDefault();
+                languageId = language != null ? language.Id : 0;
+            }
+            //otherwise, use the current one
+            if (languageId == 0)
+                languageId = _workContext.WorkingLanguage.Id;
 
             //we load all google products here using one SQL request (performance optimization)
             var allGoogleProducts = _googleService.GetAll();
@@ -175,6 +192,7 @@ namespace Nop.Plugin.Feed.Froogle
                 writer.WriteElementString("title", "Google Base feed");
                 writer.WriteElementString("link", "http://base.google.com/base/");
                 writer.WriteElementString("description", "Information about products");
+
 
                 var products1 = _productService.SearchProducts(storeId: store.Id, visibleIndividuallyOnly: true);
                 foreach (var product1 in products1)
@@ -209,7 +227,7 @@ namespace Nop.Plugin.Feed.Froogle
 
                         //title [title] - Title of the item
                         writer.WriteStartElement("title");
-                        var title = product.Name;
+                        var title = product.GetLocalized(x => x.Name, languageId);
                         //title should be not longer than 70 characters
                         if (title.Length > 70)
                             title = title.Substring(0, 70);
@@ -218,13 +236,11 @@ namespace Nop.Plugin.Feed.Froogle
 
                         //description [description] - Description of the item
                         writer.WriteStartElement("description");
-                        string description = product.FullDescription;
+                        string description = product.GetLocalized(x => x.FullDescription, languageId);
                         if (String.IsNullOrEmpty(description))
-                            description = product.ShortDescription;
+                            description = product.GetLocalized(x => x.ShortDescription, languageId);
                         if (String.IsNullOrEmpty(description))
-                            description = product.Name;
-                        if (String.IsNullOrEmpty(description))
-                            description = product.Name; //description is required
+                            description = product.GetLocalized(x => x.Name, languageId); //description is required
                         //resolving character encoding issues in your data feed
                         description = StripInvalidChars(description, true);
                         writer.WriteCData(description);
@@ -248,10 +264,14 @@ namespace Nop.Plugin.Feed.Froogle
                         writer.WriteFullEndElement(); // g:google_product_category
 
                         //product type [product_type] - Your category of the item
-                        var defaultProductCategory = _categoryService.GetProductCategoriesByProductId(product.Id).FirstOrDefault();
+                        var defaultProductCategory = _categoryService
+                            .GetProductCategoriesByProductId(product.Id, store.Id)
+                            .FirstOrDefault();
                         if (defaultProductCategory != null)
                         {
-                            var category = defaultProductCategory.Category.GetFormattedBreadCrumb(_categoryService, separator: ">");
+                            //TODO localize categories
+                            var category = defaultProductCategory.Category
+                                .GetFormattedBreadCrumb(_categoryService, separator: ">", languageId: languageId);
                             if (!String.IsNullOrEmpty((category)))
                             {
                                 writer.WriteStartElement("g", "product_type", googleBaseNamespace);
@@ -261,7 +281,7 @@ namespace Nop.Plugin.Feed.Froogle
                         }
 
                         //link [link] - URL directly linking to your item's page on your website
-                        var productUrl = string.Format("{0}{1}", store.Url, product.GetSeName(_workContext.WorkingLanguage.Id));
+                        var productUrl = string.Format("{0}{1}", store.Url, product.GetSeName(languageId));
                         writer.WriteElementString("link", productUrl);
 
                         //image link [image_link] - URL of an image of the item
@@ -306,8 +326,8 @@ namespace Nop.Plugin.Feed.Froogle
                         //availability [availability] - Availability status of the item
                         string availability = "in stock"; //in stock by default
                         if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock
-                            && product.StockQuantity <= 0
-                            && product.BackorderMode == BackorderMode.NoBackorders)
+                            && product.BackorderMode == BackorderMode.NoBackorders
+                            && product.GetTotalStockQuantity() <= 0)
                         {
                             availability = "out of stock";
                         }
@@ -419,7 +439,7 @@ namespace Nop.Plugin.Feed.Froogle
                         //We accept only the following units of weight: lb, oz, g, kg.
                         if (_froogleSettings.PassShippingInfo)
                         {
-                            var weightName = "kg";
+                            string weightName;
                             var shippingWeight = product.Weight;
                             switch (_measureService.GetMeasureWeightById(_measureSettings.BaseWeightId).SystemKeyword)
                             {
@@ -461,7 +481,7 @@ namespace Nop.Plugin.Feed.Froogle
         public override void Install()
         {
             //settings
-            var settings = new FroogleSettings()
+            var settings = new FroogleSettings
             {
                 ProductPictureSize = 125,
                 PassShippingInfo = false,
@@ -482,6 +502,8 @@ namespace Nop.Plugin.Feed.Froogle
             this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.General", "General");
             this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.Generate", "Generate feed");
             this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.Override", "Override product settings");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.PassShippingInfo", "Pass shipping info");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.PassShippingInfo.Hint", "Check if you want to include shipping information (weight) in generated XML file.");
             this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.ProductPictureSize", "Product thumbnail image size");
             this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.ProductPictureSize.Hint", "The default size (pixels) for product thumbnail images.");
             this.AddOrUpdatePluginLocaleResource("Plugins.Feed.Froogle.Products.ProductName", "Product");
@@ -518,6 +540,8 @@ namespace Nop.Plugin.Feed.Froogle
             this.DeletePluginLocaleResource("Plugins.Feed.Froogle.General");
             this.DeletePluginLocaleResource("Plugins.Feed.Froogle.Generate");
             this.DeletePluginLocaleResource("Plugins.Feed.Froogle.Override");
+            this.DeletePluginLocaleResource("Plugins.Feed.Froogle.PassShippingInfo");
+            this.DeletePluginLocaleResource("Plugins.Feed.Froogle.PassShippingInfo.Hint");
             this.DeletePluginLocaleResource("Plugins.Feed.Froogle.ProductPictureSize");
             this.DeletePluginLocaleResource("Plugins.Feed.Froogle.ProductPictureSize.Hint");
             this.DeletePluginLocaleResource("Plugins.Feed.Froogle.Products.ProductName");
@@ -541,7 +565,7 @@ namespace Nop.Plugin.Feed.Froogle
         {
             if (store == null)
                 throw new ArgumentNullException("store");
-            string filePath = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath, "content\\files\\exportimport", store.Id + "-" + _froogleSettings.StaticFileName);
+            string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, "content\\files\\exportimport", store.Id + "-" + _froogleSettings.StaticFileName);
             using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
                 GenerateFeed(fs, store);

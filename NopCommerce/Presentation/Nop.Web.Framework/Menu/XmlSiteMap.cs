@@ -93,10 +93,7 @@ namespace Nop.Web.Framework.Menu
                 siteMapNode.ActionName = actionName;
 
                 //apply admin area as described here - http://www.nopcommerce.com/boards/t/20478/broken-menus-in-admin-area-whilst-trying-to-make-a-plugin-admin-page.aspx
-                siteMapNode.RouteValues = new RouteValueDictionary()
-                                          {
-                                              {"area", "Admin"}
-                                          };
+                siteMapNode.RouteValues = new RouteValueDictionary { {"area", "Admin"} };
             }
             else if (!string.IsNullOrEmpty(url))
             {
@@ -111,7 +108,7 @@ namespace Nop.Web.Framework.Menu
             if (!string.IsNullOrEmpty(permissionNames))
             {
                 var permissionService = EngineContext.Current.Resolve<IPermissionService>();
-                siteMapNode.Visible = permissionNames.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                siteMapNode.Visible = permissionNames.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                    .Any(permissionName => permissionService.Authorize(permissionName.Trim()));
             }
             else
@@ -124,7 +121,7 @@ namespace Nop.Web.Framework.Menu
         {
             string value = null;
 
-            if (node.Attributes.Count > 0)
+            if (node.Attributes != null && node.Attributes.Count > 0)
             {
                 XmlAttribute attribute = node.Attributes[attributeName];
 

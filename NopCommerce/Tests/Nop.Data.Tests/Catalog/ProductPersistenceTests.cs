@@ -2,6 +2,7 @@
 using System.Linq;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Media;
+using Nop.Core.Domain.Shipping;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -54,14 +55,20 @@ namespace Nop.Data.Tests.Catalog
                 RecurringCycleLength = 7,
                 RecurringCyclePeriodId = 8,
                 RecurringTotalCycles = 9,
+                IsRental = true,
+                RentalPriceLength = 9,
+                RentalPricePeriodId = 10,
                 IsShipEnabled = true,
                 IsFreeShipping = true,
+                ShipSeparately = true,
                 AdditionalShippingCharge = 10.1M,
                 DeliveryDateId = 5,
-                WarehouseId = 6,
                 IsTaxExempt = true,
                 TaxCategoryId = 11,
+                IsTelecommunicationsOrBroadcastingOrElectronicServices = true,
                 ManageInventoryMethodId = 12,
+                UseMultipleWarehouses = true,
+                WarehouseId = 6,
                 StockQuantity = 13,
                 DisplayStockAvailability = true,
                 DisplayStockQuantity = true,
@@ -147,14 +154,20 @@ namespace Nop.Data.Tests.Catalog
             fromDb.RecurringCycleLength.ShouldEqual(7);
             fromDb.RecurringCyclePeriodId.ShouldEqual(8);
             fromDb.RecurringTotalCycles.ShouldEqual(9);
+            fromDb.IsRental.ShouldEqual(true);
+            fromDb.RentalPriceLength.ShouldEqual(9);
+            fromDb.RentalPricePeriodId.ShouldEqual(10);
             fromDb.IsShipEnabled.ShouldEqual(true);
             fromDb.IsFreeShipping.ShouldEqual(true);
+            fromDb.ShipSeparately.ShouldEqual(true);
             fromDb.AdditionalShippingCharge.ShouldEqual(10.1M);
             fromDb.DeliveryDateId.ShouldEqual(5);
-            fromDb.WarehouseId.ShouldEqual(6);
             fromDb.IsTaxExempt.ShouldEqual(true);
             fromDb.TaxCategoryId.ShouldEqual(11);
+            fromDb.IsTelecommunicationsOrBroadcastingOrElectronicServices.ShouldEqual(true);
             fromDb.ManageInventoryMethodId.ShouldEqual(12);
+            fromDb.UseMultipleWarehouses.ShouldEqual(true);
+            fromDb.WarehouseId.ShouldEqual(6);
             fromDb.StockQuantity.ShouldEqual(13);
             fromDb.DisplayStockAvailability.ShouldEqual(true);
             fromDb.DisplayStockQuantity.ShouldEqual(true);
@@ -216,7 +229,7 @@ namespace Nop.Data.Tests.Catalog
                     {
                         IsFeaturedProduct = true,
                         DisplayOrder = 1,
-                        Category = new Category()
+                        Category = new Category
                         {
                             Name = "Books",
                             Description = "Description 1",
@@ -265,7 +278,7 @@ namespace Nop.Data.Tests.Catalog
                     {
                         IsFeaturedProduct = true,
                         DisplayOrder = 1,
-                        Manufacturer = new Manufacturer()
+                        Manufacturer = new Manufacturer
                         {
                             Name = "Name",
                             Description = "Description 1",
@@ -313,7 +326,7 @@ namespace Nop.Data.Tests.Catalog
                     new ProductPicture
                     {
                         DisplayOrder = 1,
-                        Picture = new Picture()
+                        Picture = new Picture
                         {
                             PictureBinary = new byte[] { 1, 2, 3 },
                             MimeType = "image/pjpeg",
@@ -386,5 +399,38 @@ namespace Nop.Data.Tests.Catalog
             (fromDb.TierPrices.Count == 1).ShouldBeTrue();
             fromDb.TierPrices.First().Quantity.ShouldEqual(1);
         }
+
+        [Test]
+        public void Can_save_and_load_product_with_productWarehouseInventory()
+        {
+            var product = new Product
+            {
+                Name = "Name 1",
+                Published = true,
+                Deleted = false,
+                CreatedOnUtc = new DateTime(2010, 01, 01),
+                UpdatedOnUtc = new DateTime(2010, 01, 02)
+            };
+            product.ProductWarehouseInventory.Add
+                (
+                    new ProductWarehouseInventory
+                    {
+                        Warehouse = new Warehouse
+                        {
+                            Name = "Name 2",
+                            AddressId = 1,
+                        },
+                        StockQuantity = 2,
+                    }
+                );
+            var fromDb = SaveAndLoadEntity(product);
+            fromDb.ShouldNotBeNull();
+            fromDb.Name.ShouldEqual("Name 1");
+
+            fromDb.ProductWarehouseInventory.ShouldNotBeNull();
+            (fromDb.ProductWarehouseInventory.Count == 1).ShouldBeTrue();
+            fromDb.ProductWarehouseInventory.First().StockQuantity.ShouldEqual(2);
+        }
+
     }
 }

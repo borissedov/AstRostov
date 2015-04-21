@@ -14,6 +14,7 @@ namespace Nop.Admin.Models.Orders
     {
         public OrderModel()
         {
+            CustomValues = new Dictionary<string, object>();
             TaxRates = new List<TaxRate>();
             GiftCards = new List<GiftCard>();
             Items = new List<OrderItemModel>();
@@ -42,6 +43,9 @@ namespace Nop.Admin.Models.Orders
         public string CustomerFullName { get; set; }
         [NopResourceDisplayName("Admin.Orders.Fields.CustomerIP")]
         public string CustomerIp { get; set; }
+
+        [NopResourceDisplayName("Admin.Orders.Fields.CustomValues")]
+        public Dictionary<string, object> CustomValues { get; set; }
 
         [NopResourceDisplayName("Admin.Orders.Fields.Affiliate")]
         public int? AffiliateId { get; set; }
@@ -149,9 +153,6 @@ namespace Nop.Admin.Models.Orders
         public string CardExpirationYear { get; set; }
 
         //misc payment info
-        public bool DisplayPurchaseOrderNumber { get; set; }
-        [NopResourceDisplayName("Admin.Orders.Fields.PurchaseOrderNumber")]
-        public string PurchaseOrderNumber { get; set; }
         [NopResourceDisplayName("Admin.Orders.Fields.AuthorizationTransactionID")]
         public string AuthorizationTransactionId { get; set; }
         [NopResourceDisplayName("Admin.Orders.Fields.CaptureTransactionID")]
@@ -253,6 +254,7 @@ namespace Nop.Admin.Models.Orders
 
             public string AttributeInfo { get; set; }
             public string RecurringInfo { get; set; }
+            public string RentalInfo { get; set; }
             public IList<int> ReturnRequestIds { get; set; }
             public IList<int> PurchasedGiftCardIds { get; set; }
 
@@ -344,7 +346,7 @@ namespace Nop.Admin.Models.Orders
             {
                 public ProductDetailsModel()
                 {
-                    ProductVariantAttributes = new List<ProductVariantAttributeModel>();
+                    ProductAttributes = new List<ProductAttributeModel>();
                     GiftCard = new GiftCardModel();
                     Warnings = new List<string>();
                 }
@@ -370,20 +372,22 @@ namespace Nop.Admin.Models.Orders
                 [NopResourceDisplayName("Admin.Orders.Products.AddNew.SubTotalExclTax")]
                 public decimal SubTotalExclTax { get; set; }
 
-                //product attrbiutes
-                public IList<ProductVariantAttributeModel> ProductVariantAttributes { get; set; }
+                //product attributes
+                public IList<ProductAttributeModel> ProductAttributes { get; set; }
                 //gift card info
                 public GiftCardModel GiftCard { get; set; }
+                //rental
+                public bool IsRental { get; set; }
 
                 public List<string> Warnings { get; set; }
 
             }
 
-            public partial class ProductVariantAttributeModel : BaseNopEntityModel
+            public partial class ProductAttributeModel : BaseNopEntityModel
             {
-                public ProductVariantAttributeModel()
+                public ProductAttributeModel()
                 {
-                    Values = new List<ProductVariantAttributeValueModel>();
+                    Values = new List<ProductAttributeValueModel>();
                 }
 
                 public int ProductAttributeId { get; set; }
@@ -396,10 +400,10 @@ namespace Nop.Admin.Models.Orders
 
                 public AttributeControlType AttributeControlType { get; set; }
 
-                public IList<ProductVariantAttributeValueModel> Values { get; set; }
+                public IList<ProductAttributeValueModel> Values { get; set; }
             }
 
-            public partial class ProductVariantAttributeValueModel : BaseNopEntityModel
+            public partial class ProductAttributeValueModel : BaseNopEntityModel
             {
                 public string Name { get; set; }
 

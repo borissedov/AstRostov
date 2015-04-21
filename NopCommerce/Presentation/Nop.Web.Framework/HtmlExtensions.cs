@@ -11,6 +11,7 @@ using System.Web.WebPages;
 using Nop.Core;
 using Nop.Core.Infrastructure;
 using Nop.Services.Localization;
+using Nop.Services.Stores;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc;
 
@@ -37,15 +38,26 @@ namespace Nop.Web.Framework
             return MvcHtmlString.Create(builder.ToString());
         }
 
-        public static HelperResult LocalizedEditor<T, TLocalizedModelLocal>(this HtmlHelper<T> helper, string name,
-             Func<int, HelperResult> localizedTemplate,
-             Func<T, HelperResult> standardTemplate)
+        public static HelperResult LocalizedEditor<T, TLocalizedModelLocal>(this HtmlHelper<T> helper,
+            string name,
+            Func<int, HelperResult> localizedTemplate,
+            Func<T, HelperResult> standardTemplate,
+            bool ignoreIfSeveralStores = false)
             where T : ILocalizedModel<TLocalizedModelLocal>
             where TLocalizedModelLocal : ILocalizedModelLocal
         {
             return new HelperResult(writer =>
             {
-                if (helper.ViewData.Model.Locales.Count > 1)
+                var localizationSupported = helper.ViewData.Model.Locales.Count > 1;
+                if (ignoreIfSeveralStores)
+                {
+                    var storeService = EngineContext.Current.Resolve<IStoreService>();
+                    if (storeService.GetAllStores().Count >= 2)
+                    {
+                        localizationSupported = false;
+                    }
+                }
+                if (localizationSupported)
                 {
                     var tabStrip = new StringBuilder();
                     tabStrip.AppendLine(string.Format("<div id='{0}'>", name));
@@ -56,10 +68,9 @@ namespace Nop.Web.Framework
                     tabStrip.AppendLine("Standard");
                     tabStrip.AppendLine("</li>");
 
-                    for (int i = 0; i < helper.ViewData.Model.Locales.Count; i++)
+                    foreach (var locale in helper.ViewData.Model.Locales)
                     {
                         //languages
-                        var locale = helper.ViewData.Model.Locales[i];
                         var language = EngineContext.Current.Resolve<ILanguageService>().GetLanguageById(locale.LanguageId);
 
                         tabStrip.AppendLine("<li>");
@@ -109,7 +120,7 @@ namespace Nop.Web.Framework
 
         public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string buttonsSelector) where T : BaseNopEntityModel
         {
-            return DeleteConfirmation<T>(helper, "", buttonsSelector);
+            return DeleteConfirmation(helper, "", buttonsSelector);
         }
 
         public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string actionName,
@@ -159,7 +170,7 @@ namespace Nop.Web.Framework
             var result = new StringBuilder();
             var metadata = ModelMetadata.FromLambdaExpression(expression, helper.ViewData);
             var hintResource = string.Empty;
-            object value = null;
+            object value;
             if (metadata.AdditionalValues.TryGetValue("NopResourceDisplayName", out value))
             {
                 var resourceDisplayName = value as NopResourceDisplayName;
@@ -240,7 +251,7 @@ namespace Nop.Web.Framework
                 {
                     dataInputSelector = "#" + String.Join(", #", datainputIds);
                 }
-                var onClick = string.Format("checkOverridenStoreValue(this, '{0}')", dataInputSelector);
+                var onClick = string.Format("checkOverriddenStoreValue(this, '{0}')", dataInputSelector);
                 result.Append(helper.CheckBoxFor(expression, new Dictionary<string, object>
                 {
                     { "class", cssClass },
@@ -412,9 +423,9 @@ namespace Nop.Web.Framework
         /// <returns>Label</returns>
         public static MvcHtmlString LabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object htmlAttributes, string suffix)
         {
-            string htmlFieldName = ExpressionHelper.GetExpressionText((LambdaExpression)expression);
-            var metadata = ModelMetadata.FromLambdaExpression<TModel, TValue>(expression, html.ViewData);
-            string resolvedLabelText = metadata.DisplayName ?? (metadata.PropertyName ?? htmlFieldName.Split(new char[] { '.' }).Last<string>());
+            string htmlFieldName = ExpressionHelper.GetExpressionText(expression);
+            var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+            string resolvedLabelText = metadata.DisplayName ?? (metadata.PropertyName ?? htmlFieldName.Split(new [] { '.' }).Last());
             if (string.IsNullOrEmpty(resolvedLabelText))
             {
                 return MvcHtmlString.Empty;
@@ -428,7 +439,7 @@ namespace Nop.Web.Framework
             tag.SetInnerText(resolvedLabelText);
 
             var dictionary = ((IDictionary<string, object>)HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
-            tag.MergeAttributes<string, object>(dictionary, true);
+            tag.MergeAttributes(dictionary, true);
 
             return MvcHtmlString.Create(tag.ToString(TagRenderMode.Normal));
         }

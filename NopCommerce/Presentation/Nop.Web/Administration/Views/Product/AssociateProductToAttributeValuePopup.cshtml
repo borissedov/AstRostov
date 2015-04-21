@@ -1,20 +1,20 @@
 ﻿@{
     Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
 }
-@model ProductModel.ProductVariantAttributeValueModel.AssociateProductToAttributeValueModel
+@model ProductModel.ProductAttributeValueModel.AssociateProductToAttributeValueModel
 @{
     var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
     var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
 
     //page title
-    ViewBag.Title = T("Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.AssociatedProduct.AddNew").Text;
+    ViewBag.Title = T("Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.AssociatedProduct.AddNew").Text;
 }
 @using (Html.BeginForm())
 {
     <div class="section-header">
         <div class="title">
             <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
-            @T("Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.AssociatedProduct.AddNew")
+            @T("Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.AssociatedProduct.AddNew")
         </div>
     </div>    
     
@@ -86,8 +86,6 @@
             </td>
         </tr>
     </table>
-    <p>
-    </p>
     <table class="adminContent">
         <tr>
             <td>
@@ -163,7 +161,7 @@
             $('#search-products').click(function () {
                 var grid = $('#products-grid').data('kendoGrid');
                 grid.dataSource.page(1); //new search. Set page size to 1
-                grid.dataSource.read();
+                //grid.dataSource.read(); we already loaded the grid above using "page" function
                 return false;
             });
         });

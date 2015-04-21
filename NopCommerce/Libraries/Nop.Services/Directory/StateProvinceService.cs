@@ -113,13 +113,28 @@ namespace Nop.Services.Directory
             return _cacheManager.Get(key, () =>
             {
                 var query = from sp in _stateProvinceRepository.Table
-                            orderby sp.DisplayOrder
+                            orderby sp.DisplayOrder, sp.Name
                             where sp.CountryId == countryId &&
                             (showHidden || sp.Published)
                             select sp;
                 var stateProvinces = query.ToList();
                 return stateProvinces;
             });
+        }
+
+        /// <summary>
+        /// Gets all states/provinces
+        /// </summary>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>State/province collection</returns>
+        public virtual IList<StateProvince> GetStateProvinces(bool showHidden = false)
+        {
+            var query = from sp in _stateProvinceRepository.Table
+                        orderby sp.CountryId, sp.DisplayOrder, sp.Name
+                where showHidden || sp.Published
+                select sp;
+            var stateProvinces = query.ToList();
+            return stateProvinces;
         }
 
         /// <summary>

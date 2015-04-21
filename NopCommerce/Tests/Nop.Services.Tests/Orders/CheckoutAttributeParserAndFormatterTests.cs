@@ -118,13 +118,13 @@ namespace Nop.Services.Tests.Orders
             #endregion
             
             _checkoutAttributeRepo = MockRepository.GenerateMock<IRepository<CheckoutAttribute>>();
-            _checkoutAttributeRepo.Expect(x => x.Table).Return(new List<CheckoutAttribute>() { ca1, ca2, ca3 }.AsQueryable());
+            _checkoutAttributeRepo.Expect(x => x.Table).Return(new List<CheckoutAttribute> { ca1, ca2, ca3 }.AsQueryable());
             _checkoutAttributeRepo.Expect(x => x.GetById(ca1.Id)).Return(ca1);
             _checkoutAttributeRepo.Expect(x => x.GetById(ca2.Id)).Return(ca2);
             _checkoutAttributeRepo.Expect(x => x.GetById(ca3.Id)).Return(ca3);
 
             _checkoutAttributeValueRepo = MockRepository.GenerateMock<IRepository<CheckoutAttributeValue>>();
-            _checkoutAttributeValueRepo.Expect(x => x.Table).Return(new List<CheckoutAttributeValue>() { cav1_1, cav1_2, cav2_1, cav2_2 }.AsQueryable());
+            _checkoutAttributeValueRepo.Expect(x => x.Table).Return(new List<CheckoutAttributeValue> { cav1_1, cav1_2, cav2_1, cav2_2 }.AsQueryable());
             _checkoutAttributeValueRepo.Expect(x => x.GetById(cav1_1.Id)).Return(cav1_1);
             _checkoutAttributeValueRepo.Expect(x => x.GetById(cav1_2.Id)).Return(cav1_2);
             _checkoutAttributeValueRepo.Expect(x => x.GetById(cav2_1.Id)).Return(cav2_1);
@@ -178,12 +178,12 @@ namespace Nop.Services.Tests.Orders
             //custom text
             attributes = _checkoutAttributeParser.AddCheckoutAttribute(attributes, ca3, "Some custom text goes here");
 
-            var parsed_pvaValues = _checkoutAttributeParser.ParseCheckoutAttributeValues(attributes);
-            parsed_pvaValues.Contains(cav1_1).ShouldEqual(true);
-            parsed_pvaValues.Contains(cav1_2).ShouldEqual(false);
-            parsed_pvaValues.Contains(cav2_1).ShouldEqual(true);
-            parsed_pvaValues.Contains(cav2_2).ShouldEqual(true);
-            parsed_pvaValues.Contains(cav2_2).ShouldEqual(true);
+            var parsed_attributeValues = _checkoutAttributeParser.ParseCheckoutAttributeValues(attributes);
+            parsed_attributeValues.Contains(cav1_1).ShouldEqual(true);
+            parsed_attributeValues.Contains(cav1_2).ShouldEqual(false);
+            parsed_attributeValues.Contains(cav2_1).ShouldEqual(true);
+            parsed_attributeValues.Contains(cav2_2).ShouldEqual(true);
+            parsed_attributeValues.Contains(cav2_2).ShouldEqual(true);
 
             var parsedValues = _checkoutAttributeParser.ParseValues(attributes, ca3.Id);
             parsedValues.Count.ShouldEqual(1);

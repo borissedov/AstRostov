@@ -25,12 +25,6 @@ namespace Nop.Plugin.Shipping.CanadaPost
     /// </summary>
     public class CanadaPostComputationMethod : BasePlugin, IShippingRateComputationMethod
     {
-        #region Constants
-
-        private const int MAXPACKAGEWEIGHT = 30;
-
-        #endregion
-
         #region Fields
 
         private readonly IMeasureService _measureService;
@@ -73,11 +67,11 @@ namespace Nop.Plugin.Shipping.CanadaPost
                 socCanadaPost.Send(data);
 
                 string resp = String.Empty;
-                byte[] buffer = new byte[8192];
-                int iRx = 0;
+                var buffer = new byte[8192];
 
                 while (!resp.Contains("<!--END_OF_EPARCEL-->"))
                 {
+                    int iRx;
                     try
                     {
                         iRx = socCanadaPost.Receive(buffer, 0, 8192, SocketFlags.None);
@@ -86,8 +80,8 @@ namespace Nop.Plugin.Shipping.CanadaPost
                     {
                         if (e.SocketErrorCode == SocketError.TimedOut)
                             break;
-                        else
-                            throw e;
+                        
+                        throw e;
                     }
                     if (iRx > 0)
                     {
@@ -158,13 +152,13 @@ namespace Nop.Plugin.Shipping.CanadaPost
                         rate.Name = product.Element("name").Value;
                         rate.Amount = Convert.ToDecimal(product.Element("rate").Value, new CultureInfo("en-US", false).NumberFormat);
                         DateTime shipDate;
-                        if (DateTime.TryParse(product.Element("shippingDate").Value, out shipDate) == true)
+                        if (DateTime.TryParse(product.Element("shippingDate").Value, out shipDate))
                         {
                             rate.ShippingDate = shipDate;
                         }
 
                         DateTime delivDate;
-                        if (DateTime.TryParse(product.Element("deliveryDate").Value, out delivDate) == true)
+                        if (DateTime.TryParse(product.Element("deliveryDate").Value, out delivDate))
                         {
                             CultureInfo culture;
                             if (language == CanadaPostLanguageEnum.French)
@@ -232,12 +226,13 @@ namespace Nop.Plugin.Shipping.CanadaPost
             if (usedMeasureDimension == null)
                 throw new NopException("CanadaPost shipping service. Could not load \"meter(s)\" measure dimension");
 
-            foreach (var sci in getShippingOptionRequest.Items)
+            foreach (var packageItem in getShippingOptionRequest.Items)
             {
-                var product = sci.Product;
+                var sci = packageItem.ShoppingCartItem;
+                var qty = packageItem.GetQuantity();
 
                 var item = new Item();
-                item.Quantity = sci.Quantity;
+                item.Quantity = qty;
                 //Canada Post uses kg(s)
 
                 decimal unitWeight = _shippingService.GetShoppingCartItemWeight(sci);
@@ -246,14 +241,21 @@ namespace Nop.Plugin.Shipping.CanadaPost
                 if (item.Weight == decimal.Zero)
                     item.Weight = 0.01M;
 
+                //get dimensions for qty 1
+                decimal lengthTmp, widthTmp, heightTmp;
+                _shippingService.GetDimensions(new List<GetShippingOptionRequest.PackageItem>
+                                               {
+                                                   new GetShippingOptionRequest.PackageItem(sci, 1)
+                                               }, out widthTmp, out lengthTmp, out heightTmp);
+
                 //Canada Post uses centimeters                
-                item.Length = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(product.Length, usedMeasureDimension) * 100));
+                item.Length = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension) * 100));
                 if (item.Length == decimal.Zero)
                     item.Length = 1;
-                item.Width = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(product.Width, usedMeasureDimension) * 100));
+                item.Width = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(widthTmp, usedMeasureDimension) * 100));
                 if (item.Width == decimal.Zero)
                     item.Width = 1;
-                item.Height = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(product.Height, usedMeasureDimension) * 100));
+                item.Height = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(heightTmp, usedMeasureDimension) * 100));
                 if (item.Height == decimal.Zero)
                     item.Height = 1;
                 result.Add(item);
@@ -369,7 +371,7 @@ namespace Nop.Plugin.Shipping.CanadaPost
         {
             actionName = "Configure";
             controllerName = "ShippingCanadaPost";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.CanadaPost.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Shipping.CanadaPost.Controllers" }, { "area", null } };
         }
         
         /// <summary>
@@ -378,7 +380,7 @@ namespace Nop.Plugin.Shipping.CanadaPost
         public override void Install()
         {
             //settings
-            var settings = new CanadaPostSettings()
+            var settings = new CanadaPostSettings
             {
                 Url = "sellonline.canadapost.ca",
                 Port = 30000,

@@ -1,9 +1,8 @@
-using System.Data.Entity.ModelConfiguration;
 using Nop.Core.Domain.Catalog;
 
 namespace Nop.Data.Mapping.Catalog
 {
-    public partial class ProductMap : EntityTypeConfiguration<Product>
+    public partial class ProductMap : NopEntityTypeConfiguration<Product>
     {
         public ProductMap()
         {
@@ -36,6 +35,7 @@ namespace Nop.Data.Mapping.Catalog
             this.Ignore(p => p.LowStockActivity);
             this.Ignore(p => p.ManageInventoryMethod);
             this.Ignore(p => p.RecurringCyclePeriod);
+            this.Ignore(p => p.RentalPricePeriod);
 
             this.HasMany(p => p.ProductTags)
                 .WithMany(pt => pt.Products)

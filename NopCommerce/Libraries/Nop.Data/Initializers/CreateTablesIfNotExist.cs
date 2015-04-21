@@ -18,7 +18,6 @@ namespace Nop.Data.Initializers
         /// <param name="tablesToValidate">A list of existing table names to validate; null to don't validate table names</param>
         /// <param name="customCommands">A list of custom commands to execute</param>
         public CreateTablesIfNotExist(string[] tablesToValidate, string [] customCommands)
-            : base()
         {
             this._tablesToValidate = tablesToValidate;
             this._customCommands = customCommands;
@@ -32,7 +31,7 @@ namespace Nop.Data.Initializers
             }
             if (dbExists)
             {
-                bool createTables = false;
+                bool createTables;
                 if (_tablesToValidate != null && _tablesToValidate.Length > 0)
                 {
                     //we have some table names to validate

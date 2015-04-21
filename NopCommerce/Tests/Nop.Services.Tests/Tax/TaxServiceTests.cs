@@ -6,6 +6,7 @@ using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Tax;
 using Nop.Core.Plugins;
 using Nop.Services.Common;
+using Nop.Services.Directory;
 using Nop.Services.Events;
 using Nop.Services.Tax;
 using Nop.Tests;
@@ -22,6 +23,10 @@ namespace Nop.Services.Tests.Tax
         private TaxSettings _taxSettings;
         private IEventPublisher _eventPublisher;
         private ITaxService _taxService;
+        private IGeoLookupService _geoLookupService;
+        private ICountryService _countryService;
+        private CustomerSettings _customerSettings;
+        private AddressSettings _addressSettings;
 
         [SetUp]
         public new void SetUp()
@@ -33,14 +38,21 @@ namespace Nop.Services.Tests.Tax
 
             _addressService = MockRepository.GenerateMock<IAddressService>();
             //default tax address
-            _addressService.Expect(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Return(new Address() { Id = _taxSettings.DefaultTaxAddressId });
+            _addressService.Expect(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Return(new Address { Id = _taxSettings.DefaultTaxAddressId });
 
             var pluginFinder = new PluginFinder();
 
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
 
-            _taxService = new TaxService(_addressService, _workContext, _taxSettings, pluginFinder);
+            _geoLookupService = MockRepository.GenerateMock<IGeoLookupService>();
+            _countryService = MockRepository.GenerateMock<ICountryService>();
+            _customerSettings = new CustomerSettings();
+            _addressSettings = new AddressSettings();
+
+            _taxService = new TaxService(_addressService, _workContext, _taxSettings,
+                pluginFinder, _geoLookupService, _countryService
+                , _customerSettings, _addressSettings);
         }
 
         [Test]
@@ -92,7 +104,7 @@ namespace Nop.Services.Tests.Tax
             customer.IsTaxExempt = false;
             _taxService.IsTaxExempt(null, customer).ShouldEqual(false);
 
-            var customerRole = new CustomerRole()
+            var customerRole = new CustomerRole
             {
                 TaxExempt = true,
                 Active = true
@@ -112,20 +124,6 @@ namespace Nop.Services.Tests.Tax
             //10 is a fixed tax rate returned from FixedRateTestTaxProvider. Perhaps, it should be configured some other way 
             return 10;
         }
-
-        //[Test]
-        //public void Can_get_tax_rate_for_productVariant()
-        //{
-        //    _taxSettings.TaxBasedOn = TaxBasedOn.BillingAddress;
-
-        //    var customer = new Customer();
-        //    customer.BillingAddress = new Address();
-        //    var productVariant = new ProductVariant();
-
-        //    _taxService.GetTaxRate(productVariant, customer).ShouldEqual(GetFixedTestTaxRate());
-        //    productVariant.IsTaxExempt = true;
-        //    _taxService.GetTaxRate(productVariant, customer).ShouldEqual(0);
-        //}
 
         [Test]
         public void Can_get_productPrice_priceIncludesTax_includingTax_taxable()

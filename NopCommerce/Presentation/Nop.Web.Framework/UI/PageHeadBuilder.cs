@@ -80,6 +80,7 @@ namespace Nop.Web.Framework.UI
         {
             return new CssRewriteUrlTransform();
         }
+
         #endregion
 
         #region Methods
@@ -190,7 +191,7 @@ namespace Nop.Web.Framework.UI
             if (string.IsNullOrEmpty(part))
                 return;
 
-            _scriptParts[location].Add(new ScriptReferenceMeta()
+            _scriptParts[location].Add(new ScriptReferenceMeta
             {
                 ExcludeFromBundle = excludeFromBundle,
                 Part = part
@@ -204,7 +205,7 @@ namespace Nop.Web.Framework.UI
             if (string.IsNullOrEmpty(part))
                 return;
 
-            _scriptParts[location].Insert(0, new ScriptReferenceMeta()
+            _scriptParts[location].Insert(0, new ScriptReferenceMeta
             {
                 ExcludeFromBundle = excludeFromBundle,
                 Part = part
@@ -429,7 +430,7 @@ namespace Nop.Web.Framework.UI
             var result = new StringBuilder();
             foreach (var path in distinctParts)
             {
-                result.AppendFormat(path);
+                result.Append(path);
                 result.Append(Environment.NewLine);
             }
             return result.ToString();

@@ -91,10 +91,10 @@ namespace Nop.Web.Models.Catalog
                 var priceRanges = new List<PriceRange>();
                 if (string.IsNullOrWhiteSpace(priceRangesStr))
                     return priceRanges;
-                string[] rangeArray = priceRangesStr.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] rangeArray = priceRangesStr.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string str1 in rangeArray)
                 {
-                    string[] fromTo = str1.Trim().Split(new char[] { '-' });
+                    string[] fromTo = str1.Trim().Split(new [] { '-' });
 
                     decimal? from = null;
                     if (!String.IsNullOrEmpty(fromTo[0]) && !String.IsNullOrEmpty(fromTo[0].Trim()))
@@ -104,7 +104,7 @@ namespace Nop.Web.Models.Catalog
                     if (!String.IsNullOrEmpty(fromTo[1]) && !String.IsNullOrEmpty(fromTo[1].Trim()))
                         to = decimal.Parse(fromTo[1].Trim(), new CultureInfo("en-US"));
 
-                    priceRanges.Add(new PriceRange() { From = from, To = to });
+                    priceRanges.Add(new PriceRange { From = from, To = to });
                 }
                 return priceRanges;
             }
@@ -114,7 +114,7 @@ namespace Nop.Web.Models.Catalog
                 var excludedQueryStringParams = "pagenumber"; //remove page filtering
                 if (!String.IsNullOrEmpty(excludedQueryStringParams))
                 {
-                    string[] excludedQueryStringParamsSplitted = excludedQueryStringParams.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] excludedQueryStringParamsSplitted = excludedQueryStringParams.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string exclude in excludedQueryStringParamsSplitted)
                         url = webHelper.RemoveQueryString(url, exclude);
                 }
@@ -128,10 +128,10 @@ namespace Nop.Web.Models.Catalog
 
             public virtual PriceRange GetSelectedPriceRange(IWebHelper webHelper, string priceRangesStr)
             {
-                string range = webHelper.QueryString<string>(QUERYSTRINGPARAM);
+                var range = webHelper.QueryString<string>(QUERYSTRINGPARAM);
                 if (String.IsNullOrEmpty(range))
                     return null;
-                string[] fromTo = range.Trim().Split(new char[] { '-' });
+                string[] fromTo = range.Trim().Split(new [] { '-' });
                 if (fromTo.Length == 2)
                 {
                     decimal? from = null;
@@ -247,7 +247,7 @@ namespace Nop.Web.Models.Catalog
                 var excludedQueryStringParams = "pagenumber"; //remove page filtering
                 if (!String.IsNullOrEmpty(excludedQueryStringParams))
                 {
-                    string[] excludedQueryStringParamsSplitted = excludedQueryStringParams.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] excludedQueryStringParamsSplitted = excludedQueryStringParams.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string exclude in excludedQueryStringParamsSplitted)
                     {
                         url = webHelper.RemoveQueryString(url, exclude);
@@ -281,13 +281,13 @@ namespace Nop.Web.Models.Catalog
             {
                 var result = new List<int>();
 
-                string alreadyFilteredSpecsStr = webHelper.QueryString<string>(QUERYSTRINGPARAM);
+                var alreadyFilteredSpecsStr = webHelper.QueryString<string>(QUERYSTRINGPARAM);
                 if (String.IsNullOrWhiteSpace(alreadyFilteredSpecsStr))
                     return result;
 
-                foreach (var spec in alreadyFilteredSpecsStr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var spec in alreadyFilteredSpecsStr.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    int specId = 0;
+                    int specId;
                     int.TryParse(spec.Trim(), out specId);
                     if (!result.Contains(specId))
                         result.Add(specId);

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Messages;
 using Nop.Core.Domain.Messages;
 using Nop.Services.Localization;
@@ -114,10 +115,6 @@ namespace Nop.Admin.Controllers
                 {
                     model.SelectedStoreIds = _storeMappingService.GetStoresIdsWithAccess(messageTemplate);
                 }
-                else
-                {
-                    model.SelectedStoreIds = new int[0];
-                }
             }
         }
 
@@ -160,9 +157,9 @@ namespace Nop.Admin.Controllers
 
             var model = new MessageTemplateListModel();
             //stores
-            model.AvailableStores.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            model.AvailableStores.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
             foreach (var s in _storeService.GetAllStores())
-                model.AvailableStores.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
+                model.AvailableStores.Add(new SelectListItem { Text = s.Name, Value = s.Id.ToString() });
             
             return View(model);
         }
@@ -209,6 +206,7 @@ namespace Nop.Admin.Controllers
                 return RedirectToAction("List");
             
             var model = messageTemplate.ToModel();
+            model.HasAttachedDownload = model.AttachedDownloadId > 0;
             model.AllowedTokens = FormatTokens(_messageTokenProvider.GetListOfAllowedTokens());
             //available email accounts
             foreach (var ea in _emailAccountService.GetAllEmailAccounts())
@@ -244,6 +242,9 @@ namespace Nop.Admin.Controllers
             if (ModelState.IsValid)
             {
                 messageTemplate = model.ToEntity(messageTemplate);
+                //attached file
+                if (!model.HasAttachedDownload)
+                    messageTemplate.AttachedDownloadId = 0;
                 _messageTemplateService.UpdateMessageTemplate(messageTemplate);
                 //Stores
                 SaveStoreMappings(messageTemplate, model);
@@ -259,14 +260,12 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", messageTemplate.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
 
             //If we got this far, something failed, redisplay form
+            model.HasAttachedDownload = model.AttachedDownloadId > 0;
             model.AllowedTokens = FormatTokens(_messageTokenProvider.GetListOfAllowedTokens());
             //available email accounts
             foreach (var ea in _emailAccountService.GetAllEmailAccounts())
@@ -317,6 +316,7 @@ namespace Nop.Admin.Controllers
                 return RedirectToAction("Edit", new { id = model.Id });
             }
         }
+
         #endregion
     }
 }

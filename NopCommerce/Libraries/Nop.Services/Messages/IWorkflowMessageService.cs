@@ -76,6 +76,26 @@ namespace Nop.Services.Messages
         int SendOrderPaidStoreOwnerNotification(Order order, int languageId);
 
         /// <summary>
+        /// Sends an order paid notification to a customer
+        /// </summary>
+        /// <param name="order">Order instance</param>
+        /// <param name="languageId">Message language identifier</param>
+        /// <param name="attachmentFilePath">Attachment file path</param>
+        /// <param name="attachmentFileName">Attachment file name. If specified, then this file name will be sent to a recipient. Otherwise, "AttachmentFilePath" name will be used.</param>
+        /// <returns>Queued email identifier</returns>
+        int SendOrderPaidCustomerNotification(Order order, int languageId,
+            string attachmentFilePath = null, string attachmentFileName = null);
+
+        /// <summary>
+        /// Sends an order paid notification to a vendor
+        /// </summary>
+        /// <param name="order">Order instance</param>
+        /// <param name="vendor">Vendor instance</param>
+        /// <param name="languageId">Message language identifier</param>
+        /// <returns>Queued email identifier</returns>
+        int SendOrderPaidVendorNotification(Order order, Vendor vendor, int languageId);
+
+        /// <summary>
         /// Sends an order placed notification to a customer
         /// </summary>
         /// <param name="order">Order instance</param>
@@ -260,7 +280,7 @@ namespace Nop.Services.Messages
         /// <param name="languageId">Message language identifier</param>
         /// <returns>Queued email identifier</returns>
         int SendGiftCardNotification(GiftCard giftCard, int languageId);
-        
+
 
         /// <summary>
         /// Sends a "quantity below" notification to a store owner
@@ -270,6 +290,13 @@ namespace Nop.Services.Messages
         /// <returns>Queued email identifier</returns>
         int SendQuantityBelowStoreOwnerNotification(Product product, int languageId);
 
+        /// <summary>
+        /// Sends a "quantity below" notification to a store owner
+        /// </summary>
+        /// <param name="combination">Attribute combination</param>
+        /// <param name="languageId">Message language identifier</param>
+        /// <returns>Queued email identifier</returns>
+        int SendQuantityBelowStoreOwnerNotification(ProductAttributeCombination combination, int languageId);
 
         /// <summary>
         /// Sends a "new VAT sumitted" notification to a store owner

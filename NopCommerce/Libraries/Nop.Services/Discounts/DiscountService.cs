@@ -6,9 +6,11 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Discounts;
+using Nop.Core.Domain.Orders;
 using Nop.Core.Plugins;
 using Nop.Services.Common;
 using Nop.Services.Events;
+using Nop.Services.Orders;
 
 namespace Nop.Services.Discounts
 {
@@ -113,11 +115,9 @@ namespace Nop.Services.Discounts
                             var totalDuh = GetAllDiscountUsageHistory(discount.Id, customer.Id, null, 0, 1).TotalCount;
                             return totalDuh < discount.LimitationTimes;
                         }
-                        else
-                        {
-                            //guest
-                            return true;
-                        }
+
+                        //guest
+                        return true;
                     }
                 default:
                     break;
@@ -167,11 +167,7 @@ namespace Nop.Services.Discounts
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Discount collection</returns>
         public virtual IList<Discount> GetAllDiscounts(DiscountType? discountType, string couponCode = "", bool showHidden = false)
-        { 
-            int? discountTypeId = null;
-            if (discountType.HasValue)
-                discountTypeId = (int)discountType.Value;
-
+        {
             //we load all discounts, and filter them by passed "discountType" parameter later
             //we do it because we know that this method is invoked several times per HTTP request with distinct "discountType" parameter
             //that's why let's access the database only once
@@ -195,14 +191,14 @@ namespace Nop.Services.Discounts
 
                     query = query.Where(d => d.CouponCode == couponCode);
                 }
-                query = query.OrderByDescending(d => d.Id);
+                query = query.OrderBy(d => d.Name);
                 
                 var discounts = query.ToList();
                 return discounts;
             });
-            if (discountTypeId.HasValue && discountTypeId.Value > 0)
+            if (discountType.HasValue)
             {
-                result = result.Where(d => d.DiscountTypeId == discountTypeId).ToList();
+                result = result.Where(d => d.DiscountType == discountType.Value).ToList();
             }
             return result;
         }
@@ -364,7 +360,7 @@ namespace Nop.Services.Discounts
                 if (!_pluginFinder.AuthenticateStore(requirementRule.PluginDescriptor, _storeContext.CurrentStore.Id))
                     continue;
 
-                var request = new CheckDiscountRequirementRequest()
+                var request = new CheckDiscountRequirementRequest
                 {
                     DiscountRequirement = req,
                     Customer = customer,
@@ -373,6 +369,22 @@ namespace Nop.Services.Discounts
                 if (!requirementRule.CheckRequirement(request))
                     return false;
             }
+
+            //Do not allow discounts applied to order subtotal or total when a customer has gift cards in the cart.
+            //Otherwise, this customer can purchase gift cards with discount and get more than paid ("free money").
+            if (discount.DiscountType == DiscountType.AssignedToOrderSubTotal ||
+                discount.DiscountType == DiscountType.AssignedToOrderTotal)
+            {
+                var cart = customer.ShoppingCartItems
+                    .Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart)
+                    .LimitPerStore(_storeContext.CurrentStore.Id)
+                    .ToList();
+
+                var hasGiftCards = cart.Any(x => x.Product.IsGiftCard);
+                if (hasGiftCards)
+                    return false;
+            }
+
             return true;
         }
 

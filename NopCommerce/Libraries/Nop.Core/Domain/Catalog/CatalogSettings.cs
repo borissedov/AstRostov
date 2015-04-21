@@ -277,6 +277,12 @@ namespace Nop.Core.Domain.Catalog
         public int TopCategoryMenuSubcategoryLevelsToDisplay { get; set; }
 
         /// <summary>
+        /// Gets or sets the value indicating whether we should load all subcategories in the left menu with categories.
+        /// It can be used by third-party theme developers.
+        /// </summary>
+        public bool LoadAllSideCategoryMenuSubcategories { get; set; }
+
+        /// <summary>
         /// Gets or sets the value indicating how many manufacturers to display in manufacturers block
         /// </summary>
         public int ManufacturersBlockItemsToDisplay { get; set; }
@@ -295,5 +301,15 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets a value indicating whether to display information about shipping and tax in product boxes (used in Germany)
         /// </summary>
         public bool DisplayTaxShippingInfoProductBoxes { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to display information about shipping and tax on wishlist page (used in Germany)
+        /// </summary>
+        public bool DisplayTaxShippingInfoWishlist { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to display information about shipping and tax on order details page (used in Germany)
+        /// </summary>
+        public bool DisplayTaxShippingInfoOrderDetailsPage { get; set; }
     }
 }

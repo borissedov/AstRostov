@@ -45,10 +45,9 @@ namespace Nop.Plugin.DiscountRules.HadSpentAmount.Controllers
             if (discount == null)
                 throw new ArgumentException("Discount could not be loaded");
 
-            DiscountRequirement discountRequirement = null;
             if (discountRequirementId.HasValue)
             {
-                discountRequirement = discount.DiscountRequirements.FirstOrDefault(dr => dr.Id == discountRequirementId.Value);
+                var discountRequirement = discount.DiscountRequirements.FirstOrDefault(dr => dr.Id == discountRequirementId.Value);
                 if (discountRequirement == null)
                     return Content("Failed to load requirement.");
             }
@@ -88,7 +87,7 @@ namespace Nop.Plugin.DiscountRules.HadSpentAmount.Controllers
             else
             {
                 //save new rule
-                discountRequirement = new DiscountRequirement()
+                discountRequirement = new DiscountRequirement
                 {
                     DiscountRequirementRuleSystemName = "DiscountRequirement.HadSpentAmount"
                 };

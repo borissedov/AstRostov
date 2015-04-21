@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Messages;
 using Nop.Core.Domain.Messages;
 using Nop.Services.Helpers;
@@ -40,7 +41,11 @@ namespace Nop.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMessageQueue))
                 return AccessDeniedView();
 
-            var model = new QueuedEmailListModel();
+		    var model = new QueuedEmailListModel
+		    {
+                //default value
+		        SearchMaxSentTries = 10
+		    };
             return View(model);
 		}
 
@@ -91,10 +96,10 @@ namespace Nop.Admin.Controllers
         public ActionResult GoToEmailByNumber(QueuedEmailListModel model)
         {
             var queuedEmail = _queuedEmailService.GetQueuedEmailById(model.GoDirectlyToNumber);
-            if (queuedEmail != null)
-                return RedirectToAction("Edit", "QueuedEmail", new { id = queuedEmail.Id });
-            else
+            if (queuedEmail == null)
                 return List();
+            
+            return RedirectToAction("Edit", "QueuedEmail", new { id = queuedEmail.Id });
         }
 
 		public ActionResult Edit(int id)
@@ -154,7 +159,7 @@ namespace Nop.Admin.Controllers
                 //No email found with the specified id
                 return RedirectToAction("List");
 
-            var requeuedEmail = new QueuedEmail()
+            var requeuedEmail = new QueuedEmail
             {
                 Priority = queuedEmail.Priority,
                 From = queuedEmail.From,
@@ -169,6 +174,7 @@ namespace Nop.Admin.Controllers
                 Body = queuedEmail.Body,
                 AttachmentFilePath = queuedEmail.AttachmentFilePath,
                 AttachmentFileName = queuedEmail.AttachmentFileName,
+                AttachedDownloadId = queuedEmail.AttachedDownloadId,
                 CreatedOnUtc = DateTime.UtcNow,
                 EmailAccountId = queuedEmail.EmailAccountId
             };

@@ -39,12 +39,12 @@
                                 type: "json",
                                 transport: {
                                     read: {
-                                        url: "@Html.Raw(Url.Action("RatesList", "ShippingByWeight", new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.ByWeight.Controllers" }, { "area", "" } }))",
+                                        url: "@Html.Raw(Url.Action("RatesList", "ShippingByWeight", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Shipping.ByWeight.Controllers" }, { "area", "" } }))",
                                         type: "POST",
                                         dataType: "json"
                                     },
                                     destroy: {
-                                        url: "@Html.Raw(Url.Action("RateDelete", "ShippingByWeight", new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.ByWeight.Controllers" }, { "area", "" } }))",
+                                        url: "@Html.Raw(Url.Action("RateDelete", "ShippingByWeight", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Shipping.ByWeight.Controllers" }, { "area", "" } }))",
                                         type: "POST",
                                         dataType: "json"
                                     }
@@ -127,15 +127,15 @@
     var addNewUrl = Url.RouteUrl("Plugin.Shipping.ByWeight.AddPopup") + "?btnId=btnRefresh&formId=shipping-byweight-form";
                 }
                 <br />
-                <input type="submit" id="btnAddNewOption" name="btnAddNewOption" value="@T("Plugins.Shipping.ByWeight.AddRecord")" onclick="javascript:OpenWindow('@(addNewUrl)', 800, 450, true); return false;" class="k-button" />
-                <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
+                <input type="submit" id="btnAddNewOption" value="@T("Plugins.Shipping.ByWeight.AddRecord")" onclick="javascript:OpenWindow('@(addNewUrl)', 800, 450, true); return false;" class="k-button" />
+                <input type="submit" id="btnRefresh" style="display: none" />
                 <script type="text/javascript">
                     $(document).ready(function () {
                         $('#btnRefresh').click(function () {
                             //refresh grid
-                            var optionsGrid = $("#shipping-byweight-grid").data('kendoGrid');
-                            //taxCountrystatezipGrid.dataSource.page(1); //new search. Set page size to 1
-                            optionsGrid.dataSource.read();
+                            var grid = $("#shipping-byweight-grid").data('kendoGrid');
+                            //grid.dataSource.page(1); //new search. Set page size to 1
+                            grid.dataSource.read();
 
                             //return false to don't reload a page
                             return false;

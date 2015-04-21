@@ -31,13 +31,13 @@ namespace Nop.Core.Domain.Orders
             if (String.IsNullOrEmpty(taxRatesStr))
                 return taxRatesDictionary;
 
-            string[] lines = taxRatesStr.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = taxRatesStr.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines)
             {
                 if (String.IsNullOrEmpty(line.Trim()))
                     continue;
 
-                string[] taxes = line.Split(new char[] { ':' });
+                string[] taxes = line.Split(new [] { ':' });
                 if (taxes.Length == 2)
                 {
                     try
@@ -298,11 +298,6 @@ namespace Nop.Core.Domain.Orders
         /// Gets or sets the subscription transaction identifier
         /// </summary>
         public string SubscriptionTransactionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the purchase order number
-        /// </summary>
-        public string PurchaseOrderNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the paid date and time

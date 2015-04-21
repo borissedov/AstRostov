@@ -72,6 +72,7 @@ namespace Nop.Plugin.Payments.PayPalStandard
             return _paypalStandardPaymentSettings.UseSandbox ? "https://www.sandbox.paypal.com/us/cgi-bin/webscr" :
                 "https://www.paypal.com/us/cgi-bin/webscr";
         }
+
         /// <summary>
         /// Gets PDT details
         /// </summary>
@@ -79,11 +80,13 @@ namespace Nop.Plugin.Payments.PayPalStandard
         /// <param name="values">Values</param>
         /// <param name="response">Response</param>
         /// <returns>Result</returns>
-        public bool GetPDTDetails(string tx, out Dictionary<string, string> values, out string response)
+        public bool GetPdtDetails(string tx, out Dictionary<string, string> values, out string response)
         {
             var req = (HttpWebRequest)WebRequest.Create(GetPaypalUrl());
             req.Method = "POST";
             req.ContentType = "application/x-www-form-urlencoded";
+            //now PayPal requires user-agent. otherwise, we can get 403 error
+            req.UserAgent = HttpContext.Current.Request.UserAgent;
 
             string formContent = string.Format("cmd=_notify-synch&at={0}&tx={1}", _paypalStandardPaymentSettings.PdtToken, tx);
             req.ContentLength = formContent.Length;
@@ -91,7 +94,6 @@ namespace Nop.Plugin.Payments.PayPalStandard
             using (var sw = new StreamWriter(req.GetRequestStream(), Encoding.ASCII))
                 sw.Write(formContent);
 
-            response = null;
             using (var sr = new StreamReader(req.GetResponse().GetResponseStream()))
                 response = HttpUtility.UrlDecode(sr.ReadToEnd());
 
@@ -122,11 +124,13 @@ namespace Nop.Plugin.Payments.PayPalStandard
         /// <param name="formString">Form string</param>
         /// <param name="values">Values</param>
         /// <returns>Result</returns>
-        public bool VerifyIPN(string formString, out Dictionary<string, string> values)
+        public bool VerifyIpn(string formString, out Dictionary<string, string> values)
         {
             var req = (HttpWebRequest)WebRequest.Create(GetPaypalUrl());
             req.Method = "POST";
             req.ContentType = "application/x-www-form-urlencoded";
+            //now PayPal requires user-agent. otherwise, we can get 403 error
+            req.UserAgent = HttpContext.Current.Request.UserAgent;
 
             string formContent = string.Format("{0}&cmd=_notify-validate", formString);
             req.ContentLength = formContent.Length;
@@ -136,7 +140,7 @@ namespace Nop.Plugin.Payments.PayPalStandard
                 sw.Write(formContent);
             }
 
-            string response = null;
+            string response;
             using (var sr = new StreamReader(req.GetResponse().GetResponseStream()))
             {
                 response = HttpUtility.UrlDecode(sr.ReadToEnd());
@@ -154,6 +158,7 @@ namespace Nop.Plugin.Payments.PayPalStandard
 
             return success;
         }
+
         #endregion
 
         #region Methods
@@ -178,15 +183,9 @@ namespace Nop.Plugin.Payments.PayPalStandard
         {
             var builder = new StringBuilder();
             builder.Append(GetPaypalUrl());
-            string cmd = string.Empty;
-            if (_paypalStandardPaymentSettings.PassProductNamesAndTotals)
-            {
-                cmd = "_cart";
-            }
-            else
-            {
-                cmd = "_xclick";
-            }
+            var cmd =_paypalStandardPaymentSettings.PassProductNamesAndTotals 
+                ? "_cart"
+                :  "_xclick";
             builder.AppendFormat("?cmd={0}&business={1}", cmd, HttpUtility.UrlEncode(_paypalStandardPaymentSettings.BusinessEmail));
             if (_paypalStandardPaymentSettings.PassProductNamesAndTotals)
             {
@@ -210,18 +209,18 @@ namespace Nop.Plugin.Payments.PayPalStandard
                 }
 
                 //the checkout attributes that have a dollar value and send them to Paypal as items to be paid for
-                var caValues = _checkoutAttributeParser.ParseCheckoutAttributeValues(postProcessPaymentRequest.Order.CheckoutAttributesXml);
-                foreach (var val in caValues)
+                var attributeValues = _checkoutAttributeParser.ParseCheckoutAttributeValues(postProcessPaymentRequest.Order.CheckoutAttributesXml);
+                foreach (var val in attributeValues)
                 {
                     var attPrice = _taxService.GetCheckoutAttributePrice(val, false, postProcessPaymentRequest.Order.Customer);
                     //round
                     var attPriceRounded = Math.Round(attPrice, 2);
                     if (attPrice > decimal.Zero) //if it has a price
                     {
-                        var ca = val.CheckoutAttribute;
-                        if (ca != null)
+                        var attribute = val.CheckoutAttribute;
+                        if (attribute != null)
                         {
-                            var attName = ca.Name; //set the name
+                            var attName = attribute.Name; //set the name
                             builder.AppendFormat("&item_name_" + x + "={0}", HttpUtility.UrlEncode(attName)); //name
                             builder.AppendFormat("&amount_" + x + "={0}", attPriceRounded.ToString("0.00", CultureInfo.InvariantCulture)); //amount
                             builder.AppendFormat("&quantity_" + x + "={0}", 1); //quantity
@@ -349,6 +348,19 @@ namespace Nop.Plugin.Payments.PayPalStandard
         }
 
         /// <summary>
+        /// Returns a value indicating whether payment method should be hidden during checkout
+        /// </summary>
+        /// <param name="cart">Shoping cart</param>
+        /// <returns>true - hide; false - display.</returns>
+        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        {
+            //you can put any logic here
+            //for example, hide this payment method if all products in the cart are downloadable
+            //or hide this payment method if current customer is from certain country
+            return false;
+        }
+
+        /// <summary>
         /// Gets additional handling fee
         /// </summary>
         /// <param name="cart">Shoping cart</param>
@@ -448,7 +460,7 @@ namespace Nop.Plugin.Payments.PayPalStandard
         {
             actionName = "Configure";
             controllerName = "PaymentPayPalStandard";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.PayPalStandard.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.PayPalStandard.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -461,7 +473,7 @@ namespace Nop.Plugin.Payments.PayPalStandard
         {
             actionName = "PaymentInfo";
             controllerName = "PaymentPayPalStandard";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.PayPalStandard.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.PayPalStandard.Controllers" }, { "area", null } };
         }
 
         public Type GetControllerType()
@@ -472,7 +484,7 @@ namespace Nop.Plugin.Payments.PayPalStandard
         public override void Install()
         {
             //settings
-            var settings = new PayPalStandardPaymentSettings()
+            var settings = new PayPalStandardPaymentSettings
             {
                 UseSandbox = true,
                 BusinessEmail = "test@test.com",

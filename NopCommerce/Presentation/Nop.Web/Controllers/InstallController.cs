@@ -155,7 +155,7 @@ namespace Nop.Web.Controllers
             this.Server.ScriptTimeout = 300;
 
 
-            var model = new InstallModel()
+            var model = new InstallModel
             {
                 AdminEmail = "admin@yourStore.com",
                 InstallSampleData = false,
@@ -174,7 +174,7 @@ namespace Nop.Web.Controllers
             };
             foreach (var lang in _locService.GetAvailableLanguages())
             {
-                model.AvailableLanguages.Add(new SelectListItem()
+                model.AvailableLanguages.Add(new SelectListItem
                 {
                     Value = Url.Action("ChangeLanguage", "Install", new { language = lang.Code}),
                     Text = lang.Name,
@@ -200,7 +200,7 @@ namespace Nop.Web.Controllers
             //prepare language list
             foreach (var lang in _locService.GetAvailableLanguages())
             {
-                model.AvailableLanguages.Add(new SelectListItem()
+                model.AvailableLanguages.Add(new SelectListItem
                 {
                     Value = Url.Action("ChangeLanguage", "Install", new { language = lang.Code }),
                     Text = lang.Name,
@@ -275,7 +275,7 @@ namespace Nop.Web.Controllers
                 var settingsManager = new DataSettingsManager();
                 try
                 {
-                    string connectionString = null;
+                    string connectionString;
                     if (model.DataProvider.Equals("sqlserver", StringComparison.InvariantCultureIgnoreCase))
                     {
                         //SQL Server
@@ -310,12 +310,10 @@ namespace Nop.Web.Controllers
                                 var errorCreatingDatabase = CreateDatabase(connectionString, collation);
                                 if (!String.IsNullOrEmpty(errorCreatingDatabase))
                                     throw new Exception(errorCreatingDatabase);
-                                else
-                                {
-                                    //Database cannot be created sometimes. Weird! Seems to be Entity Framework issue
-                                    //that's just wait 3 seconds
-                                    Thread.Sleep(3000);
-                                }
+                                
+                                //Database cannot be created sometimes. Weird! Seems to be Entity Framework issue
+                                //that's just wait 3 seconds
+                                Thread.Sleep(3000);
                             }
                         }
                         else
@@ -342,7 +340,7 @@ namespace Nop.Web.Controllers
 
                     //save settings
                     var dataProvider = model.DataProvider;
-                    var settings = new DataSettings()
+                    var settings = new DataSettings
                     {
                         DataProvider = dataProvider,
                         DataConnectionString = connectionString
@@ -364,7 +362,7 @@ namespace Nop.Web.Controllers
                     //install plugins
                     PluginManager.MarkAllPluginsAsUninstalled();
                     var pluginFinder = EngineContext.Current.Resolve<IPluginFinder>();
-                    var plugins = pluginFinder.GetPlugins<IPlugin>(false)
+                    var plugins = pluginFinder.GetPlugins<IPlugin>(LoadPluginsMode.All)
                         .ToList()
                         .OrderBy(x => x.PluginDescriptor.Group)
                         .ThenBy(x => x.PluginDescriptor.DisplayOrder)
@@ -372,7 +370,7 @@ namespace Nop.Web.Controllers
                     var pluginsIgnoredDuringInstallation = String.IsNullOrEmpty(ConfigurationManager.AppSettings["PluginsIgnoredDuringInstallation"]) ? 
                         new List<string>(): 
                         ConfigurationManager.AppSettings["PluginsIgnoredDuringInstallation"]
-                            .Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                            .Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries)
                             .Select(x => x.Trim())
                             .ToList();
                     foreach (var plugin in plugins)

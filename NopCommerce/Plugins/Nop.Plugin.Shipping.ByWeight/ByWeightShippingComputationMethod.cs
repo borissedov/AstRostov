@@ -57,8 +57,8 @@ namespace Nop.Plugin.Shipping.ByWeight
             {
                 if (_shippingByWeightSettings.LimitMethodsToCreated)
                     return null;
-                else
-                    return decimal.Zero;
+                
+                return decimal.Zero;
             }
 
             //additional fixed cost
@@ -114,13 +114,14 @@ namespace Nop.Plugin.Shipping.ByWeight
             int stateProvinceId = getShippingOptionRequest.ShippingAddress.StateProvinceId.HasValue ? getShippingOptionRequest.ShippingAddress.StateProvinceId.Value : 0;
             string zip = getShippingOptionRequest.ShippingAddress.ZipPostalCode;
             decimal subTotal = decimal.Zero;
-            foreach (var shoppingCartItem in getShippingOptionRequest.Items)
+            foreach (var packageItem in getShippingOptionRequest.Items)
             {
-                if (shoppingCartItem.IsFreeShipping || !shoppingCartItem.IsShipEnabled)
+                if (packageItem.ShoppingCartItem.IsFreeShipping)
                     continue;
-                subTotal += _priceCalculationService.GetSubTotal(shoppingCartItem, true);
+                //TODO we should use getShippingOptionRequest.Items.GetQuantity() method to get subtotal
+                subTotal += _priceCalculationService.GetSubTotal(packageItem.ShoppingCartItem);
             }
-            decimal weight = _shippingService.GetTotalWeight(getShippingOptionRequest.Items);
+            decimal weight = _shippingService.GetTotalWeight(getShippingOptionRequest);
 
             var shippingMethods = _shippingService.GetAllShippingMethods(countryId);
             foreach (var shippingMethod in shippingMethods)
@@ -160,7 +161,7 @@ namespace Nop.Plugin.Shipping.ByWeight
         {
             actionName = "Configure";
             controllerName = "ShippingByWeight";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.ByWeight.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Shipping.ByWeight.Controllers" }, { "area", null } };
         }
         
         /// <summary>
@@ -169,7 +170,7 @@ namespace Nop.Plugin.Shipping.ByWeight
         public override void Install()
         {
             //settings
-            var settings = new ShippingByWeightSettings()
+            var settings = new ShippingByWeightSettings
             {
                 LimitMethodsToCreated = false,
             };

@@ -32,11 +32,11 @@ namespace Nop.Services.Tests.Helpers
 
             _workContext = MockRepository.GenerateMock<IWorkContext>();
 
-            _store = new Store() { Id = 1 };
+            _store = new Store { Id = 1 };
             _storeContext = MockRepository.GenerateMock<IStoreContext>();
             _storeContext.Expect(x => x.CurrentStore).Return(_store);
 
-            _dateTimeSettings = new DateTimeSettings()
+            _dateTimeSettings = new DateTimeSettings
             {
                 AllowCustomersToSetTimeZone = false,
                 DefaultStoreTimeZoneId = ""
@@ -68,15 +68,15 @@ namespace Nop.Services.Tests.Helpers
             _dateTimeSettings.AllowCustomersToSetTimeZone = true;
             _dateTimeSettings.DefaultStoreTimeZoneId = "E. Europe Standard Time"; //(GMT+02:00) Minsk;
 
-            var customer = new Customer()
+            var customer = new Customer
             {
                 Id = 10,
             };
 
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>()
+                .Return(new List<GenericAttribute>
                             {
-                                new GenericAttribute()
+                                new GenericAttribute
                                     {
                                         StoreId = 0,
                                         EntityId = customer.Id,
@@ -96,15 +96,15 @@ namespace Nop.Services.Tests.Helpers
             _dateTimeSettings.AllowCustomersToSetTimeZone = false;
             _dateTimeSettings.DefaultStoreTimeZoneId = "E. Europe Standard Time"; //(GMT+02:00) Minsk;
 
-            var customer = new Customer()
+            var customer = new Customer
             {
                 Id = 10,
             };
 
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>()
+                .Return(new List<GenericAttribute>
                             {
-                                new GenericAttribute()
+                                new GenericAttribute
                                     {
                                         StoreId = 0,
                                         EntityId = customer.Id,
@@ -125,16 +125,16 @@ namespace Nop.Services.Tests.Helpers
             var sourceDateTime = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time"); //(GMT+02:00) Minsk;
             sourceDateTime.ShouldNotBeNull();
 
-            var destinationDateTime = TimeZoneInfo.FindSystemTimeZoneById("North Asia Standard Time"); //(GMT+08:00) Krasnoyarsk;
+            var destinationDateTime = TimeZoneInfo.FindSystemTimeZoneById("North Asia Standard Time"); //(GMT+07:00) Krasnoyarsk;
             destinationDateTime.ShouldNotBeNull();
 
             //summer time
             _dateTimeHelper.ConvertToUserTime(new DateTime(2010, 06, 01, 0, 0, 0), sourceDateTime, destinationDateTime)
-                .ShouldEqual(new DateTime(2010, 06, 01, 6, 0, 0));
+                .ShouldEqual(new DateTime(2010, 06, 01, 5, 0, 0));
 
             //winter time
             _dateTimeHelper.ConvertToUserTime(new DateTime(2010, 01, 01, 0, 0, 0), sourceDateTime, destinationDateTime)
-                .ShouldEqual(new DateTime(2010, 01, 01, 6, 0, 0));
+                .ShouldEqual(new DateTime(2010, 01, 01, 5, 0, 0));
         }
 
         [Test]

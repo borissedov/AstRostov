@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Directory;
 using Nop.Core;
 using Nop.Core.Domain.Directory;
 using Nop.Services.Common;
 using Nop.Services.Directory;
+using Nop.Services.ExportImport;
 using Nop.Services.Localization;
 using Nop.Services.Security;
 using Nop.Services.Stores;
@@ -29,6 +32,8 @@ namespace Nop.Admin.Controllers
         private readonly ILanguageService _languageService;
         private readonly IStoreService _storeService;
         private readonly IStoreMappingService _storeMappingService;
+        private readonly IExportManager _exportManager;
+        private readonly IImportManager _importManager;
 
 	    #endregion
 
@@ -42,7 +47,9 @@ namespace Nop.Admin.Controllers
             ILocalizedEntityService localizedEntityService, 
             ILanguageService languageService,
             IStoreService storeService,
-            IStoreMappingService storeMappingService)
+            IStoreMappingService storeMappingService,
+            IExportManager exportManager,
+            IImportManager importManager)
 		{
             this._countryService = countryService;
             this._stateProvinceService = stateProvinceService;
@@ -53,6 +60,8 @@ namespace Nop.Admin.Controllers
             this._languageService = languageService;
             this._storeService = storeService;
             this._storeMappingService = storeMappingService;
+            this._exportManager = exportManager;
+            this._importManager = importManager;
 		}
 
 		#endregion 
@@ -98,10 +107,6 @@ namespace Nop.Admin.Controllers
                 if (country != null)
                 {
                     model.SelectedStoreIds = _storeMappingService.GetStoresIdsWithAccess(country);
-                }
-                else
-                {
-                    model.SelectedStoreIds = new int[0];
                 }
             }
         }
@@ -255,10 +260,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", new {id = country.Id});
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
@@ -360,6 +362,8 @@ namespace Nop.Admin.Controllers
 
             var model = new StateProvinceModel();
             model.CountryId = countryId;
+            //default value
+            model.Published = true;
             //locales
             AddLocales(_languageService, model.Locales);
             return View(model);
@@ -454,7 +458,7 @@ namespace Nop.Admin.Controllers
 
             if (_addressService.GetAddressTotalByStateProvinceId(state.Id) > 0)
             {
-                return Json(new DataSourceResult() { Errors = _localizationService.GetResource("Admin.Configuration.Countries.States.CantDeleteWithAddresses") });
+                return Json(new DataSourceResult { Errors = _localizationService.GetResource("Admin.Configuration.Countries.States.CantDeleteWithAddresses") });
             }
 
             //int countryId = state.CountryId;
@@ -465,7 +469,7 @@ namespace Nop.Admin.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult GetStatesByCountryId(string countryId,
-            bool? addEmptyStateIfRequired, bool? addAsterisk)
+            bool? addSelectStateItem, bool? addAsterisk)
         {
             //permission validation is not required here
 
@@ -478,11 +482,86 @@ namespace Nop.Admin.Controllers
             var states = country != null ? _stateProvinceService.GetStateProvincesByCountryId(country.Id, true).ToList() : new List<StateProvince>();
             var result = (from s in states
                          select new { id = s.Id, name = s.Name }).ToList();
-            if (addEmptyStateIfRequired.HasValue && addEmptyStateIfRequired.Value && result.Count == 0)
-                result.Insert(0, new { id = 0, name = _localizationService.GetResource("Admin.Address.OtherNonUS") });
             if (addAsterisk.HasValue && addAsterisk.Value)
+            {
+                //asterisk
                 result.Insert(0, new { id = 0, name = "*" });
+            }
+            else
+            {
+                if (country == null)
+                {
+                    //country is not selected ("choose country" item)
+                    if (addSelectStateItem.HasValue && addSelectStateItem.Value)
+                    {
+                        result.Insert(0, new { id = 0, name = _localizationService.GetResource("Admin.Address.SelectState") });
+                    }
+                    else
+                    {
+                        result.Insert(0, new { id = 0, name = _localizationService.GetResource("Admin.Address.OtherNonUS") });
+                    }
+                }
+                else
+                {
+                    //some country is selected
+                    if (result.Count == 0)
+                    {
+                        //country does not have states
+                        result.Insert(0, new { id = 0, name = _localizationService.GetResource("Admin.Address.OtherNonUS") });
+                    }
+                    else
+                    {
+                        //country has some states
+                        if (addSelectStateItem.HasValue && addSelectStateItem.Value)
+                        {
+                            result.Insert(0, new { id = 0, name = _localizationService.GetResource("Admin.Address.SelectState") });
+                        }
+                    }
+                }
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Export / import
+
+        public ActionResult ExportCsv()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCountries))
+                return AccessDeniedView();
+
+            string fileName = String.Format("states_{0}_{1}.txt", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), CommonHelper.GenerateRandomDigitCode(4));
+
+            var states = _stateProvinceService.GetStateProvinces(true);
+            string result = _exportManager.ExportStatesToTxt(states);
+
+            return File(Encoding.UTF8.GetBytes(result), "text/csv", fileName);
+        }
+
+        [HttpPost]
+        public ActionResult ImportCsv(FormCollection form)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCountries))
+                return AccessDeniedView();
+
+            try
+            {
+                var file = Request.Files["importcsvfile"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    int count = _importManager.ImportStatesFromTxt(file.InputStream);
+                    SuccessNotification(String.Format(_localizationService.GetResource("Admin.Configuration.Countries.ImportSuccess"), count));
+                    return RedirectToAction("List");
+                }
+                ErrorNotification(_localizationService.GetResource("Admin.Common.UploadFile"));
+                return RedirectToAction("List");
+            }
+            catch (Exception exc)
+            {
+                ErrorNotification(exc);
+                return RedirectToAction("List");
+            }
         }
 
         #endregion

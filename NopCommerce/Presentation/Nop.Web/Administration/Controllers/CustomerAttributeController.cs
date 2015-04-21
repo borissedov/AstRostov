@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Customers;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
@@ -109,9 +110,9 @@ namespace Nop.Admin.Controllers
             {
                 Data = customerAttributes.Select(x =>
                 {
-                    var caModel = x.ToModel();
-                    caModel.AttributeControlTypeName = x.AttributeControlType.GetLocalizedEnum(_localizationService, _workContext);
-                    return caModel;
+                    var attributeModel = x.ToModel();
+                    attributeModel.AttributeControlTypeName = x.AttributeControlType.GetLocalizedEnum(_localizationService, _workContext);
+                    return attributeModel;
                 }),
                 Total = customerAttributes.Count()
             };
@@ -197,10 +198,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", customerAttribute.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
@@ -235,16 +233,13 @@ namespace Nop.Admin.Controllers
             var values = _customerAttributeService.GetCustomerAttributeValues(customerAttributeId);
             var gridModel = new DataSourceResult
             {
-                Data = values.Select(x =>
+                Data = values.Select(x => new CustomerAttributeValueModel
                 {
-                    return new CustomerAttributeValueModel()
-                    {
-                        Id = x.Id,
-                        CustomerAttributeId = x.CustomerAttributeId,
-                        Name = x.Name,
-                        IsPreSelected = x.IsPreSelected,
-                        DisplayOrder = x.DisplayOrder,
-                    };
+                    Id = x.Id,
+                    CustomerAttributeId = x.CustomerAttributeId,
+                    Name = x.Name,
+                    IsPreSelected = x.IsPreSelected,
+                    DisplayOrder = x.DisplayOrder,
                 }),
                 Total = values.Count()
             };
@@ -282,7 +277,7 @@ namespace Nop.Admin.Controllers
             
             if (ModelState.IsValid)
             {
-                var cav = new CustomerAttributeValue()
+                var cav = new CustomerAttributeValue
                 {
                     CustomerAttributeId = model.CustomerAttributeId,
                     Name = model.Name,
@@ -314,7 +309,7 @@ namespace Nop.Admin.Controllers
                 //No customer attribute value found with the specified id
                 return RedirectToAction("List");
 
-            var model = new CustomerAttributeValueModel()
+            var model = new CustomerAttributeValueModel
             {
                 CustomerAttributeId = cav.CustomerAttributeId,
                 Name = cav.Name,

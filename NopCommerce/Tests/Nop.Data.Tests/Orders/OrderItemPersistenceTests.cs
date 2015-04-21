@@ -16,7 +16,7 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_orderItem()
         {
-            var orderItem = new OrderItem()
+            var orderItem = new OrderItem
             {
                 Order = GetTestOrder(),
                 Product= GetTestProduct(),
@@ -33,7 +33,9 @@ namespace Nop.Data.Tests.Orders
                 DownloadCount= 7,
                 IsDownloadActivated=true,
                 LicenseDownloadId= 8,
-                ItemWeight = 9.87M
+                ItemWeight = 9.87M,
+                RentalStartDateUtc = new DateTime(2010, 01, 01),
+                RentalEndDateUtc = new DateTime(2010, 01, 02)
             };
 
             var fromDb = SaveAndLoadEntity(orderItem);
@@ -53,6 +55,8 @@ namespace Nop.Data.Tests.Orders
             fromDb.IsDownloadActivated.ShouldEqual(true);
             fromDb.LicenseDownloadId.ShouldEqual(8);
             fromDb.ItemWeight.ShouldEqual(9.87M);
+            fromDb.RentalStartDateUtc.ShouldEqual(new DateTime(2010, 01, 01));
+            fromDb.RentalEndDateUtc.ShouldEqual(new DateTime(2010, 01, 02));
 
             fromDb.Order.ShouldNotBeNull();
         }
@@ -60,7 +64,7 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_orderItem_with_giftCard()
         {
-            var orderItem = new OrderItem()
+            var orderItem = new OrderItem
             {
                 Order = GetTestOrder(),
                 Product = GetTestProduct(),
@@ -109,13 +113,13 @@ namespace Nop.Data.Tests.Orders
 
         protected Order GetTestOrder()
         {
-            return new Order()
+            return new Order
             {
                 OrderGuid = Guid.NewGuid(),
                 Customer = GetTestCustomer(),
-                BillingAddress = new Address()
+                BillingAddress = new Address
                 {
-                    Country = new Country()
+                    Country = new Country
                     {
                         Name = "United States",
                         TwoLetterIsoCode = "US",

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-using System.Web.Compilation;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Nop.Core.Infrastructure;
@@ -78,8 +77,8 @@ namespace Nop.Web.Framework.Themes
             {
                 return true;
             }
-            string str = this.GetExtensionThunk(virtualPath).TrimStart(new char[] { '.' });
-            return this.FileExtensions.Contains<string>(str, StringComparer.OrdinalIgnoreCase);
+            string str = this.GetExtensionThunk(virtualPath).TrimStart(new [] { '.' });
+            return this.FileExtensions.Contains(str, StringComparer.OrdinalIgnoreCase);
         }
 
         protected virtual string GetPathFromSpecificName(ControllerContext controllerContext, string name, string cacheKey, ref string[] searchedLocations)
@@ -88,7 +87,7 @@ namespace Nop.Web.Framework.Themes
             if (!this.FilePathIsSupported(name) || !this.FileExists(controllerContext, name))
             {
                 virtualPath = string.Empty;
-                searchedLocations = new string[] { name };
+                searchedLocations = new [] { name };
             }
             this.ViewLocationCache.InsertViewLocation(controllerContext.HttpContext, cacheKey, virtualPath);
             return virtualPath;
@@ -197,7 +196,7 @@ namespace Nop.Web.Framework.Themes
             {
                 strArray2 = new string[0];
             }
-            return new ViewEngineResult(strArray.Union<string>(strArray2));
+            return new ViewEngineResult(strArray.Union(strArray2));
 
         }
 

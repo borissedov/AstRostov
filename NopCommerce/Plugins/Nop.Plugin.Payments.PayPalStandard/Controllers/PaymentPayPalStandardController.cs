@@ -9,6 +9,7 @@ using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Plugin.Payments.PayPalStandard.Models;
 using Nop.Services.Configuration;
+using Nop.Services.Localization;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Payments;
@@ -25,6 +26,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IOrderService _orderService;
         private readonly IOrderProcessingService _orderProcessingService;
+        private readonly ILocalizationService _localizationService;
         private readonly IStoreContext _storeContext;
         private readonly ILogger _logger;
         private readonly IWebHelper _webHelper;
@@ -36,7 +38,8 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
             ISettingService settingService, 
             IPaymentService paymentService, 
             IOrderService orderService, 
-            IOrderProcessingService orderProcessingService, 
+            IOrderProcessingService orderProcessingService,
+            ILocalizationService localizationService,
             IStoreContext storeContext,
             ILogger logger, 
             IWebHelper webHelper,
@@ -49,6 +52,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
             this._paymentService = paymentService;
             this._orderService = orderService;
             this._orderProcessingService = orderProcessingService;
+            this._localizationService = localizationService;
             this._storeContext = storeContext;
             this._logger = logger;
             this._webHelper = webHelper;
@@ -182,6 +186,8 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
             //now clear settings cache
             _settingService.ClearCache();
 
+            SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
+
             return Configure();
         }
 
@@ -208,7 +214,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
         [ValidateInput(false)]
         public ActionResult PDTHandler(FormCollection form)
         {
-            string tx = _webHelper.QueryString<string>("tx");
+            var tx = _webHelper.QueryString<string>("tx");
             Dictionary<string, string> values;
             string response;
 
@@ -217,7 +223,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
                 !processor.IsPaymentMethodActive(_paymentSettings) || !processor.PluginDescriptor.Installed)
                 throw new NopException("PayPal Standard module cannot be loaded");
 
-            if (processor.GetPDTDetails(tx, out values, out response))
+            if (processor.GetPdtDetails(tx, out values, out response))
             {
                 string orderNumber = string.Empty;
                 values.TryGetValue("custom", out orderNumber);
@@ -277,7 +283,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
 
 
                     //order note
-                    order.OrderNotes.Add(new OrderNote()
+                    order.OrderNotes.Add(new OrderNote
                     {
                         Note = sb.ToString(),
                         DisplayToCustomer = false,
@@ -324,7 +330,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
                 if (order != null)
                 {
                     //order note
-                    order.OrderNotes.Add(new OrderNote()
+                    order.OrderNotes.Add(new OrderNote
                     {
                         Note = "PayPal PDT failed. " + response,
                         DisplayToCustomer = false,
@@ -348,7 +354,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
                 !processor.IsPaymentMethodActive(_paymentSettings) || !processor.PluginDescriptor.Installed)
                 throw new NopException("PayPal Standard module cannot be loaded");
 
-            if (processor.VerifyIPN(strRequest, out values))
+            if (processor.VerifyIpn(strRequest, out values))
             {
                 #region values
                 decimal total = decimal.Zero;
@@ -427,7 +433,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
                                                 if (recurringPaymentHistory.Count == 0)
                                                 {
                                                     //first payment
-                                                    var rph = new RecurringPaymentHistory()
+                                                    var rph = new RecurringPaymentHistory
                                                     {
                                                         RecurringPaymentId = rp.Id,
                                                         OrderId = initialOrder.Id,
@@ -475,7 +481,7 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
                             {
 
                                 //order note
-                                order.OrderNotes.Add(new OrderNote()
+                                order.OrderNotes.Add(new OrderNote
                                 {
                                     Note = sb.ToString(),
                                     DisplayToCustomer = false,

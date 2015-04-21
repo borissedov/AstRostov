@@ -53,7 +53,7 @@ namespace Nop.Plugin.Shipping.UPS
         private readonly ILogger _logger;
         private readonly ILocalizationService _localizationService;
 
-        private StringBuilder _traceMessages;
+        private readonly StringBuilder _traceMessages;
 
         #endregion
 
@@ -112,7 +112,7 @@ namespace Nop.Plugin.Shipping.UPS
             sb.Append("<RequestAction>Rate</RequestAction>");
             sb.Append("<RequestOption>Shop</RequestOption>");
             sb.Append("</Request>");
-            if (String.Equals(countryCodeFrom, "US", StringComparison.InvariantCultureIgnoreCase) == true)
+            if (String.Equals(countryCodeFrom, "US", StringComparison.InvariantCultureIgnoreCase))
             {
                 sb.Append("<PickupType>");
                 sb.AppendFormat("<Code>{0}</Code>", GetPickupTypeCode(pickupType));
@@ -149,11 +149,12 @@ namespace Nop.Plugin.Shipping.UPS
 
             //get subTotalWithoutDiscountBase, for use as insured value (when Settings.InsurePackage)
             //(note: prior versions used "with discount", but "without discount" better reflects true value to insure.)
-            decimal orderSubTotalDiscountAmount = decimal.Zero;
-            Discount orderSubTotalAppliedDiscount = null;
-            decimal subTotalWithoutDiscountBase = decimal.Zero;
-            decimal subTotalWithDiscountBase = decimal.Zero;
-            _orderTotalCalculationService.GetShoppingCartSubTotal(getShippingOptionRequest.Items,
+            decimal orderSubTotalDiscountAmount;
+            Discount orderSubTotalAppliedDiscount;
+            decimal subTotalWithoutDiscountBase;
+            decimal subTotalWithDiscountBase;
+            //TODO we should use getShippingOptionRequest.Items.GetQuantity() method to get subtotal
+            _orderTotalCalculationService.GetShoppingCartSubTotal(getShippingOptionRequest.Items.Select(x=>x.ShoppingCartItem).ToList(),
                 false, out orderSubTotalDiscountAmount, out orderSubTotalAppliedDiscount,
                 out subTotalWithoutDiscountBase, out subTotalWithDiscountBase);
 
@@ -217,10 +218,14 @@ namespace Nop.Plugin.Shipping.UPS
 
             var usedMeasureWeight = GetUsedMeasureWeight();
             var usedMeasureDimension = GetUsedMeasureDimension();
-            int length = ConvertFromPrimaryMeasureDimension(_shippingService.GetTotalLength(getShippingOptionRequest.Items), usedMeasureDimension);
-            int height = ConvertFromPrimaryMeasureDimension(_shippingService.GetTotalHeight(getShippingOptionRequest.Items), usedMeasureDimension);
-            int width = ConvertFromPrimaryMeasureDimension(_shippingService.GetTotalWidth(getShippingOptionRequest.Items), usedMeasureDimension);
-            int weight = ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeight(getShippingOptionRequest.Items), usedMeasureWeight);
+
+            decimal lengthTmp, widthTmp, heightTmp;
+            _shippingService.GetDimensions(getShippingOptionRequest.Items, out widthTmp, out lengthTmp, out heightTmp);
+
+            int length = ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension);
+            int height = ConvertFromPrimaryMeasureDimension(heightTmp, usedMeasureDimension);
+            int width = ConvertFromPrimaryMeasureDimension(widthTmp, usedMeasureDimension);
+            int weight = ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeight(getShippingOptionRequest), usedMeasureWeight);
             if (length < 1)
                 length = 1;
             if (height < 1)
@@ -240,7 +245,6 @@ namespace Nop.Plugin.Shipping.UPS
             }
             else
             {
-                int totalPackages = 1;
                 int totalPackagesDims = 1;
                 int totalPackagesWeights = 1;
                 if (IsPackageTooHeavy(weight))
@@ -251,7 +255,7 @@ namespace Nop.Plugin.Shipping.UPS
                 {
                     totalPackagesDims = Convert.ToInt32(Math.Ceiling((decimal)TotalPackageSize(length, height, width) / (decimal)108));
                 }
-                totalPackages = totalPackagesDims > totalPackagesWeights ? totalPackagesDims : totalPackagesWeights;
+                var totalPackages = totalPackagesDims > totalPackagesWeights ? totalPackagesDims : totalPackagesWeights;
                 if (totalPackages == 0)
                     totalPackages = 1;
 
@@ -288,11 +292,21 @@ namespace Nop.Plugin.Shipping.UPS
             var usedMeasureWeight = GetUsedMeasureWeight();
             var usedMeasureDimension = GetUsedMeasureDimension();
 
-            foreach (var sci in getShippingOptionRequest.Items)
+            foreach (var packageItem in getShippingOptionRequest.Items)
             {
-                int length = ConvertFromPrimaryMeasureDimension(sci.Product.Length, usedMeasureDimension);
-                int height = ConvertFromPrimaryMeasureDimension(sci.Product.Height, usedMeasureDimension);
-                int width = ConvertFromPrimaryMeasureDimension(sci.Product.Width, usedMeasureDimension);
+                var sci = packageItem.ShoppingCartItem;
+                var qty = packageItem.GetQuantity();
+
+                //get dimensions for qty 1
+                decimal lengthTmp, widthTmp, heightTmp;
+                _shippingService.GetDimensions(new List<GetShippingOptionRequest.PackageItem>
+                                               {
+                                                   new GetShippingOptionRequest.PackageItem(sci, 1)
+                                               }, out widthTmp, out lengthTmp, out heightTmp);
+
+                int length = ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension);
+                int height = ConvertFromPrimaryMeasureDimension(heightTmp, usedMeasureDimension);
+                int width = ConvertFromPrimaryMeasureDimension(widthTmp, usedMeasureDimension);
                 int weight = ConvertFromPrimaryMeasureWeight(sci.Product.Weight, usedMeasureWeight);
                 if (length < 1)
                     length = 1;
@@ -311,7 +325,7 @@ namespace Nop.Plugin.Shipping.UPS
                 //But, even with includeDiscounts:false, it could apply a "discount" from Tier pricing.
                 int insuranceAmountPerPackage = _upsSettings.InsurePackage ? Convert.ToInt32(sci.Product.Price) : 0;
 
-                for (int j = 0; j < sci.Quantity; j++)
+                for (int j = 0; j < qty; j++)
                 {
                     AppendPackageRequest(sb, packagingType, length, height, width, weight, insuranceAmountPerPackage, currencyCode);
                 }
@@ -338,24 +352,40 @@ namespace Nop.Plugin.Shipping.UPS
             int height;
             int width;
 
-            if (getShippingOptionRequest.Items.Count == 1 && getShippingOptionRequest.Items[0].Quantity == 1)
+            if (getShippingOptionRequest.Items.Count == 1 && getShippingOptionRequest.Items[0].GetQuantity() == 1)
             {
+                var sci = getShippingOptionRequest.Items[0].ShoppingCartItem;
+
+                //get dimensions for qty 1
+                decimal lengthTmp, widthTmp, heightTmp;
+                _shippingService.GetDimensions(new List<GetShippingOptionRequest.PackageItem>
+                                               {
+                                                   new GetShippingOptionRequest.PackageItem(sci, 1)
+                                               }, out widthTmp, out lengthTmp, out heightTmp);
+
                 totalPackagesDims = 1;
-                var product = getShippingOptionRequest.Items[0].Product;
-                length = ConvertFromPrimaryMeasureDimension(product.Length, usedMeasureDimension);
-                height = ConvertFromPrimaryMeasureDimension(product.Height, usedMeasureDimension);
-                width = ConvertFromPrimaryMeasureDimension(product.Width, usedMeasureDimension);
+                length = ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension);
+                height = ConvertFromPrimaryMeasureDimension(heightTmp, usedMeasureDimension);
+                width = ConvertFromPrimaryMeasureDimension(widthTmp, usedMeasureDimension);
             }
             else
             {
                 decimal totalVolume = 0;
                 foreach (var item in getShippingOptionRequest.Items)
                 {
-                    var product = item.Product;
-                    int productLength = ConvertFromPrimaryMeasureDimension(product.Length, usedMeasureDimension);
-                    int productHeight = ConvertFromPrimaryMeasureDimension(product.Height, usedMeasureDimension);
-                    int productWidth = ConvertFromPrimaryMeasureDimension(product.Width, usedMeasureDimension);
-                    totalVolume += item.Quantity * (productHeight * productWidth * productLength);
+                    var sci = item.ShoppingCartItem;
+
+                    //get dimensions for qty 1
+                    decimal lengthTmp, widthTmp, heightTmp;
+                    _shippingService.GetDimensions(new List<GetShippingOptionRequest.PackageItem>
+                                               {
+                                                   new GetShippingOptionRequest.PackageItem(sci, 1)
+                                               }, out widthTmp, out lengthTmp, out heightTmp);
+
+                    int productLength = ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension);
+                    int productHeight = ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension);
+                    int productWidth = ConvertFromPrimaryMeasureDimension(widthTmp, usedMeasureDimension);
+                    totalVolume += item.GetQuantity() * (productHeight * productWidth * productLength);
                 }
 
                 int dimension;
@@ -391,7 +421,7 @@ namespace Nop.Plugin.Shipping.UPS
             if (width < 1)
                 width = 1;
 
-            int weight = ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeight(getShippingOptionRequest.Items), usedMeasureWeight);
+            int weight = ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeight(getShippingOptionRequest), usedMeasureWeight);
             if (weight < 1)
                 weight = 1;
 
@@ -426,11 +456,11 @@ namespace Nop.Plugin.Shipping.UPS
             requestStream.Write(bytes, 0, bytes.Length);
             requestStream.Close();
             var response = request.GetResponse();
-            string responseXML = string.Empty;
+            string responseXml;
             using (var reader = new StreamReader(response.GetResponseStream()))
-                responseXML = reader.ReadToEnd();
+                responseXml = reader.ReadToEnd();
 
-            return responseXML;
+            return responseXml;
         }
 
         private string GetCustomerClassificationCode(UPSCustomerClassification customerClassification)
@@ -538,10 +568,7 @@ namespace Nop.Plugin.Shipping.UPS
         private bool IsPackageTooLarge(int length, int height, int width)
         {
             int total = TotalPackageSize(length, height, width);
-            if (total > 165)
-                return true;
-            else
-                return false;
+            return total > 165;
         }
 
         private int TotalPackageSize(int length, int height, int width)
@@ -553,10 +580,7 @@ namespace Nop.Plugin.Shipping.UPS
 
         private bool IsPackageTooHeavy(int weight)
         {
-            if (weight > MAXPACKAGEWEIGHT)
-                return true;
-            else
-                return false;
+            return weight > MAXPACKAGEWEIGHT;
         }
 
         private MeasureWeight GetUsedMeasureWeight()
@@ -586,7 +610,7 @@ namespace Nop.Plugin.Shipping.UPS
             return Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureWeight(quantity, usedMeasureWeighht)));
         }
 
-        private List<ShippingOption> ParseResponse(string response, ref string error)
+        private IEnumerable<ShippingOption> ParseResponse(string response, ref string error)
         {
             var shippingOptions = new List<ShippingOption>();
 
@@ -777,7 +801,7 @@ namespace Nop.Plugin.Shipping.UPS
         {
             actionName = "Configure";
             controllerName = "ShippingUPS";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.UPS.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Shipping.UPS.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -786,7 +810,7 @@ namespace Nop.Plugin.Shipping.UPS
         public override void Install()
         {
             //settings
-            var settings = new UPSSettings()
+            var settings = new UPSSettings
             {
                 Url = "https://www.ups.com/ups.app/xml/Rate",
                 AccessKey = "AccessKey1",

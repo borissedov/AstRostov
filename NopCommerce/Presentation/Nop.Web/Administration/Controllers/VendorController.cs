@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Vendors;
 using Nop.Core.Domain.Vendors;
 using Nop.Services.Customers;
@@ -103,16 +104,17 @@ namespace Nop.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageVendors))
                 return AccessDeniedView();
 
-            return View();
+            var model = new VendorListModel();
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult List(DataSourceRequest command)
+        public ActionResult List(DataSourceRequest command, VendorListModel model)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageVendors))
                 return AccessDeniedView();
 
-            var vendors = _vendorService.GetAllVendors(command.Page - 1, command.PageSize, true);
+            var vendors = _vendorService.GetAllVendors(model.SearchName, command.Page - 1, command.PageSize, true);
             var gridModel = new DataSourceResult
             {
                 Data = vendors.Select(x =>
@@ -234,10 +236,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", vendor.Id);
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form

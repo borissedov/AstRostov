@@ -87,6 +87,11 @@ namespace Nop.Services.Tests.Orders
         private IVendorService _vendorService;
         private IPdfService _pdfService;
 
+        private IGeoLookupService _geoLookupService;
+        private ICountryService _countryService;
+        private CustomerSettings _customerSettings;
+        private AddressSettings _addressSettings;
+
         private Store _store;
 
         [SetUp]
@@ -94,7 +99,7 @@ namespace Nop.Services.Tests.Orders
         {
             _workContext = null;
 
-            _store = new Store() { Id = 1 };
+            _store = new Store { Id = 1 };
             _storeContext = MockRepository.GenerateMock<IStoreContext>();
             _storeContext.Expect(x => x.CurrentStore).Return(_store);
 
@@ -152,15 +157,21 @@ namespace Nop.Services.Tests.Orders
             _checkoutAttributeParser = MockRepository.GenerateMock<ICheckoutAttributeParser>();
             _giftCardService = MockRepository.GenerateMock<IGiftCardService>();
             _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
-            
+
+            _geoLookupService = MockRepository.GenerateMock<IGeoLookupService>();
+            _countryService = MockRepository.GenerateMock<ICountryService>();
+            _customerSettings = new CustomerSettings();
+            _addressSettings = new AddressSettings();
+
             //tax
             _taxSettings = new TaxSettings();
             _taxSettings.ShippingIsTaxable = true;
             _taxSettings.PaymentMethodAdditionalFeeIsTaxable = true;
             _taxSettings.DefaultTaxAddressId = 10;
             _addressService = MockRepository.GenerateMock<IAddressService>();
-            _addressService.Expect(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Return(new Address() { Id = _taxSettings.DefaultTaxAddressId });
-            _taxService = new TaxService(_addressService, _workContext, _taxSettings, pluginFinder);
+            _addressService.Expect(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Return(new Address { Id = _taxSettings.DefaultTaxAddressId });
+            _taxService = new TaxService(_addressService, _workContext, _taxSettings,
+                pluginFinder, _geoLookupService, _countryService, _customerSettings, _addressSettings);
 
             _rewardPointsSettings = new RewardPointsSettings();
 
@@ -186,9 +197,9 @@ namespace Nop.Services.Tests.Orders
             _vendorService = MockRepository.GenerateMock<IVendorService>();
             _pdfService = MockRepository.GenerateMock<IPdfService>();
 
-            _paymentSettings = new PaymentSettings()
+            _paymentSettings = new PaymentSettings
             {
-                ActivePaymentMethodSystemNames = new List<string>()
+                ActivePaymentMethodSystemNames = new List<string>
                 {
                     "Payments.TestMethod"
                 }
@@ -213,7 +224,8 @@ namespace Nop.Services.Tests.Orders
                 _encryptionService, _workContext, 
                 _workflowMessageService, _vendorService,
                 _customerActivityService, _currencyService, _affiliateService,
-                _eventPublisher,_pdfService, _paymentSettings, _rewardPointsSettings,
+                _eventPublisher,_pdfService, 
+                _shippingSettings, _paymentSettings, _rewardPointsSettings,
                 _orderSettings, _taxSettings, _localizationSettings,
                 _currencySettings);
         }
@@ -371,7 +383,7 @@ namespace Nop.Services.Tests.Orders
         [Test]
         public void Ensure_order_can_only_be_refunded_offline_when_paymentstatus_is_paid()
         {
-            var order = new Order()
+            var order = new Order
             {
                 OrderTotal = 1,
             };
@@ -467,7 +479,7 @@ namespace Nop.Services.Tests.Orders
         [Test]
         public void Ensure_order_can_only_be_voided_offline_when_paymentstatus_is_authorized()
         {
-            var order = new Order()
+            var order = new Order
             {
                 OrderTotal = 1,
             };
@@ -545,7 +557,7 @@ namespace Nop.Services.Tests.Orders
         public void Ensure_order_cannot_be_partially_refunded_when_amountToRefund_is_greater_than_amount_that_can_be_refunded()
         {
             _paymentService.Expect(ps => ps.SupportPartiallyRefund("paymentMethodSystemName_that_supports_partialrefund")).Return(true);
-            var order = new Order()
+            var order = new Order
             {
                 OrderTotal = 100,
                 RefundedAmount = 30, //100-30=70 can be refunded
@@ -594,7 +606,7 @@ namespace Nop.Services.Tests.Orders
         [Test]
         public void Ensure_order_cannot_be_partially_refunded_offline_when_amountToRefund_is_greater_than_amount_that_can_be_refunded()
         {
-            var order = new Order()
+            var order = new Order
             {
                 OrderTotal = 100,
                 RefundedAmount = 30, //100-30=70 can be refunded

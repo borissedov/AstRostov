@@ -26,6 +26,7 @@
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>f94c814a</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,11 +55,11 @@
     </Reference>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Autofac.Mvc5.3.3.1\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,40 +73,40 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
-    <Reference Include="FluentValidation, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentValidation.5.4.0.0\lib\Net40\FluentValidation.dll</HintPath>
+      <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
-    <Reference Include="FluentValidation.Mvc, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FluentValidation.Mvc, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentValidation.MVC5.5.4.0.0\lib\Net45\FluentValidation.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\FluentValidation.MVC5.5.5.0.0\lib\Net45\FluentValidation.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="MaxMind.Db, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MaxMind.Db, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MaxMind.Db.0.2.3.0\lib\net40\MaxMind.Db.dll</HintPath>
+      <HintPath>..\..\packages\MaxMind.DB.1.0.0.0\lib\net40\MaxMind.Db.dll</HintPath>
     </Reference>
-    <Reference Include="MaxMind.GeoIP2, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MaxMind.GeoIP2, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MaxMind.GeoIP2.0.3.3.0\lib\net40\MaxMind.GeoIP2.dll</HintPath>
+      <HintPath>..\..\packages\MaxMind.GeoIP2.2.1.0.0\lib\net40\MaxMind.GeoIP2.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="MiniProfiler, Version=3.1.1.139, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+    <Reference Include="MiniProfiler, Version=3.1.1.140, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MiniProfiler.3.1.1.139\lib\net40\MiniProfiler.dll</HintPath>
+      <HintPath>..\..\packages\MiniProfiler.3.1.1.140\lib\net40\MiniProfiler.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Recaptcha">
       <HintPath>..\..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=104.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="RestSharp, Version=105.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+      <HintPath>..\..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
@@ -113,17 +114,17 @@
       <HintPath>..\..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=4.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
@@ -141,19 +142,19 @@
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.0\lib\net45\System.Web.Http.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -161,20 +162,20 @@
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <Compile Include="Controllers\BasePublicController.cs" />
     <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\BackInStockSubscriptionController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Extensions\AttributeParserHelper.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\MappingExtensions.cs" />
@@ -281,6 +284,7 @@
     <Compile Include="Models\Checkout\UpdateSectionJsonModel.cs" />
     <Compile Include="Models\Common\AddressModel.cs" />
     <Compile Include="Models\Common\AdminHeaderLinksModel.cs" />
+    <Compile Include="Models\Common\AddressAttributeModel.cs" />
     <Compile Include="Models\Common\FooterModel.cs" />
     <Compile Include="Models\Common\FaviconModel.cs" />
     <Compile Include="Models\Common\PagerModel.cs" />
@@ -288,10 +292,8 @@
     <Compile Include="Models\Common\LanguageSelectorModel.cs" />
     <Compile Include="Models\Common\SitemapModel.cs" />
     <Compile Include="Models\Customer\CustomerAttributeModel.cs" />
-    <Compile Include="Models\Customer\BackInStockSubscriptionModel.cs" />
-    <Compile Include="Models\Customer\CustomerBackInStockSubscriptionsModel.cs" />
-    <Compile Include="Models\Customer\CustomerForumSubscriptionsModel.cs" />
-    <Compile Include="Models\Customer\ForumSubscriptionModel.cs" />
+    <Compile Include="Models\Catalog\CustomerBackInStockSubscriptionsModel.cs" />
+    <Compile Include="Models\Boards\CustomerForumSubscriptionsModel.cs" />
     <Compile Include="Models\Customer\ExternalAuthenticationMethodModel.cs" />
     <Compile Include="Models\Install\InstallModel.cs" />
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />
@@ -307,13 +309,13 @@
     <Compile Include="Models\Customer\ChangePasswordModel.cs" />
     <Compile Include="Models\Customer\PasswordRecoveryConfirmModel.cs" />
     <Compile Include="Models\Customer\PaswordRecoveryModel.cs" />
-    <Compile Include="Models\Customer\CustomerReturnRequestsModel.cs" />
+    <Compile Include="Models\Order\CustomerReturnRequestsModel.cs" />
     <Compile Include="Models\Customer\CustomerDownloadableProductsModel.cs" />
-    <Compile Include="Models\Customer\CustomerOrderListModel.cs" />
+    <Compile Include="Models\Order\CustomerOrderListModel.cs" />
     <Compile Include="Models\Customer\CustomerAvatarModel.cs" />
     <Compile Include="Models\Customer\CustomerAddressEditModel.cs" />
     <Compile Include="Models\Customer\CustomerAddressListModel.cs" />
-    <Compile Include="Models\Customer\CustomerRewardPointsModel.cs" />
+    <Compile Include="Models\Order\CustomerRewardPointsModel.cs" />
     <Compile Include="Models\Customer\CustomerNavigationModel.cs" />
     <Compile Include="Models\Customer\CustomerInfoModel.cs" />
     <Compile Include="Models\Customer\RegisterResultModel.cs" />
@@ -355,6 +357,7 @@
     <Compile Include="Validators\Catalog\ProductEmailAFriendValidator.cs" />
     <Compile Include="Validators\Catalog\ProductReviewsValidator.cs" />
     <Compile Include="Validators\Common\AddressValidator.cs" />
+    <Compile Include="Validators\Customer\LoginValidator.cs" />
     <Compile Include="Validators\Install\InstallValidator.cs" />
     <Compile Include="Validators\News\NewsItemValidator.cs" />
     <Compile Include="Validators\Customer\PasswordRecoveryConfirmValidator.cs" />
@@ -371,6 +374,7 @@
     <Content Include="App_Data\Install\create_sample_data.sql" />
     <Content Include="App_Data\Localization\Installation\installation.ar.xml" />
     <Content Include="App_Data\Localization\Installation\installation.bg.xml" />
+    <Content Include="App_Data\Localization\Installation\installation.bn-bd.xml" />
     <Content Include="App_Data\Localization\Installation\installation.bs-Latn-BA.xml" />
     <Content Include="App_Data\Localization\Installation\installation.cz.xml" />
     <Content Include="App_Data\Localization\Installation\installation.da.xml" />
@@ -402,11 +406,11 @@
     <Content Include="App_Data\Localization\Installation\installation.ur.xml" />
     <Content Include="App_Data\Localization\Installation\installation.vi.xml" />
     <Content Include="App_Data\Localization\Installation\installation.zhs.xml" />
-    <Content Include="App_Data\SqlServer.StoredProcedures.sql" />
+    <Content Include="App_Data\Install\SqlServer.StoredProcedures.sql" />
     <Content Include="App_Data\Localization\defaultResources.nopres.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\SqlServer.Indexes.sql" />
+    <Content Include="App_Data\Install\SqlServer.Indexes.sql" />
     <Content Include="Content\BBEditor\ed.js" />
     <Content Include="Content\BBEditor\images\bold.gif" />
     <Content Include="Content\BBEditor\images\code.gif" />
@@ -1005,12 +1009,11 @@
     <Content Include="Content\tinymce\skins\lightgray\fonts\tinymce.eot" />
     <Content Include="Content\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Content\tinymce\skins\lightgray\fonts\tinymce.woff" />
-    <Content Include="App_Data\uas_20140512-01.ini" />
     <Content Include="Content\Roxy_Fileman\js\fileman-modified.zip" />
     <Content Include="Content\Roxy_Fileman\lang\fr.json" />
     <Content Include="Content\kendo\2014.1.318\images\kendoui.woff" />
     <Content Include="Content\kendo\2014.1.318\images\kendoui.ttf" />
-    <None Include="Properties\PublishProfiles\Ftp.pubxml" />
+    <Content Include="App_Data\uas_20140809-02.ini" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fineuploader\iframe.xss.response-4.2.2.js" />
     <Content Include="Scripts\fineuploader\jquery.fineuploader-4.2.2.js" />
@@ -1907,68 +1910,6 @@
     <Content Include="Themes\DefaultClean\Content\images\progress-step-active.gif" />
     <Content Include="Themes\DefaultClean\Content\images\progress-step-inactive.gif" />
     <Content Include="Themes\DefaultClean\Content\styles.css" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\css\bootstrap-theme.css" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\css\bootstrap-theme.min.css" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\css\bootstrap.css" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\css\bootstrap.min.css" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\css\bootstrap.rtl.css" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\js\bootstrap.js" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\js\bootstrap.min.js" />
-    <Content Include="Themes\NopRoot\Content\color-styles\black.css" />
-    <Content Include="Themes\NopRoot\Content\color-styles\blue.css" />
-    <Content Include="Themes\NopRoot\Content\color-styles\green.css" />
-    <Content Include="Themes\NopRoot\Content\color-styles\red.css" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\css\font-awesome.css" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\css\font-awesome.min.css" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\css\font-awesome.rtl.css" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\fonts\fontawesome-webfont.svg" />
-    <Content Include="Themes\NopRoot\Content\ie6.css" />
-    <Content Include="Themes\NopRoot\Content\ie7.css" />
-    <Content Include="Themes\NopRoot\Content\images\ajax_loader_large.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ajax_loader_small.gif" />
-    <Content Include="Themes\NopRoot\Content\images\arrow-up.png" />
-    <Content Include="Themes\NopRoot\Content\images\bbeditor-button-bg.gif" />
-    <Content Include="Themes\NopRoot\Content\images\black-picker.png" />
-    <Content Include="Themes\NopRoot\Content\images\blue-picker.png" />
-    <Content Include="Themes\NopRoot\Content\images\bullet-left.gif" />
-    <Content Include="Themes\NopRoot\Content\images\bullet-right.gif" />
-    <Content Include="Themes\NopRoot\Content\images\closelabel.gif" />
-    <Content Include="Themes\NopRoot\Content\images\download-sample-bg.gif" />
-    <Content Include="Themes\NopRoot\Content\images\forum-footer-bg.gif" />
-    <Content Include="Themes\NopRoot\Content\images\forum-header-bg.gif" />
-    <Content Include="Themes\NopRoot\Content\images\free-shipping.png" />
-    <Content Include="Themes\NopRoot\Content\images\green-picker.png" />
-    <Content Include="Themes\NopRoot\Content\images\ico-arrow-r.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-close-notification-bar.png" />
-    <Content Include="Themes\NopRoot\Content\images\ico-delete.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-edit.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-forum-post-add.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-forum-post-high.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-forum-post.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-forum-watch.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-forum.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-move-topic.gif" />
-    <Content Include="Themes\NopRoot\Content\images\ico-pm.png" />
-    <Content Include="Themes\NopRoot\Content\images\ico-rss.gif" />
-    <Content Include="Themes\NopRoot\Content\images\loading.gif" />
-    <Content Include="Themes\NopRoot\Content\images\logo.gif" />
-    <Content Include="Themes\NopRoot\Content\images\nextlabel.gif" />
-    <Content Include="Themes\NopRoot\Content\images\paven1.png" />
-    <Content Include="Themes\NopRoot\Content\images\prevlabel.gif" />
-    <Content Include="Themes\NopRoot\Content\images\progress-step-active.gif" />
-    <Content Include="Themes\NopRoot\Content\images\progress-step-inactive.gif" />
-    <Content Include="Themes\NopRoot\Content\images\red-picker.png" />
-    <Content Include="Themes\NopRoot\Content\images\star-x-active.png" />
-    <Content Include="Themes\NopRoot\Content\images\star-x-inactive.png" />
-    <Content Include="Themes\NopRoot\Content\images\styles.rtl.css" />
-    <Content Include="Themes\NopRoot\Content\styles.css" />
-    <Content Include="Themes\NopRoot\Content\styles.rtl.css" />
-    <Content Include="Themes\NopRoot\preview.jpg" />
-    <Content Include="Themes\NopRoot\Scripts\html5shiv.min.js" />
-    <Content Include="Themes\NopRoot\Scripts\respond.min.js" />
-    <Content Include="Themes\NopRoot\Scripts\styleSheetToogle.js" />
-    <Content Include="Themes\NopRoot\Views\preview.jpg" />
     <Content Include="Themes\print.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2004,201 +1945,14 @@
     <Content Include="Views\Customer\_CheckUsernameAvailability.cshtml" />
     <Content Include="Views\Boards\ActiveDiscussionsSmall.cshtml" />
     <Content Include="Views\Product\_BackInStockSubscription.cshtml" />
-    <Content Include="Views\Product\BackInStockSubscribePopup.cshtml" />
-    <Content Include="Views\Customer\BackInStockSubscriptions.cshtml" />
+    <Content Include="Views\BackInStockSubscription\SubscribePopup.cshtml" />
+    <Content Include="Views\BackInStockSubscription\CustomerSubscriptions.cshtml" />
     <Content Include="App_Data\Pdf\FreeSerif.ttf" />
     <Content Include="Views\Common\StoreThemeSelector.cshtml" />
     <Content Include="Views\Shared\_Notifications.cshtml" />
     <Content Include="Views\Customer\_CustomerAttributes.cshtml" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\css\bootstrap-theme.css.map" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\css\bootstrap.css.map" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Themes\NopRoot\Content\bootstrap-3.2.0\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\fonts\fontawesome-webfont.eot" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\fonts\fontawesome-webfont.woff" />
-    <Content Include="Themes\NopRoot\Content\font-awosome-3\fonts\FontAwesome.otf" />
-    <Content Include="Themes\NopRoot\theme.config" />
-    <Content Include="Themes\NopRoot\Views\Blog\BlogMonths.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Blog\BlogPost.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Blog\BlogTags.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Blog\List.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\ActiveDiscussions.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\ActiveDiscussionsSmall.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\Forum.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\ForumBreadcrumb.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\ForumGroup.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\Index.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\LastPost.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\PostCreate.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\PostEdit.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\Search.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\Topic.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\TopicCreate.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\TopicEdit.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\TopicMove.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\_ActiveTopics.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\_CreateUpdatePost.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\_CreateUpdateTopic.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\_ForumGroup.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\_ForumPost.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Boards\_SearchBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\CategoryNavigation.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\CategoryTemplate.ProductsInGridOrLines.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\HomepageCategories.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\ManufacturerNavigation.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\ManufacturerTemplate.ProductsInGridOrLines.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\PopularProductTags.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\ProductsByTag.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\ProductTagsAll.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\Search.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\SearchBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\TopMenu.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\Vendor.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\VendorAll.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\VendorNavigation.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\_FilterPriceBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Catalog\_FilterSpecsBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\BillingAddress.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\CheckoutProgress.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\Completed.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\Confirm.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\OnePageCheckout.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\OpcBillingAddress.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\OpcConfirmOrder.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\OpcPaymentInfo.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\OpcPaymentMethods.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\OpcShippingAddress.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\OpcShippingMethods.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\PaymentInfo.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\PaymentMethod.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\ShippingAddress.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Checkout\ShippingMethod.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\AdminHeaderLinks.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\ChangeDeviceBlock.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\Config.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\ContactUs.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\CurrencySelector.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\EuCookieLaw.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\Favicon.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\Footer.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\HeaderLinks.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\InfoBlock.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\JavaScriptDisabledWarning.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\LanguageSelector.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\PageNotFound.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\Sitemap.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\StoreClosed.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\StoreThemeSelector.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Common\TaxTypeSelector.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\AccountActivation.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\AddressAdd.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\AddressEdit.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\Addresses.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\Avatar.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\BackInStockSubscriptions.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\ChangePassword.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\DownloadableProducts.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\ForumSubscriptions.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\Info.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\Login.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\MyAccount.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\MyAccountNavigation.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\Orders.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\PasswordRecovery.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\PasswordRecoveryConfirm.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\Register.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\RegisterResult.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\ReturnRequests.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\RewardPoints.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\UserAgreement.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\_CheckUsernameAvailability.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\_CustomerAttributes.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\_ExternalAuthentication.AssociateMessage.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Customer\_ExternalAuthentication.Errors.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ExternalAuthentication\ExternalMethods.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Home\index.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Newsletter\NewsletterBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Newsletter\SubscriptionActivation.cshtml" />
-    <Content Include="Themes\NopRoot\Views\News\HomePageNews.cshtml" />
-    <Content Include="Themes\NopRoot\Views\News\List.cshtml" />
-    <Content Include="Themes\NopRoot\Views\News\NewsItem.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Order\Details.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Order\ShipmentDetails.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Poll\HomePagePolls.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Poll\PollBlock.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Poll\_Poll.cshtml" />
-    <Content Include="Themes\NopRoot\Views\PrivateMessages\Inbox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\PrivateMessages\Index.cshtml" />
-    <Content Include="Themes\NopRoot\Views\PrivateMessages\SendPM.cshtml" />
-    <Content Include="Themes\NopRoot\Views\PrivateMessages\SentItems.cshtml" />
-    <Content Include="Themes\NopRoot\Views\PrivateMessages\ViewPM.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\BackInStockSubscribePopup.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\CompareProducts.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\CrossSellProducts.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\HomepageBestSellers.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\HomepageProducts.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\ProductEmailAFriend.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\ProductReviews.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\ProductsAlsoPurchased.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\ProductTemplate.Grouped.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\ProductTemplate.Simple.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\RecentlyAddedProducts.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\RecentlyViewedProducts.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\RecentlyViewedProductsBlock.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\RelatedProducts.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_AddToCart.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_BackInStockSubscription.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_CompareProductsButton.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_DownloadSample.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_GiftCardInfo.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductAttributes.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductBreadcrumb.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductDetailsPictures.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductEmailAFriendButton.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductManufacturers.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductPrice.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductReviewHelpfulness.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductReviewOverview.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductSpecifications.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductTags.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ProductTierPrices.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_ShareButton.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Product\_SKU_Man_Stock.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ReturnRequest\ReturnRequest.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\Error.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\Head.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\Header.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\LanguageAttributes.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_ColumnsOne.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_ColumnsThree.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_ColumnsThreeHomepage.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_ColumnsTwo.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_ColumnsTwoHomepage.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_CreateOrUpdateAddress.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_Notifications.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_Print.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_ProductBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_Root.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_Root.Head.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Shared\_RootPopup.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\Cart.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\EmailWishlist.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\EstimateShipping.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\FlyoutShoppingCart.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\OrderSummary.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\OrderTotals.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\Wishlist.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\_ButtonPaymentMethod.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\_CheckoutAttributes.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\_DiscountBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\_GiftCardBox.cshtml" />
-    <Content Include="Themes\NopRoot\Views\ShoppingCart\_OrderReviewData.cshtml" />
-    <Content Include="Themes\NopRoot\Views\theme.config" />
-    <Content Include="Themes\NopRoot\Views\Topic\TopicBlock.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Topic\TopicDetails.cshtml" />
-    <Content Include="Themes\NopRoot\Views\Web.config" />
+    <Content Include="Views\Shared\_AddressAttributes.cshtml" />
+    <Content Include="Views\Product\_RentalInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
@@ -2253,12 +2007,12 @@
     <Content Include="Views\Customer\Register.cshtml" />
     <Content Include="Views\Customer\RegisterResult.cshtml" />
     <Content Include="Views\Customer\Info.cshtml" />
-    <Content Include="Views\Customer\MyAccountNavigation.cshtml" />
+    <Content Include="Views\Customer\CustomerNavigation.cshtml" />
     <Content Include="Views\Customer\Addresses.cshtml" />
     <Content Include="Views\Customer\AddressAdd.cshtml" />
     <Content Include="Views\Customer\AddressEdit.cshtml" />
     <Content Include="Views\Shared\_CreateOrUpdateAddress.cshtml" />
-    <Content Include="Views\Customer\RewardPoints.cshtml" />
+    <Content Include="Views\Order\CustomerRewardPoints.cshtml" />
     <Content Include="Views\Customer\ChangePassword.cshtml" />
     <Content Include="Views\Customer\Avatar.cshtml" />
     <Content Include="Views\Catalog\CategoryNavigation.cshtml" />
@@ -2296,11 +2050,11 @@
     <Content Include="Views\Checkout\PaymentInfo.cshtml" />
     <Content Include="Views\Checkout\Confirm.cshtml" />
     <Content Include="Views\Checkout\Completed.cshtml" />
-    <Content Include="Views\Customer\Orders.cshtml" />
+    <Content Include="Views\Order\CustomerOrders.cshtml" />
     <Content Include="Views\Customer\DownloadableProducts.cshtml" />
     <Content Include="Views\Customer\UserAgreement.cshtml" />
     <Content Include="Views\ReturnRequest\ReturnRequest.cshtml" />
-    <Content Include="Views\Customer\ReturnRequests.cshtml" />
+    <Content Include="Views\ReturnRequest\CustomerReturnRequests.cshtml" />
     <Content Include="Views\Product\RecentlyViewedProducts.cshtml" />
     <Content Include="Views\Product\RecentlyViewedProductsBlock.cshtml" />
     <Content Include="Views\Product\RecentlyAddedProducts.cshtml" />
@@ -2375,7 +2129,7 @@
     <Content Include="Views\Profile\Info.cshtml" />
     <Content Include="Views\Profile\Posts.cshtml" />
     <Content Include="Views\Common\Favicon.cshtml" />
-    <Content Include="Views\Customer\ForumSubscriptions.cshtml" />
+    <Content Include="Views\Boards\CustomerForumSubscriptions.cshtml" />
     <Content Include="Views\Order\ShipmentDetails.cshtml" />
     <Content Include="Views\Common\JavaScriptDisabledWarning.cshtml" />
     <Content Include="Views\Shared\_Root.Head.cshtml" />
@@ -2494,9 +2248,11 @@
     <CallTarget Targets="CopySqlCeBinaries" />
     <CallTarget Targets="CreatePluginsBinDirectory" />
   </Target>
-  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
 </Project>

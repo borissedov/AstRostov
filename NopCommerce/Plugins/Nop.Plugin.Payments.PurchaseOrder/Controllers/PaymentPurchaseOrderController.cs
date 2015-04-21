@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Nop.Core;
 using Nop.Plugin.Payments.PurchaseOrder.Models;
 using Nop.Services.Configuration;
+using Nop.Services.Localization;
 using Nop.Services.Payments;
 using Nop.Services.Stores;
 using Nop.Web.Framework.Controllers;
@@ -14,14 +15,17 @@ namespace Nop.Plugin.Payments.PurchaseOrder.Controllers
         private readonly IWorkContext _workContext;
         private readonly IStoreService _storeService;
         private readonly ISettingService _settingService;
+        private readonly ILocalizationService _localizationService;
 
         public PaymentPurchaseOrderController(IWorkContext workContext,
             IStoreService storeService,
-            ISettingService settingService)
+            ISettingService settingService,
+            ILocalizationService localizationService)
         {
             this._workContext = workContext;
             this._storeService = storeService;
             this._settingService = settingService;
+            this._localizationService = localizationService;
         }
         
         [AdminAuthorize]
@@ -35,12 +39,14 @@ namespace Nop.Plugin.Payments.PurchaseOrder.Controllers
             var model = new ConfigurationModel();
             model.AdditionalFee = purchaseOrderPaymentSettings.AdditionalFee;
             model.AdditionalFeePercentage = purchaseOrderPaymentSettings.AdditionalFeePercentage;
+            model.ShippableProductRequired = purchaseOrderPaymentSettings.ShippableProductRequired;
 
             model.ActiveStoreScopeConfiguration = storeScope;
             if (storeScope > 0)
             {
                 model.AdditionalFee_OverrideForStore = _settingService.SettingExists(purchaseOrderPaymentSettings, x => x.AdditionalFee, storeScope);
                 model.AdditionalFeePercentage_OverrideForStore = _settingService.SettingExists(purchaseOrderPaymentSettings, x => x.AdditionalFeePercentage, storeScope);
+                model.ShippableProductRequired_OverrideForStore = _settingService.SettingExists(purchaseOrderPaymentSettings, x => x.ShippableProductRequired, storeScope);
             }
 
             return View("~/Plugins/Payments.PurchaseOrder/Views/PaymentPurchaseOrder/Configure.cshtml", model);
@@ -61,6 +67,7 @@ namespace Nop.Plugin.Payments.PurchaseOrder.Controllers
             //save settings
             purchaseOrderPaymentSettings.AdditionalFee = model.AdditionalFee;
             purchaseOrderPaymentSettings.AdditionalFeePercentage = model.AdditionalFeePercentage;
+            purchaseOrderPaymentSettings.ShippableProductRequired = model.ShippableProductRequired;
 
             /* We do not clear cache after each setting update.
              * This behavior can increase performance because cached settings will not be cleared 
@@ -75,8 +82,15 @@ namespace Nop.Plugin.Payments.PurchaseOrder.Controllers
             else if (storeScope > 0)
                 _settingService.DeleteSetting(purchaseOrderPaymentSettings, x => x.AdditionalFeePercentage, storeScope);
 
+            if (model.ShippableProductRequired_OverrideForStore || storeScope == 0)
+                _settingService.SaveSetting(purchaseOrderPaymentSettings, x => x.ShippableProductRequired, storeScope, false);
+            else if (storeScope > 0)
+                _settingService.DeleteSetting(purchaseOrderPaymentSettings, x => x.ShippableProductRequired, storeScope);
+
             //now clear settings cache
             _settingService.ClearCache();
+
+            SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
 
             return Configure();
         }
@@ -104,7 +118,7 @@ namespace Nop.Plugin.Payments.PurchaseOrder.Controllers
         public override ProcessPaymentRequest GetPaymentInfo(FormCollection form)
         {
             var paymentInfo = new ProcessPaymentRequest();
-            paymentInfo.PurchaseOrderNumber = form["PurchaseOrderNumber"];
+            paymentInfo.CustomValues.Add(_localizationService.GetResource("Plugins.Payment.PurchaseOrder.PurchaseOrderNumber"), form["PurchaseOrderNumber"]);
             return paymentInfo;
         }
     }

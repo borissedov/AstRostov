@@ -2,8 +2,11 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using Nop.Core;
+using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
+using Nop.Core.Domain.Forums;
+using Nop.Core.Domain.News;
 using Nop.Services.Catalog;
 using Nop.Services.Topics;
 
@@ -20,11 +23,19 @@ namespace Nop.Services.Seo
         private readonly IManufacturerService _manufacturerService;
         private readonly ITopicService _topicService;
         private readonly CommonSettings _commonSettings;
+        private readonly BlogSettings _blogSettings;
+        private readonly NewsSettings _newsSettings;
+        private readonly ForumSettings _forumSettings;
 
         public SitemapGenerator(IStoreContext storeContext,
-            ICategoryService categoryService, IProductService productService, 
-            IManufacturerService manufacturerService, ITopicService topicService, 
-            CommonSettings commonSettings)
+            ICategoryService categoryService,
+            IProductService productService, 
+            IManufacturerService manufacturerService, 
+            ITopicService topicService,
+            CommonSettings commonSettings,
+            BlogSettings blogSettings,
+            NewsSettings newsSettings,
+            ForumSettings forumSettings)
         {
             this._storeContext = storeContext;
             this._categoryService = categoryService;
@@ -32,6 +43,9 @@ namespace Nop.Services.Seo
             this._manufacturerService = manufacturerService;
             this._topicService = topicService;
             this._commonSettings = commonSettings;
+            this._blogSettings = blogSettings;
+            this._newsSettings = newsSettings;
+            this._forumSettings = forumSettings;
         }
 
         /// <summary>
@@ -41,25 +55,50 @@ namespace Nop.Services.Seo
         /// <param name="urlHelper">URL helper</param>
         protected override void GenerateUrlNodes(UrlHelper urlHelper)
         {
+            //home page
+            var homePageUrl = urlHelper.RouteUrl("HomePage", null, "http");
+            WriteUrlLocation(homePageUrl, UpdateFrequency.Weekly, DateTime.UtcNow);
+            //search products
+            var productSearchUrl = urlHelper.RouteUrl("ProductSearch", null, "http");
+            WriteUrlLocation(productSearchUrl, UpdateFrequency.Weekly, DateTime.UtcNow);
+            //contact us
+            var contactUsUrl = urlHelper.RouteUrl("ContactUs", null, "http");
+            WriteUrlLocation(contactUsUrl, UpdateFrequency.Weekly, DateTime.UtcNow);
+            //news
+            if (_newsSettings.Enabled)
+            {
+                var url = urlHelper.RouteUrl("NewsArchive", null, "http");
+                WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
+            }
+            //blog
+            if (_blogSettings.Enabled)
+            {
+                var url = urlHelper.RouteUrl("Blog", null, "http");
+                WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
+            }
+            //blog
+            if (_forumSettings.ForumsEnabled)
+            {
+                var url = urlHelper.RouteUrl("Boards", null, "http");
+                WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
+            }
+            //categories
             if (_commonSettings.SitemapIncludeCategories)
             {
                 WriteCategories(urlHelper, 0);
             }
-
+            //manufacturers
             if (_commonSettings.SitemapIncludeManufacturers)
             {
                 WriteManufacturers(urlHelper);
             }
-
+            //products
             if (_commonSettings.SitemapIncludeProducts)
             {
                 WriteProducts(urlHelper);
             }
-
-            if (_commonSettings.SitemapIncludeTopics)
-            {
-                WriteTopics(urlHelper);
-            }
+            //topics
+            WriteTopics(urlHelper);
         }
 
         private void WriteCategories(UrlHelper urlHelper, int parentCategoryId)
@@ -68,9 +107,7 @@ namespace Nop.Services.Seo
             foreach (var category in categories)
             {
                 var url = urlHelper.RouteUrl("Category", new { SeName = category.GetSeName() }, "http");
-                var updateFrequency = UpdateFrequency.Weekly;
-                var updateTime = category.UpdatedOnUtc;
-                WriteUrlLocation(url, updateFrequency, updateTime);
+                WriteUrlLocation(url, UpdateFrequency.Weekly, category.UpdatedOnUtc);
 
                 WriteCategories(urlHelper, category.Id);
             }
@@ -82,9 +119,7 @@ namespace Nop.Services.Seo
             foreach (var manufacturer in manufacturers)
             {
                 var url = urlHelper.RouteUrl("Manufacturer", new { SeName = manufacturer.GetSeName() }, "http");
-                var updateFrequency = UpdateFrequency.Weekly;
-                var updateTime = manufacturer.UpdatedOnUtc;
-                WriteUrlLocation(url, updateFrequency, updateTime);
+                WriteUrlLocation(url, UpdateFrequency.Weekly, manufacturer.UpdatedOnUtc);
             }
         }
 
@@ -97,21 +132,19 @@ namespace Nop.Services.Seo
             foreach (var product in products)
             {
                 var url = urlHelper.RouteUrl("Product", new { SeName = product.GetSeName() }, "http");
-                var updateFrequency = UpdateFrequency.Weekly;
-                var updateTime = product.UpdatedOnUtc;
-                WriteUrlLocation(url, updateFrequency, updateTime);
+                WriteUrlLocation(url, UpdateFrequency.Weekly, product.UpdatedOnUtc);
             }
         }
 
         private void WriteTopics(UrlHelper urlHelper)
         {
-            var topics = _topicService.GetAllTopics(_storeContext.CurrentStore.Id).ToList().FindAll(t => t.IncludeInSitemap);
+            var topics = _topicService.GetAllTopics(_storeContext.CurrentStore.Id)
+                .Where(t => t.IncludeInSitemap)
+                .ToList();
             foreach (var topic in topics)
             {
                 var url = urlHelper.RouteUrl("Topic", new { SeName = topic.GetSeName() }, "http");
-                var updateFrequency = UpdateFrequency.Weekly;
-                var updateTime = DateTime.UtcNow;
-                WriteUrlLocation(url, updateFrequency, updateTime);
+                WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
             }
         }
     }

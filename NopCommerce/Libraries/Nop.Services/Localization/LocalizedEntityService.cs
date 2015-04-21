@@ -103,7 +103,7 @@ namespace Nop.Services.Localization
                 var list = new List<LocalizedPropertyForCaching>();
                 foreach (var lp in localizedProperties)
                 {
-                    var localizedPropertyForCaching = new LocalizedPropertyForCaching()
+                    var localizedPropertyForCaching = new LocalizedPropertyForCaching
                     {
                         Id = lp.Id,
                         EntityId = lp.EntityId,
@@ -298,7 +298,7 @@ namespace Nop.Services.Localization
             var prop = props.FirstOrDefault(lp => lp.LanguageId == languageId &&
                 lp.LocaleKey.Equals(localeKey, StringComparison.InvariantCultureIgnoreCase)); //should be culture invariant
 
-            string localeValueStr = CommonHelper.To<string>(localeValue);
+            var localeValueStr = CommonHelper.To<string>(localeValue);
             
             if (prop != null)
             {
@@ -319,7 +319,7 @@ namespace Nop.Services.Localization
                 if (!string.IsNullOrWhiteSpace(localeValueStr))
                 {
                     //insert
-                    prop = new LocalizedProperty()
+                    prop = new LocalizedProperty
                     {
                         EntityId = entity.Id,
                         LanguageId = languageId,

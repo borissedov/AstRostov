@@ -20,7 +20,6 @@ namespace Nop.Web.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly IWorkContext _workContext;
         private readonly IPollService _pollService;
-        private readonly IWebHelper _webHelper;
         private readonly ICacheManager _cacheManager;
 
         #endregion
@@ -28,13 +27,13 @@ namespace Nop.Web.Controllers
         #region Constructors
 
         public PollController(ILocalizationService localizationService,
-            IWorkContext workContext, IPollService pollService,
-            IWebHelper webHelper, ICacheManager cacheManager)
+            IWorkContext workContext,
+            IPollService pollService,
+            ICacheManager cacheManager)
         {
             this._localizationService = localizationService;
             this._workContext = workContext;
             this._pollService = pollService;
-            this._webHelper = webHelper;
             this._cacheManager = cacheManager;
         }
 
@@ -45,7 +44,7 @@ namespace Nop.Web.Controllers
         [NonAction]
         protected virtual PollModel PreparePollModel(Poll poll, bool setAlreadyVotedProperty)
         {
-            var model = new PollModel()
+            var model = new PollModel
             {
                 Id = poll.Id,
                 AlreadyVoted = setAlreadyVotedProperty && _pollService.AlreadyVoted(poll.Id, _workContext.CurrentCustomer.Id),
@@ -56,7 +55,7 @@ namespace Nop.Web.Controllers
                 model.TotalVotes += answer.NumberOfVotes;
             foreach (var pa in answers)
             {
-                model.Answers.Add(new PollAnswerModel()
+                model.Answers.Add(new PollAnswerModel
                 {
                     Id = pa.Id,
                     Name = pa.Name,
@@ -87,7 +86,7 @@ namespace Nop.Web.Controllers
                     (poll.StartDateUtc.HasValue && poll.StartDateUtc.Value > DateTime.UtcNow) ||
                     (poll.EndDateUtc.HasValue && poll.EndDateUtc.Value < DateTime.UtcNow))
                     //we do not cache nulls. that's why let's return an empty record (ID = 0)
-                    return new PollModel() { Id = 0};
+                    return new PollModel { Id = 0};
 
                 return PreparePollModel(poll, false);
             });
@@ -130,7 +129,7 @@ namespace Nop.Web.Controllers
             if (!alreadyVoted)
             {
                 //vote
-                pollAnswer.PollVotingRecords.Add(new PollVotingRecord()
+                pollAnswer.PollVotingRecords.Add(new PollVotingRecord
                 {
                     PollAnswerId = pollAnswer.Id,
                     CustomerId = _workContext.CurrentCustomer.Id,
@@ -152,11 +151,9 @@ namespace Nop.Web.Controllers
         {
             var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_POLLS_MODEL_KEY, _workContext.WorkingLanguage.Id);
             var cachedModel = _cacheManager.Get(cacheKey, () =>
-            {
-                return _pollService.GetPolls(_workContext.WorkingLanguage.Id, true, 0, int.MaxValue)
-                    .Select(x => PreparePollModel(x, false))
-                    .ToList();
-            });
+                _pollService.GetPolls(_workContext.WorkingLanguage.Id, true, 0, int.MaxValue)
+                .Select(x => PreparePollModel(x, false))
+                .ToList());
             //"AlreadyVoted" property of "PollModel" object depends on the current customer. Let's update it.
             //But first we need to clone the cached model (the updated one should not be cached)
             var model = new List<PollModel>();

@@ -27,6 +27,8 @@ namespace Nop.Web.Models.ShoppingCart
 
         public bool DisplayAddToCart { get; set; }
 
+        public bool DisplayTaxShippingInfo { get; set; }
+
         public IList<ShoppingCartItemModel> Items { get; set; }
 
         public IList<string> Warnings { get; set; }
@@ -63,6 +65,8 @@ namespace Nop.Web.Models.ShoppingCart
             public string AttributeInfo { get; set; }
 
             public string RecurringInfo { get; set; }
+
+            public string RentalInfo { get; set; }
 
             public IList<string> Warnings { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Polls;
 using Nop.Core.Domain.Polls;
 using Nop.Services.Helpers;
@@ -159,10 +160,7 @@ namespace Nop.Admin.Controllers
 
                     return RedirectToAction("Edit", new { id = poll.Id });
                 }
-                else
-                {
-                    return RedirectToAction("List");
-                }
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
@@ -205,16 +203,13 @@ namespace Nop.Admin.Controllers
 
             var gridModel = new DataSourceResult
             {
-                Data = answers.Select(x => 
+                Data = answers.Select(x =>  new PollAnswerModel
                 {
-                    return new PollAnswerModel()
-                    {
-                        Id = x.Id,
-                        PollId = x.PollId,
-                        Name = x.Name,
-                        NumberOfVotes = x.NumberOfVotes,
-                        DisplayOrder = x.DisplayOrder
-                    };
+                    Id = x.Id,
+                    PollId = x.PollId,
+                    Name = x.Name,
+                    NumberOfVotes = x.NumberOfVotes,
+                    DisplayOrder = x.DisplayOrder
                 }),
                 Total = answers.Count
             };
@@ -231,12 +226,12 @@ namespace Nop.Admin.Controllers
             
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var pollAnswer = _pollService.GetPollAnswerById(model.Id);
             if (pollAnswer == null)
-                throw new ArgumentException("No poll answer found with the specified id", "id");
+                throw new ArgumentException("No poll answer found with the specified id");
 
             pollAnswer.Name = model.Name;
             pollAnswer.DisplayOrder = model.DisplayOrder;
@@ -253,7 +248,7 @@ namespace Nop.Admin.Controllers
            
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var poll = _pollService.GetPollById(pollId);

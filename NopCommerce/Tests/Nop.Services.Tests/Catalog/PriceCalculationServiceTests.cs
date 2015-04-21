@@ -36,7 +36,7 @@ namespace Nop.Services.Tests.Catalog
         {
             _workContext = null;
 
-            _store = new Store() { Id = 1 };
+            _store = new Store { Id = 1 };
             _storeContext = MockRepository.GenerateMock<IStoreContext>();
             _storeContext.Expect(x => x.CurrentStore).Return(_store);
 
@@ -95,13 +95,13 @@ namespace Nop.Services.Tests.Catalog
             };
 
             //add tier prices
-            product.TierPrices.Add(new TierPrice()
+            product.TierPrices.Add(new TierPrice
                 {
                     Price = 10,
                     Quantity = 2,
                     Product = product
                 });
-            product.TierPrices.Add(new TierPrice()
+            product.TierPrices.Add(new TierPrice
             {
                 Price = 8,
                 Quantity = 5,
@@ -132,13 +132,13 @@ namespace Nop.Services.Tests.Catalog
             };
 
             //customer roles
-            var customerRole1 = new CustomerRole()
+            var customerRole1 = new CustomerRole
             {
                 Id = 1,
                 Name = "Some role 1",
                 Active = true,
             };
-            var customerRole2 = new CustomerRole()
+            var customerRole2 = new CustomerRole
             {
                 Id = 2,
                 Name = "Some role 2",
@@ -146,28 +146,28 @@ namespace Nop.Services.Tests.Catalog
             };
 
             //add tier prices
-            product.TierPrices.Add(new TierPrice()
+            product.TierPrices.Add(new TierPrice
             {
                 Price = 10,
                 Quantity = 2,
                 Product= product,
                 CustomerRole = customerRole1
             });
-            product.TierPrices.Add(new TierPrice()
+            product.TierPrices.Add(new TierPrice
             {
                 Price = 9,
                 Quantity = 2,
                 Product = product,
                 CustomerRole = customerRole2
             });
-            product.TierPrices.Add(new TierPrice()
+            product.TierPrices.Add(new TierPrice
             {
                 Price = 8,
                 Quantity = 5,
                 Product= product,
                 CustomerRole = customerRole1
             });
-            product.TierPrices.Add(new TierPrice()
+            product.TierPrices.Add(new TierPrice
             {
                 Price = 5,
                 Quantity = 10,
@@ -178,7 +178,7 @@ namespace Nop.Services.Tests.Catalog
             product.HasTierPrices = true;
 
             //customer
-            Customer customer = new Customer();
+            var customer = new Customer();
             customer.CustomerRoles.Add(customerRole1);
 
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(12.34M);
@@ -222,7 +222,7 @@ namespace Nop.Services.Tests.Catalog
             var customer = new Customer();
 
             //discounts
-            var discount1 = new Discount()
+            var discount1 = new Discount
             {
                 Id = 1,
                 Name = "Discount 1",
@@ -273,104 +273,6 @@ namespace Nop.Services.Tests.Catalog
         }
 
         [Test]
-        public void Can_get_product_discount()
-        {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
-
-            //customer
-            var customer = new Customer();
-
-            //discounts
-            var discount1 = new Discount()
-            {
-                Id = 1,
-                Name = "Discount 1",
-                DiscountType = DiscountType.AssignedToSkus,
-                DiscountAmount = 3,
-                DiscountLimitation = DiscountLimitationType.Unlimited
-            };
-            discount1.AppliedToProducts.Add(product);
-            product.AppliedDiscounts.Add(discount1);
-            //set HasDiscountsApplied property
-            product.HasDiscountsApplied = true;
-            _discountService.Expect(ds => ds.IsDiscountValid(discount1, customer)).Return(true);
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-
-            var discount2 = new Discount()
-            {
-                Id = 2,
-                Name = "Discount 2",
-                DiscountType = DiscountType.AssignedToSkus,
-                DiscountAmount = 4,
-                DiscountLimitation = DiscountLimitationType.Unlimited
-            };
-            discount2.AppliedToProducts.Add(product);
-            product.AppliedDiscounts.Add(discount2);
-            _discountService.Expect(ds => ds.IsDiscountValid(discount2, customer)).Return(true);
-
-            var discount3 = new Discount()
-            {
-                Id = 3,
-                Name = "Discount 3",
-                DiscountType = DiscountType.AssignedToOrderSubTotal,
-                DiscountAmount = 5,
-                DiscountLimitation = DiscountLimitationType.Unlimited,
-                RequiresCouponCode = true,
-                CouponCode = "SECRET CODE"
-            };
-            discount3.AppliedToProducts.Add(product);
-            product.AppliedDiscounts.Add(discount3);
-            //discount is not valid
-            _discountService.Expect(ds => ds.IsDiscountValid(discount3, customer)).Return(false);
-
-
-            Discount appliedDiscount;
-            _priceCalcService.GetDiscountAmount(product, customer, 0, 1, out appliedDiscount).ShouldEqual(4);
-            appliedDiscount.ShouldNotBeNull();
-            appliedDiscount.ShouldEqual(discount2);
-        }
-
-        [Test]
-        public void Ensure_discount_is_not_applied_to_products_with_prices_entered_by_customer()
-        {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = true,
-                Published = true,
-            };
-
-            //customer
-            var customer = new Customer();
-
-            //discounts
-            var discount1 = new Discount()
-            {
-                Id = 1,
-                Name = "Discount 1",
-                DiscountType = DiscountType.AssignedToSkus,
-                DiscountAmount = 3,
-                DiscountLimitation = DiscountLimitationType.Unlimited
-            };
-            discount1.AppliedToProducts.Add(product);
-            product.AppliedDiscounts.Add(discount1);
-            _discountService.Expect(ds => ds.IsDiscountValid(discount1, customer)).Return(true);
-            
-            Discount appliedDiscount;
-            _priceCalcService.GetDiscountAmount(product, customer, 0, 1, out appliedDiscount).ShouldEqual(0);
-            appliedDiscount.ShouldBeNull();
-        }
-        
-        [Test]
         public void Can_get_shopping_cart_item_unitPrice()
         {
             //customer
@@ -385,7 +287,7 @@ namespace Nop.Services.Tests.Catalog
                 CustomerEntersPrice = false,
                 Published = true,
             };
-            var sci1 = new ShoppingCartItem()
+            var sci1 = new ShoppingCartItem
             {
                 Customer = customer,
                 CustomerId = customer.Id,
@@ -394,7 +296,9 @@ namespace Nop.Services.Tests.Catalog
                 Quantity = 2,
             };
 
-            _priceCalcService.GetUnitPrice(sci1, false).ShouldEqual(12.34);
+            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
+
+            _priceCalcService.GetUnitPrice(sci1).ShouldEqual(12.34);
 
         }
 
@@ -413,7 +317,7 @@ namespace Nop.Services.Tests.Catalog
                 CustomerEntersPrice = false,
                 Published = true,
             };
-            var sci1 = new ShoppingCartItem()
+            var sci1 = new ShoppingCartItem
             {
                 Customer = customer,
                 CustomerId = customer.Id,
@@ -422,7 +326,9 @@ namespace Nop.Services.Tests.Catalog
                 Quantity = 2,
             };
 
-            _priceCalcService.GetSubTotal(sci1, false).ShouldEqual(24.68);
+            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
+
+            _priceCalcService.GetSubTotal(sci1).ShouldEqual(24.68);
 
         }
     }

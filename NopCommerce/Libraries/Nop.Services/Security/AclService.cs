@@ -148,7 +148,7 @@ namespace Nop.Services.Security
             int entityId = entity.Id;
             string entityName = typeof(T).Name;
 
-            var aclRecord = new AclRecord()
+            var aclRecord = new AclRecord
             {
                 EntityId = entityId,
                 EntityName = entityName,
@@ -194,11 +194,7 @@ namespace Nop.Services.Security
                             where ur.EntityId == entityId &&
                             ur.EntityName == entityName 
                             select ur.CustomerRoleId;
-                var result = query.ToArray();
-                //little hack here. nulls aren't cacheable so set it to ""
-                if (result == null)
-                    result = new int[0];
-                return result;
+                return query.ToArray();
             });
         }
 

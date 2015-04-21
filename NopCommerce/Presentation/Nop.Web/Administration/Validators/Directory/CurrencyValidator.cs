@@ -3,10 +3,11 @@ using System.Globalization;
 using FluentValidation;
 using Nop.Admin.Models.Directory;
 using Nop.Services.Localization;
+using Nop.Web.Framework.Validators;
 
 namespace Nop.Admin.Validators.Directory
 {
-    public class CurrencyValidator : AbstractValidator<CurrencyModel>
+    public class CurrencyValidator : BaseNopValidator<CurrencyModel>
     {
         public CurrencyValidator(ILocalizationService localizationService)
         {
@@ -27,8 +28,10 @@ namespace Nop.Admin.Validators.Directory
                     {
                         if (String.IsNullOrEmpty(x))
                             return true;
+                        //let's try to create a CultureInfo object
+                        //if "DisplayLocale" is wrong, then exception will be thrown
                         var culture = new CultureInfo(x);
-                        return culture != null;
+                        return true;
                     }
                     catch
                     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Templates;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Catalog;
-using Nop.Services.Localization;
 using Nop.Services.Security;
 using Nop.Web.Framework.Kendoui;
 using Nop.Web.Framework.Mvc;
@@ -19,7 +19,6 @@ namespace Nop.Admin.Controllers
         private readonly IManufacturerTemplateService _manufacturerTemplateService;
         private readonly IProductTemplateService _productTemplateService;
         private readonly IPermissionService _permissionService;
-        private readonly ILocalizationService _localizationService;
 
         #endregion
 
@@ -28,14 +27,12 @@ namespace Nop.Admin.Controllers
         public TemplateController(ICategoryTemplateService categoryTemplateService,
             IManufacturerTemplateService manufacturerTemplateService,
             IProductTemplateService productTemplateService,
-            IPermissionService permissionService,
-            ILocalizationService localizationService)
+            IPermissionService permissionService)
         {
             this._categoryTemplateService = categoryTemplateService;
             this._manufacturerTemplateService = manufacturerTemplateService;
             this._productTemplateService = productTemplateService;
             this._permissionService = permissionService;
-            this._localizationService = localizationService;
         }
 
         #endregion
@@ -76,7 +73,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var template = _categoryTemplateService.GetCategoryTemplateById(model.Id);
@@ -96,7 +93,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var template = new CategoryTemplate();
@@ -159,7 +156,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var template = _manufacturerTemplateService.GetManufacturerTemplateById(model.Id);
@@ -179,7 +176,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var template = new ManufacturerTemplate();
@@ -245,7 +242,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var template = _productTemplateService.GetProductTemplateById(model.Id);
@@ -265,7 +262,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var template = new ProductTemplate();

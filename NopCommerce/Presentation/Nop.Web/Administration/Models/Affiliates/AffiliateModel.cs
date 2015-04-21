@@ -1,13 +1,11 @@
 ﻿using System;
-using FluentValidation.Attributes;
+using System.Web.Mvc;
 using Nop.Admin.Models.Common;
-using Nop.Admin.Validators.Affiliates;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Models.Affiliates
 {
-    [Validator(typeof(AffiliateValidator))]
     public partial class AffiliateModel : BaseNopEntityModel
     {
         public AffiliateModel()
@@ -20,6 +18,11 @@ namespace Nop.Admin.Models.Affiliates
 
         [NopResourceDisplayName("Admin.Affiliates.Fields.URL")]
         public string Url { get; set; }
+
+
+        [NopResourceDisplayName("Admin.Affiliates.Fields.AdminComment")]
+        [AllowHtml]
+        public string AdminComment { get; set; }
         
         [NopResourceDisplayName("Admin.Affiliates.Fields.Active")]
         public bool Active { get; set; }

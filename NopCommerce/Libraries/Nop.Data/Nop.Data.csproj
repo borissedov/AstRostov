@@ -62,6 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\Common\AddressAttributeMap.cs" />
+    <Compile Include="Mapping\Common\AddressAttributeValueMap.cs" />
+    <Compile Include="QueryableExtensions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="DataReaderExtensions.cs" />
     <Compile Include="DbContextExtensions.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Initializers\SqlCeInitializer.cs" />
     <Compile Include="Initializers\CreateTablesIfNotExist.cs" />
     <Compile Include="EfDataProviderManager.cs" />
+    <Compile Include="Mapping\Catalog\ProductWarehouseInventoryMap.cs" />
     <Compile Include="Mapping\Catalog\BackInStockSubscriptionMap.cs" />
     <Compile Include="Mapping\Catalog\ManufacturerTemplateMap.cs" />
     <Compile Include="Mapping\Catalog\CategoryTemplateMap.cs" />
@@ -81,6 +85,7 @@
     <Compile Include="Mapping\Customers\CustomerAttributeValueMap.cs" />
     <Compile Include="Mapping\Shipping\WarehouseMap.cs" />
     <Compile Include="Mapping\Shipping\DeliveryDateMap.cs" />
+    <Compile Include="Mapping\NopEntityTypeConfiguration.cs" />
     <Compile Include="Mapping\Vendors\VendorMap.cs" />
     <Compile Include="Mapping\Stores\StoreMappingMap.cs" />
     <Compile Include="Mapping\Stores\StoreMap.cs" />
@@ -149,9 +154,9 @@
     <Compile Include="Mapping\Catalog\ProductSpecificationAttributeMap.cs" />
     <Compile Include="Mapping\Catalog\SpecificationAttributeOptionMap.cs" />
     <Compile Include="Mapping\Catalog\SpecificationAttributeMap.cs" />
-    <Compile Include="Mapping\Catalog\ProductVariantAttributeValueMap.cs" />
-    <Compile Include="Mapping\Catalog\ProductVariantAttributeCombinationMap.cs" />
-    <Compile Include="Mapping\Catalog\ProductVariantAttributeMap.cs" />
+    <Compile Include="Mapping\Catalog\ProductAttributeValueMap.cs" />
+    <Compile Include="Mapping\Catalog\ProductAttributeCombinationMap.cs" />
+    <Compile Include="Mapping\Catalog\ProductAttributeMappingMap.cs" />
     <Compile Include="Mapping\Media\PictureMap.cs" />
     <Compile Include="Mapping\Catalog\ProductPictureMap.cs" />
     <Compile Include="Mapping\Catalog\ManufacturerMap.cs" />

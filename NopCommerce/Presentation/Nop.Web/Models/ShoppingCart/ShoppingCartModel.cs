@@ -81,6 +81,8 @@ namespace Nop.Web.Models.ShoppingCart
 
             public string RecurringInfo { get; set; }
 
+            public string RentalInfo { get; set; }
+
             public bool AllowItemEditing { get; set; }
 
             public IList<string> Warnings { get; set; }
@@ -142,6 +144,7 @@ namespace Nop.Web.Models.ShoppingCart
             public bool Display { get; set; }
             public string Message { get; set; }
             public string CurrentCode { get; set; }
+            public bool IsApplied { get; set; }
         }
 
         public partial class GiftCardBoxModel : BaseNopModel

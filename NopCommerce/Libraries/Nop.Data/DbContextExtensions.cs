@@ -1,5 +1,6 @@
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using Nop.Core;
@@ -48,7 +49,7 @@ namespace Nop.Data
 
         private static DbContext CastOrThrow(IDbContext context)
         {
-            DbContext output = (context as DbContext);
+            var output = context as DbContext;
 
             if (output == null)
             {
@@ -108,7 +109,71 @@ namespace Nop.Data
             context.SaveChanges();
         }
 
-        #endregion
+        /// <summary>
+        /// Get table name of entity
+        /// </summary>
+        /// <typeparam name="T">Entity type</typeparam>
+        /// <param name="context">Context</param>
+        /// <returns>Table name</returns>
+        public static string GetTableName<T>(this IDbContext context) where T : BaseEntity
+        {
+            //var tableName = typeof(T).Name;
+            //return tableName;
 
+            //this code works only with Entity Framework.
+            //If you want to support other database, then use the code above (commented)
+
+            var adapter = ((IObjectContextAdapter)context).ObjectContext;
+            var storageModel = (StoreItemCollection)adapter.MetadataWorkspace.GetItemCollection(DataSpace.SSpace);
+            var containers = storageModel.GetItems<EntityContainer>();
+            var entitySetBase = containers.SelectMany(c => c.BaseEntitySets.Where(bes => bes.Name == typeof(T).Name)).First();
+
+            // Here are variables that will hold table and schema name
+            string tableName = entitySetBase.MetadataProperties.First(p => p.Name == "Table").Value.ToString();
+            //string schemaName = productEntitySetBase.MetadataProperties.First(p => p.Name == "Schema").Value.ToString();
+            return tableName;
+        }
+
+        /// <summary>
+        /// Get column maximum length
+        /// </summary>
+        /// <param name="context">Context</param>
+        /// <param name="entityTypeName">Entity type name</param>
+        /// <param name="columnName">Column name</param>
+        /// <returns>Maximum length. Null if such rule does not exist</returns>
+        public static int? GetColumnMaxLength(this IDbContext context, string entityTypeName, string columnName)
+        {
+            //original: http://stackoverflow.com/questions/5081109/entity-framework-4-0-automatically-truncate-trim-string-before-insert
+            int? result = null;
+
+            Type entType = Type.GetType(entityTypeName);
+            var adapter = ((IObjectContextAdapter)context).ObjectContext;
+            var metadataWorkspace = adapter.MetadataWorkspace;
+            var q = from meta in metadataWorkspace.GetItems(DataSpace.CSpace).Where(m => m.BuiltInTypeKind == BuiltInTypeKind.EntityType)
+                    from p in (meta as EntityType).Properties.Where(p => p.Name == columnName && p.TypeUsage.EdmType.Name == "String")
+                    select p;
+
+            var queryResult = q.Where(p =>
+            {
+                bool match = p.DeclaringType.Name == entityTypeName;
+                if (!match && entType != null)
+                {
+                    //Is a fully qualified name....
+                    match = entType.Name == p.DeclaringType.Name;
+                }
+
+                return match;
+
+            }).Select(sel => sel.TypeUsage.Facets["MaxLength"].Value);
+
+            if (queryResult.Any())
+            {
+                result = Convert.ToInt32(queryResult.First());
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

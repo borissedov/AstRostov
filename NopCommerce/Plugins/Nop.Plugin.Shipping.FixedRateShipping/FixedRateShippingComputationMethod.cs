@@ -36,7 +36,7 @@ namespace Nop.Plugin.Shipping.FixedRateShipping
         private decimal GetRate(int shippingMethodId)
         {
             string key = string.Format("ShippingRateComputationMethod.FixedRate.Rate.ShippingMethodId{0}", shippingMethodId);
-            decimal rate = this._settingService.GetSettingByKey<decimal>(key);
+            var rate = this._settingService.GetSettingByKey<decimal>(key);
             return rate;
         }
         #endregion
@@ -113,7 +113,7 @@ namespace Nop.Plugin.Shipping.FixedRateShipping
         {
             actionName = "Configure";
             controllerName = "ShippingFixedRate";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.FixedRateShipping.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Shipping.FixedRateShipping.Controllers" }, { "area", null } };
         }
 
         /// <summary>

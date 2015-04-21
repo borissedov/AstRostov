@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Caching;
@@ -34,19 +35,35 @@ namespace Nop.Web.Extensions
 
             string cacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_SPECS_MODEL_KEY, product.Id, workContext.WorkingLanguage.Id);
             return cacheManager.Get(cacheKey, () =>
-            {
-                var model = specificationAttributeService.GetProductSpecificationAttributesByProductId(product.Id, null, true)
-                   .Select(psa =>
-                   {
-                       return new ProductSpecificationModel()
-                       {
-                           SpecificationAttributeId = psa.SpecificationAttributeOption.SpecificationAttributeId,
-                           SpecificationAttributeName = psa.SpecificationAttributeOption.SpecificationAttribute.GetLocalized(x => x.Name),
-                           SpecificationAttributeOption = !String.IsNullOrEmpty(psa.CustomValue) ? psa.CustomValue : psa.SpecificationAttributeOption.GetLocalized(x => x.Name),
-                       };
-                   }).ToList();
-                return model;
-            });
+                specificationAttributeService.GetProductSpecificationAttributesByProductId(product.Id, null, true)
+                .Select(psa =>
+                {
+                    var m = new ProductSpecificationModel
+                    {
+                        SpecificationAttributeId = psa.SpecificationAttributeOption.SpecificationAttributeId,
+                        SpecificationAttributeName = psa.SpecificationAttributeOption.SpecificationAttribute.GetLocalized(x => x.Name),
+                    };
+
+                    switch (psa.AttributeType)
+                    {
+                        case SpecificationAttributeType.Option:
+                            m.ValueRaw = HttpUtility.HtmlEncode(psa.SpecificationAttributeOption.GetLocalized(x => x.Name));
+                            break;
+                        case SpecificationAttributeType.CustomText:
+                            m.ValueRaw = HttpUtility.HtmlEncode(psa.CustomValue);
+                            break;
+                        case SpecificationAttributeType.CustomHtmlText:
+                            m.ValueRaw = psa.CustomValue;
+                            break;
+                        case SpecificationAttributeType.Hyperlink:
+                            m.ValueRaw = string.Format("<a href='{0}' target='_blank'>{0}</a>", psa.CustomValue);
+                            break;
+                        default:
+                            break;
+                    }
+                    return m;
+                }).ToList()
+            );
         }
 
         public static IEnumerable<ProductOverviewModel> PrepareProductOverviewModels(this Controller controller,
@@ -77,7 +94,7 @@ namespace Nop.Web.Extensions
             var models = new List<ProductOverviewModel>();
             foreach (var product in products)
             {
-                var model = new ProductOverviewModel()
+                var model = new ProductOverviewModel
                 {
                     Id = product.Id,
                     Name = product.GetLocalized(x => x.Name),
@@ -90,7 +107,7 @@ namespace Nop.Web.Extensions
                 {
                     #region Prepare product price
 
-                    var priceModel = new ProductOverviewModel.ProductPriceModel()
+                    var priceModel = new ProductOverviewModel.ProductPriceModel
                     {
                         ForceRedirectionAfterAddingToCart = forceRedirectionAfterAddingToCart
                     };
@@ -148,7 +165,7 @@ namespace Nop.Web.Extensions
                                                     else if (minPossiblePrice.HasValue)
                                                     {
                                                         //calculate prices
-                                                        decimal taxRate = decimal.Zero;
+                                                        decimal taxRate;
                                                         decimal finalPriceBase = taxService.GetProductPrice(minPriceProduct, minPossiblePrice.Value, out taxRate);
                                                         decimal finalPrice = currencyService.ConvertFromPrimaryStoreCurrency(finalPriceBase, workContext.WorkingCurrency);
 
@@ -160,7 +177,7 @@ namespace Nop.Web.Extensions
                                                     {
                                                         //Actually it's not possible (we presume that minimalPrice always has a value)
                                                         //We never should get here
-                                                        Debug.WriteLine(string.Format("Cannot calculate minPrice for product #{0}", product.Id));
+                                                        Debug.WriteLine("Cannot calculate minPrice for product #{0}", product.Id);
                                                     }
                                                 }
                                             }
@@ -191,6 +208,10 @@ namespace Nop.Web.Extensions
                                 priceModel.DisableWishlistButton = product.DisableWishlistButton ||
                                     !permissionService.Authorize(StandardPermissionProvider.EnableWishlist) ||
                                     !permissionService.Authorize(StandardPermissionProvider.DisplayPrices);
+
+                                //rental
+                                priceModel.IsRental = product.IsRental;
+
                                 //pre-order
                                 if (product.AvailableForPreOrder)
                                 {
@@ -216,7 +237,7 @@ namespace Nop.Web.Extensions
                                         else
                                         {
                                             //calculate prices
-                                            decimal taxRate = decimal.Zero;
+                                            decimal taxRate;
                                             decimal oldPriceBase = taxService.GetProductPrice(product, product.OldPrice, out taxRate);
                                             decimal finalPriceBase = taxService.GetProductPrice(product, minPossiblePrice, out taxRate);
 
@@ -255,6 +276,12 @@ namespace Nop.Web.Extensions
                                                     priceModel.OldPrice = null;
                                                     priceModel.Price = priceFormatter.FormatPrice(finalPrice);
                                                 }
+                                            }
+                                            if (product.IsRental)
+                                            {
+                                                //rental product
+                                                priceModel.OldPrice = priceFormatter.FormatRentalProductPeriod(product, priceModel.OldPrice);
+                                                priceModel.Price = priceFormatter.FormatRentalProductPeriod(product, priceModel.Price);
                                             }
 
 
@@ -296,7 +323,7 @@ namespace Nop.Web.Extensions
                     model.DefaultPictureModel = cacheManager.Get(defaultProductPictureCacheKey, () =>
                     {
                         var picture = pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
-                        var pictureModel = new PictureModel()
+                        var pictureModel = new PictureModel
                         {
                             ImageUrl = pictureService.GetPictureUrl(picture, pictureSize),
                             FullSizeImageUrl = pictureService.GetPictureUrl(picture),
@@ -317,7 +344,7 @@ namespace Nop.Web.Extensions
                 }
 
                 //reviews
-                model.ReviewOverviewModel = new ProductReviewOverviewModel()
+                model.ReviewOverviewModel = new ProductReviewOverviewModel
                 {
                     ProductId = product.Id,
                     RatingSum = product.ApprovedRatingSum,

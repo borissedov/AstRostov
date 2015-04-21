@@ -21,17 +21,17 @@
                             type: "json",
                             transport: {
                                 read: {
-                                    url: "@Html.Raw(Url.Action("RatesList", "TaxCountryStateZip", new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Tax.CountryStateZip.Controllers" }, { "area", "" } }))",
+                                    url: "@Html.Raw(Url.Action("RatesList", "TaxCountryStateZip", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Tax.CountryStateZip.Controllers" }, { "area", "" } }))",
                                     type: "POST",
                                     dataType: "json"
                                 },
                                 update: {
-                                    url:"@Html.Raw(Url.Action("RateUpdate", "TaxCountryStateZip", new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Tax.CountryStateZip.Controllers" }, { "area", "" } }))",
+                                    url:"@Html.Raw(Url.Action("RateUpdate", "TaxCountryStateZip", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Tax.CountryStateZip.Controllers" }, { "area", "" } }))",
                                     type: "POST",
                                     dataType: "json"
                                 },
                                 destroy: {
-                                    url: "@Html.Raw(Url.Action("RateDelete", "TaxCountryStateZip", new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Tax.CountryStateZip.Controllers" }, { "area", "" } }))",
+                                    url: "@Html.Raw(Url.Action("RateDelete", "TaxCountryStateZip", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Tax.CountryStateZip.Controllers" }, { "area", "" } }))",
                                     type: "POST",
                                     dataType: "json"
                                 }
@@ -135,7 +135,7 @@
             $.ajax({
                 cache: false,
                 type: "GET",
-                url: "@(Url.Action("GetStatesByCountryId", "Country", new RouteValueDictionary() { { "area", "Admin" } }))",
+                url: "@(Url.Action("GetStatesByCountryId", "Country", new RouteValueDictionary { { "area", "Admin" } }))",
                 data: { "countryId": selectedItem, "addAsterisk": "true" },
                 success: function(data) {
                     ddlStates.html('');
@@ -228,9 +228,8 @@
                     data: $(this.form).serialize(),
                     dataType: 'json',
                     success: function (data) {
-                        var taxCountrystatezipGrid = $("#tax-countrystatezip-grid").data('kendoGrid');
-                        //taxCountrystatezipGrid.dataSource.page(1); //new search. Set page size to 1
-                        taxCountrystatezipGrid.dataSource.read();
+                        var grid = $("#tax-countrystatezip-grid").data('kendoGrid');
+                        grid.dataSource.read();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert('Failed to add record.');

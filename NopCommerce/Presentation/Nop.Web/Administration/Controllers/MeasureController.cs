@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Nop.Admin.Extensions;
 using Nop.Admin.Models.Directory;
 using Nop.Core.Domain.Directory;
 using Nop.Services.Configuration;
@@ -79,7 +80,7 @@ namespace Nop.Admin.Controllers
             
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var weight = _measureService.GetMeasureWeightById(model.Id);
@@ -97,7 +98,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() {Errors = ModelState.SerializeErrors()});
+                return Json(new DataSourceResult {Errors = ModelState.SerializeErrors()});
             }
 
             var weight = new MeasureWeight();
@@ -119,7 +120,7 @@ namespace Nop.Admin.Controllers
 
             if (weight.Id == _measureSettings.BaseWeightId)
             {
-                return Json(new DataSourceResult() { Errors = _localizationService.GetResource("Admin.Configuration.Measures.Weights.CantDeletePrimary") });
+                return Json(new DataSourceResult { Errors = _localizationService.GetResource("Admin.Configuration.Measures.Weights.CantDeletePrimary") });
             }
 
             _measureService.DeleteMeasureWeight(weight);
@@ -182,7 +183,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var dimension = _measureService.GetMeasureDimensionById(model.Id);
@@ -200,7 +201,7 @@ namespace Nop.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new DataSourceResult() { Errors = ModelState.SerializeErrors() });
+                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
             }
 
             var dimension = new MeasureDimension();
@@ -222,7 +223,7 @@ namespace Nop.Admin.Controllers
 
             if (dimension.Id == _measureSettings.BaseDimensionId)
             {
-                return Json(new DataSourceResult() { Errors = _localizationService.GetResource("Admin.Configuration.Measures.Dimensions.CantDeletePrimary") });
+                return Json(new DataSourceResult { Errors = _localizationService.GetResource("Admin.Configuration.Measures.Dimensions.CantDeletePrimary") });
             }
 
             _measureService.DeleteMeasureDimension(dimension);

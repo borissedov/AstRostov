@@ -553,17 +553,6 @@
             </td>
         </tr>
         }
-        if (Model.DisplayPurchaseOrderNumber)
-        {
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.PurchaseOrderNumber):
-            </td>
-            <td class="adminData">
-                @Model.PurchaseOrderNumber
-            </td>
-        </tr>
-        }
         if (!String.IsNullOrEmpty(Model.AuthorizationTransactionId))
         {
         <tr>
@@ -658,6 +647,25 @@
     }
         </td>
     </tr>
+    @if (Model.CustomValues != null && Model.CustomValues.Count > 0)
+    {
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.CustomValues):
+        </td>
+        <td class="adminData">
+            <table>
+                @foreach (var item in Model.CustomValues)
+                {
+                    <tr>
+                        <td>@item.Key:</td>
+                        <td>@(item.Value != null ? item.Value.ToString() : "")</td>
+                    </tr>
+                }
+            </table>
+        </td>
+    </tr>
+    }
     <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.CreatedOn):

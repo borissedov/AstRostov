@@ -80,6 +80,19 @@ namespace Nop.Plugin.Payments.Manual
         }
 
         /// <summary>
+        /// Returns a value indicating whether payment method should be hidden during checkout
+        /// </summary>
+        /// <param name="cart">Shoping cart</param>
+        /// <returns>true - hide; false - display.</returns>
+        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        {
+            //you can put any logic here
+            //for example, hide this payment method if all products in the cart are downloadable
+            //or hide this payment method if current customer is from certain country
+            return false;
+        }
+
+        /// <summary>
         /// Gets additional handling fee
         /// </summary>
         /// <returns>Additional handling fee</returns>
@@ -192,7 +205,7 @@ namespace Nop.Plugin.Payments.Manual
         {
             actionName = "Configure";
             controllerName = "PaymentManual";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.Manual.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.Manual.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -205,7 +218,7 @@ namespace Nop.Plugin.Payments.Manual
         {
             actionName = "PaymentInfo";
             controllerName = "PaymentManual";
-            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Payments.Manual.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Payments.Manual.Controllers" }, { "area", null } };
         }
 
         public Type GetControllerType()
@@ -216,7 +229,7 @@ namespace Nop.Plugin.Payments.Manual
         public override void Install()
         {
             //settings
-            var settings = new ManualPaymentSettings()
+            var settings = new ManualPaymentSettings
             {
                 TransactMode = TransactMode.Pending
             };

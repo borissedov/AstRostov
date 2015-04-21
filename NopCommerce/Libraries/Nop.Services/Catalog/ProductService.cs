@@ -10,6 +10,7 @@ using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Security;
+using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Stores;
 using Nop.Data;
 using Nop.Services.Events;
@@ -51,6 +52,7 @@ namespace Nop.Services.Catalog
         private readonly IRepository<ProductPicture> _productPictureRepository;
         private readonly IRepository<ProductSpecificationAttribute> _productSpecificationAttributeRepository;
         private readonly IRepository<ProductReview> _productReviewRepository;
+        private readonly IRepository<ProductWarehouseInventory> _productWarehouseInventoryRepository;
         private readonly IProductAttributeService _productAttributeService;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly ILanguageService _languageService;
@@ -85,6 +87,7 @@ namespace Nop.Services.Catalog
         /// <param name="productPictureRepository">Product picture repository</param>
         /// <param name="productSpecificationAttributeRepository">Product specification attribute repository</param>
         /// <param name="productReviewRepository">Product review repository</param>
+        /// <param name="productWarehouseInventoryRepository">Product warehouse inventory repository</param>
         /// <param name="productAttributeService">Product attribute service</param>
         /// <param name="productAttributeParser">Product attribute parser service</param>
         /// <param name="languageService">Language service</param>
@@ -110,6 +113,7 @@ namespace Nop.Services.Catalog
             IRepository<StoreMapping> storeMappingRepository,
             IRepository<ProductSpecificationAttribute> productSpecificationAttributeRepository,
             IRepository<ProductReview>  productReviewRepository,
+            IRepository<ProductWarehouseInventory> productWarehouseInventoryRepository,
             IProductAttributeService productAttributeService,
             IProductAttributeParser productAttributeParser,
             ILanguageService languageService,
@@ -136,6 +140,7 @@ namespace Nop.Services.Catalog
             this._storeMappingRepository = storeMappingRepository;
             this._productSpecificationAttributeRepository = productSpecificationAttributeRepository;
             this._productReviewRepository = productReviewRepository;
+            this._productWarehouseInventoryRepository = productWarehouseInventoryRepository;
             this._productAttributeService = productAttributeService;
             this._productAttributeParser = productAttributeParser;
             this._languageService = languageService;
@@ -199,7 +204,7 @@ namespace Nop.Services.Catalog
                 return null;
             
             string key = string.Format(PRODUCTS_BY_ID_KEY, productId);
-            return _cacheManager.Get(key, () => { return _productRepository.GetById(productId); });
+            return _cacheManager.Get(key, () => _productRepository.GetById(productId));
         }
 
         /// <summary>
@@ -367,7 +372,7 @@ namespace Nop.Services.Catalog
             ProductSortingEnum orderBy = ProductSortingEnum.Position,
             bool showHidden = false)
         {
-            IList<int> filterableSpecificationAttributeOptionIds = null;
+            IList<int> filterableSpecificationAttributeOptionIds;
             return SearchProducts(out filterableSpecificationAttributeOptionIds, false,
                 pageIndex, pageSize, categoryIds, manufacturerId,
                 storeId, vendorId, warehouseId,
@@ -721,7 +726,7 @@ namespace Nop.Services.Catalog
                 }
                 if (productType.HasValue)
                 {
-                    int productTypeId = (int) productType.Value;
+                    var productTypeId = (int) productType.Value;
                     query = query.Where(p => p.ProductTypeId == productTypeId);
                 }
 
@@ -791,7 +796,6 @@ namespace Nop.Services.Catalog
                                   (searchLocalizedValue && lp.LanguageId == languageId && lp.LocaleKeyGroup == "Product" && lp.LocaleKey == "Name" && lp.LocaleValue.Contains(keywords)) ||
                                   (searchDescriptions && searchLocalizedValue && lp.LanguageId == languageId && lp.LocaleKeyGroup == "Product" && lp.LocaleKey == "ShortDescription" && lp.LocaleValue.Contains(keywords)) ||
                                   (searchDescriptions && searchLocalizedValue && lp.LanguageId == languageId && lp.LocaleKeyGroup == "Product" && lp.LocaleKey == "FullDescription" && lp.LocaleValue.Contains(keywords))
-                                  //UNDONE search localized values in associated product tags
                             select p;
                 }
 
@@ -856,7 +860,19 @@ namespace Nop.Services.Catalog
                 //warehouse filtering
                 if (warehouseId > 0)
                 {
-                    query = query.Where(p => p.WarehouseId == warehouseId);
+                    var manageStockInventoryMethodId = (int)ManageInventoryMethod.ManageStock;
+                    query = query.Where(p =>
+                        //"Use multiple warehouses" enabled
+                        //we search in each warehouse
+                        (p.ManageInventoryMethodId == manageStockInventoryMethodId &&
+                         p.UseMultipleWarehouses &&
+                         p.ProductWarehouseInventory.Any(pwi => pwi.WarehouseId == warehouseId))
+                        ||
+                        //"Use multiple warehouses" disabled
+                        //we use standard "warehouse" property
+                        ((p.ManageInventoryMethodId != manageStockInventoryMethodId ||
+                          !p.UseMultipleWarehouses) &&
+                          p.WarehouseId == warehouseId));
                 }
 
                 //related products filtering
@@ -1046,29 +1062,34 @@ namespace Nop.Services.Catalog
         /// </summary>
         /// <param name="vendorId">Vendor identifier; 0 to load all records</param>
         /// <param name="products">Low stock products</param>
-        /// <param name="combinations">Low stock  attribute combinations</param>
+        /// <param name="combinations">Low stock attribute combinations</param>
         public virtual void GetLowStockProducts(int vendorId,
             out IList<Product> products, 
-            out IList<ProductVariantAttributeCombination> combinations)
+            out IList<ProductAttributeCombination> combinations)
         {
             //Track inventory for product
             var query1 = from p in _productRepository.Table
                          orderby p.MinStockQuantity
                          where !p.Deleted &&
                          p.ManageInventoryMethodId == (int)ManageInventoryMethod.ManageStock &&
-                         p.MinStockQuantity >= p.StockQuantity &&
+                         //ignore grouped products
+                         p.ProductTypeId != (int)ProductType.GroupedProduct &&
+                         p.MinStockQuantity >= (
+                            p.UseMultipleWarehouses ?
+                            p.ProductWarehouseInventory.Sum(pwi => pwi.StockQuantity - pwi.ReservedQuantity) : 
+                            p.StockQuantity) &&
                          (vendorId == 0 || p.VendorId == vendorId)
                          select p;
             products = query1.ToList();
 
             //Track inventory for product by product attributes
             var query2 = from p in _productRepository.Table
-                         from pvac in p.ProductVariantAttributeCombinations
+                         from c in p.ProductAttributeCombinations
                          where !p.Deleted &&
                          p.ManageInventoryMethodId == (int)ManageInventoryMethod.ManageStockByAttributes &&
-                         pvac.StockQuantity <= 0 &&
+                         c.StockQuantity <= 0 &&
                          (vendorId == 0 || p.VendorId == vendorId)
-                         select pvac;
+                         select c;
             combinations = query2.ToList();
         }
         
@@ -1094,121 +1115,6 @@ namespace Nop.Services.Catalog
         }
         
         /// <summary>
-        /// Adjusts inventory
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="decrease">A value indicating whether to increase or descrease product stock quantity</param>
-        /// <param name="quantity">Quantity</param>
-        /// <param name="attributesXml">Attributes in XML format</param>
-        public virtual void AdjustInventory(Product product, bool decrease,
-            int quantity, string attributesXml)
-        {
-            if (product == null)
-                throw new ArgumentNullException("product");
-
-            var prevStockQuantity = product.StockQuantity;
-
-            switch (product.ManageInventoryMethod)
-            {
-                case ManageInventoryMethod.DontManageStock:
-                    {
-                        //do nothing
-                    }
-                    break;
-                case ManageInventoryMethod.ManageStock:
-                    {
-                        int newStockQuantity = 0;
-                        if (decrease)
-                            newStockQuantity = product.StockQuantity - quantity;
-                        else
-                            newStockQuantity = product.StockQuantity + quantity;
-
-                        bool newPublished = product.Published;
-                        bool newDisableBuyButton = product.DisableBuyButton;
-                        bool newDisableWishlistButton = product.DisableWishlistButton;
-
-                        //check if minimum quantity is reached
-                        if (decrease)
-                        {
-                            if (product.MinStockQuantity >= newStockQuantity)
-                            {
-                                switch (product.LowStockActivity)
-                                {
-                                    case LowStockActivity.DisableBuyButton:
-                                        newDisableBuyButton = true;
-                                        newDisableWishlistButton = true;
-                                        break;
-                                    case LowStockActivity.Unpublish:
-                                        newPublished = false;
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-
-                        product.StockQuantity = newStockQuantity;
-                        product.DisableBuyButton = newDisableBuyButton;
-                        product.DisableWishlistButton = newDisableWishlistButton;
-                        product.Published = newPublished;
-                        UpdateProduct(product);
-
-                        //send email notification
-                        if (decrease && product.NotifyAdminForQuantityBelow > newStockQuantity)
-                            _workflowMessageService.SendQuantityBelowStoreOwnerNotification(product, _localizationSettings.DefaultAdminLanguageId);
-                    }
-                    break;
-                case ManageInventoryMethod.ManageStockByAttributes:
-                    {
-                        var combination = _productAttributeParser.FindProductVariantAttributeCombination(product, attributesXml);
-                        if (combination != null)
-                        {
-                            int newStockQuantity = 0;
-                            if (decrease)
-                                newStockQuantity = combination.StockQuantity - quantity;
-                            else
-                                newStockQuantity = combination.StockQuantity + quantity;
-
-                            combination.StockQuantity = newStockQuantity;
-                            _productAttributeService.UpdateProductVariantAttributeCombination(combination);
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-
-            //bundled products
-            var pvaValues = _productAttributeParser.ParseProductVariantAttributeValues(attributesXml);
-            foreach (var pvaValue in pvaValues)
-            {
-                if (pvaValue.AttributeValueType == AttributeValueType.AssociatedToProduct)
-                {
-                    //associated product (bundle)
-                    var associatedProduct = GetProductById(pvaValue.AssociatedProductId);
-                    if (associatedProduct != null)
-                    {
-                        var totalQty = quantity*pvaValue.Quantity;
-                        AdjustInventory(associatedProduct, decrease, totalQty, "");
-                    }
-                }
-            }
-
-            //TODO send back in stock notifications?
-            //if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
-            //    product.BackorderMode == BackorderMode.NoBackorders &&
-            //    product.AllowBackInStockSubscriptions &&
-            //    product.StockQuantity > 0 &&
-            //    prevStockQuantity <= 0 &&
-            //    product.Published &&
-            //    !product.Deleted)
-            //{
-            //    //_backInStockSubscriptionService.SendNotificationsToSubscribers(product);
-            //}
-        }
-        
-        /// <summary>
         /// Update HasTierPrices property (used for performance optimization)
         /// </summary>
         /// <param name="product">Product</param>
@@ -1228,10 +1134,280 @@ namespace Nop.Services.Catalog
         public virtual void UpdateHasDiscountsApplied(Product product)
         {
             if (product == null)
-                throw new ArgumentNullException("productVariant");
+                throw new ArgumentNullException("product");
 
             product.HasDiscountsApplied = product.AppliedDiscounts.Count > 0;
             UpdateProduct(product);
+        }
+
+        #endregion
+
+        #region Inventory management methods
+
+        /// <summary>
+        /// Adjust inventory
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="quantityToChange">Quantity to increase or descrease</param>
+        /// <param name="attributesXml">Attributes in XML format</param>
+        public virtual void AdjustInventory(Product product, int quantityToChange, string attributesXml = "")
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            //var prevStockQuantity = product.GetTotalStockQuantity();
+
+            if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock)
+            {
+                //update stock quantity
+                if (product.UseMultipleWarehouses)
+                {
+                    //use multiple warehouses
+                    if (quantityToChange < 0)
+                        ReserveInventory(product, quantityToChange);
+                    else
+                        UnblockReservedInventory(product, quantityToChange);
+                }
+                else
+                {
+                    //do not use multiple warehouses
+                    //simple inventory management
+                    product.StockQuantity += quantityToChange;
+                    UpdateProduct(product);
+                }
+
+                //check if minimum quantity is reached
+                if (quantityToChange < 0 && product.MinStockQuantity >= product.GetTotalStockQuantity())
+                {
+                    switch (product.LowStockActivity)
+                    {
+                        case LowStockActivity.DisableBuyButton:
+                            product.DisableBuyButton = true;
+                            product.DisableWishlistButton = true;
+                            UpdateProduct(product);
+                            break;
+                        case LowStockActivity.Unpublish:
+                            product.Published = false;
+                            UpdateProduct(product);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                //send email notification
+                if (quantityToChange < 0 && product.GetTotalStockQuantity() < product.NotifyAdminForQuantityBelow)
+                {
+                    _workflowMessageService.SendQuantityBelowStoreOwnerNotification(product, _localizationSettings.DefaultAdminLanguageId);
+                }
+            }
+
+            if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStockByAttributes)
+            {
+                var combination = _productAttributeParser.FindProductAttributeCombination(product, attributesXml);
+                if (combination != null)
+                {
+                    combination.StockQuantity += quantityToChange;
+                    _productAttributeService.UpdateProductAttributeCombination(combination);
+
+                    //send email notification
+                    if (quantityToChange < 0 && combination.StockQuantity < combination.NotifyAdminForQuantityBelow)
+                    {
+                        _workflowMessageService.SendQuantityBelowStoreOwnerNotification(combination, _localizationSettings.DefaultAdminLanguageId);
+                    }
+                }
+            }
+
+
+            //bundled products
+            var attributeValues = _productAttributeParser.ParseProductAttributeValues(attributesXml);
+            foreach (var attributeValue in attributeValues)
+            {
+                if (attributeValue.AttributeValueType == AttributeValueType.AssociatedToProduct)
+                {
+                    //associated product (bundle)
+                    var associatedProduct = GetProductById(attributeValue.AssociatedProductId);
+                    if (associatedProduct != null)
+                    {
+                        AdjustInventory(associatedProduct, quantityToChange * attributeValue.Quantity);
+                    }
+                }
+            }
+
+            //TODO send back in stock notifications?
+            //also do not forget to uncomment some code above ("prevStockQuantity")
+            //if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
+            //    product.BackorderMode == BackorderMode.NoBackorders &&
+            //    product.AllowBackInStockSubscriptions &&
+            //    product.GetTotalStockQuantity() > 0 &&
+            //    prevStockQuantity <= 0 &&
+            //    product.Published &&
+            //    !product.Deleted)
+            //{
+            //    //_backInStockSubscriptionService.SendNotificationsToSubscribers(product);
+            //}
+        }
+
+        /// <summary>
+        /// Reserve the given quantity in the warehouses.
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="quantity">Quantity, must be negative</param>
+        public virtual void ReserveInventory(Product product, int quantity)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            if (quantity >= 0)
+                throw new ArgumentException("Value must be negative.", "quantity");
+
+            var qty = -quantity;
+
+            var productInventory = product.ProductWarehouseInventory
+                .OrderByDescending(pwi => pwi.StockQuantity - pwi.ReservedQuantity)
+                .ToList();
+
+            if (productInventory.Count <= 0)
+                return;
+
+            Action pass = () =>
+            {
+                foreach (var item in productInventory)
+                {
+                    var selectQty = Math.Min(item.StockQuantity - item.ReservedQuantity, qty);
+                    item.ReservedQuantity += selectQty;
+                    qty -= selectQty;
+
+                    if (qty <= 0)
+                        break;
+                }
+            };
+
+            // 1st pass: Applying reserved
+            pass();
+
+            if (qty > 0)
+            {
+                // 2rd pass: Booking negative stock!
+                var pwi = productInventory[0];
+                pwi.ReservedQuantity += qty;
+            }
+
+            this.UpdateProduct(product);
+        }
+
+        /// <summary>
+        /// Unblocks the given quantity reserved items in the warehouses
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="quantity">Quantity, must be positive</param>
+        public virtual void UnblockReservedInventory(Product product, int quantity)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            if (quantity < 0)
+                throw new ArgumentException("Value must be positive.", "quantity");
+
+            var productInventory = product.ProductWarehouseInventory
+                .OrderByDescending(pwi => pwi.ReservedQuantity)
+                .ThenByDescending(pwi => pwi.StockQuantity)
+                .ToList();
+
+            if (productInventory.Count <= 0)
+                return;
+
+            var qty = quantity;
+
+            foreach (var item in productInventory)
+            {
+                var selectQty = Math.Min(item.ReservedQuantity, qty);
+                item.ReservedQuantity -= selectQty;
+                qty -= selectQty;
+
+                if (qty <= 0)
+                    break;
+            }
+
+            if (qty > 0)
+            {
+                var pwi = productInventory[0];
+                pwi.StockQuantity += qty;
+            }
+
+            UpdateProduct(product);
+        }
+
+        /// <summary>
+        /// Book the reserved quantity
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="warehouseId">Warehouse identifier</param>
+        /// <param name="quantity">Quantity, must be negative</param>
+        public virtual void BookReservedInventory(Product product, int warehouseId, int quantity)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            if (quantity >= 0)
+                throw new ArgumentException("Value must be negative.", "quantity");
+
+            //only products with "use multiple warehouses" are handled this way
+            if (product.ManageInventoryMethod != ManageInventoryMethod.ManageStock)
+                return;
+            if (!product.UseMultipleWarehouses)
+                return;
+
+            var pwi = product.ProductWarehouseInventory.FirstOrDefault(pi => pi.WarehouseId == warehouseId);
+            if (pwi == null)
+                return;
+
+            pwi.ReservedQuantity = Math.Max(pwi.ReservedQuantity + quantity, 0);
+            pwi.StockQuantity += quantity;
+            UpdateProduct(product);
+
+            //TODO add support for bundled products (AttributesXml)
+        }
+
+        /// <summary>
+        /// Reverse booked inventory (if acceptable)
+        /// </summary>
+        /// <param name="product">product</param>
+        /// <param name="shipmentItem">Shipment item</param>
+        /// <returns>Quantity reversed</returns>
+        public virtual int ReverseBookedInventory(Product product, ShipmentItem shipmentItem)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            if (shipmentItem == null)
+                throw new ArgumentNullException("shipmentItem");
+            
+            //only products with "use multiple warehouses" are handled this way
+            if (product.ManageInventoryMethod != ManageInventoryMethod.ManageStock)
+                return 0;
+            if (!product.UseMultipleWarehouses)
+                return 0;
+
+            var pwi = product.ProductWarehouseInventory.FirstOrDefault(x => x.WarehouseId == shipmentItem.WarehouseId);
+            if (pwi == null)
+                return 0;
+
+            var shipment = shipmentItem.Shipment;
+
+            //not shipped yet? hence "BookReservedInventory" method was not invoked
+            if (!shipment.ShippedDateUtc.HasValue)
+                return 0;
+
+            var qty = shipmentItem.Quantity;
+
+            pwi.StockQuantity += qty;
+            pwi.ReservedQuantity += qty;
+            UpdateProduct(product);
+
+            //TODO add support for bundled products (AttributesXml)
+
+            return qty;
         }
 
         #endregion
@@ -1647,6 +1823,24 @@ namespace Nop.Services.Catalog
                 throw new ArgumentNullException("productReview");
 
             _productReviewRepository.Delete(productReview);
+
+            _cacheManager.RemoveByPattern(PRODUCTS_PATTERN_KEY);
+        }
+
+        #endregion
+
+        #region Product warehouse inventory
+
+        /// <summary>
+        /// Deletes a ProductWarehouseInventory
+        /// </summary>
+        /// <param name="pwi">ProductWarehouseInventory</param>
+        public virtual void DeleteProductWarehouseInventory(ProductWarehouseInventory pwi)
+        {
+            if (pwi == null)
+                throw new ArgumentNullException("pwi");
+
+            _productWarehouseInventoryRepository.Delete(pwi);
 
             _cacheManager.RemoveByPattern(PRODUCTS_PATTERN_KEY);
         }

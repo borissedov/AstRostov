@@ -94,7 +94,7 @@ namespace Nop.Services.Installation
             using (var stream = File.OpenRead(path))
             using (var reader = new StreamReader(stream))
             {
-                string statement = "";
+                string statement;
                 while ((statement = ReadNextStatementFromStream(reader)) != null)
                     statements.Add(statement);
             }
@@ -106,16 +106,15 @@ namespace Nop.Services.Installation
         protected virtual string ReadNextStatementFromStream(StreamReader reader)
         {
             var sb = new StringBuilder();
-            string lineOfText = "";
             while (true)
             {
-                lineOfText = reader.ReadLine();
+                var lineOfText = reader.ReadLine();
                 if (lineOfText == null)
                 {
                     if (sb.Length > 0)
                         return sb.ToString();
-                    else
-                        return null;
+                    
+                    return null;
                 }
 
                 if (lineOfText.TrimEnd().ToUpper() == "GO")

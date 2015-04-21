@@ -75,14 +75,11 @@ namespace Nop.Admin.Controllers
 
             var gridModel = new DataSourceResult
             {
-                Data = customers.Select(x =>
+                Data = customers.Select(x => new ShoppingCartModel
                 {
-                    return new ShoppingCartModel()
-                    {
-                        CustomerId = x.Id,
-                        CustomerEmail = x.IsRegistered() ? x.Email : _localizationService.GetResource("Admin.Customers.Guest"),
-                        TotalItems = x.ShoppingCartItems.Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart).ToList().GetTotalProducts()
-                    };
+                    CustomerId = x.Id,
+                    CustomerEmail = x.IsRegistered() ? x.Email : _localizationService.GetResource("Admin.Customers.Guest"),
+                    TotalItems = x.ShoppingCartItems.Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart).ToList().GetTotalProducts()
                 }),
                 Total = customers.TotalCount
             };
@@ -105,15 +102,15 @@ namespace Nop.Admin.Controllers
                 {
                     decimal taxRate;
                     var store = _storeService.GetStoreById(sci.StoreId); 
-                    var sciModel = new ShoppingCartItemModel()
+                    var sciModel = new ShoppingCartItemModel
                     {
                         Id = sci.Id,
                         Store = store != null ? store.Name : "Unknown",
                         ProductId = sci.ProductId,
                         Quantity = sci.Quantity,
                         ProductName = sci.Product.Name,
-                        UnitPrice = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetUnitPrice(sci, true), out taxRate)),
-                        Total = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci, true), out taxRate)),
+                        UnitPrice = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetUnitPrice(sci), out taxRate)),
+                        Total = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci), out taxRate)),
                         UpdatedOn = _dateTimeHelper.ConvertToUserTime(sci.UpdatedOnUtc, DateTimeKind.Utc)
                     };
                     return sciModel;
@@ -151,14 +148,11 @@ namespace Nop.Admin.Controllers
 
             var gridModel = new DataSourceResult
             {
-                Data = customers.Select(x =>
+                Data = customers.Select(x => new ShoppingCartModel
                 {
-                    return new ShoppingCartModel()
-                    {
-                        CustomerId = x.Id,
-                        CustomerEmail = x.IsRegistered() ? x.Email : _localizationService.GetResource("Admin.Customers.Guest"),
-                        TotalItems = x.ShoppingCartItems.Where(sci => sci.ShoppingCartType == ShoppingCartType.Wishlist).ToList().GetTotalProducts()
-                    };
+                    CustomerId = x.Id,
+                    CustomerEmail = x.IsRegistered() ? x.Email : _localizationService.GetResource("Admin.Customers.Guest"),
+                    TotalItems = x.ShoppingCartItems.Where(sci => sci.ShoppingCartType == ShoppingCartType.Wishlist).ToList().GetTotalProducts()
                 }),
                 Total = customers.TotalCount
             };
@@ -181,15 +175,15 @@ namespace Nop.Admin.Controllers
                 {
                     decimal taxRate;
                     var store = _storeService.GetStoreById(sci.StoreId); 
-                    var sciModel = new ShoppingCartItemModel()
+                    var sciModel = new ShoppingCartItemModel
                     {
                         Id = sci.Id,
                         Store = store != null ? store.Name : "Unknown",
                         ProductId = sci.ProductId,
                         Quantity = sci.Quantity,
                         ProductName = sci.Product.Name,
-                        UnitPrice = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetUnitPrice(sci, true), out taxRate)),
-                        Total = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci, true), out taxRate)),
+                        UnitPrice = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetUnitPrice(sci), out taxRate)),
+                        Total = _priceFormatter.FormatPrice(_taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci), out taxRate)),
                         UpdatedOn = _dateTimeHelper.ConvertToUserTime(sci.UpdatedOnUtc, DateTimeKind.Utc)
                     };
                     return sciModel;

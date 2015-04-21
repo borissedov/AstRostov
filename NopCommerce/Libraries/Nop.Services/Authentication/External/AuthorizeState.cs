@@ -5,21 +5,21 @@ using System.Web.Mvc;
 
 namespace Nop.Services.Authentication.External
 {
+    /// <summary>
+    /// Authorize state
+    /// </summary>
     public partial class AuthorizeState
     {
         public IList<string> Errors { get; set; }
 
-        private readonly string _returnUrl;
-        
         public AuthorizeState(string returnUrl, OpenAuthenticationStatus openAuthenticationStatus)
         {
             Errors = new List<string>();
-            _returnUrl = returnUrl;
             AuthenticationStatus = openAuthenticationStatus;
 
             //in way SEO friendly language URLs will be persisted
             if (AuthenticationStatus == OpenAuthenticationStatus.Authenticated)
-                Result = new RedirectResult(!string.IsNullOrEmpty(_returnUrl) ? _returnUrl : "~/");
+                Result = new RedirectResult(!string.IsNullOrEmpty(returnUrl) ? returnUrl : "~/");
         }
 
         public AuthorizeState(string returnUrl, AuthorizationResult authorizationResult)

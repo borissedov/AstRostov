@@ -86,13 +86,19 @@
                         @{
                             var dataDictAttributes = new ViewDataDictionary();
                             dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
-                            @Html.Partial("_ProductAttributes", Model.ProductVariantAttributes, dataDictAttributes)                  
+                            @Html.Partial("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)                  
                         }
                         <!--gift card-->
                         @{
                             var dataDictGiftCard = new ViewDataDictionary();
                             dataDictGiftCard.TemplateInfo.HtmlFieldPrefix = string.Format("giftcard_{0}", Model.Id);
                             @Html.Partial("_GiftCardInfo", Model.GiftCard, dataDictGiftCard)
+                        }
+                        <!--rental products-->
+                        @{
+                            var dataDictRental = new ViewDataDictionary();
+                            dataDictRental.TemplateInfo.HtmlFieldPrefix = string.Format("rental_{0}", Model.Id);
+                            @Html.Partial("_RentalInfo", Model, dataDictRental)
                         }
                         <!--price & add to cart-->
                         @{

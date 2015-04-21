@@ -21,6 +21,7 @@ input,select{vertical-align:middle;}
 
 /* OTHER RESET STYLESHEET (HTML GENERAL) */
 body{text-align:center;font-family:arial,verdana,helvetica,sans-serif;font-size:12px;background:none repeat scroll 0 0 #F6F6F4;color:#5C5B5B;line-height:normal;}
+body.popup-window{background:none;}
 a{color:#5C5B5B;text-decoration:none;font-weight:normal;}
 a:hover{color:#B80709;text-decoration:underline;}
 h1,h2,h3,h4,h5,h6{font-family:arial,helvetica,sans-serif;}
@@ -86,7 +87,7 @@ ul.language-list li:hover{cursor:pointer;}
 .header-menu a{color:#FFFFFF;font-size:1.1em;text-decoration:none;}
 .header-menu .top-menu{width:100%;height:100%;zoom:1;}
 .header-menu .top-menu:after{content:".";display:block;clear:both;height:0;font-size:0;line-height:0;visibility:hidden;}
-.header-menu .top-menu li{float:left;list-style-type:none;padding:10px 8px 1px 8px;line-height:28px;height:28px;margin-right:10px;text-align:center;min-width:75px;background:url(images/top-menu-divider.png) no-repeat 100% 50%;z-index:9}
+.header-menu .top-menu li{float:left;list-style-type:none;padding:10px 8px 1px 8px;line-height:28px;height:28px;text-align:center;min-width:75px;background:url(images/top-menu-divider.png) no-repeat 100% 50%;z-index:9}
 .header-menu .top-menu li:last-child{background:none;}
 .header-menu .top-menu li a{min-height:20px;display:block;line-height:20px;text-transform:uppercase;margin-bottom:9px;white-space:nowrap;padding:0 5px;}
 .header-menu .top-menu li a.hover{background:#696969;}
@@ -315,6 +316,8 @@ td.fieldname{font-size:12px;}
 .wishlist-page .share-info{margin:5px 0;}
 .wishlist-page .share-info .share-label{font-weight:700;}
 .wishlist-page .share-info a.share-link{color:#B80709;text-decoration:none;}
+.wishlist-page .tax-shipping-info{font-size:11px;margin:10px 0;}
+.wishlist-page .tax-shipping-info a{text-decoration:underline;}
 .order-summary-content,.wishlist-content{margin:0;padding:0;font-size:11px;color:#555;}
 .order-summary-content .message-error,.wishlist-content .message-error{margin:5px 0;}
 .order-summary-content .totals{float:right;padding:23px 5px 0;width:320px;}
@@ -323,6 +326,8 @@ td.fieldname{font-size:12px;}
 .order-summary-content .shipping{display:inline;float:left;margin:0 10px 0 0;width:280px;}
 .order-summary-content .coupon-box,.order-summary-content .giftcard-box{padding:10px;font-size:11px;color:#555;margin:0 0 10px;border:1px solid #EEE;}
 .order-summary-content .coupon-box .message,.order-summary-content .giftcard-box .message{font-family:Verdana,Arial,sans-serif;font-size:10px;font-weight:700;color:red;}
+.order-summary-content .coupon-box .message-failure {color: red;}
+.order-summary-content .coupon-box .message-success {color: green;}
 .order-summary-content .coupon-box .current-code{padding:10px 0px 0px 0px;}
 .order-summary-content .coupon-box .discount-coupon-code,.order-summary-content .giftcard-box .gift-card-coupon-code{width:auto;}
 .order-summary-content .coupon-box .hint,.order-summary-content .giftcard-box .hint{padding-top:5px;}
@@ -348,6 +353,9 @@ td.fieldname{font-size:12px;}
 .order-summary-content .total-info{margin:0;font-size:12px;}
 .order-summary-content .total-info .selected-shipping-method{font-weight:normal;font-size:11px;}
 .order-summary-content .total-info .order-total{color:#353434;}
+.order-summary-content .will-earn-reward-points{font-style:italic;}
+.order-summary-content .will-earn-reward-points .cart-total-left{font-weight:normal;}
+.order-summary-content .will-earn-reward-points td{padding-top:15px;}
 .cart-total-left{width:100%;text-align:right;vertical-align:middle;height:21px;font-weight:700;color:#353434;}
 .cart-total-left-below{width:100%;text-align:right;vertical-align:top;height:30px;}
 .cart-total-right{text-align:right;vertical-align:middle;padding-left:5px;}
@@ -410,6 +418,10 @@ td.fieldname{font-size:12px;}
 .checkout-data .enter-address{border:1px solid #EEE;height:auto;padding:10px;}
 .checkout-data .enter-address label{display:inline-block;width:95px;}
 .checkout-data .enter-address .buttons{margin-top:10px;}
+.checkout-data .enter-address .custom-attributes ul.option-list{display:inline-block;}
+.checkout-data .enter-address .custom-attributes ul.option-list li{list-style:none;display:inline-block;}
+.checkout-data .enter-address .custom-attributes ul.option-list li label{width:auto;margin-left:0px;}
+.checkout-data .enter-address .custom-attributes textarea{height:100px;width:500px;border:solid 1px #E3E3E3;vertical-align:top;}
 .checkout-data .pickup-in-store{border:1px solid #EEE;height:auto;padding:10px;}
 .checkout-data .pickup-in-store .description{font-style:italic;}
 .checkout-data .shipping-method{text-align:left;border:1px solid #EEE;height:auto;}
@@ -496,6 +508,8 @@ td.fieldname{font-size:12px;}
 .order-details-page .order-details-area ul{float:left;margin-right:20px;}
 .order-details-page .order-details-area li{list-style:none;}
 .order-details-page .order-details-area li:first-child{margin-top:0;}
+.order-details-page .tax-shipping-info{font-size:11px;margin:10px 0;}
+.order-details-page .tax-shipping-info a{text-decoration:underline;}
 .order-details-page .repost{margin:10px 0px 10px 0px;}
 .order-details-page .repost .hint{margin:0px;}
 .order-details-page .section{text-align:left;padding:10px;margin-bottom:20px;height:auto;}
@@ -672,9 +686,9 @@ td.fieldname{font-size:12px;}
 .registration-page .page-title{}
 .registration-page .page-body{margin:0;padding:0;color:#555;background-color:inherit;}
 .registration-page .gender{display:inline-block;}
-.registration-page ul.option-list{display:inline-block;}
-.registration-page ul.option-list li{list-style:none;display:inline-block;}
-.registration-page ul.option-list li label{width:auto;margin-left:0px;}
+.registration-page .custom-attributes ul.option-list{display:inline-block;}
+.registration-page .custom-attributes ul.option-list li{list-style:none;display:inline-block;}
+.registration-page .custom-attributes ul.option-list li label{width:auto;margin-left:0px;}
 .registration-page .vat-note{display:block;}
 .registration-page .accept-privacy-policy{float:left;margin-bottom:5px;margin-top:5px;clear:both;}
 .registration-page .accept-privacy-policy .read{text-decoration:underline;}
@@ -895,6 +909,10 @@ td.fieldname{font-size:12px;}
 .address-edit-page .edit-address{margin-bottom:10px;}
 .address-edit-page .edit-address .inputs{margin-bottom:5px;}
 .address-edit-page .edit-address label{display:inline-block;width:100px;}
+.address-edit-page .edit-address .custom-attributes ul.option-list{display:inline-block;}
+.address-edit-page .edit-address .custom-attributes ul.option-list li{list-style:none;display:inline-block;}
+.address-edit-page .edit-address .custom-attributes ul.option-list li label{width:auto;margin-left:0px;}
+.address-edit-page .edit-address .custom-attributes textarea{height:100px;width:500px;border:solid 1px #E3E3E3;vertical-align:top;}
 .address-edit-page .buttons{}
 .avatar-page{padding:10px;}
 .avatar-page .buttons{margin:5px 0;}
@@ -914,9 +932,9 @@ td.fieldname{font-size:12px;}
 .forum-subscriptions-page .buttons{margin-bottom:5px;margin-top:5px;text-align:left;}
 .customer-info-page{}
 .customer-info-page .gender{display:inline-block;}
-.customer-info-page ul.option-list{display:inline-block;}
-.customer-info-page ul.option-list li{list-style:none;display:inline-block;}
-.customer-info-page ul.option-list li label{width:auto;margin-left:0px;}
+.customer-info-page .custom-attributes ul.option-list{display:inline-block;}
+.customer-info-page .custom-attributes ul.option-list li{list-style:none;display:inline-block;}
+.customer-info-page .custom-attributes ul.option-list li label{width:auto;margin-left:0px;}
 .customer-info-page .vat-status{}
 .customer-info-page .vat-note{display:block;}
 .customer-info-page .buttons{margin-bottom:5px;margin-top:5px;text-align:center;}
@@ -1004,6 +1022,7 @@ td.fieldname{font-size:12px;}
 .product-details-page .prices .product-price span{color:#B80709;font-size:20px;}
 .product-details-page .prices .old-product-price{color:#5C5B5B;}
 .product-details-page .prices .old-product-price span{text-decoration:line-through;}
+.product-details-page .prices .rental-price{}
 .product-details-page .prices .tax-shipping-info{font-size:11px;}
 .product-details-page .prices .tax-shipping-info a{text-decoration:underline;}
 .product-details-page .customer-entered-price{margin-bottom:10px;}
@@ -1025,6 +1044,7 @@ td.fieldname{font-size:12px;}
 .product-details-page .attributes ul.color-squares .color{display:inline-block;width:18px;height:18px;}
 .product-details-page .attributes ul.color-squares label{cursor:pointer;position:relative;}
 .product-details-page .attributes ul.color-squares input{height:0;overflow:hidden;z-index:-10000;position:absolute;float:none;}
+.product-details-page .rental-attributes .datepicker{width:100px;}
 .product-details-page .giftcard{}
 .product-details-page .giftcard dt{clear:left;float:left;width:150px;}
 .product-details-page .giftcard label{display:inline-block;width:150px;vertical-align:top;}
