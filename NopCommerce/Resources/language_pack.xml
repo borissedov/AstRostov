@@ -15,6 +15,9 @@
 	<LocaleResource Name="Account.AssociatedExternalAuth">
 		<Value>Внешняя аутентификация</Value>
 	</LocaleResource>
+	<LocaleResource Name="Account.AssociatedExternalAuth.AddMoreRecords">
+		<Value>Вы можете связать вам аккаунт с внешними способами аутентификации на следующей странице:</Value>
+	</LocaleResource>
 	<LocaleResource Name="Account.AssociatedExternalAuth.AuthMethodName">
 		<Value>Метод аутентификации</Value>
 	</LocaleResource>
@@ -24,8 +27,14 @@
 	<LocaleResource Name="Account.AssociatedExternalAuth.ExternalIdentifier">
 		<Value>Внешний идентификатор</Value>
 	</LocaleResource>
+	<LocaleResource Name="Account.AssociatedExternalAuth.Remove">
+		<Value>убрать</Value>
+	</LocaleResource>
 	<LocaleResource Name="Account.AssociatedExternalAuth.YourAccountWillBeLinkedTo">
 		<Value>Ваша новая учётная запись будет связана с</Value>
+	</LocaleResource>
+	<LocaleResource Name="Account.AssociatedExternalAuth.YourAccountWillBeLinkedTo.Remove">
+		<Value>(убрать)</Value>
 	</LocaleResource>
 	<LocaleResource Name="Account.Avatar">
 		<Value>Изображение пользователя</Value>
@@ -249,6 +258,9 @@
 	<LocaleResource Name="Account.Fields.Country">
 		<Value>Страна</Value>
 	</LocaleResource>
+	<LocaleResource Name="Account.Fields.Country.Required">
+		<Value>Необходимо указать страну.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Account.Fields.DateOfBirth">
 		<Value>Дата рождения</Value>
 	</LocaleResource>
@@ -311,6 +323,9 @@
 	</LocaleResource>
 	<LocaleResource Name="Account.Fields.StateProvince">
 		<Value>Край/Область</Value>
+	</LocaleResource>
+	<LocaleResource Name="Account.Fields.StateProvince.Required">
+		<Value>Необходимо выбрать край или область.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Account.Fields.StreetAddress">
 		<Value>Адрес</Value>
@@ -386,6 +401,9 @@
 	</LocaleResource>
 	<LocaleResource Name="Account.Login.Fields.Email">
 		<Value>E-mail</Value>
+	</LocaleResource>
+	<LocaleResource Name="Account.Login.Fields.Email.Required">
+		<Value>Пожалуйста, введите ваш Email</Value>
 	</LocaleResource>
 	<LocaleResource Name="Account.Login.Fields.Password">
 		<Value>Пароль</Value>
@@ -792,6 +810,9 @@
 	<LocaleResource Name="Address.SelectCountry">
 		<Value>Выберите страну</Value>
 	</LocaleResource>
+	<LocaleResource Name="Address.SelectState">
+		<Value>Выберите край/область</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin">
 		<Value>Администратор</Value>
 	</LocaleResource>
@@ -803,6 +824,93 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Address">
 		<Value>Адрес</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes">
+		<Value>Атрибуты адреса</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Added">
+		<Value>Новый атрибут адреса успешно добавлен.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.AddNew">
+		<Value>Добавление нового атрибута адреса</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.BackToList">
+		<Value>вернуться к списку атрибутов</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Deleted">
+		<Value>Атрибут успешно удалён.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Description">
+		<Value>Если обычных полей адреса вам не достаточно, то вы можете создать дополнительные.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.EditAttributeDetails">
+		<Value>Изменение атрибута адреса</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.AttributeControlType">
+		<Value>Тип элемента управления</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.AttributeControlType.Hint">
+		<Value>Выберите, как показывать значения атрибута.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.DisplayOrder">
+		<Value>Порядок отображения</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.DisplayOrder.Hint">
+		<Value>Порядок отображения атрибута адреса. 1 — это первый пункт списка.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.IsRequired">
+		<Value>Обязателен</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.IsRequired.Hint">
+		<Value>Если атрибут выбран как обязательный, клиент обязан выбрать допустимое значение этого атрибута перед тем, как он сможет продолжить.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.Name">
+		<Value>Название</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.Name.Hint">
+		<Value>Название атрибута адреса.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Fields.Name.Required">
+		<Value>Необходимо ввести название.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Info">
+		<Value>Информация об атрибуте</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Updated">
+		<Value>Атрибут успешно обновлен.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values">
+		<Value>Значения атрибута</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.AddNew">
+		<Value>Добавление нового значения</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.EditValueDetails">
+		<Value>Изменение значения атрибута</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.Fields.DisplayOrder">
+		<Value>Порядок отображения</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.Fields.DisplayOrder.Hint">
+		<Value>Порядок отображения атрибута адреса. 1 — это первый пункт в списке значений атрибута.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.Fields.IsPreSelected">
+		<Value>Выбран по-умолчанию</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.Fields.IsPreSelected.Hint">
+		<Value>Определяет, выбрано ли по-умолчанию для клиента это значение атрибута.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.Fields.Name">
+		<Value>Название</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.Fields.Name.Hint">
+		<Value>Название значения адреса заказа.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.Fields.Name.Required">
+		<Value>Необходимо ввести название.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Address.AddressAttributes.Values.SaveBeforeEdit">
+		<Value>Вы должны сохранить атрибут адреса перед тем, как добавлять для него значения.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Address.Fields.Address1">
 		<Value>Адрес</Value>
@@ -918,6 +1026,9 @@
 	<LocaleResource Name="Admin.Address.SelectCountry">
 		<Value>Выберите страну</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Address.SelectState">
+		<Value>Выберите край/область</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Affiliates">
 		<Value>Партнёры</Value>
 	</LocaleResource>
@@ -947,6 +1058,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Affiliates.Fields.Active.Hint">
 		<Value>Значение, показывающее активирован ли партнёр.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Affiliates.Fields.AdminComment">
+		<Value>Комментарий администратора</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Affiliates.Fields.AdminComment.Hint">
+		<Value>Комментарий администратора. Нужен для внутреннего использования.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Affiliates.Fields.ID">
 		<Value>Идентификатор партнёра</Value>
@@ -1022,6 +1139,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Attributes.CheckoutAttributes.Fields.AvailableStores.Hint">
 		<Value>Выберите магазины, в которых атрибуты будут показываться.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Attributes.CheckoutAttributes.Fields.DefaultValue">
+		<Value>Значение по-умолчанию</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Attributes.CheckoutAttributes.Fields.DefaultValue.Hint">
+		<Value>Введите значение по-умолчанию для атрибута.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Attributes.CheckoutAttributes.Fields.DisplayOrder">
 		<Value>Порядок отображения</Value>
@@ -2001,6 +2124,12 @@
 	<LocaleResource Name="Admin.Catalog.Products.Fields.DisableWishlistButton.Hint">
 		<Value>Отметьте, чтобы скрыть кнопку 'В список пожеланий'.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.DisplayOrder">
+		<Value>Порядок отображения</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.DisplayOrder.Hint">
+		<Value>Порядок отображения продукта. 1 — это первый пункт списка.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.DisplayStockAvailability">
 		<Value>Показывать доступность на складе</Value>
 	</LocaleResource>
@@ -2097,6 +2226,12 @@
 	<LocaleResource Name="Admin.Catalog.Products.Fields.IsRecurring.Hint">
 		<Value>Выберите, если это товар с периодическими платежами.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.IsRental">
+		<Value>Арендный товар</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.IsRental.Hint">
+		<Value>Включите, если это товар для аренды (цена указывается за период аренды). Учтите, что  Please note that отслеживание запасов не поддерживается в полной степени для таких товаров. Рекомендуется установить 'Отслеживание запасов ' в 'Не отслеживать запасы'.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.IsShipEnabled">
 		<Value>Доставка доступна</Value>
 	</LocaleResource>
@@ -2108,6 +2243,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.IsTaxExempt.Hint">
 		<Value>Определяет, что товар освобождён от налогов (налог не будет рассчитываться при оформлении заказа).</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.IsTelecommunicationsOrBroadcastingOrElectronicServices">
+		<Value>Telecommunications, broadcasting and electronic services</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.IsTelecommunicationsOrBroadcastingOrElectronicServices.Hint">
+		<Value>Включите, если это telecommunications, broadcasting and electronic services. Используется для налогооблажения в Евросоюзе.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.Length">
 		<Value>Длина</Value>
@@ -2277,8 +2418,26 @@
 	<LocaleResource Name="Admin.Catalog.Products.Fields.RecurringTotalCycles.Hint">
 		<Value>Введите общее число циклов.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.RentalPriceLength">
+		<Value>Длина периода аренды</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.RentalPriceLength.Hint">
+		<Value>Укажите длину периода аренды (для цены).</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.RentalPricePeriod">
+		<Value>Период аренды</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.RentalPricePeriod.Hint">
+		<Value>Укажите период аренды (для цены).</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.RequiredProductIds">
 		<Value>Список ID сопутствующих товаров</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.RequiredProductIds.AddNew">
+		<Value>Добавить продукт</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.RequiredProductIds.Choose">
+		<Value>Выбрать</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.RequiredProductIds.Hint">
 		<Value>Введите список ID сопутствующих товаров, разделённых запятыми. ВНИМАНИЕ! Следите, чтобы не было циклических ссылок на товары (например, товару A требуется товар B, а товару B требуется товар A).</Value>
@@ -2300,6 +2459,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.SeName.Hint">
 		<Value>Устанавливает имя страницы для поисковых систем, например, 'The Best Product', чтобы URL страницы выглядел так:'http://www.yourStore.com/the-best-product'. Оставьте пустым, чтобы имя страницы совпадало с названием товара.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.ShipSeparately">
+		<Value>Отдельная доставка</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.ShipSeparately.Hint">
+		<Value>Включите, если товар доставляется отдельно от других. Это также увеличит стоимсоть доставки. Если у вас несколько одинаковых товаров, то все они будет упакованы вместе.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.ShortDescription">
 		<Value>Краткое описание</Value>
@@ -2366,6 +2531,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.UpdatedOn.Hint">
 		<Value>Дата и время, когда товар был обновлен.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.UseMultipleWarehouses">
+		<Value>Поддержка нескольких складов</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.Fields.UseMultipleWarehouses.Hint">
+		<Value>Включите, если вы поддерживаете одновременную доставку из нескольких складов.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.Fields.UserAgreementText">
 		<Value>Текст пользовательского соглашения</Value>
@@ -2520,215 +2691,260 @@
 	<LocaleResource Name="Admin.Catalog.Products.Pictures.SaveBeforeEdit">
 		<Value>Вы должны сохранить товар перед тем, как загружать для него изображения.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes">
-		<Value>Свойства товара</Value>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes">
+		<Value>Атрибуты товаров</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations">
 		<Value>Комбинации свойств</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.AddNew">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.AddNew">
 		<Value>Добавить комбинацию</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.AddTitle">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.AddTitle">
 		<Value>Выберите новую комбинацию и введите данные ниже</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Description">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Description">
 		<Value>Комбинации атрибутов полезны, когда 'Метод управления запасами' установлен в 'Отслеживать запасы по свойствам товара'</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Description2">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Description2">
 		<Value>Так же обратите внимание, что некоторые типы атрибутов, которые поддерживают пользовательский ввод (например, загрузка файлов, текстовые поля, ввод даты), бесполезны с комбинациями атрибутов.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.AllowOutOfStockOrders">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.AllowOutOfStockOrders">
 		<Value>Разрешить заказы при отсутствии запаса</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.AllowOutOfStockOrders.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.AllowOutOfStockOrders.Hint">
 		<Value>Разрешать заказы даже когда товаров нет на складе.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.Attributes">
-		<Value>Свойства</Value>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.Attributes">
+		<Value>Свойства (атрибуты)</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.GTIN">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.GTIN">
 		<Value>GTIN</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.GTIN.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.GTIN.Hint">
 		<Value>Введите глобальный номер торговой позиции (GTIN). Эти идентификаторы включают UPC (в Северной Америке), EAN (в Европе), JAN (в Японии), и ISBN (для книг).</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.ManufacturerPartNumber">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.ManufacturerPartNumber">
 		<Value>Номер производителя</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.ManufacturerPartNumber.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.ManufacturerPartNumber.Hint">
 		<Value>Номер производителя для этой комбинации.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.OverriddenPrice">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.NotifyAdminForQuantityBelow">
+		<Value>Уведомлять администратора, при остатках менее</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.NotifyAdminForQuantityBelow.Hint">
+		<Value>Когда количество товара достигнет указанного значения, администратор получит уведомление.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.OverriddenPrice">
 		<Value>Переопределенная цена</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.OverriddenPrice.Hint">
-		<Value>Переопределенная цена для данной комбинации свойств. Так может быть переопределена стоимость товара при выборе данной комбинации свойст. К примеру, можно задать скидку на товар. Оставьте поле пустым, чтобы игнорировать данную опцию. Остальные добавленные скидки к товару будут игнорироваться если задан этот параметр.</Value>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.OverriddenPrice.Hint">
+		<Value>ереопределенная цена для данной комбинации свойств. Так может быть переопределена стоимость товара при выборе данной комбинации свойст. К примеру, можно задать скидку на товар. Оставьте поле пустым, чтобы игнорировать данную опцию. Остальные добавленные скидки к товару будут игнорироваться если задан этот параметр.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.Sku">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.Sku">
 		<Value>Артикул</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.Sku.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.Sku.Hint">
 		<Value>Артикул. Ваш внутренний уникальный идентификатор, который может быть использован для отслеживания комбинации атрибутов.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.StockQuantity">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.StockQuantity">
 		<Value>Количество на складе</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Fields.StockQuantity.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.Fields.StockQuantity.Hint">
 		<Value>Текущее количество на складе для этой комбинации.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.GenerateAll">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.AttributeCombinations.GenerateAll">
 		<Value>Сгенерировать все возможные комбинации</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes">
-		<Value>Свойства</Value>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes">
+		<Value>Свойства (атрибуты)</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Fields.Attribute">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Fields.Attribute">
 		<Value>Свойство</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Fields.AttributeControlType">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Fields.AttributeControlType">
 		<Value>Тип элемента управления</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Fields.DisplayOrder">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Fields.DisplayOrder">
 		<Value>Порядок отображения</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Fields.IsRequired">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Fields.IsRequired">
 		<Value>Обязателен</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Fields.TextPrompt">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Fields.TextPrompt">
 		<Value>Текст подсказки</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules">
 		<Value>Правила валидации</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.FileAllowedExtensions">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.DefaultValue">
+		<Value>Значение по-умолчанию</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.DefaultValue.Hint">
+		<Value>Введите значение по-умолчанию.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.FileAllowedExtensions">
 		<Value>Допустимые расширения файлов</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.FileAllowedExtensions.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.FileAllowedExtensions.Hint">
 		<Value>Укажите допустимые расширения файлов, разделенные запятой. Оставьте пустым, чтобы разрешить любые расширения.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.FileMaximumSize">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.FileMaximumSize">
 		<Value>Максимльный размер файла (KB)</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.FileMaximumSize.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.FileMaximumSize.Hint">
 		<Value>Укажите максимльный размер файла в килобайтах. Оставьте пустым, если допустим любой размер.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.MaxLength">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.MaxLength">
 		<Value>Максимальная длина</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.MaxLength.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.MaxLength.Hint">
 		<Value>Укажите максимальную длину. Оставьте пустым, если любая длина допустима.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.MinLength">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.MinLength">
 		<Value>Минимальная длина</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.MinLength.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.MinLength.Hint">
 		<Value>Укажите минимальную  длину. Оставьте пустым, если любая длина допустима.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.ValidationRules.ViewLink">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.ViewLink">
 		<Value>Просмотр/Редактирование правил</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values">
 		<Value>Значения</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.AddNew">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.AddNew">
 		<Value>Добавление нового значения</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.BackToProduct">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.BackToProduct">
 		<Value>вернуться к данным товара</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.EditAttributeDetails">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.EditAttributeDetails">
 		<Value>Добавление/Изменение значений для свойства [{0}]. Товар: {1}</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.EditValueDetails">
-		<Value>Изменение значения</Value>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.EditValueDetails">
+		<Value>Изменить значение</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.AssociatedProduct">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.AssociatedProduct">
 		<Value>Привязанный товар</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.AssociatedProduct.AddNew">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.AssociatedProduct.AddNew">
 		<Value>Привязать товар</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.AssociatedProduct.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.AssociatedProduct.Hint">
 		<Value>Привязать товар.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.AttributeValueType">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.AttributeValueType">
 		<Value>Тип значения свойства</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.AttributeValueType.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.AttributeValueType.Hint">
 		<Value>Выберите тип значения свойства.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.ColorSquaresRgb">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.ColorSquaresRgb">
 		<Value>Цвет в формате RGB</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.ColorSquaresRgb.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.ColorSquaresRgb.Hint">
 		<Value>Выберите цвет, кторый будет использоваться для свойства с цветными квадратами.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Cost">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Cost">
 		<Value>Себестоимость</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Cost.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Cost.Hint">
 		<Value>Себестоимость товара - это стоимость всех его различных компонентов, из которых он состоит. Это может быть как цена закупки, так и стоимость материалов и работ.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.DisplayOrder">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.DisplayOrder">
 		<Value>Порядок отображения</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.DisplayOrder.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.DisplayOrder.Hint">
 		<Value>Порядок отображения значения свйоства. 1 — это первый пункт списка значений свойства.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.IsPreSelected">
-		<Value>Выбран по умолчанию</Value>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.IsPreSelected">
+		<Value>Выбран по-умолчанию</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.IsPreSelected.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.IsPreSelected.Hint">
 		<Value>Определяет, выбрано ли по умолчанию для клиента это значение свойства.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Name">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Name">
 		<Value>Название</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Name.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Name.Hint">
 		<Value>Название значения свойства, например 'Голубой' для атрибута 'Цвет'.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Name.Required">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Name.Required">
 		<Value>Необходимо ввести название.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Picture">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Picture">
 		<Value>Изображение</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Picture.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Picture.Hint">
 		<Value>Выберите картинку для этого значения свойства.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Picture.NoPicture">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Picture.NoPicture">
 		<Value>Без картинки</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.PriceAdjustment">
-		<Value>Добавочная цена</Value>
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.PriceAdjustment">
+		<Value>Изменение цены</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.PriceAdjustment.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.PriceAdjustment.Hint">
 		<Value>Добавочная цена, применяемое, когда выбрано это значение свойства (например '10' добавляет 10 рублей).</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Quantity">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Quantity">
 		<Value>Количество товара</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Quantity.GreaterThanOrEqualTo1">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Quantity.GreaterThanOrEqualTo1">
 		<Value>Количество должно быть больше или равно 1.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Quantity.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Quantity.Hint">
 		<Value>Задайте количество соответствующего товара, который будет добавлен. Минимальное количество: 1.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.WeightAdjustment">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.WeightAdjustment">
 		<Value>Изменение веса</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.WeightAdjustment.Hint">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.WeightAdjustment.Hint">
 		<Value>Изменение веса, применяемое, когда выбрано это значение свойства.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.ViewLink">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.ViewLink">
 		<Value>Просмотр/Изменение значения (Всего: {0})</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.NoAttributesAvailable">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.NoAttributesAvailable">
 		<Value>Нет доступных свойств товара. Создайте хотя бы одно свойство товара перед его назначением.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Catalog.Products.ProductVariantAttributes.SaveBeforeEdit">
+	<LocaleResource Name="Admin.Catalog.Products.ProductAttributes.SaveBeforeEdit">
 		<Value>Вы должны сохранить этот вариант товара перед тем, как добавлять для него свойства.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory">
+		<Value>Склады</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Description1">
+		<Value>"Кол-во на складе" - это общее кол-во товара. Оно уменьшается, когда грузоотправление будет отправлено (не просто создано).</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Description2">
+		<Value>"Зарезервированное кол-во" - это кол-во товара, которое купили, но уже не отправили покупателю.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Description3">
+		<Value>"Запланированное кол-во"- это кол-во товара, которое купили и оформили грузоотправление, но еще не отправили покупателю.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Fields.PlannedQuantity">
+		<Value>Запланированное кол-во</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Fields.ReservedQuantity">
+		<Value>Зарезервированное кол-во</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Fields.StockQuantity">
+		<Value>Количество на складе</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Fields.Warehouse">
+		<Value>Склад</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Fields.Warehouse.NotDefined">
+		<Value>Нет созданных складов</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Fields.WarehouseUsed">
+		<Value>Использовать</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.ProductWarehouseInventory.Hint">
+		<Value>Управляйте запасами в нескольких складах.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.PurchasedWithOrders">
 		<Value>Накладная</Value>
@@ -2766,11 +2982,17 @@
 	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.AllowFiltering.Hint">
 		<Value>Разрешить фильтрацию товара по этой характеристике.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.AttributeType">
+		<Value>Тип атрибута</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.AttributeType.Hint">
+		<Value>Выберите тип атрибута</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.CustomValue">
-		<Value>Пользовательское значение</Value>
+		<Value>Значение</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.CustomValue.Hint">
-		<Value>Введите значение или оставьте пустым. Если значение введено, оно будет использоваться вместо выбранного варианта. Важно: убедитесь, что 'Разрешить фильтрацию' не включено, если вводится пользовательское значение.</Value>
+		<Value>Значение (текст, ссылка, прочее).</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.DisplayOrder">
 		<Value>Порядок отображения</Value>
@@ -2795,6 +3017,9 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.SpecificationAttributeOption.Hint">
 		<Value>Значение характеристики</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.Fields.Value">
+		<Value>Значение</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Catalog.Products.SpecificationAttributes.NoAttributes">
 		<Value>Никаких характеристик не заведено.</Value>
@@ -3066,6 +3291,9 @@
 	<LocaleResource Name="Admin.Configuration.Countries.EditCountryDetails">
 		<Value>Изменение данных страны</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Countries.ExportToCsv">
+		<Value>Экспортировать штаты (CSV)</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Countries.Fields.AllowsBilling">
 		<Value>Платежи разрешены</Value>
 	</LocaleResource>
@@ -3149,6 +3377,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Countries.Fields.TwoLetterIsoCode.Required">
 		<Value>Необходимо ввести двухсимвольный код ISO.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Countries.ImportFromCsv">
+		<Value>Импортировать штаты (CSV)</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Countries.ImportSuccess">
+		<Value>{0} штатов было успешно импортировано</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Countries.Info">
 		<Value>Информация о стране</Value>
@@ -3504,6 +3738,12 @@
 	<LocaleResource Name="Admin.Configuration.Languages.Fields.AvailableStores.Hint">
 		<Value>Выберите магазины, для которых будет доступен данный язык.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Languages.Fields.DefaultCurrency">
+		<Value>Валюта по-умолчанию</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Languages.Fields.DefaultCurrency.Hint">
+		<Value>Это свойство позволяет администратору указать валюту по-умолчанию для языка.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Languages.Fields.DisplayOrder">
 		<Value>Порядок отображения</Value>
 	</LocaleResource>
@@ -3837,17 +4077,74 @@
 	<LocaleResource Name="Admin.Configuration.Plugins.Fields.Version">
 		<Value>Версия</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.Group">
+		<Value>Группа</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.Group.Hint">
+		<Value>Искать по указанной группе.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Plugins.Info">
 		<Value>Информация</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Plugins.Installed">
 		<Value>Подключаемый модуль установлен.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.LoadMode">
+		<Value>Загрузить</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.LoadMode.Hint">
+		<Value>Выберите способ фильтрации.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.Local">
+		<Value>Плагины в этом магазине</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Plugins.Misc.BackToList">
 		<Value>вернуться к списку подключаемых модулей</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Plugins.Misc.Configure">
 		<Value>Настроить</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed">
+		<Value>Каталог всех плагинов и графических тем</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Category">
+		<Value>Категория</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Category.Hint">
+		<Value>Искать по категории.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Download">
+		<Value>Скачать</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Name">
+		<Value>Название</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Name.Hint">
+		<Value>Искать по названию.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Picture">
+		<Value>Изображение</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Price">
+		<Value>Цена</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Price.Commercial">
+		<Value>Коммерческий</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Price.Free">
+		<Value>Бесплатно</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Price.Hint">
+		<Value>Искать по цене.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.SupportedVersions">
+		<Value>Поддерживаемые версии</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Version">
+		<Value>Версия</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Plugins.OfficialFeed.Version.Hint">
+		<Value>Искать по версии.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Plugins.ReloadList">
 		<Value>Перезагрузить список подключаемых модулей</Value>
@@ -3948,6 +4245,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.AllowProductViewModeChanging.Hint">
 		<Value>Выберите, чтобы разрешить клиентам менять режим просмотра на страницах категории/производителя.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.CacheProductPrices">
+		<Value>Кешировать цены продуктов</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.CacheProductPrices.Hint">
+		<Value>Включите, чтобы кешировать цены продуктов. Это может значительно увеличить производительность. Но вы не должны этого делать, если используете сложные скидки или купоны.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.CategoryBreadcrumbEnabled">
 		<Value>Включить категории в путь по сайту</Value>
 	</LocaleResource>
@@ -3966,6 +4269,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DisplayTaxShippingInfoFooter.Hint">
 		<Value>Выберите, если хотите отображать информацию о налогах и доставке в футере. Эта опция используется в Германии.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DisplayTaxShippingInfoOrderDetailsPage">
+		<Value>Отображать информацию о налогах и доставке на странице заказа</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DisplayTaxShippingInfoOrderDetailsPage.Hint">
+		<Value>Выберите, если хотите отображать информацию о налогах и доставке на странице заказа. Эта опция используется в Германии.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DisplayTaxShippingInfoProductBoxes">
 		<Value>Отображать информацию о налогах и доставке рядом с ценой продукта в каталоге</Value>
 	</LocaleResource>
@@ -3977,6 +4286,18 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DisplayTaxShippingInfoProductDetailsPage.Hint">
 		<Value>Выберите, если хотите отображать информацию о налогах и доставке на странице продукта. Эта опция используется в Германии.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DisplayTaxShippingInfoWishlist">
+		<Value>Отображать информацию о налогах и доставке в списке пожеланий</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DisplayTaxShippingInfoWishlist.Hint">
+		<Value>Выберите, если хотите отображать информацию о налогах и доставке в списке пожеланий. Эта опция используется в Германии.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DynamicPriceUpdateAjax">
+		<Value>Использовать AJAX для динамического обновления цены</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.DynamicPriceUpdateAjax.Hint">
+		<Value>Включите, чтобы использовать AJAX для динамического обновления цены. Это позволит рассчитывать цены более аккуратно(комбинации атрибутов, скидки). Это также обновляет артикул, заказной номер производителя, штрихкод, установленные для комбинаций атрибутов. Но это может слегка повлиять на прозводительность.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.EmailAFriendEnabled">
 		<Value>Включить 'Сообщить другу'</Value>
@@ -4133,6 +4454,18 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.RecentlyViewedProductsNumber.Hint">
 		<Value>Размер списка недавно просмотренных товаров, отображаемых, когда эта опция включена.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.SearchPageAllowCustomersToSelectPageSize">
+		<Value>Разрешить изменять размер страницы на странице поиска</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.SearchPageAllowCustomersToSelectPageSize.Hint">
+		<Value>Разрешить пользователям изменять размер страницы на странице поиска.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.SearchPagePageSizeOptions">
+		<Value>Страница поиска. Допустимые размеры страницы.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Catalog.SearchPagePageSizeOptions.Hint">
+		<Value>Список значений размера страницы, разделённых запятыми, (например: 10, 5, 15, 20). Первое значение, является значением по-умолчанию.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Catalog.SearchPageProductsPerPage">
 		<Value>Количество товаров на странице поиска</Value>
@@ -4377,6 +4710,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.CountryEnabled.Hint">
 		<Value>Определяет, доступно ли поле 'Страна'.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.CountryRequired">
+		<Value>'Страна' обязательна</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.CountryRequired.Hint">
+		<Value>Включите, если 'Страна' обязательна для ввода.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.CustomerFormFields">
 		<Value>Поля формы регистрации</Value>
 	</LocaleResource>
@@ -4470,6 +4809,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.NewsletterEnabled.Hint">
 		<Value>Определяет, доступно ли поле 'Подписка на новости'.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.NewsletterTickedByDefault">
+		<Value>Включить подписку на новости по-умолчанию</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.NewsletterTickedByDefault.Hint">
+		<Value>Включить подписку на новости по-умолчанию на странице регистрации</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.NotifyNewCustomerRegistration">
 		<Value>Уведомлять меня о регистрации нового клиента</Value>
 	</LocaleResource>
@@ -4505,6 +4850,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.StateProvinceEnabled.Hint">
 		<Value>Определяет, доступно ли поле 'Край/Область'.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.StateProvinceRequired">
+		<Value>'Край/Область' обязательна</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.StateProvinceRequired.Hint">
+		<Value>Включите, если 'Край/Область' обязательна для ввода.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.CustomerUser.StoreLastVisitedPage">
 		<Value>Запоминать последнюю посещённую страницу</Value>
@@ -4782,20 +5133,14 @@
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultMetaKeywords.Hint">
 		<Value>Мета ключевые слова по умолчанию для страниц магазина. Вы можете переопределить их для отдельных страниц категорий / товаров / производителей.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreThemeForDesktops">
-		<Value>Тема для обычных клиентов</Value>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreTheme">
+		<Value>Тема по-умолчанию</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreThemeForDesktops.GetMore">
-		<Value>Дополнительно темы можно взять на </Value>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreTheme.GetMore">
+		<Value>Вы можете скачать больше тем на</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreThemeForDesktops.Hint">
-		<Value>Тема, которая используется для посетителя, зашедшего на сайт с настольного компьютера или ноутбука.</Value>
-	</LocaleResource>
-	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreThemeForMobileDevices">
-		<Value>Тема для мобильных клиентов</Value>
-	</LocaleResource>
-	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreThemeForMobileDevices.Hint">
-		<Value>Тема, которая используется для посетителя, зашедшего на сайт с мобильного телефона или планшета.</Value>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultStoreTheme.Hint">
+		<Value>Графическая тема. Вы можете скачать больше тем на сайте www.nopcommerce.com.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.DefaultTitle">
 		<Value>Заголовок по умолчанию</Value>
@@ -4813,13 +5158,13 @@
 		<Value>Объединение и минимизация CSS</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.EnableCssBundling.Hint">
-		<Value>Активируйте для объединения множества CSS файлов в один файл. Не активируйте, если Вы запускаете nopCommerce Web ферме или Windows Azure. Так же, не работает work в виртуальных каталогах IIS.</Value>
+		<Value>Активируйте для объединения множества CSS файлов в один файл. Не активируйте, если Вы запускаете nopCommerce Web ферме или Windows Azure. Так же, не работает work в виртуальных каталогах IIS. Заметьте, что это требует значительных ресурсов на сервере (не рекоммендуется включать на дешевых планах хостинга).</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.EnableJsBundling">
 		<Value>Объединение и минимизация JavaScript</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.EnableJsBundling.Hint">
-		<Value>Активируйте для объединения множества JavaScript файлов в один файл. Не активируйте, если Вы запускаете nopCommerce Web ферме или Windows Azure.</Value>
+		<Value>Активируйте для объединения множества JavaScript файлов в один файл. Не активируйте, если Вы запускаете nopCommerce Web ферме или Windows Azure. Заметьте, что это требует значительных ресурсов на сервере (не рекоммендуется включать на дешевых планах хостинга).</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.EncryptionKey">
 		<Value>Закрытый ключ шифрования</Value>
@@ -4884,6 +5229,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.FullTextSettings.Supported">
 		<Value>Полнотекстовый поиск поддерживается вашей базой данных</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.GenerateProductMetaDescription">
+		<Value>Генерировать мета описание для продуктов</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.GenerateProductMetaDescription.Hint">
+		<Value>Включите, чтобы мета описания продуктов были сгенерированы автоматически, если они явно не указаны на странице с деталями продукта. В данном случае будет использовано краткое описание.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.GooglePlusLink">
 		<Value>URL на страницу в Google+</Value>
 	</LocaleResource>
@@ -4923,11 +5274,11 @@
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.LocalizationSettings">
 		<Value>Настройки локализации</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.MobileDevicesSupported">
-		<Value>Включить поддержу мобильных устройств</Value>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.OpenGraphMetaTags">
+		<Value>Open Graph META tags</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.MobileDevicesSupported.Hint">
-		<Value>Установите флажок, чтобы включить поддержу мобильных устройств</Value>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.OpenGraphMetaTags.Hint">
+		<Value>Включите, чтобы генерировать Open Graph META tags на странице с деталями продукта.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.PageTitleSeoAdjustment">
 		<Value>Формат заголовка страниц</Value>
@@ -5007,6 +5358,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.TwitterLink.Hint">
 		<Value>Укажие URL Вашей страницы в Twitter, если таковая имеется.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.TwitterMetaTags">
+		<Value>Twitter META tags</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.TwitterMetaTags.Hint">
+		<Value>Включите, чтобы генерировать Twitter META tags на странице с деталями продукта.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.UseImagesForLanguageSelection">
 		<Value>Использовать изображения для выбора языка</Value>
 	</LocaleResource>
@@ -5069,6 +5426,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Media.MiniCartThumbPictureSize.Hint">
 		<Value>Размер миниатюры (в пикселах) товара отображаемый в миникорзине.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Media.MultipleThumbDirectories">
+		<Value>Несколько папок для изображений</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Media.MultipleThumbDirectories.Hint">
+		<Value>Включите для того, чтобы сгенерированные изображения сохранялись в несколько папок. Это может быть полезно, если ваша хостинг-компания имеет какие-то ограничения по количеству разрешенных файлов в одной папке.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Media.PicturesStoredIntoDatabase">
 		<Value>Изображения хранятся в...</Value>
@@ -5165,6 +5528,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Order.AttachPdfInvoiceToOrderCompletedEmail.Hint">
 		<Value>Выберите для прикрепления PDF счета к email "заказ выполнен" отправляемого покупателю.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Order.AttachPdfInvoiceToOrderPaidEmail">
+		<Value>Прикреплять PDF счет (уведомление об оплате)</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Order.AttachPdfInvoiceToOrderPaidEmail.Hint">
+		<Value>Выберите, если хотите чтобы уведомление об оплате (email) для покупателя включал и приклепленный счет в PDF формате.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Order.AttachPdfInvoiceToOrderPlacedEmail">
 		<Value>Прикрепить PDF счет к email "Заказ размещен"</Value>
@@ -5292,6 +5661,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.RewardPoints.Description">
 		<Value>Система бонусных баллов позволяет клиенту набирать баллы за определенные действия, которые они делают на сайте. Баллы начисляются при покупках и таких действиях клиента, как регистрация.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.RewardPoints.DisplayHowMuchWillBeEarned">
+		<Value>Отображать, сколько будет заработано</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.RewardPoints.DisplayHowMuchWillBeEarned.Hint">
+		<Value>Включте, если хотите, чтобы покупатели видели до оформления заказа, сколько бонусных баллов они заработают.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.RewardPoints.Earning">
 		<Value>Начисление бонусных баллов</Value>
 	</LocaleResource>
@@ -5358,6 +5733,12 @@
 	<LocaleResource Name="Admin.Configuration.Settings.Shipping">
 		<Value>Настройки доставки</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Shipping.AllowPickUpInStore">
+		<Value>Поддержка "самовывоза"</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Shipping.AllowPickUpInStore.Hint">
+		<Value>Выберите, чтобы включить поддержку самовывозаы.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Shipping.BypassShippingMethodSelectionIfOnlyOne">
 		<Value>Пропускать страницу методов доставки заказа, если указан единственный метод</Value>
 	</LocaleResource>
@@ -5365,10 +5746,16 @@
 		<Value>Выберите для пропуска страницы выбора метода доставки товара, если доступен только один метод доставки.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Shipping.DisplayShipmentEventsToCustomers">
-		<Value>Отображать события доставки товара</Value>
+		<Value>Отображать события доставки товара (покупателю)</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Shipping.DisplayShipmentEventsToCustomers.Hint">
-		<Value>Установите флажёк, если вы хотите, чтобы ваши клиенты видели список действий по доставке товара на странице с информацией о заказе (если поддерживается выбранным вами способом рассчёта стоимости доставки).</Value>
+		<Value>Включите, если вы хотите, чтобы ваши клиенты видели список действий по доставке товара на странице с информацией о заказе (если поддерживается выбранным вами способом рассчёта стоимости доставки).</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Shipping.DisplayShipmentEventsToStoreOwner">
+		<Value>Отображать события доставки товара (администратору)</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Shipping.DisplayShipmentEventsToStoreOwner.Hint">
+		<Value>Включите, если вы хотите, чтобы администраторы видели список действий по доставке товара на странице с информацией о заказе (если поддерживается выбранным вами способом рассчёта стоимости доставки).</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Shipping.EstimateShippingEnabled">
 		<Value>Включить оценку стоимости доставки</Value>
@@ -5393,6 +5780,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Shipping.FreeShippingOverXValue.Hint">
 		<Value>Все заказы стоимостью свыше 'X' будут доставляться бесплатно.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Shipping.PickUpInStoreFee">
+		<Value>Оплата за "Самовывоз"</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Settings.Shipping.PickUpInStoreFee.Hint">
+		<Value>Укажите стоимость самовывоза.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Settings.Shipping.ShippingOriginAddress">
 		<Value>Доставка производится из</Value>
@@ -5814,6 +6207,12 @@
 	<LocaleResource Name="Admin.Configuration.Shipping.Warehouses.Fields.Address">
 		<Value>Адрес</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Shipping.Warehouses.Fields.AdminComment">
+		<Value>Комментарий администратора</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Shipping.Warehouses.Fields.AdminComment.Hint">
+		<Value>Комментарий администратора. Нужен для внутреннего использования.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Shipping.Warehouses.Fields.Name">
 		<Value>Название</Value>
 	</LocaleResource>
@@ -5861,6 +6260,30 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Stores.EditStoreDetails">
 		<Value>Изменить настройки магазина</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyAddress">
+		<Value>Адрес компании</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyAddress.Hint">
+		<Value>Введите адрес компании.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyName">
+		<Value>Название компании</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyName.Hint">
+		<Value>Введите название компании.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyPhoneNumber">
+		<Value>Телефон компании</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyPhoneNumber.Hint">
+		<Value>Введите телефон компании.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyVat">
+		<Value>VAT компании</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Configuration.Stores.Fields.CompanyVat.Hint">
+		<Value>Введите номер VAT (европейский НДС)</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Configuration.Stores.Fields.DisplayOrder">
 		<Value>Порядок отображения</Value>
@@ -6054,6 +6477,9 @@
 	<LocaleResource Name="Admin.ContentManagement.Blog.BlogPosts.Fields.Tags.Hint">
 		<Value>Тэги (метки) — это ключевые слова, которыми может быть охарактеризовано это сообщение блога. Введите через запятую слова, которые ассоциируются с этим сообщением блога. Чем больше товаров будут иметь определенную метку, тем более жирным текстом появится этот тэг в облаке тэгов.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.ContentManagement.Blog.BlogPosts.Fields.Tags.NoDots">
+		<Value>Точки не поддерживаются тэгами.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.ContentManagement.Blog.BlogPosts.Fields.Title">
 		<Value>Заголовок</Value>
 	</LocaleResource>
@@ -6206,6 +6632,15 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.ContentManagement.MessageTemplates.Fields.AllowedTokens.Hint">
 		<Value>Это список допустимых маркеров сообщений, которые вы можете использовать в e-mail.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.ContentManagement.MessageTemplates.Fields.AttachedDownload">
+		<Value>Прикрепить файл</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.ContentManagement.MessageTemplates.Fields.AttachedDownload.Exists">
+		<Value>Есть ли прикрепленный файл</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.ContentManagement.MessageTemplates.Fields.AttachedDownload.Hint">
+		<Value>Загрузить файл, который вы хотите прикрепить к отправляемому письму.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.ContentManagement.MessageTemplates.Fields.AvailableStores">
 		<Value>Магазины</Value>
@@ -6563,6 +6998,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.ContentManagement.Topics.Fields.IncludeInSitemap.Hint">
 		<Value>Выберите, чтобы включить этот раздел в карту сайта.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.ContentManagement.Topics.Fields.IncludeInTopMenu">
+		<Value>Включать в верхнее меню</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.ContentManagement.Topics.Fields.IncludeInTopMenu.Hint">
+		<Value>Выберите, если хотите включить ссылка на эту страницу в верхнее меню.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.ContentManagement.Topics.Fields.IsPasswordProtected">
 		<Value>Защищён паролем</Value>
@@ -7396,10 +7837,10 @@
 		<Value>Отчёты о клиентах</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Customers.Reports.BestBy.BestByNumberOfOrders">
-		<Value>Топ 20 клиентов по количеству заказов</Value>
+		<Value>Покупатели по кол-ву заказов</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Customers.Reports.BestBy.BestByOrderTotal">
-		<Value>Топ 20 клиентов по сумме заказов</Value>
+		<Value>Покупатели по сумме заказов</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Customers.Reports.BestBy.EndDate">
 		<Value>Конечная дата</Value>
@@ -7620,6 +8061,12 @@
 	<LocaleResource Name="Admin.GiftCards.List.CouponCode.Hint">
 		<Value>Код купона подарочного сертификата. Оставьте пустым, чтобы загрузить все записи.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.GiftCards.List.RecipientName">
+		<Value>Имя получателя</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.GiftCards.List.RecipientName.Hint">
+		<Value>Искать по имени получателя.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.GiftCards.Updated">
 		<Value>Подарочный сертификат успешно обновлен.</Value>
 	</LocaleResource>
@@ -7805,6 +8252,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Fields.CustomerIP.Hint">
 		<Value>Клиентский IP-адрес, с которого размещён заказ.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Fields.CustomValues">
+		<Value>Дополнительные параметры</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Fields.CustomValues.Hint">
+		<Value>Дополнительные параметры из платежного метода.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Fields.Edit.ExclTax">
 		<Value>без налогов:</Value>
@@ -7992,12 +8445,6 @@
 	<LocaleResource Name="Admin.Orders.Fields.PaymentStatus.Hint">
 		<Value>Статус оплаты.</Value>
 	</LocaleResource>
-	<LocaleResource Name="Admin.Orders.Fields.PurchaseOrderNumber">
-		<Value>Номер заявки на приобретение</Value>
-	</LocaleResource>
-	<LocaleResource Name="Admin.Orders.Fields.PurchaseOrderNumber.Hint">
-		<Value>Номер заявки на приобретение нужен, если вы используете способ оплаты 'Выкупить заказ'. Вы можете управлять способами оплаты через Конфигурация-&gt;Способы оплаты.</Value>
-	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Fields.RecurringPayment">
 		<Value>Периодический платеж</Value>
 	</LocaleResource>
@@ -8127,6 +8574,12 @@
 	<LocaleResource Name="Admin.Orders.List.PaymentStatus.Hint">
 		<Value>Искать по указанному статусу оплаты.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.List.Product">
+		<Value>Продукт</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.List.Product.Hint">
+		<Value>Искать по выбранному продукту.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.List.ShippingStatus">
 		<Value>Статус доставки</Value>
 	</LocaleResource>
@@ -8151,6 +8604,12 @@
 	<LocaleResource Name="Admin.Orders.List.Vendor.Hint">
 		<Value>Поиск по выбранному поставщику. Вы увидите заказы с товарами от указанного поставщика.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.List.Warehouse">
+		<Value>Склад</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.List.Warehouse.Hint">
+		<Value>Искать по указанному складу.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.OrderNotes">
 		<Value>Примечания к заказу</Value>
 	</LocaleResource>
@@ -8171,6 +8630,9 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.OrderNotes.Fields.Download">
 		<Value>Прикрепленный файл</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.OrderNotes.Fields.Download.HasDownload">
+		<Value>(включите, чтобы закачать файл)</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.OrderNotes.Fields.Download.Hint">
 		<Value>Загрузить файл, прикрепленный к этому примечанию.</Value>
@@ -8346,6 +8808,15 @@
 	<LocaleResource Name="Admin.Orders.Shipments.AddNew.Title">
 		<Value>Добавить новое грузоотправление для заказа №{0}</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.AdminComment">
+		<Value>Комментарий администратора</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.AdminComment.Button">
+		<Value>Сохранить</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.AdminComment.Hint">
+		<Value>Комментарий администратора. Нужен для внутреннего использования.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Shipments.BackToOrder">
 		<Value>вернуться к информации о заказе</Value>
 	</LocaleResource>
@@ -8394,6 +8865,12 @@
 	<LocaleResource Name="Admin.Orders.Shipments.List.EndDate.Hint">
 		<Value>Конечная дата для поиска грузоотправления</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.List.LoadNotShipped">
+		<Value>Загружать не отправленные</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.List.LoadNotShipped.Hint">
+		<Value>Загружать только не отправленные посылки.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Shipments.List.StartDate">
 		<Value>Начальная дата</Value>
 	</LocaleResource>
@@ -8411,6 +8888,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Shipments.List.TrackingNumber.Hint">
 		<Value>Искать по номеру отслеживания.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.List.Warehouse">
+		<Value>Склад</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.List.Warehouse.Hint">
+		<Value>Искать грузоотправления с продуктами из указанного склада.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Shipments.NoProductsSelected">
 		<Value>Товары не выбраны</Value>
@@ -8454,8 +8937,41 @@
 	<LocaleResource Name="Admin.Orders.Shipments.Products.QtyToShip">
 		<Value>Отправить</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.Products.ShipSeparately">
+		<Value>этот продукт должен быть отправлен отдельно!</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.Products.ShipSeparately.Warning">
+		<Value>Предупреждение: </Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Shipments.Products.SKU">
 		<Value>Артикул</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.Products.Warehouse">
+		<Value>Склад</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.Products.Warehouse.ChooseQty">
+		<Value>{0} ({1} кол-во в наличии, {2} зарезервированное кол-во, {3} запланированное кол-во)</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.Products.Warehouse.NotAvailabe">
+		<Value>Нет доступных складов. Вы не можете отправлять этот товар.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.Products.Warehouse.QuantityNotEnough">
+		<Value>[зарезервированное - запланированное] кол-во некоторых продуктов меньше, чем указанное кол-во для отправки. Вы уверены?</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.ShipmentStatusEvents">
+		<Value>События состояния доставки</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.ShipmentStatusEvents.Country">
+		<Value>Страна</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.ShipmentStatusEvents.Date">
+		<Value>Дата</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.ShipmentStatusEvents.Event">
+		<Value>Событие</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.ShipmentStatusEvents.Location">
+		<Value>Место</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Shipments.ShippedDate">
 		<Value>Дата отправки</Value>
@@ -8490,6 +9006,9 @@
 	<LocaleResource Name="Admin.Orders.Shipments.TrackingNumber.Hint">
 		<Value>Ввести Почтовый идентификатор для выбранного груза.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Orders.Shipments.TrackingNumber.ViewOnline">
+		<Value>Посмотреть информацию</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Orders.Shipments.ViewDetails">
 		<Value>Подробнее</Value>
 	</LocaleResource>
@@ -8507,6 +9026,9 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Plugins">
 		<Value>Подключаемые модули</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Plugins.Saved">
+		<Value>Плагин был успешно сохранен.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Promotions">
 		<Value>Продвижение</Value>
@@ -8555,6 +9077,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.Promotions.Campaigns.Fields.Name.Required">
 		<Value>Необходимо ввести название рассылки</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.Campaigns.Fields.Store">
+		<Value>Магазин</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.Campaigns.Fields.Store.Hint">
+		<Value>Выберите магазин, подписчики которого получат этот email.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.Promotions.Campaigns.Fields.Subject">
 		<Value>Тема</Value>
@@ -8673,6 +9201,12 @@
 	<LocaleResource Name="Admin.Promotions.Discounts.Fields.LimitationTimes.Times">
 		<Value>Количество раз</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.Discounts.Fields.MaximumDiscountedQuantity">
+		<Value>Максимальное количество со скидкой</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.Discounts.Fields.MaximumDiscountedQuantity.Hint">
+		<Value>Максимальное количество товара, которое продается со скидкой. Например, могут быть тва товара (одинаковые), но только один из них будет продаваться со скидкой.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Promotions.Discounts.Fields.Name">
 		<Value>Название</Value>
 	</LocaleResource>
@@ -8757,8 +9291,23 @@
 	<LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.Fields.Email.Required">
 		<Value>Требуется ввести e-mail.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.Fields.Store">
+		<Value>Мазагин</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.ImportEmailsSuccess">
 		<Value>{0} адресов успешно импортированы.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.SearchEmail">
+		<Value>Email</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.SearchEmail.Hint">
+		<Value>Искать по указанному email.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.SearchStore">
+		<Value>Мазагин</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Promotions.NewsLetterSubscriptions.List.SearchStore.Hint">
+		<Value>Искать по указанному магазину.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.RecurringPayments">
 		<Value>Периодические платежи</Value>
@@ -9045,8 +9594,44 @@
 	<LocaleResource Name="Admin.SalesReport.Bestsellers.StartDate.Hint">
 		<Value>Начальная дата для поиска.</Value>
 	</LocaleResource>
-	<LocaleResource Name="admin.salesreport.country">
-		<Value>Отчет по стране</Value>
+	<LocaleResource Name="Admin.SalesReport.Country">
+		<Value>Отчет по странам</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.EndDate">
+		<Value>Конечная дата</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.EndDate.Hint">
+		<Value>Конечная дата для поиска.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.Fields.CountryName">
+		<Value>Страна</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.Fields.SumOrders">
+		<Value>Итого (сумма)</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.Fields.TotalOrders">
+		<Value>Количество заказов</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.OrderStatus">
+		<Value>Статус заказа</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.OrderStatus.Hint">
+		<Value>Искать по указанному статусу заказа.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.PaymentStatus">
+		<Value>Статус оплаты</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.PaymentStatus.Hint">
+		<Value>Искать по указанному статусу оплаты.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.RunReport">
+		<Value>Запустить</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.StartDate">
+		<Value>Start date</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Country.StartDate.Hint">
+		<Value>Начальная дата</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.SalesReport.Incomplete">
 		<Value>Невыполненные заказы</Value>
@@ -9068,6 +9653,9 @@
 	</LocaleResource>
 	<LocaleResource Name="Admin.SalesReport.Incomplete.TotalUnpaidOrders">
 		<Value>Всего неоплаченных заказов (статус 'Ожидание оплаты')</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.SalesReport.Incomplete.View">
+		<Value>посмотреть</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.SalesReport.NeverSold">
 		<Value>Товары, не пользующиеся спросом</Value>
@@ -9339,11 +9927,26 @@
 	<LocaleResource Name="Admin.System.QueuedEmails.Fields.Priority.Required">
 		<Value>Необходимо ввести приоритет.</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.System.QueuedEmails.Fields.ReplyTo">
+		<Value>Адрес для ответа</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.System.QueuedEmails.Fields.ReplyTo.Hint">
+		<Value>Адрес для ответа (не обязательно).</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.System.QueuedEmails.Fields.ReplyToName">
+		<Value>Имя для ответа</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.System.QueuedEmails.Fields.ReplyToName.Hint">
+		<Value>Имя для ответа (не обязательно).</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.System.QueuedEmails.Fields.SentOn">
 		<Value>Дата отсылки</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.System.QueuedEmails.Fields.SentOn.Hint">
 		<Value>Дата отсылки сообщения.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.System.QueuedEmails.Fields.SentOn.NotSent">
+		<Value>Еще не отпралено</Value>
 	</LocaleResource>
 	<LocaleResource Name="Admin.System.QueuedEmails.Fields.SentTries">
 		<Value>Количество попыток отсылки</Value>
@@ -9813,6 +10416,12 @@
 	<LocaleResource Name="Admin.Vendors.Info">
 		<Value>Информация о продавце</Value>
 	</LocaleResource>
+	<LocaleResource Name="Admin.Vendors.List.SearchName">
+		<Value>Название</Value>
+	</LocaleResource>
+	<LocaleResource Name="Admin.Vendors.List.SearchName.Hint">
+		<Value>Искать по названию поставщика</Value>
+	</LocaleResource>
 	<LocaleResource Name="Admin.Vendors.Updated">
 		<Value>Поставщик успешно обновлён.</Value>
 	</LocaleResource>
@@ -9832,7 +10441,7 @@
 		<Value>Уведомить меня, когда товар будет доступен</Value>
 	</LocaleResource>
 	<LocaleResource Name="BackInStockSubscriptions.OnlyRegistered">
-		<Value>Только зарегистрированные пользователи могут использовать эту функцию</Value>
+		<Value>Только зарегистрированные пользователи могут использовать этот функционал</Value>
 	</LocaleResource>
 	<LocaleResource Name="BackInStockSubscriptions.PopupTitle">
 		<Value>Получить сообщения, когда этот товар прибудет на склад</Value>
@@ -9897,23 +10506,23 @@
 	<LocaleResource Name="Blog.Tags">
 		<Value>Тэги</Value>
 	</LocaleResource>
-	<LocaleResource Name="catalog.orderby">
-		<Value>Сортировка</Value>
+	<LocaleResource Name="Catalog.OrderBy">
+		<Value>Сортировать по</Value>
 	</LocaleResource>
-	<LocaleResource Name="catalog.pagesize">
-		<Value>По</Value>
+	<LocaleResource Name="Catalog.PageSize">
+		<Value>Показать по</Value>
 	</LocaleResource>
-	<LocaleResource Name="catalog.pagesize.perpage">
-		<Value>шт/стр.</Value>
+	<LocaleResource Name="Catalog.PageSize.PerPage">
+		<Value>на странице</Value>
 	</LocaleResource>
-	<LocaleResource Name="catalog.viewmode">
+	<LocaleResource Name="Catalog.ViewMode">
 		<Value>Вид</Value>
 	</LocaleResource>
-	<LocaleResource Name="catalog.viewmode.grid">
-		<Value>Таблица</Value>
+	<LocaleResource Name="Catalog.ViewMode.Grid">
+		<Value>таблица</Value>
 	</LocaleResource>
-	<LocaleResource Name="catalog.viewmode.list">
-		<Value>Список</Value>
+	<LocaleResource Name="Catalog.ViewMode.List">
+		<Value>список</Value>
 	</LocaleResource>
 	<LocaleResource Name="Categories">
 		<Value>Категории</Value>
@@ -9921,26 +10530,8 @@
 	<LocaleResource Name="Categories.Breadcrumb.Top">
 		<Value>В начало</Value>
 	</LocaleResource>
-	<LocaleResource Name="Categories.OrderBy">
-		<Value>Сортировать по</Value>
-	</LocaleResource>
-	<LocaleResource Name="Categories.PageSize">
-		<Value>Показать по</Value>
-	</LocaleResource>
-	<LocaleResource Name="Categories.PageSize.PerPage">
-		<Value>на странице</Value>
-	</LocaleResource>
 	<LocaleResource Name="Categories.TotalProducts">
 		<Value>({0})</Value>
-	</LocaleResource>
-	<LocaleResource Name="Categories.ViewMode">
-		<Value>Вид</Value>
-	</LocaleResource>
-	<LocaleResource Name="Categories.ViewMode.Grid">
-		<Value>таблица</Value>
-	</LocaleResource>
-	<LocaleResource Name="Categories.ViewMode.List">
-		<Value>список</Value>
 	</LocaleResource>
 	<LocaleResource Name="Checkout">
 		<Value>Оформить заказ</Value>
@@ -10004,6 +10595,18 @@
 	</LocaleResource>
 	<LocaleResource Name="Checkout.PaymentMethod">
 		<Value>Способ оплаты</Value>
+	</LocaleResource>
+	<LocaleResource Name="Checkout.PickUpInStore">
+		<Value>Cамовывоз</Value>
+	</LocaleResource>
+	<LocaleResource Name="Checkout.PickUpInStore.Description">
+		<Value>Вы сможете забрать товары самостоятельно из нашего магазина (введите сюда адрес)</Value>
+	</LocaleResource>
+	<LocaleResource Name="Checkout.PickUpInStore.MethodName">
+		<Value>амовывоз</Value>
+	</LocaleResource>
+	<LocaleResource Name="Checkout.PickUpInStoreAndFee">
+		<Value>Самовывоз ({0})</Value>
 	</LocaleResource>
 	<LocaleResource Name="Checkout.PlacedOrderDetails">
 		<Value>Нажмите здесь для получения информации о заказе.</Value>
@@ -10314,6 +10917,9 @@
 	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.AttributeControlType.RadioList">
 		<Value>Список радиокнопок</Value>
 	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.AttributeControlType.ReadonlyCheckboxes">
+		<Value>Чекбоксы (только для чтения)</Value>
+	</LocaleResource>
 	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.AttributeControlType.TextBox">
 		<Value>Текстовое поле</Value>
 	</LocaleResource>
@@ -10403,6 +11009,30 @@
 	</LocaleResource>
 	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.RecurringProductCyclePeriod.Years">
 		<Value>Годы</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.RentalPricePeriod.Days">
+		<Value>Дни</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.RentalPricePeriod.Months">
+		<Value>Месяцы</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.RentalPricePeriod.Weeks">
+		<Value>Недели</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.RentalPricePeriod.Years">
+		<Value>Годы</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.SpecificationAttributeType.CustomHtmlText">
+		<Value>HTML текст</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.SpecificationAttributeType.CustomText">
+		<Value>Текст</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.SpecificationAttributeType.Hyperlink">
+		<Value>Ссылка</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Domain.Catalog.SpecificationAttributeType.Option">
+		<Value>Значение</Value>
 	</LocaleResource>
 	<LocaleResource Name="Enums.Nop.Core.Domain.Common.FulltextSearchMode.And">
 		<Value>Используя CONTAINS и AND в prefix_term</Value>
@@ -10643,6 +11273,15 @@
 	</LocaleResource>
 	<LocaleResource Name="Enums.Nop.Core.Domain.Tax.VatNumberStatus.Valid">
 		<Value>Действительный</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Plugins.LoadPluginsMode.All">
+		<Value>Все</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Plugins.LoadPluginsMode.InstalledOnly">
+		<Value>Установленные</Value>
+	</LocaleResource>
+	<LocaleResource Name="Enums.Nop.Core.Plugins.LoadPluginsMode.NotInstalledOnly">
+		<Value>Не установленные</Value>
 	</LocaleResource>
 	<LocaleResource Name="Enums.Nop.Plugin.Shipping.Fedex.PackByDimensions">
 		<Value>Упаковка по размеру</Value>
@@ -11076,26 +11715,8 @@
 	<LocaleResource Name="Manufacturers.List">
 		<Value>Список производителей</Value>
 	</LocaleResource>
-	<LocaleResource Name="Manufacturers.OrderBy">
-		<Value>Сортировать по</Value>
-	</LocaleResource>
-	<LocaleResource Name="Manufacturers.PageSize">
-		<Value>Показать</Value>
-	</LocaleResource>
-	<LocaleResource Name="Manufacturers.PageSize.PerPage">
-		<Value>на страницу</Value>
-	</LocaleResource>
 	<LocaleResource Name="Manufacturers.ViewAll">
 		<Value>Показать все</Value>
-	</LocaleResource>
-	<LocaleResource Name="Manufacturers.ViewMode">
-		<Value>Показать как</Value>
-	</LocaleResource>
-	<LocaleResource Name="Manufacturers.ViewMode.Grid">
-		<Value>таблица</Value>
-	</LocaleResource>
-	<LocaleResource Name="Manufacturers.ViewMode.List">
-		<Value>список</Value>
 	</LocaleResource>
 	<LocaleResource Name="Media.Category.ImageAlternateTextFormat">
 		<Value>Изображение для категории {0}</Value>
@@ -11120,6 +11741,9 @@
 	</LocaleResource>
 	<LocaleResource Name="Media.Product.ImageLinkTitleFormat.Details">
 		<Value>Изображение {0}</Value>
+	</LocaleResource>
+	<LocaleResource Name="Menu">
+		<Value>Меню</Value>
 	</LocaleResource>
 	<LocaleResource Name="Messages.Order.GiftCardInfo">
 		<Value>Подарочный сертификат ({0}):</Value>
@@ -11174,12 +11798,6 @@
 	</LocaleResource>
 	<LocaleResource Name="Messages.Order.TotalDiscount">
 		<Value>Скидка:</Value>
-	</LocaleResource>
-	<LocaleResource Name="Mobile.ViewFullSite">
-		<Value>Полная версия</Value>
-	</LocaleResource>
-	<LocaleResource Name="Mobile.ViewMobileVersion">
-		<Value>Мобильная версия</Value>
 	</LocaleResource>
 	<LocaleResource Name="News">
 		<Value>Новости</Value>
@@ -11319,8 +11937,14 @@
 	<LocaleResource Name="Order.OrderTotal">
 		<Value>Сумма заказа</Value>
 	</LocaleResource>
-	<LocaleResource Name="Order.PaymentMethod">
+	<LocaleResource Name="Order.Payment">
+		<Value>Платеж</Value>
+	</LocaleResource>
+	<LocaleResource Name="Order.Payment.Method">
 		<Value>Способ оплаты</Value>
+	</LocaleResource>
+	<LocaleResource Name="Order.Payment.Status">
+		<Value>Статус оплаты</Value>
 	</LocaleResource>
 	<LocaleResource Name="Order.PaymentMethodAdditionalFee">
 		<Value>Комиссия за способ доставки</Value>
@@ -11349,8 +11973,8 @@
 	<LocaleResource Name="Order.Product(s).Total">
 		<Value>Сумма</Value>
 	</LocaleResource>
-	<LocaleResource Name="Order.PurchaseOrderNumber">
-		<Value>Номер счёта</Value>
+	<LocaleResource Name="Order.Rental.FormattedDate">
+		<Value>Начало аренды: {0}. Окончание аренды: {1}.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Order.Reorder">
 		<Value>Заказать ещё раз</Value>
@@ -11445,11 +12069,14 @@
 	<LocaleResource Name="Order.Shipping">
 		<Value>Доставка</Value>
 	</LocaleResource>
+	<LocaleResource Name="Order.Shipping.Name">
+		<Value>Способ доставки</Value>
+	</LocaleResource>
+	<LocaleResource Name="Order.Shipping.Status">
+		<Value>Статус доставки</Value>
+	</LocaleResource>
 	<LocaleResource Name="Order.ShippingAddress">
 		<Value>Адрес доставки</Value>
-	</LocaleResource>
-	<LocaleResource Name="Order.ShippingMethod">
-		<Value>Способ доставки</Value>
 	</LocaleResource>
 	<LocaleResource Name="Order.SubTotal">
 		<Value>Стоимость</Value>
@@ -11462,6 +12089,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Order.TaxRateLine">
 		<Value>Налог {0}%</Value>
+	</LocaleResource>
+	<LocaleResource Name="Order.TaxShipping.ExclTax">
+		<Value>Все цены указаны без налога. Не включая &lt;a href="{0}"&gt;доставку&lt;/a&gt;</Value>
+	</LocaleResource>
+	<LocaleResource Name="Order.TaxShipping.InclTax">
+		<Value>Все цены указаны включая налог. Не включая &lt;a href="{0}"&gt;доставку&lt;/a&gt;</Value>
 	</LocaleResource>
 	<LocaleResource Name="Order.TotalDiscount">
 		<Value>Скидка</Value>
@@ -11718,9 +12351,6 @@
 	<LocaleResource Name="PDFInvoice.ProductTotal">
 		<Value>Сумма</Value>
 	</LocaleResource>
-	<LocaleResource Name="PDFInvoice.PurchaseOrderNumber">
-		<Value>Номер счёта: {0}</Value>
-	</LocaleResource>
 	<LocaleResource Name="PDFInvoice.RewardPoints">
 		<Value>{0} бонусных баллов:</Value>
 	</LocaleResource>
@@ -11943,6 +12573,9 @@
 	<LocaleResource Name="Permission.ManageWidgets">
 		<Value>Админка. Редактировать виджеты</Value>
 	</LocaleResource>
+	<LocaleResource Name="Permission.OrderCountryReport">
+		<Value>Начальная дата для поиска.</Value>
+	</LocaleResource>
 	<LocaleResource Name="Permission.PublicStoreAllowNavigation">
 		<Value>Магазин. Доступна навигация</Value>
 	</LocaleResource>
@@ -11982,6 +12615,12 @@
 	<LocaleResource Name="Plugins.DiscountRules.HasAllProducts.Fields.Products">
 		<Value>Ограничена для товаров</Value>
 	</LocaleResource>
+	<LocaleResource Name="Plugins.DiscountRules.HasAllProducts.Fields.Products.AddNew">
+		<Value>Добавить продукт</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.DiscountRules.HasAllProducts.Fields.Products.Choose">
+		<Value>Выбрать</Value>
+	</LocaleResource>
 	<LocaleResource Name="Plugins.DiscountRules.HasAllProducts.Fields.Products.Hint">
 		<Value>Список ID товаров, разделенных запятой (например, 77, 123, 156). Вы можете найти ID товара на странице его редактирования. Так же вы можете указать список ID с количеством ({ID товара}:{кол-во}. Например, 77:1, 123:2, 156:3). Так же вы можете указать список ID с диапазоном кол-ва ({ID товара}:{мин. кол-во}-{макс. кол-во}. Например, 77:1-3, 123:2-5, 156:3-8).</Value>
 	</LocaleResource>
@@ -11993,6 +12632,12 @@
 	</LocaleResource>
 	<LocaleResource Name="Plugins.DiscountRules.HasOneProduct.Fields.Products">
 		<Value>Ограничена для товаров</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.DiscountRules.HasOneProduct.Fields.Products.AddNew">
+		<Value>Добавить продукт</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.DiscountRules.HasOneProduct.Fields.Products.Choose">
+		<Value>Выбрать</Value>
 	</LocaleResource>
 	<LocaleResource Name="Plugins.DiscountRules.HasOneProduct.Fields.Products.Hint">
 		<Value>Список ID товаров, разделенных запятой (например, 77, 123, 156). Вы можете найти ID товара на странице его редактирования. Так же вы можете указать список ID с количеством ({ID товара}:{кол-во}. Например, 77:1, 123:2, 156:3). Так же вы можете указать список ID с диапазоном кол-ва ({ID товара}:{мин. кол-во}-{макс. кол-во}. Например, 77:1-3, 123:2-5, 156:3-8).</Value>
@@ -12096,6 +12741,12 @@
 	<LocaleResource Name="Plugins.Feed.Become.SuccessResult">
 		<Value>Канал Become.com успешно сгенерирован. {0} для просмотра созданного канала</Value>
 	</LocaleResource>
+	<LocaleResource Name="Plugins.Feed.Froogle.PassShippingInfo">
+		<Value>Включать информацию о доставке</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Feed.Froogle.PassShippingInfo.Hint">
+		<Value>Выберите, если вы хотите включать информацию о доставке (вес).</Value>
+	</LocaleResource>
 	<LocaleResource Name="Plugins.Feed.PriceGrabber.ClickHere">
 		<Value>Нажмите здесь</Value>
 	</LocaleResource>
@@ -12128,6 +12779,30 @@
 	</LocaleResource>
 	<LocaleResource Name="Plugins.Misc.WebServices.Description4">
 		<Value>Для использования mex endpoint {0}</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payment.CashOnDelivery.ShippableProductRequired">
+		<Value>Обязательна доставка товара</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payment.CashOnDelivery.ShippableProductRequired.Hint">
+		<Value>Включите, если обязательно должны быть товары с доставкой, чтобы пользователи могли использовать этот способ оплаты.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payment.CheckMoneyOrder.ShippableProductRequired">
+		<Value>Обязательна доставка товара</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payment.CheckMoneyOrder.ShippableProductRequired.Hint">
+		<Value>Включите, если обязательно должны быть товары с доставкой, чтобы пользователи могли использовать этот способ оплаты.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payment.PurchaseOrder.ShippableProductRequired">
+		<Value>Обязательна доставка товара</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payment.PurchaseOrder.ShippableProductRequired.Hint">
+		<Value>Включите, если обязательно должны быть товары с доставкой, чтобы пользователи могли использовать этот способ оплаты.</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payments.PayPalStandard.Fields.AddressOverride">
+		<Value>Address override</Value>
+	</LocaleResource>
+	<LocaleResource Name="Plugins.Payments.PayPalStandard.Fields.AddressOverride.Hint">
+		<Value>For people who already have PayPal accounts and whom you already prompted for a shipping address before they choose to pay with PayPal, you can use the entered address instead of the address the person has stored with PayPal.</Value>
 	</LocaleResource>
 	<LocaleResource Name="Plugins.Shipping.USPS.Fields.Username.Hint">
 		<Value>Введите имя пользователя</Value>
@@ -12420,6 +13095,21 @@
 	<LocaleResource Name="Products.Price.OldPrice">
 		<Value>Старая цена</Value>
 	</LocaleResource>
+	<LocaleResource Name="Products.Price.Rental.Days">
+		<Value>{0} за {1} дней</Value>
+	</LocaleResource>
+	<LocaleResource Name="Products.Price.Rental.Months">
+		<Value>{0} за {1} месяцев</Value>
+	</LocaleResource>
+	<LocaleResource Name="Products.Price.Rental.Weeks">
+		<Value>{0} за {1} недель</Value>
+	</LocaleResource>
+	<LocaleResource Name="Products.Price.Rental.Years">
+		<Value>{0} за {1} лет</Value>
+	</LocaleResource>
+	<LocaleResource Name="Products.Price.RentalPrice">
+		<Value>Цена аренды</Value>
+	</LocaleResource>
 	<LocaleResource Name="Products.Price.TaxShipping.ExclTax">
 		<Value>excluding &lt;a href="{0}"&gt;shipping&lt;/a&gt;</Value>
 	</LocaleResource>
@@ -12453,6 +13143,12 @@
 	<LocaleResource Name="Products.RelatedProducts">
 		<Value>Похожие товары</Value>
 	</LocaleResource>
+	<LocaleResource Name="Products.RentalEndDate">
+		<Value>Окончание аренды</Value>
+	</LocaleResource>
+	<LocaleResource Name="Products.RentalStartDate">
+		<Value>Начало аренды</Value>
+	</LocaleResource>
 	<LocaleResource Name="Products.Sku">
 		<Value>Артикул</Value>
 	</LocaleResource>
@@ -12467,12 +13163,6 @@
 	</LocaleResource>
 	<LocaleResource Name="Products.Tags.Count">
 		<Value>({0})</Value>
-	</LocaleResource>
-	<LocaleResource Name="Products.Tags.PageSize">
-		<Value>Показать</Value>
-	</LocaleResource>
-	<LocaleResource Name="Products.Tags.PageSize.PerPage">
-		<Value>на странице</Value>
 	</LocaleResource>
 	<LocaleResource Name="Products.Tags.Popular">
 		<Value>Популярные тэги</Value>
@@ -12834,9 +13524,6 @@
 	<LocaleResource Name="ShoppingCart.HeaderQuantity">
 		<Value>({0})</Value>
 	</LocaleResource>
-	<LocaleResource Name="ShoppingCart.HeaderQuantity.Mobile">
-		<Value>({0})</Value>
-	</LocaleResource>
 	<LocaleResource Name="ShoppingCart.ItemTotal">
 		<Value>Всего</Value>
 	</LocaleResource>
@@ -12927,6 +13614,21 @@
 	<LocaleResource Name="ShoppingCart.Remove">
 		<Value>Удалить</Value>
 	</LocaleResource>
+	<LocaleResource Name="ShoppingCart.Rent">
+		<Value>Арендовать</Value>
+	</LocaleResource>
+	<LocaleResource Name="ShoppingCart.Rental.EnterEndDate">
+		<Value>Введите дату окончания аренды</Value>
+	</LocaleResource>
+	<LocaleResource Name="ShoppingCart.Rental.EnterStartDate">
+		<Value>Введите дату начала аренды</Value>
+	</LocaleResource>
+	<LocaleResource Name="ShoppingCart.Rental.FormattedDate">
+		<Value>Начало аренды: {0}. Окончание аренды: {1}.</Value>
+	</LocaleResource>
+	<LocaleResource Name="ShoppingCart.Rental.StartDateLessEndDate">
+		<Value>Дату начала аренды должна быть до даты окончания</Value>
+	</LocaleResource>
 	<LocaleResource Name="ShoppingCart.RequiredProductWarning">
 		<Value>Необходимо добавить в корзину следующие товары: {0}</Value>
 	</LocaleResource>
@@ -12967,6 +13669,12 @@
 		<Value>Комиссия за способ оплаты</Value>
 	</LocaleResource>
 	<LocaleResource Name="ShoppingCart.Totals.RewardPoints">
+		<Value>{0} бонусных баллов</Value>
+	</LocaleResource>
+	<LocaleResource Name="ShoppingCart.Totals.RewardPoints.WillEarn">
+		<Value>Вы заработаете</Value>
+	</LocaleResource>
+	<LocaleResource Name="ShoppingCart.Totals.RewardPoints.WillEarn.Point">
 		<Value>{0} бонусных баллов</Value>
 	</LocaleResource>
 	<LocaleResource Name="ShoppingCart.Totals.Shipping">
@@ -13013,9 +13721,6 @@
 	</LocaleResource>
 	<LocaleResource Name="Sitemap.Products">
 		<Value>Товары</Value>
-	</LocaleResource>
-	<LocaleResource Name="Sitemap.Topics">
-		<Value>Темы</Value>
 	</LocaleResource>
 	<LocaleResource Name="StoreClosed">
 		<Value>Этот магазин в настоящее время закрыт</Value>
@@ -13065,26 +13770,8 @@
 	<LocaleResource Name="Vendors.List">
 		<Value>Список вендоров</Value>
 	</LocaleResource>
-	<LocaleResource Name="Vendors.OrderBy">
-		<Value>Сортировать по</Value>
-	</LocaleResource>
-	<LocaleResource Name="Vendors.PageSize">
-		<Value>Отображать по</Value>
-	</LocaleResource>
-	<LocaleResource Name="Vendors.PageSize.PerPage">
-		<Value>на страницу</Value>
-	</LocaleResource>
 	<LocaleResource Name="Vendors.ViewAll">
 		<Value>Показать все</Value>
-	</LocaleResource>
-	<LocaleResource Name="Vendors.ViewMode">
-		<Value>Показать как</Value>
-	</LocaleResource>
-	<LocaleResource Name="Vendors.ViewMode.Grid">
-		<Value>Сетка</Value>
-	</LocaleResource>
-	<LocaleResource Name="Vendors.ViewMode.List">
-		<Value>Список</Value>
 	</LocaleResource>
 	<LocaleResource Name="Wishlist">
 		<Value>Список пожеланий</Value>
@@ -13134,8 +13821,11 @@
 	<LocaleResource Name="Wishlist.HeaderQuantity">
 		<Value>({0})</Value>
 	</LocaleResource>
-	<LocaleResource Name="Wishlist.HeaderQuantity.Mobile">
-		<Value>({0})</Value>
+	<LocaleResource Name="Wishlist.TaxShipping.ExclTax">
+		<Value>Все цены указаны без налога. Не включая &lt;a href="{0}"&gt;доставку&lt;/a&gt;</Value>
+	</LocaleResource>
+	<LocaleResource Name="Wishlist.TaxShipping.InclTax">
+		<Value>Все цены указаны включая налог. Не включая &lt;a href="{0}"&gt;доставку&lt;/a&gt;</Value>
 	</LocaleResource>
 	<LocaleResource Name="Wishlist.UpdateCart">
 		<Value>Обновить список пожеланий</Value>
