@@ -41,7 +41,9 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
             model.prv_purse = settings.prv_purse;
             model.paymentdescription = settings.paymentdescription;
             model.testMode = settings.testMode;
-            return View("Nop.Plugin.Payments.Comepay.Views.Comepay.Configure", model);
+            model.AdditionalFee = settings.AdditionalFee;
+            model.AdditionalFeePercentage = settings.AdditionalFeePercentage;
+            return View("~/Plugins/Payments.Comepay/Views/Comepay/Configure.cshtml", model);
         }
 
         [HttpPost]
@@ -52,7 +54,7 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
             model.httpcontext = _httpcontext;
             if (!ModelState.IsValid)
                 return Configure();
-            _settings.SaveSetting<ComepaySettings>(new ComepaySettings()
+            _settings.SaveSetting<ComepaySettings>(new ComepaySettings
             {
                 prv_id = model.prv_id,
                 prv_name = model.prv_name,
@@ -60,7 +62,9 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
                 password = model.password,
                 password2 = model.password2,
                 paymentdescription = model.paymentdescription,
-                testMode = model.testMode
+                testMode = model.testMode,
+                AdditionalFee = model.AdditionalFee,
+                AdditionalFeePercentage = model.AdditionalFeePercentage
             });
             return Configure();
         }
@@ -80,7 +84,7 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
         [ChildActionOnly]
         public ActionResult PaymentInfo()
         {
-            return View("Nop.Plugin.Payments.Comepay.Views.Comepay.PaymentInfo");
+            return View("~/Plugins/Payments.Comepay/Views/Comepay/PaymentInfo.cshtml");
         }
 
         [HttpPost]
@@ -120,7 +124,7 @@ namespace Nop.Plugin.Payments.Comepay.Controllers
         {
             var model = new Fail();
             model.orderid = !String.IsNullOrEmpty(order) ? order : "0";
-            return View("Nop.Plugin.Payments.Comepay.Views.Comepay.Fail", model);
+            return View("~/Plugins/Payments.Comepay/Views/Comepay/Fail.cshtml", model);
         }
 
         [HttpGet]

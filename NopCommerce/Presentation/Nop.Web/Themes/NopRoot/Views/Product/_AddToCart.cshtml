@@ -31,7 +31,7 @@
             <div class="form-group row">
                 <div class="col-md-2">
                     @*@Html.LabelFor(model => model.EnteredQuantity, new { @class = "qty-label" }, ":")*@
-                    <label for="giftcard_1_Message">Quantity:</label>
+                    <label for="giftcard_1_Message">Кол-во:</label>
                 </div>
                 @if (Model.AllowedQuantities.Count > 0)
                 {
@@ -75,7 +75,7 @@
                         addToCartText = Model.AvailableForPreOrder ? T("ShoppingCart.PreOrder").Text : T("ShoppingCart.AddToCart").Text;
                     }
                     <div class="col-md-3">
-                        <button type="button" id="add-to-cart-button-@Model.ProductId" class="btn btn-default add-to-cart-button" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;"><i class="fa fa-shopping-cart fa-fw"></i> @addToCartText </button>
+                        <button type="button" id="add-to-cart-button-@Model.ProductId" class="btn btn-primary" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;"><i class="fa fa-shopping-cart fa-fw"></i> @addToCartText </button>
                     </div>
                 }
             </div>

@@ -6,7 +6,7 @@
         <div id="newsletter-subscribe-block" class="newsletter-subscribe-block">
             <h5>@T("Newsletter.Subscribe"):</h5>
             <div class="newsletter-email">
-                @Html.TextBoxFor(x => x.NewsletterEmail, new { id = "newsletter-email", @class = "form-control",  placeholder="Enter email" })
+                @Html.TextBoxFor(x => x.NewsletterEmail, new { id = "newsletter-email", @class = "form-control",  placeholder="Введите email" })
                 @Html.ValidationMessageFor(x => x.NewsletterEmail)
             </div>
             <div class="buttons">

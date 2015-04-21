@@ -1,4 +1,5 @@
 ﻿@model ProductDetailsModel
+@using System.Web.Script.Serialization
 @using Nop.Core
 @using Nop.Core.Domain.Seo;
 @using Nop.Core.Infrastructure;
@@ -90,6 +91,14 @@
                         <!--sample download-->
                         @Html.Partial("_DownloadSample", Model)
                         <!--attributes-->
+                        <script>
+                            variantAttrValuesTable = new Array();
+                            @{
+                                var jsonSerialiser = new JavaScriptSerializer();
+                                var attrsJson = jsonSerialiser.Serialize(Model.AllAttributeValuesForVariants);
+                            }
+                            variantAttrValuesTable = @Html.Raw(attrsJson) ;
+                        </script>
                         @{
                             var dataDictAttributes = new ViewDataDictionary();
                             dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);

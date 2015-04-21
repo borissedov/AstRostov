@@ -40,6 +40,13 @@ namespace Nop.Services.Catalog
         IList<string> ParseValues(string attributesXml, int productAttributeMappingId);
 
         /// <summary>
+        /// Gets all attribute values Ids for product variant
+        /// </summary>
+        /// <param name="attributesXml">Attributes</param>
+        /// <returns>Product variant attribute value</returns>
+        IList<string> ParseAllValuesForVariant(string attributesXml);
+
+        /// <summary>
         /// Adds an attribute
         /// </summary>
         /// <param name="attributesXml">Attributes in XML format</param>

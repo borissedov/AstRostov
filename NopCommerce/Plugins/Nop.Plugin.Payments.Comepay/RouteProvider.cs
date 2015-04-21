@@ -2,7 +2,7 @@
 using System.Web.Routing;
 using Nop.Web.Framework.Mvc.Routes;
 
-namespace Nop.Plugin.Widgets.Countdown
+namespace Nop.Plugin.Payments.Comepay
 {
     public partial class RouteProvider : IRouteProvider
     {

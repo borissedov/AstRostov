@@ -1,13 +1,9 @@
 ﻿using Nop.Web.Framework.Controllers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using Nop.Plugin.Payments.Robokassa.Models;
 using Nop.Services.Payments;
-using System.Collections;
 using Nop.Services.Orders;
 using Nop.Services.Logging;
 using System.Web;
@@ -41,7 +37,9 @@ namespace Nop.Plugin.Payments.Robokassa.Controllers
             model.password1 = settings.password1;
             model.password2 = settings.password2;
             model.paymentdescription = settings.paymentdescription;
-            return View("Nop.Plugin.Payments.Robokassa.Views.Robokassa.Configure", model);
+            model.AdditionalFee = settings.AdditionalFee;
+            model.AdditionalFeePercentage = settings.AdditionalFeePercentage;
+            return View("~/Plugins/Payments.Robokassa/Views/Robokassa/Configure.cshtml", model);
         }
 
         [HttpPost]
@@ -52,7 +50,15 @@ namespace Nop.Plugin.Payments.Robokassa.Controllers
             model.httpcontext = _httpcontext;
             if (!ModelState.IsValid)
                 return Configure();
-            _settings.SaveSetting<RobokassaSettings>(new RobokassaSettings() { login = model.login, password1 = model.password1, password2 = model.password2, paymentdescription = model.paymentdescription });
+            _settings.SaveSetting<RobokassaSettings>(new RobokassaSettings
+            {
+                login = model.login,
+                password1 = model.password1,
+                password2 = model.password2,
+                paymentdescription = model.paymentdescription,
+                AdditionalFee = model.AdditionalFee,
+                AdditionalFeePercentage = model.AdditionalFeePercentage
+            });
             return Configure();
         }
 
@@ -71,7 +77,7 @@ namespace Nop.Plugin.Payments.Robokassa.Controllers
         [ChildActionOnly]
         public ActionResult PaymentInfo()
         {
-            return View("Nop.Plugin.Payments.Robokassa.Views.Robokassa.PaymentInfo");
+            return View("~/Plugins/Payments.Robokassa/Views/Robokassa/PaymentInfo.cshtml");
         }
 
         [HttpGet]
@@ -114,7 +120,7 @@ namespace Nop.Plugin.Payments.Robokassa.Controllers
                 model.orderid = "0";
                 model.ordersum = "0";
             }
-            return View("Nop.Plugin.Payments.Robokassa.Views.Robokassa.Fail",model);
+            return View("~/Plugins/Payments.Robokassa/Views/Robokassa/Fail.cshtml", model);
         }
 
         [HttpGet]

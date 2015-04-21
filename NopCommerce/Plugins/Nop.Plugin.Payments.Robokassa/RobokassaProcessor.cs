@@ -10,20 +10,27 @@ using Nop.Core.Domain.Orders;
 using Nop.Plugin.Payments.Robokassa.Controllers;
 using Nop.Core.Domain.Payments;
 using System.Security.Cryptography;
+using Nop.Services.Orders;
 
 namespace Nop.Plugin.Payments.Robokassa
 {
 
     public class Robokassa : BasePlugin, IPaymentMethod
     {
+        private readonly RobokassaSettings _robokassaSettingsSettings;
+
         private readonly ISettingService _settingService;
 
         private readonly HttpContextBase _httpContext;
 
-        public Robokassa(ISettingService SettingService, HttpContextBase httpContext)
+        private readonly IOrderTotalCalculationService _orderTotalCalculationService;
+        
+        public Robokassa(RobokassaSettings robokassaSettingsSettings, ISettingService SettingService, IOrderTotalCalculationService orderTotalCalculationService,  HttpContextBase httpContext)
         {
             this._settingService = SettingService;
             this._httpContext = httpContext;
+            this._robokassaSettingsSettings = robokassaSettingsSettings;
+            this._orderTotalCalculationService = orderTotalCalculationService;
         }
 
 
@@ -69,9 +76,26 @@ namespace Nop.Plugin.Payments.Robokassa
             result.AddError("Разрешение оплаты не поддерживается.");
             return result;
         }
+
+        /// <summary>
+        /// Returns a value indicating whether payment method should be hidden during checkout
+        /// </summary>
+        /// <param name="cart">Shoping cart</param>
+        /// <returns>true - hide; false - display.</returns>
+        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        {
+            //you can put any logic here
+            //for example, hide this payment method if all products in the cart are downloadable
+            //or hide this payment method if current customer is from certain country
+
+            return false;
+        }
+
         public decimal GetAdditionalHandlingFee(IList<ShoppingCartItem> cart)
         {
-            return 0; //без дополнительной оплаты
+            var result = this.CalculateAdditionalFee(_orderTotalCalculationService, cart,
+                _robokassaSettingsSettings.AdditionalFee, _robokassaSettingsSettings.AdditionalFeePercentage);
+            return result;
         }
         public Type GetControllerType()
         {
