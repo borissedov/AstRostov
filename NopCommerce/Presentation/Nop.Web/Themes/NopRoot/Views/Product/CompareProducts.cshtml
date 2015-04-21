@@ -104,7 +104,7 @@
                             @foreach (var product in Model.Products)
                             {
                                 var foundProductSpec = product.SpecificationAttributeModels.FirstOrDefault(psa => psa.SpecificationAttributeId == specificationAttribute.SpecificationAttributeId);
-                                var specValue = foundProductSpec != null ? foundProductSpec.SpecificationAttributeOption : "";
+                                var specValue = foundProductSpec != null ? foundProductSpec.ValueRaw : "";
                                                                 
                                 <td class="text-center">
                                     @if (!String.IsNullOrEmpty(specValue))

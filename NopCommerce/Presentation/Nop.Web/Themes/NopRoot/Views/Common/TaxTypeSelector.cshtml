@@ -3,8 +3,7 @@
 @using Nop.Core.Domain.Tax;
 @using Nop.Core.Infrastructure;
 @using Nop.Web.Models.Common;
-@if (Model.Enabled)
-{
+@{
     var webHelper = EngineContext.Current.Resolve<IWebHelper>();
 
     var taxTypes = new List<SelectListItem>();

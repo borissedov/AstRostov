@@ -1,7 +1,7 @@
 ﻿
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 { font-family: 'Open Sans', sans-serif; font-weight: 600; }
 
-body { padding-top: 81px; font-family: 'Open Sans', sans-serif; font-weight: 400; background: url(../Content/images/paven1.png) repeat scroll 0 0 transparent; color: #E0E0E0; }
+body { padding-top: 81px; font-family: 'Open Sans', sans-serif; font-weight: 400; }
 
 button, a, .icon { transition: background-color 0.3s ease-in-out; }
 
@@ -36,7 +36,7 @@ button, a, .icon { transition: background-color 0.3s ease-in-out; }
 
 .top-menu ul.dropdown-menu { padding: 10px 15px; }
 
-.top-menu ul.dropdown-menu { border: none; padding: 0; border-radius: 0; }
+.top-menu ul.dropdown-menu { border: 1px solid black; padding: 0; border-radius: 0; }
 
 .navbar-fixed-top.top-menu { position: fixed; height: 55px; width: 100%; top: 0; left: 0; /*border-top: 5px solid #2B2B2B;*/ background: #FFF; -moz-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16); -webkit-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16); box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16); /*z-index: 999999;*/ color: #2B2B2B; /*background-color: #ecf0f1;
 border-bottom: 1px solid #E2E4E6;*/ }
@@ -98,7 +98,7 @@ a { color: #000; }
 
 .header-logo { float: left; margin-top: 5px; text-align: left; }
 
-a.logo { background: url("images/logo.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0); display: block; height: 130px; text-decoration: none; /*width: 310px;*/ }
+a.logo { background: url("images/logo.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0); display: block; height: 60px; text-decoration: none; width: 310px; }
 
 .title-box { margin: 70px 0 30px 0; }
 

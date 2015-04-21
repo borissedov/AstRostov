@@ -8,7 +8,7 @@
 }
 @section left
 {
-    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Addresses })
 }
 <div class="panel panel-default form-panel">
     <div class="panel-heading">
