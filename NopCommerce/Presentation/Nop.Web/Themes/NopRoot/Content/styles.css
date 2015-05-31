@@ -534,7 +534,7 @@ div.newsletter-subscribe-block > div.newsletter-email {
 
 
 .offer {
-    background-image: url(../Content/images/navy_blue.png);
+    /*background-image: url(../Content/images/navy_blue.png);*/
     border: none;
     margin: 15px 0;
     overflow: hidden;
@@ -546,7 +546,7 @@ div.newsletter-subscribe-block > div.newsletter-email {
 }
 
 .silde-show-offer {
-    height: 400px;
+    /*height: 400px;*/
 }
 
 .picture.thumbnail {
@@ -755,8 +755,7 @@ ul {
 
 .dropdown-filter {
     height: 25px;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding: 0;
 }
 
 /*badge number css end*/
@@ -1175,6 +1174,7 @@ Page: Product Details START
 .product-details-page .back-in-stock-subscription {
     margin-top: 10px;
     margin-bottom: 10px;
+    
 }
 
 .product-details-page .email-a-friend {
@@ -1772,21 +1772,22 @@ Product view START
     .product-list .add-info .new-prices {
         font-size: 1.3em;
         font-weight: bold;
+        color: #FA9D20;
     }
 
 
 .product-grid .add-info {
-    position: absolute;
+    /*position: absolute;
     left: 0;
     text-align: center;
     bottom: 0;
     width: 100%;
-    height: 28%;
+    height: 28%;*/
     padding: 0px 16px 0px 16px;
 }
 
 .product-grid .white-box {
-    height: 282px;
+    /*height: 282px;*/
 }
 
 .product-grid .ash-box {
@@ -1815,7 +1816,7 @@ Product view START
     }
 
 .category-ash-box {
-    height: 70px;
+    /*height: 70px;*/
 }
 
 /*------------------------------------*\
@@ -2097,7 +2098,7 @@ margin-left: 10%;
 }
 
 .page.category-page .item-box .offer-default {
-    height: 200px;
+    /*height: 200px;*/
 }
 
 .panel.panel-default {

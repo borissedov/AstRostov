@@ -65,7 +65,7 @@
             <a href="@Url.RouteUrl("Product", new
                                                   {
                                                       SeName = Model.SeName
-                                                  })"> @Text_Truncate(Model.Name, 30)</a>
+                                                  })"> @Text_Truncate(Model.Name, 150)</a>
         </h2>
         @if(Model.ReviewOverviewModel.AllowCustomerReviews)
         {
